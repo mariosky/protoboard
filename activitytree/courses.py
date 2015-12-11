@@ -14,15 +14,15 @@ if __name__ == "__main__":
 
 
 import json
-from activitytree.models import LearningActivity, Course
+from activitytree.models import LearningActivity, Course, AuthorLearningActivity
 from interaction_handler import sql_activity_tree
 
-def create_course_from_json( json_tree ):
+def create_course_from_json( json_tree, user ):
     activity_tree = json.loads(json_tree)[0]
-    _traverse(activity_tree)
+    _traverse(activity_tree, user=user)
 
 
-def _traverse(activity, parent=None, root=None):
+def _traverse(activity, parent=None, root=None, user=None):
     learning_activity = LearningActivity(
         parent = parent or None,
         root   = root or None,
@@ -52,6 +52,9 @@ def _traverse(activity, parent=None, root=None):
         root = learning_activity
         curso = Course(short_description=activity['learning_activity']['description'], root=root)
         curso.save()
+
+        auth = AuthorLearningActivity(user=user, learning_activity=root )
+        auth.save()
 
 
 

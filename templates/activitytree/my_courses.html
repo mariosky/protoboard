@@ -1,0 +1,57 @@
+
+{% extends "activitytree/base.html" %}
+
+{% block content %}
+<div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+
+
+        <div class="col-md-6">
+        <h4>Min-cursos <small>Secuencia de actividades, se registra tú avance. Te debes registrar.</small></h4>
+            {% for c in courses %}
+        <div class="media">
+            <div class="media-left">
+                <a href="#">
+                     <i class="fa fa-graduation-cap fa-lg"></i>
+                </a>
+
+            </div>
+             <div class="media-body">
+             {% if user.is_authenticated %}
+               <a class="media-heading" href="/{{c.root.id }}{{c.root.uri }}?nav=continue" role="button"> <h4>{{c.root.name}} &raquo;</h4></a>
+             {% else %}
+                <a class="media-heading" href="/{{c.root.id }}{{c.root.uri }}" role="button"> <h4>{{c.root.name}} &raquo;</h4></a>
+             {% endif %}
+
+
+            <p><span class="label label-info">mini-curso</span> <span class="label label-default">python</span> <span class="label label-default">principiantes</span></p>
+                 {{ c.short_description|safe }}
+
+            </div>
+        </div>
+         {% endfor %}
+        </div>
+
+      <div id='activities' class="col-md-6">
+       <h4>Actividades <small> Son actividades independientes, tú decides que ver. No requiere registro.</small></h4>
+
+
+
+
+      </div>
+
+
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>
+            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+           </a>
+            <br />El contenido de los cursos es: <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> y
+            otras licencias abiertas.</p>
+      </footer>
+    </div> <!-- /container -->
+{% endblock content %}

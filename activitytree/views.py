@@ -19,7 +19,7 @@ from django.contrib.auth.decorators import permission_required
 from backends import AuthAlreadyAssociated, google_query_me, facebook_query_me
 from django.db.models import Avg, Count
 
-from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event, FacebookSession,LearningActivityRating
+from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event, FacebookSession,LearningActivityRating,AuthorLearningActivity
 
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.interaction_handler import get_nav
@@ -43,8 +43,6 @@ redis_service = redis.Redis("127.0.0.1")
 
 
 def welcome(request):
-    # plus_scope = ' '.join(GooglePlusAuth.DEFAULT_SCOPE)
-    # plus_id=settings.SOCIAL_AUTH_GOOGLE_PLUS_KEY
     courses = Course.objects.all()
 
     if request.user.is_authenticated() and request.user != 'AnonymousUser' :
@@ -59,6 +57,24 @@ def welcome(request):
                 #,'plus_scope':plus_scope,'plus_id':plus_id
                  },
                 context_instance=RequestContext(request))
+
+def my_courses(request):
+
+
+
+    if request.user.is_authenticated() and request.user != 'AnonymousUser' :
+
+
+         courses = LearningActivity.objects.filter(authorlearningactivity__user = request.user )
+
+         return render_to_response('activitytree/welcome.html',
+            {'courses':courses
+                #, 'plus_scope':plus_scope,'plus_id':plus_id
+            },
+                context_instance=RequestContext(request))
+    else:
+        return HttpResponseRedirect('/login/?next=%s' % request.path)
+
 
 
 
@@ -505,11 +521,12 @@ def execute_queue(request):
 
 @csrf_protect
 def course_view(request):
-    if request.method == 'POST':
+    if request.user.is_authenticated() and request.user != 'AnonymousUser' and request.method == 'POST' :
         rpc=json.loads(request.body)
 
         if rpc["method"]=='post_course':
-            create_course_from_json( rpc['params'][0])
+            create_course_from_json( rpc['params'][0], request.user)
+
 
             result= {"result":"added" , "error": None, "id": 1}
             return HttpResponse(json.dumps(result), content_type='application/javascript')
@@ -517,9 +534,10 @@ def course_view(request):
         elif rpc["method"]=='get_course':
             rpc=json.loads(request.body)
             course = get_activity_tree( rpc['params'][0])
-
-            result= {"result":"added" , "error": None, "id": 1}
             return HttpResponse(json.dumps(course), content_type='application/javascript')
+    else:
+        result= {"result":"added" , "error": "Error", "id": 1}
+        return HttpResponse(json.dumps(result), content_type='application/javascript')
 
 
 

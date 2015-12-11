@@ -223,6 +223,16 @@
 
     $('#toArrBtn').on('click', function(){
         var tree = tree_to_json( '#sTree2');
+        $.ajaxSetup({
+                crossDomain: false, // obviates need for sameOrigin test
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+
 
         $.ajax(   {
                     url: '/post_course',

@@ -373,7 +373,11 @@ class LearningActivityRating(models.Model):
     context = models.PositiveSmallIntegerField()
 
             
-            
+class AuthorLearningActivity(models.Model):
+    user = models.ForeignKey(User)
+    learning_activity = models.ForeignKey(LearningActivity)
+    time=models.DateTimeField(auto_now=True)
+
             
             
             

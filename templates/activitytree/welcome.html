@@ -1,118 +1,7 @@
-{% load gravatar %}
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Protoboard  Bootstrap</title>
-
-    <!-- Bootstrap core CSS -->
-    <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css">
-
-        <!-- Custom styles for this template -->
-
-    <!-- Custom styles for this template -->
-    <style type="text/css" media="screen">
-	 /*
- * Base structure
- */
-
-/* Move down content because we have a fixed navbar that is 50px tall */
-body {
-  padding-top: 50px;
+{% extends "activitytree/base.html" %}
 
 
-}
-
- .navbar-nav > li >  a.navbar-user
-    {
-    padding-bottom: 0px;
-    padding-top: 0px;
-    }
-
- .jumbotron{
-
-    padding-top: 30px;
-    padding-bottom: 20px;
-}
-
-.media-heading > h5,h4{
-    margin-top: 0px;
-
-}
-    </style>
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-  </head>
-
-  <body>
-
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" id="brand" href="#">protoboard.org</a>
-        </div>
-
-
-       <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-
-           {% if user.is_authenticated %}
-            <li><a href="#"></a></li>
-            {% if user.first_name %}
-            <li><a href="/me"> {{ user.first_name }} {{ user.last_name }}</a></li>
-            {% else %}
-            <li><a href="/me"> {{ user.username }} </a></li>
-            {% endif %}
-                        <li><a class="navbar-user" href="/me">
-
-            {% comment %}
-                {%  if user.userprofile.facebook_uid %}
-                <img src="http://graph.facebook.com/{{ user.userprofile.facebook_uid}}/picture?type=square"/>
-               {% else %}
-                <img src="{% gravatar_url user.email 50%}">
-               {% endif %}
-
-             {% endcomment %}
-
-                <img src="{% gravatar_url user.email 50%}">
-                </a>
-
-            </li>
-
-
-            <li><a href="/logout">Log out</a></li>
-
-
-
-            {% else %}
-
-            <li><a href="/login/?next=/welcome">Log in</a></li>
-
-            {% endif %}
-
-
-          </ul>
-
-        </div><!--/.navbar-collapse -->
-      </div>
-    </div>
-
+{% block content %}
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
@@ -177,10 +66,11 @@ body {
             otras licencias abiertas.</p>
       </footer>
     </div> <!-- /container -->
+{% endblock content %}
 
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+
+{% block scripts %}
 
   <script type="text/javascript" charset="utf-8">
 
@@ -250,7 +140,5 @@ body {
 </script>
 
 
-<script  type="text/javascript" src="{{MEDIA_URL}}js/mustache.min.js"></script>
 
- </body>
-</html>
+{% endblock scripts %}

@@ -79,6 +79,7 @@
 
                 {% endif %}
 
+
             <li><a href="#"></a></li>
             {% if user.first_name %}
             <li><a href="/me"> {{ user.first_name }} {{ user.last_name }}</a></li>
@@ -93,11 +94,22 @@
 
             </li>
 
+             <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Crear  <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Nuevo Curso</a></li>
+            <li><a href="#">Mis Cursos </a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Nueva Actividad</a></li>
+            <li><a href="#">Mis Actividades</a></li>
+          </ul>
+        </li>
+
             <li><a href="/logout">Salir</a></li>
 
           {% else %}
             {% if not hidde_login_link %}
-            <li><a href="/login">Iniciar Sesión</a></li>
+            <li><a href="/login/?next=/welcome">Iniciar Sesión</a></li>
             {% endif %}
           {% endif %}
 
@@ -210,6 +222,38 @@
 
   <script type="text/javascript" charset="utf-8">
 
+
+function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+    function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+                crossDomain: false, // obviates need for sameOrigin test
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+
+
+
       Mustache.tags = ['[[', ']]'];
 
       {% if XML_NAV  %}
@@ -288,34 +332,6 @@ $(document).ready(function() {
     {% endif  %}
           {% if user.is_authenticated %}
 
-function getCookie(name) {
-                var cookieValue = null;
-                if (document.cookie && document.cookie != '') {
-                    var cookies = document.cookie.split(';');
-                    for (var i = 0; i < cookies.length; i++) {
-                        var cookie = jQuery.trim(cookies[i]);
-                        // Does this cookie string begin with the name we want?
-                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
-    function csrfSafeMethod(method) {
-                // these HTTP methods do not require CSRF protection
-                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-            }
-            $.ajaxSetup({
-                crossDomain: false, // obviates need for sameOrigin test
-                beforeSend: function(xhr, settings) {
-                    if (!csrfSafeMethod(settings.type)) {
-                        var csrftoken = getCookie('csrftoken');
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
-                }
-            });
 
 
 $('#rating-info').raty({
