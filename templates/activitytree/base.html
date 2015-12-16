@@ -223,7 +223,7 @@
   <script type="text/javascript" charset="utf-8">
 
 
-function getCookie(name) {
+    function getCookie(name) {
                 var cookieValue = null;
                 if (document.cookie && document.cookie != '') {
                     var cookies = document.cookie.split(';');
@@ -242,6 +242,8 @@ function getCookie(name) {
                 // these HTTP methods do not require CSRF protection
                 return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
             }
+
+
             $.ajaxSetup({
                 crossDomain: false, // obviates need for sameOrigin test
                 beforeSend: function(xhr, settings) {

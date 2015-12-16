@@ -78,7 +78,7 @@
 
                 </div>
 
-            <div class="panel-body">
+            <div class="panel-body">{% csrf_token %}
                 <div id="editor">{{program_quiz.initial_code}}</div>
             </div>
 
@@ -117,14 +117,6 @@
  -->
 
 {% endblock content %}
-<div class='alert alert-success alert-dismissible' role='alert'>  <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <p>          <strong>Warning!</strong> Better check yourself, youre not looking too good.                </p><p>               <button class='btn btn-danger btn-sm' type='button'>
-
-
-    Take this action
-
-</button>
-</p>            </div>
-
 
 {% block scripts %}
 
@@ -253,17 +245,7 @@ $(document).ready(function() {
                 // these HTTP methods do not require CSRF protection
                 return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
             }
-            $.ajaxSetup({
-                crossDomain: false, // obviates need for sameOrigin test
-                beforeSend: function(xhr, settings) {
-                    if (!csrfSafeMethod(settings.type)) {
-                        var csrftoken = getCookie('csrftoken');
 
-
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
-                }
-            });
 
 
      $("#sendButton").on("click", function (){
