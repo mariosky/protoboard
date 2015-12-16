@@ -97,8 +97,8 @@
              <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Crear  <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Nuevo Curso</a></li>
-            <li><a href="#">Mis Cursos </a></li>
+            <li><a class="create-course" href="#">Nuevo Curso</a></li>
+            <li><a  href="#">Mis Cursos </a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#">Nueva Actividad</a></li>
             <li><a href="#">Mis Actividades</a></li>
@@ -365,6 +365,22 @@ $('#rating-info').raty({
 
     });
 
+
+
+
+  $('body').on('click', '.create-course', function(){
+
+    $('#modalCreateCourse').modal();
+
+
+  });
+
+              $('body').on('click','#createCourseBtn',function (e) {
+
+    $('#modalCreateCourse').modal('hide');
+
+  });
+
         {% else %}
 
         {% endif %}
@@ -378,6 +394,49 @@ $('#rating-info').raty({
   {% block scripts %}
 
   {% endblock scripts %}
+
+
+  <div class="modal fade" id="modalCreateCourse">
+  <div class="modal-dialog">
+    <div class="modal-content">
+       <form action="/course-builder/1" method="post">{% csrf_token %}
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Create Course</h4>
+      </div>
+
+
+      <div class="modal-body">
+
+        <div class="form-group">
+          <input type="text" class="form-control hidden" id="containerId" placeholder="" required pattern="https?://.+" disabled>
+        </div>
+
+        <div class="form-group">
+          <label for="containerName">Display Name</label>
+          <input type="text" name="course-name" class="form-control" id="containerName" placeholder="">
+        </div>
+
+        <div class="form-group">
+          <div class="checkbox">
+            <label> <input id="containerIsVisible" type="checkbox"> Public </label>
+          </div>
+
+        </div>
+
+
+      </div><!-- /.modal-body -->
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="createCourseBtn" type="submit" class="btn btn-primary">Create</button>
+      </div>
+           </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 
   </body>

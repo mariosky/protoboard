@@ -79,6 +79,7 @@ def my_courses(request):
 
 
 def course(request,course_id):
+    print request.POST
     return render_to_response('activitytree/course_builder.html',
             {'user_name':None,'courses':None
                 #,'plus_scope':plus_scope,'plus_id':plus_id
