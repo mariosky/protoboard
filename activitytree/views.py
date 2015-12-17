@@ -486,8 +486,6 @@ def program(request, uri):
 def execute_queue(request):
     if request.method == 'POST':
         rpc=json.loads(request.body)
-        print rpc
-
 
         code = rpc["params"][0]
         activity_uri = rpc["method"]
