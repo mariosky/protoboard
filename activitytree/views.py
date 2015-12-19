@@ -486,7 +486,7 @@ def execute_queue(request):
     if request.method == 'POST':
         rpc=json.loads(request.body)
 
-        logger.error("POST:"+rpc["params"][0])
+        logger.error("POST:"+rpc["params"][0]+rpc["method"])
 
 
         code = rpc["params"][0]
@@ -496,7 +496,7 @@ def execute_queue(request):
         server = Cola(program_test['lang'])
 
         task = {"id": None, "method": "exec", "params": {"code": code, "test": unit_test}}
-
+        logger.error(task)
         task_id = server.enqueue(**task)
         logger.error(task_id)
 
