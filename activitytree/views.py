@@ -3,7 +3,6 @@
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render_to_response
 from django.template.response import TemplateResponse
-from django.db.models import Avg, Count
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import REDIRECT_FIELD_NAME
@@ -11,16 +10,15 @@ from django.template import RequestContext
 from django.db import transaction
 from django.http import JsonResponse
 
+import logging
 import xml.etree.ElementTree as ET
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import permission_required
 from backends import AuthAlreadyAssociated, google_query_me, facebook_query_me
 from django.db.models import Avg, Count
 
 from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event, FacebookSession,LearningActivityRating,AuthorLearningActivity
-
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.interaction_handler import get_nav
 
@@ -40,7 +38,7 @@ import redis
 
 ip_couch = "http://127.0.0.1:5984"
 redis_service = redis.Redis("127.0.0.1")
-
+logger = logging.getLogger(__name__)
 
 def welcome(request):
     courses = Course.objects.all()
@@ -486,6 +484,9 @@ def program(request, uri):
 def execute_queue(request):
     if request.method == 'POST':
         rpc=json.loads(request.body)
+
+        logging.debug("POST execute_queue")
+
 
         code = rpc["params"][0]
         activity_uri = rpc["method"]
