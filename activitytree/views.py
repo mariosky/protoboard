@@ -486,7 +486,7 @@ def execute_queue(request):
     if request.method == 'POST':
         rpc=json.loads(request.body)
 
-        logger.error("POST execute_queue")
+        logger.error("POST:"+rpc)
 
 
         code = rpc["params"][0]
