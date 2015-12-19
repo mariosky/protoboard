@@ -485,8 +485,10 @@ def execute_queue(request):
     logger.error("VIEW execute_queue")
     if request.method == 'POST':
         rpc=json.loads(request.body)
+        import os
 
-        logger.error("POST:"+rpc["params"][0]+rpc["method"])
+
+        logger.error("REDIS:"+os.environ['REDIS_HOST'])
 
 
         code = rpc["params"][0]
