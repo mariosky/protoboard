@@ -482,11 +482,11 @@ def program(request, uri):
 
 @csrf_protect
 def execute_queue(request):
-    logging.debug("VIEW execute_queue")
+    logger.error("VIEW execute_queue")
     if request.method == 'POST':
         rpc=json.loads(request.body)
 
-        logging.debug("POST execute_queue")
+        logger.error("POST execute_queue")
 
 
         code = rpc["params"][0]
@@ -496,7 +496,9 @@ def execute_queue(request):
         server = Cola(program_test['lang'])
 
         task = {"id": None, "method": "exec", "params": {"code": code, "test": unit_test}}
+
         task_id = server.enqueue(**task)
+        print task_id
 
         if request.user.is_authenticated() and 'id' in rpc:
             ula = None
