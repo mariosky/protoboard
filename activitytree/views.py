@@ -486,7 +486,7 @@ def execute_queue(request):
     if request.method == 'POST':
         rpc=json.loads(request.body)
 
-        logger.error("POST:"+rpc)
+        logger.error("POST:"+rpc["params"][0])
 
 
         code = rpc["params"][0]
@@ -498,7 +498,7 @@ def execute_queue(request):
         task = {"id": None, "method": "exec", "params": {"code": code, "test": unit_test}}
 
         task_id = server.enqueue(**task)
-        print task_id
+        logger.error(task_id)
 
         if request.user.is_authenticated() and 'id' in rpc:
             ula = None
