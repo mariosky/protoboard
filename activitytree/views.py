@@ -57,9 +57,6 @@ def welcome(request):
                 context_instance=RequestContext(request))
 
 def my_courses(request):
-
-
-
     if request.user.is_authenticated() and request.user != 'AnonymousUser' :
 
 
@@ -80,8 +77,7 @@ def course(request,course_id):
     print request.POST
     return render_to_response('activitytree/course_builder.html',
             {'user_name':None,'courses':None
-                #,'plus_scope':plus_scope,'plus_id':plus_id
-                 },
+            },
                 context_instance=RequestContext(request))
 
 
