@@ -75,8 +75,9 @@ def my_courses(request):
 
 def course(request,course_id):
     print request.POST
+
     return render_to_response('activitytree/course_builder.html',
-            {'user_name':None,'courses':None
+            {'user_name':None, 'course_name': request.POST['course-name']
             },
                 context_instance=RequestContext(request))
 

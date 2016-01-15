@@ -7,7 +7,6 @@
         <h3 id="course-title">Bases de Datos Distribuidas</h3>
     <nav class="navbar navbar-default">
       <div class="container-fluid">
-
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -21,28 +20,20 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-          <ul class="nav navbar-nav navbar-right">
+          <ul class="nav navbar-nav">
             <li><button id="newContainerBtn" type="button" class="btn btn-default navbar-btn">New Container</button></li>
             <li><button id="newActivityBtn" type="button" class="btn btn-default navbar-btn">New Activity</button></li>
             <li><button  id="saveChangesBtn" type="button" class="btn btn-default navbar-btn">Save</button></li>
-            <li><button type="settingsBtn" class="btn btn-default navbar-btn">Settings</button></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Separated link</a></li>
-              </ul>
-            </li>
           </ul>
+
+           <ul class="nav navbar-nav navbar-right">
+           <li> <button id="courseSettingsBtn" type="button"  class="btn btn-default navbar-btn"><i class="fa fa-cog"></i> </button></li>
+           <li> <button id="courseCalendarBtn"  type="button" class="btn btn-default navbar-btn"><i class="fa fa-calendar"></i></button></li>
+           <li> <button id="courseDeleteBtn"  type="button" class="btn btn-default navbar-btn"><i class="fa fa-trash-o"></i></button></li>
+           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
-
-
-
     <ul class="sTree2 listsClass" id="sTree2">
 
 
@@ -110,7 +101,6 @@
             <div class="btn-group navbar-right" role="group" aria-label="..." >
                 <button type="button" class="btn btn-default  clickable   activityEditBtn">Activity</button>
                 <button type="button" class="btn btn-default  clickable   containerPrecondition">Precondition</button>
-                <button type="button" class="btn btn-default  clickable   containerRollup">Rollup</button>
           </div>
 
           <div class="btn-group navbar-right" role="group" aria-label="..." >
@@ -127,14 +117,7 @@
 
 <!-- endbuild -->
 
-<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
-  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-    e.src='https://www.google-analytics.com/analytics.js';
-    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-  ga('create','UA-XXXXX-X');ga('send','pageview');
 
 
   function generateUUID() {
@@ -194,7 +177,7 @@
 
     $('#sTree2, #sTree').sortableLists(options);
 
-    learning_activities = [];
+
     var LearningActivity = function (uri, is_container)
     {
       this.name = "Container Name";
@@ -216,6 +199,18 @@
       this.is_container = is_container;
       this.is_visible = true;
     };
+
+
+
+
+
+
+     learning_activities = [];
+
+     course_root =  new LearningActivity( '/activity/'+container_id ,true );
+     learning_activities[container_id]=container;
+
+
 
     // CREATE MODALS FROM TEMPLATES
 
@@ -489,23 +484,6 @@
 
 
     });
-
-    $('.descPicture').on('click', function(e) { $(this).toggleClass('descPictureClose'); });
-    //$('.clickable').on('click', function(e)	{ alert('Click works fine! IgnoreClass stops onDragStart event.'); });
-
-    /* Scrolling anchors */
-    $('#toPictureAnch').on('click', function(e) { scrollToAnch('pictureAnch'); });
-    $('#toBaseElementAnch').on('click', function(e) { scrollToAnch('baseElementAnch'); });
-    $('#toBaseElementAnch2').on('click', function(e) { scrollToAnch('baseElementAnch'); });
-    $('#toCssPatternAnch').on('click', function(e) { scrollToAnch('cssPatternAnch'); });
-
-    function scrollToAnch(id)
-    {
-      $('html, body').animate({
-        scrollTop: $("#" + id).offset().top
-      }, 750);
-      return false;
-    }
 
 
 
