@@ -1,550 +1,230 @@
 # -*- coding: utf-8 -*-
 
-##
-##
-##  Example of a Learning Activity Tree
-##
-##
 
 
 
-if __name__ == "__main__":
-    import os
-    from django.core.wsgi import get_wsgi_application
+activities = [
+
+
+{'_id':'/test/demo',
+
+    'questions':  [{'id': 1,
+                    'interaction': 'simpleChoice',
+                    'inline': 0 ,
+                    'title': "Elige la opción correcta",
+                    'question': "Las clases nos sirven para definr las caracterisitcas de un grupo de",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Propiedades","Métodos","Instrucciones","Objetos"],
+                    'answer': [0,0,0,1],
+                    'answer_text': "Solo son México y USA",
+                    'hints': ["España está en Europa", "Nicaragua es de Sudamérica"]
+                    },
+
+                    {'id': 2,
+                    'interaction': 'choiceInteraction',
+                    'inline': 0 ,
+                    'title': "Elige la opción correcta",
+                    'question': "¿Las clases se componen de?",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Propiedades","Métodos","Instrucciones","Líneas de código"],
+                    'answer': [1,1,0,0],
+                    'answer_text': "",
+                    'hints': [""]
+                    },
+                    {
+                    'id':3,
+                    'interaction': 'choiceInteraction',
+                    'inline': 1,
+                    'title': "Pregunta Abierta",
+                    'question': "Son lenguajes de programación orientado a objetos",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["C","Java","Fortran","C++"],
+                    'answer': [0,1,0,1],
+                    },
+                     {
+                    'id':4,
+                    'interaction': 'textEntryInteraction',
+                    'inline': 0,
+                    'title': "Estilo",
+                    'question': "Es un enfoque particular o filosofía para diseñar y programar soluciones",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': [],
+                    'type':"str",
+                    'answer': ["Paradigma", "paradigma"],
+                    },
+                                       {
+                    'id':5,
+                    'interaction': 'choiceInteraction',
+                    'inline': 1,
+                    'title': "Pregunta Abierta",
+                    'question': "Son propiedades que tendría la clase Persona",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["comer()","nombre","fecha_de_caducidad","correo_electrónico"],
+                    'answer': [0,1,0,1],
+                    },
+                   {
+                    'id':6,
+                    'interaction': 'choiceInteraction',
+                    'inline': 1,
+                    'title': "Pregunta Abierta",
+                    'question': "Son métodos que tendría la clase Ave",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["imprimir()","volar()","comer()","ladrar()"],
+                    'answer': [0,1,1,0],
+                    },
+
+
+                    ],
+    'intro':"""<h3>Introducción</h3>
+    <p> Contesta las preguntas,correctamente. Mínimo Tres. </p>""",
+    'bye':"""""",
+     'satisfied_at_least':3
+                    },
+
+    {'_id':'/program/csharp/1',
+     'title':u"Product.cs",
+     'initial_code':u"""
+using System.IO;
+using System;
+public class Product
+{
+        public   code;
+        public   desc;
 
-    print "####### DJANGO SETTINGS"
+        public Product(int c, string d)
+        {
+        code=c;
+        desc=d;
+        }
 
-    os.environ['DJANGO_SETTINGS_MODULE'] = "protoboard.settings"
-    application = get_wsgi_application()
+        public void Print()
+        {
+        Console.WriteLine("Producto {0}: {1}", code,desc);
+        }
 
+}
+""",
+     'description':u"Completa la definción de una clase sencilla",
+     'type':"Completa",
+     'icon':"puzzle-piece",
+     'level':'principiante',
 
 
+            'correct_code':u""" """,
+             'instructions':u"""
 
 
 
 
+<h4>La clase <code>Product</code> tiene errores</h4>
+  <p>
+       La clase <code>Product</code> se utiliza en un programa de la siguiente manera:
+  </p>
 
-from activitytree.models import LearningStyleInventory, LearningActivity, Course, UserLearningActivity
-from django.contrib.auth.models import User
-from activitytree.interaction_handler import SimpleSequencing
+<pre>
+Product p = new Product(1, "iPhone 6");
+p.Print();
+</pre>
+  <p>
+       Completa el código para que funcione.
+  </p>
 
-LearningActivity.objects.all().delete()
-POO = LearningActivity( name = 'Prog OO en C#', slug = 'POO',
-    uri = "/activity/POO",
-    parent = None,
-    root   = None,
+<row>
+<button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+  Ayuda
+</button>
+</row>
+<div class="collapse" id="collapseExample">
+  <div class="well">
+  <p>
+    En C# al declarar los campos debes indicar su tipo de dato. Por ejemplo:
+    </p>
+<pre>
+public int intentos;
+public string email;</pre>
+  </div>
+</div>
 
-    flow = True,
-    forward_only = False,
-    choice = True,
-    choice_exit = False,
 
-    rollup_rule  = "satisfied IF All satisfied",
-    rollup_objective = True,
-    rollup_progress = True,
 
-    is_container = True,
-    is_visible = True,
-    order_in_container = 0
-    )
+             """,
+            'unit_test':u"""
+[TestFixture]
+public class ProductTest
+{
 
-POO.save()
-description= u"""
-        <p> Que no te intimiden las palabras <code>class</code> , <code>abstract</code> , <code>override</code> o te dé miedo eso del
-        <strong> polimorfismo </strong> o te emociones con la <strong> herencia múltiple</strong>.</p>
-        <p> Ya deberías saber programación básica en algún lenguaje de programación. </p>"""
+    [Test, Description("Prueba del Constructor")]
+    public void Constructor()
+    {
+        Product p = new Product(1,"hola");
+        // Constraint Syntax
+        Assert.AreEqual(p.code,1);
+    }
 
 
-cursoPOO = Course(short_description=description, root=POO)
-cursoPOO.save()
+    [Test, Description("Imprimir la Descripción")]
+    public void PrintTest()
+    {
+        Product p = new Product(1,"hola");
+        p.Print();
 
+        using (StringWriter sw = new StringWriter())
+        {
+            Console.SetOut(sw);
 
-pretest = LearningActivity( name = 'Pretest', slug = 'Pretest',
-    uri = "/test/Pretest",
-#   lom = ,
-    parent = POO, root  = POO,
 
-    pre_condition_rule = "",
-    post_condition_rule = "" ,
+            p.Print();
 
-    rollup_rule  = "",
-    rollup_objective = True,
-    rollup_progress = True,
-    choice_exit = False,
+        string expected = "Producto 1: hola";
+        StringAssert.StartsWith(expected, sw.ToString());
 
 
-    is_container = False,
-    is_visible = False,
-    order_in_container = 1
-    )
-pretest.save()
+        }
 
+    }
+}""",
+     "lang":"csharp" }
 
 
 
-content = LearningActivity( name = 'Contenido', slug = 'Contenido',
-    uri = "/activity/Contenido",
-#   lom =
-    parent = POO, root  = POO,
 
-    pre_condition_rule = "",
-    post_condition_rule = "",
 
-    flow = True,
-    forward_only = False,
-    choice = True,
-    choice_exit = False,
+    ]
 
-    match_rule = "",
-    filter_rule = "",
 
-    rollup_rule  = "satisfied IF Any satisfied",
-    rollup_objective = True,
-    rollup_progress = True,
-    is_container = True,
-    is_visible = True,
-    order_in_container = 2
-    )
-content.save()
-
-preliminar = LearningActivity( name = 'Comentario Preliminar', slug = 'Preliminar',
-    uri = "/activity/Preliminar",
-#   lom =
-    parent = content, root   = POO,
-
-    pre_condition_rule = "",
-    post_condition_rule = "",
-
-    rollup_rule  = "",
-    rollup_objective = True,
-    rollup_progress = True,
-
-    is_container = False,
-    is_visible = True,
-    order_in_container = 0
-    )
-preliminar.save()
-
-
-
-program_1 = LearningActivity( name = 'Ejercicio 1', slug = 'E1',
-    uri = "/program/1",
-#   lom =
-    parent = content, root  = POO,
-
-#   pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
-
-    pre_condition_rule = "",
-    post_condition_rule = "",
-
-    flow = True,
-    forward_only = True,
-    choice = False,
-
-    rollup_objective = True,
-    rollup_progress = True,
-    is_container = False,
-    is_visible = True,    order_in_container = 1
-    )
-program_1.save()
-
-program_2 = LearningActivity( name = 'Ejercicio 2', slug = 'E2',
-    uri = "/program/2",
-#   lom =
-    parent = content, root  = POO,
 
-#   pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
-
-    pre_condition_rule = "",
-    post_condition_rule = "",
-
-    flow = True,
-    forward_only = True,
-    choice = False,
-
-    rollup_objective = True,
-    rollup_progress = True,
-    is_container = False,
-    is_visible = True,    order_in_container = 2
-    )
-program_2.save()
 
-objetosyclases = LearningActivity( name = 'Objetos y Clases', slug = 'OBJETOS_CLASES',
-    uri = "/activity/Objetos_y_Clases",
-#   lom =
-    parent = content, root  = POO,
-
-#   pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
-
-    post_condition_rule = "",
-
-    flow = True,
-    forward_only = False,
-    choice = False,
-
-    rollup_rule  = "",
-    rollup_objective = True,
-    rollup_progress = True,
-    is_container = True,
-    is_visible = False,
-    order_in_container = 1
-    )
-objetosyclases.save()
-
-
-objetos_y_clases_html = LearningActivity( name = 'Objetos y Clases HTML', slug = 'OBJETOS_CLASES_HTML',
-    uri = "/activity/Objetos_y_Clases_HTML",
-#    lom =
-    parent = objetosyclases, root   = POO,
-
-    pre_condition_rule = "",
-    post_condition_rule = "",
-
-    flow = True,
-    forward_only = False,
-    choice = False,
-
-    rollup_objective = True,
-    rollup_progress = True,
-    is_container = False,
-    is_visible = True,
-    order_in_container = 0
-    )
-objetos_y_clases_html.save()
-
-objetos_y_clases_YouTube = LearningActivity( name = 'Objetos y Clases YouTube', slug = 'OBJETOS_CLASES_YouTube',
-    uri = "/activity/Objetos_y_Clases_YouTube",
-#    lom =
-    parent = objetosyclases, root   = POO,
-
-    pre_condition_rule = "",
-    post_condition_rule = "",
-
-    flow = True,
-    forward_only = True,
-    choice = False,
-
-    rollup_objective = True,
-    rollup_progress = True,
-    is_container = False,
-    is_visible = True,
-    order_in_container = 1
-    )
-objetos_y_clases_YouTube.save()
-
-
-
-encapsulacion = LearningActivity( name = 'Encapsulacion', slug = 'Encapsulacion',
-    uri = "/activity/encapsulacion",
-#   lom =
-    parent = content, root  = POO,
-
-#    pre_condition_rule = """self.recommendation_value = Text_Verbal.eval(self.user.learningstyleinventory.verbal,self.user.learningstyleinventory.visual)"""  ,
-    pre_condition_rule = """self.pre_condition = 'disabled'"""  ,
-    post_condition_rule = "",
-
-    flow = True,
-    forward_only = True,
-    choice = False,
-
-
-    rollup_rule  = "",
-    rollup_objective = True,
-    rollup_progress = True,
-
-    is_container = True,
-    is_visible = True,
-    order_in_container = 4
-    )
-encapsulacion.save()
-
-
-encapsulacion_intro = LearningActivity( name = 'Encapsulacion Introduccion', slug = 'Encapsulacion_intro',
-    uri = "/activity/Encapsulacion_intro",
-#    lom =
-    parent = encapsulacion, root   = POO,
-
-    pre_condition_rule = "",
-    post_condition_rule = "",
-
-    flow = True,
-    forward_only = True,
-    choice = False,
-
-    rollup_objective = True,
-    rollup_progress = True,
-    is_container = False,
-    is_visible = True,
-    order_in_container = 0
-    )
-encapsulacion_intro.save()
-
-encapsulacion_ejemplos = LearningActivity( name = 'Encapsulacion Ejemplos', slug = 'Encapsulacion_ejemplos',
-    uri = "/activity/Encapsulacion_Ejemplos",
-#    lom =
-    parent = encapsulacion, root   = POO,
-
-    pre_condition_rule = "",
-    post_condition_rule = "",
-
-    flow = True,
-    forward_only = True,
-    choice = False,
-
-    rollup_objective = True,
-    rollup_progress = True,
-    is_container = False,
-    is_visible = True,
-    order_in_container = 1
-    )
-encapsulacion_ejemplos.save()
-
-herencia = LearningActivity( name = 'Herencia', slug = 'Herencia',
-    uri = "/activity/Herencia",
-#    lom =
-    parent = content, root   = POO,
-
-    pre_condition_rule = "",
-    post_condition_rule = "",
-
-    flow = True,
-    forward_only = True,
-    choice = False,
-
-    rollup_objective = True,
-    rollup_progress = True,
-    is_container = False,
-    is_visible = True,
-    order_in_container = 7
-    )
-herencia.save()
-
-polimorfismo = LearningActivity( name = 'Polimorfismo', slug = 'polimorfismo',
-    uri = "/activity/Polimorfismo",
-#    lom =
-    parent = content, root   = POO,
-
-    pre_condition_rule = "",
-    post_condition_rule = "",
-
-    flow = True,
-    forward_only = True,
-    choice = False,
-
-    rollup_objective = True,
-    rollup_progress = True,
-    is_container = False,
-    is_visible = True,
-    order_in_container = 14
-    )
-polimorfismo.save()
-
-
-posttest_root = LearningActivity( name = 'Post', slug = 'Post',
-    uri = "/activity/Post",
-    parent = POO,
-    root   = POO,
-
-    flow = True,
-    forward_only = False,
-    choice = True,
-    choice_exit = False,
-
-    rollup_rule  = "satisfied IF Any satisfied",
-    rollup_objective = True,
-    rollup_progress = True,
-
-    is_container = True,
-    is_visible = True,
-    order_in_container = 4
-    )
-posttest_root.save()
-
-posttest1 = LearningActivity( name = 'Posttest', slug = 'posttest',
-    uri = "/test/Posttest1",
-#   lom = ,
-    parent = posttest_root, root  = POO,
-
-    pre_condition_rule = "",
-    post_condition_rule = "",
-
-    rollup_rule  = "",
-    rollup_objective = True,
-    rollup_progress = True,
-
-    choice_exit = False,
-    is_container = False,
-    is_visible = True,
-    order_in_container = 23
-    )
-posttest1.save()
-
-posttest2 = LearningActivity( name = 'Posttest2', slug = 'posttest',
-    uri = "/test/Posttest2",
-#   lom = ,
-    parent = posttest_root, root  = POO,
-
-    pre_condition_rule = "",
-    post_condition_rule = "",
-
-    rollup_rule  = "",
-    rollup_objective = True,
-    rollup_progress = True,
-
-    choice_exit = False,
-    is_container = False,
-    is_visible = True,
-    order_in_container = 24
-    )
-posttest2.save()
-
-
-
-
-# posttest = LearningActivity( name = 'Posttest', slug = 'posttest',
-#     uri = "/test/Posttest",
-# #   lom = ,
-#     parent = POO, root  = POO,
-#
-#     pre_condition_rule = """if self.num_attempts == 0 :
-#                   self.pre_condition = 'stopForwardTraversal' """,
-#     post_condition_rule = "",
-#
-#     rollup_rule  = "",
-#     rollup_objective = True,
-#     rollup_progress = True,
-#
-#     choice_exit = False,
-#     is_container = False,
-#     is_visible = True,
-#     order_in_container = 23
-#     )
-# posttest.save()
-
-comentario_final = LearningActivity( name = 'Comentario_final', slug = 'comentario_final',
-    uri = "/activity/Comentario_final",
-#    lom =
-    parent = POO, root   = POO,
-
-    pre_condition_rule = "",
-    post_condition_rule = "",
-
-    flow = True,
-    forward_only = True,
-    choice = False,
-
-    rollup_objective = True,
-    rollup_progress = True,
-    is_container = False,
-    is_visible = True,
-    order_in_container = 34
-    )
-comentario_final.save()
-
-##
-##
-##
-## Example of two Users
-##
-##
-
-User.objects.filter(username='ana').delete()
-User.objects.filter(username='paul').delete()
-
-j = User.objects.create_user('ana', 'lennon@thebeatles.com', '1234')
-j.is_active = True
-j.save()
-
-p = User.objects.create_user('paul', 'paul@thebeatles.com', '1234')
-p.is_active = True
-p.save()
-
-lsj=LearningStyleInventory(visual=12,verbal=11,aural=15,physical=9,logical=11,
-                          social=9, solitary=10, user = j)
-lsj.save()
-
-lsp=LearningStyleInventory(visual=12,verbal=11,aural=20,physical=9,logical=11,
-                          social=9, solitary=7, user = p)
-lsp.save()
-
-
-s = SimpleSequencing()
-s.assignActivityTree(j,POO)
-s.assignActivityTree(p,POO)
-
-
-estudiantes = [
-]
-
-for e in estudiantes:
-    User.objects.filter(username=e[0]).delete()
-    u = User.objects.create_user(e[0],e[0], e[1])
-    u.is_active = True
-    u.save()
-    lsu=LearningStyleInventory(visual=e[2],verbal=e[3],aural=e[4],physical=e[5],logical=e[6],
-                          social=e[7], solitary=e[8], user = u)
-    lsu.save()
-    ss = SimpleSequencing()
-    ss.assignActivityTree(u,POO)
 
 
 import os
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "protoboard.settings")
+     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "protoboard.settings")
+     from pymongo import MongoClient
+     from django.conf import settings
+     client = MongoClient(settings.MONGO_DB)
+     db = client.protoboard_database
 
-##
-##
-## Assign Activity to both Users
-##
-##
-
-#
-# poo =UserLearningActivity.objects.filter(learning_activity__uri = "/activity/POO" ,user = User.objects.filter(username='paul')[0] )[0]
-# ss = SimpleSequencing()
-
-
-#
-#
-#a = ss.get_nav(poo)
-#print ss.nav_to_xml(root=a)
-#
-#
-#pre_j = UserLearningActivity.objects.filter(learning_activity__name = "Pretest" ,user = j )[0]
-#s.set_current(pre_j)
-#
-#a = s.get_nav(root)
-#print s.nav_to_xml(root=a)
-#
-#s.exit(pre_j, objective_measure = 0.20, objective_status = 'satisfied')
-#
-#a = s.get_nav(root)
-#print s.nav_to_xml(root=a)
-
-#
-#s.set_current(j,remediation)
-#s.exit(j,remediation, objective_measure = 0.80, objective_status = 'satisfied')
-#a = s.get_nav(root)
-#print s.nav_to_xml(root=a)
-#
-#
-#s.set_current(j,general)
-#s.exit(j,general, objective_measure = 0.80, objective_status = 'satisfied')
-#a = s.get_nav(root)
-#print s.nav_to_xml(root=a)
+     activities_collection = db.activities_collection
+     #print activities_collection.find_one({'_id':'/activity/Preliminar'})
+     activities_collection.remove()
+     activities_collection.insert(activities)
 
 
-#root = UserLearningActivity.objects.filter(learning_activity__name = "Unit" ,user = j )[0]
-#c = s.get_nav(root)
-#print "-"*20
-#print s.xml_children(root=c)
-#
-#s.set_current(j,general)
-#s.exit(j, general, objective_measure = 0.80, objective_status = 'satisfied')
-#root = UserLearningActivity.objects.filter(learning_activity__name = "Unit" ,user = j )[0]
-#c = s.get_nav(root)
-#print "-"*20
-#print s.xml_children(root=c)
+     #activities_collection.remove()
+     #activities_collection.insert(activities)
 
 
   
