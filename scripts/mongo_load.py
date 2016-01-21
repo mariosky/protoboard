@@ -306,38 +306,9 @@ $('.panel-title').html("Hola");
                 <pre>
 $('<strong>#</strong>nombre_del_elemento');
                 </pre>
-                """},
+                """}
 
- {'_id': '/program/suma/3',
-     'title':u"Suma dos números",
-            'initial_code':u"""
-# Funcion que suma dos números
-def suma():
-    pass
-""",
-            'correct_code':u"""# Solution:
-def suma(a,b):
-    return a + b""",
-            'instructions':u"""<p>Escribe una función llamada <code> suma() </code> la cual reciba como parámetros
-                dos enteros y regrese la suma de ambos.</p>
-            <code>
-                <p>>>> suma(3,4)</p>
-                <p>7</p>
-                <p>>>> suma(3,-4)</p>
-                <p>-1</p>
-            </code>""",
-            'unit_test':u"""
-class Test(unittest.TestCase):
-    def setUp(self):
-        pass
-    def test_suma_positivos(self):
-        self.assertEqual(suma(3,9),12)
-    def test_negativos(self):
-        self.assertEqual(suma(5,-12),-7)
-"
-print json.dumps(result)
-""", "lang":"python", "type":"Programa" , 'icon':"coffee", 'level':'principiante','description':u"Programa una función sencilla que sume dos números",
-     },
+,
 
 
 
@@ -376,7 +347,688 @@ public class CalculatorTest {
     assertEquals(6, sum);
   }
 }""",
-     "lang":"java" }
+     "lang":"java" },
+
+    {'_id': '/program/suma/3',
+     'title':u"Clase Producto",
+     'initial_code':u"""
+using System.IO;
+using System;
+public class Product
+{
+        public   code;
+        public   desc;
+
+        public Product(int c, string d)
+        {
+        code=c;
+        desc=d;
+        }
+
+        public void Print()
+        {
+        Console.WriteLine("Producto {0}: {1}", code,desc);
+        }
+
+}
+""",
+            'correct_code':u""" """,
+             'instructions':u"""<p>Completa la clase llamada <code> Producto </code> """,
+            'unit_test':u"""
+[TestFixture]
+public class ProductTest
+{
+
+    [Test, Description("Prueba del Constructor")]
+    public void Constructor()
+    {
+        Product p = new Product(1,"hola");
+        // Constraint Syntax
+        Assert.AreEqual(p.code,1);
+    }
+
+
+    [Test, Description("Imprimir la Descripción")]
+    public void PrintTest()
+    {
+        Product p = new Product(1,"hola");
+        p.Print();
+
+        using (StringWriter sw = new StringWriter())
+        {
+            Console.SetOut(sw);
+
+
+            p.Print();
+
+        string expected = "Producto 1: hola";
+        StringAssert.StartsWith(expected, sw.ToString());
+
+
+        }
+
+    }
+}""","lang":"csharp", "type":"unit_test" },
+
+{'_id': '/program/PPP/3',
+   'title':u"Suma dos números",
+ 'description':u"Suma dos números",
+
+            'initial_code':u"""
+# Funcion que suma dos números
+def suma():
+    pass
+""",
+            'correct_code':u"""# Solution:
+def suma(a,b):
+    return a + b""",
+            'instructions':u"""<p>Escribe una función llamada <code> suma() </code> la cual reciba como parámetros
+                dos enteros y regrese la suma de ambos.</p>
+            <code>
+                <p>>>> suma(3,4)</p>
+                <p>7</p>
+                <p>>>> suma(3,-4)</p>
+                <p>-1</p>
+            </code>""",
+            'unit_test':u"""
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_suma_positivos(self):
+        self.assertEqual(suma(3,9),12)
+    def test_negativos(self):
+        self.assertEqual(suma(5,-12),-7)
+"
+print json.dumps(result)
+""", "lang":"python", "type":"unit_test"  },
+
+
+
+{'_id': '/program/PPP/4',
+        'title':u"distancia()",
+        'description':u"distancia",
+        'type':"Programa",
+        'icon':"coffee",
+        'level':'principiante',
+        "lang":"python",
+        "type":"unit_test" ,
+        'initial_code':u"""
+def distancia():
+    pass
+""",
+            'correct_code':u""" """,
+            'instructions':u"""<p>Escribe una función llamada <code> distancia() </code> la cual reciba como parámetros
+                dos enteros y regrese el valor absoluto de la diferencia entre ambos</p>
+            <code>
+                <p>>>> distancia(3,4)</p>
+                <p>1</p>
+                <p>>>> distancia(3,-4)</p>
+                <p>7</p>
+            </code>""",
+            'unit_test':u"""
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_distancia_positivos(self):
+        self.assertEqual(distancia(3,9),6)
+    def test_negativos(self):
+        self.assertEqual(distancia(5,-12),17)
+"""},
+
+{'_id': '/program/PPP/5',
+        'title':u"mayor()",
+        'description':u"distancia",
+        'type':"Programa",
+        'icon':"coffee",
+        'level':'principiante',
+        "lang":"python",
+        "type":"unit_test" ,
+        'initial_code':u"""
+def mayor():
+    pass
+""",
+            'correct_code':u""" """,
+            'instructions':u"""<p>Escribe una función llamada <code> mayor() </code> la cual reciba como parámetros
+                dos enteros y regrese el mayor entre ellos.</p>
+            <code>
+                <p>>>> mayor(3,4)</p>
+                <p>4</p>
+                <p>>>> mayor(2,-4)</p>
+                <p>2</p>
+            </code>""",
+            'unit_test':u"""
+import sys
+import unittest
+import json
+
+class ResultadoPrueba(unittest.TestResult):
+    def __init__(self):
+         super(ResultadoPrueba, self).__init__()
+         self.success = []
+    def addSuccess(self, test):
+         self.success.append(test)
+    def shouldStop(self, test):
+         return False
+
+
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_mayor_positivos(self):
+        self.assertEqual(mayor(3,9),9)
+    def test_negativos(self):
+        self.assertEqual(mayor(5,-12),5)
+
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+Resultado = ResultadoPrueba()
+suite.run(Resultado)
+result = {}
+
+if Resultado.wasSuccessful():
+    result['result'] = "Success"
+else:
+    result['result'] = "Failure"
+result['errors']=  [str(e[0])   for e in Resultado.errors]
+result['failures']=  [str(e[0]) for e in Resultado.failures]
+result['successes']=  [str(e)  for e in Resultado.success]
+print "!!!---"
+print json.dumps(result)
+"""},
+
+{'_id': '/program/PPP/6',
+        'title':u"mayor()",
+        'description':u"distancia",
+        'type':"Programa",
+        'icon':"coffee",
+        'level':'principiante',
+        "lang":"python",
+        "type":"unit_test" ,
+
+            'initial_code':u"""
+def regresa_lista():
+    return None
+""",
+            'correct_code':u""" """,
+             'instructions':u"""<p>Escribe una función llamada <code> regresa_lista </code> la cual regrese la siguiente lista:
+           <code> ["Tom", 2.23, 12]  </code>.
+</p>""",
+            'unit_test':u"""
+import sys
+import unittest
+import json
+
+class ResultadoPrueba(unittest.TestResult):
+    def __init__(self):
+         super(ResultadoPrueba, self).__init__()
+         self.success = []
+    def addSuccess(self, test):
+         self.success.append(test)
+    def shouldStop(self, test):
+         return False
+
+
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_lista(self):
+        self.assertEqual(type(regresa_lista()),type([1,2]))
+    def test_Tom(self):
+        self.assertEqual(regresa_lista()[0],"Tom")
+    def test_float(self):
+        self.assertEqual(regresa_lista()[1],2.23)
+    def test_int(self):
+        self.assertEqual(regresa_lista()[2],12)
+    def test_len(self):
+        self.assertEqual(len(regresa_lista()),3)
+
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+Resultado = ResultadoPrueba()
+suite.run(Resultado)
+result = {}
+
+if Resultado.wasSuccessful():
+    result['result'] = "Success"
+else:
+    result['result'] = "Failure"
+result['errors']=  [str(e[0])   for e in Resultado.errors]
+result['failures']=  [str(e[0]) for e in Resultado.failures]
+result['successes']=  [str(e)  for e in Resultado.success]
+print "!!!---"
+print json.dumps(result)
+"""},
+
+{'_id': '/program/PPP/7',
+        'title':u"Dame una tupla",
+        'description':u"distancia",
+        'type':"Programa",
+        'icon':"coffee",
+        'level':'principiante',
+        "lang":"python",
+        "type":"unit_test" ,
+            'initial_code':u"""
+def regresa_tupla(a,b,c):
+    pass
+""",
+            'correct_code':u""" """,
+             'instructions':u"""<p>Escribe una función llamada <code> regresa_tupla </code>
+             la cual tome tres parámetros y regrese una tupla con los tres valores.
+             </p>
+            """,
+            'unit_test':u"""
+import sys
+import unittest
+import json
+
+class ResultadoPrueba(unittest.TestResult):
+    def __init__(self):
+         super(ResultadoPrueba, self).__init__()
+         self.success = []
+    def addSuccess(self, test):
+         self.success.append(test)
+    def shouldStop(self, test):
+         return False
+
+
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_tupla(self):
+        self.assertEqual(type(regresa_tupla(1,2,3)),type((1,2)))
+    def test_primero(self):
+        self.assertEqual(regresa_tupla(1,2,3)[0],1)
+    def test_segundo(self):
+        self.assertEqual(regresa_tupla(1,2,3)[1],2)
+    def test_tercero(self):
+        self.assertEqual(regresa_tupla(1,2,3)[2],3)
+    def test_len(self):
+        self.assertEqual(len(regresa_tupla(1,2,3)),3)
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+Resultado = ResultadoPrueba()
+suite.run(Resultado)
+result = {}
+
+if Resultado.wasSuccessful():
+    result['result'] = "Success"
+else:
+    result['result'] = "Failure"
+result['errors']=  [str(e[0])   for e in Resultado.errors]
+result['failures']=  [str(e[0]) for e in Resultado.failures]
+result['successes']=  [str(e)  for e in Resultado.success]
+print "!!!---"
+print json.dumps(result)
+"""},
+
+{'_id': '/program/PPP/8',
+
+ 'title':u"Solo una tajada",
+        'description':u"distancia",
+        'type':"Programa",
+        'icon':"coffee",
+        'level':'principiante',
+        "lang":"python",
+        "type":"unit_test" ,
+            'initial_code':u"""
+def recorta(pelicula):
+    pass
+""",
+            'correct_code':u""" """,
+             'instructions':u"""<p> Un sistema externo nos envía en una lista información sobre peliculas,
+             aquí un ejemplo: <code> ['tt1877832', 'X-Men: Days of Future Past', 2014,
+			['Action', 'Adventure', 'Fantasy'], 8.1,  14740 ] </code>  los elementos corresponden secuencialmente a
+			Identificador, Titulo, Año, Lista de Generos y Calificación Promedio, Número de votos. Escribe un método
+			llamdo <code> recorta(pelicula) </code> que reciba una pelicula representada como lista y regrese
+			otra lista que solo incluya Identificador, Titulo y Año. Por ejemplo para la pelicula anterior regresaría
+			<code> ['tt1877832', 'X-Men: Days of Future Past', 2014] </code> </p>
+            """,
+            'unit_test':u"""
+import sys
+import unittest
+import json
+
+class ResultadoPrueba(unittest.TestResult):
+    def __init__(self):
+         super(ResultadoPrueba, self).__init__()
+         self.success = []
+    def addSuccess(self, test):
+         self.success.append(test)
+    def shouldStop(self, test):
+         return False
+
+
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_corte(self):
+        self.assertEqual(recorta(['tt', 'X', 1, [], 1,  1 ]), ['tt', 'X', 1])
+
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+Resultado = ResultadoPrueba()
+suite.run(Resultado)
+result = {}
+
+if Resultado.wasSuccessful():
+    result['result'] = "Success"
+else:
+    result['result'] = "Failure"
+result['errors']=  [str(e[0])   for e in Resultado.errors]
+result['failures']=  [str(e[0]) for e in Resultado.failures]
+result['successes']=  [str(e)  for e in Resultado.success]
+print "!!!---"
+print json.dumps(result)
+"""},
+{'_id': '/program/PPP/9', 'title':u"Solo una tajadita",
+
+        'description':u"distancia",
+        'type':"Programa",
+        'icon':"coffee",
+        'level':'principiante',
+        "lang":"python",
+        "type":"unit_test" ,
+
+            'initial_code':u"""
+def recorta(pelicula):
+    pass
+""",
+            'correct_code':u""" """,
+             'instructions':u"""<p> Un sistema externo nos envía en una lista información sobre peliculas,
+             aquí un ejemplo: <code> ['tt1877832', 'X-Men: Days of Future Past', 2014,
+			['Action', 'Adventure', 'Fantasy'], 8.1,  14740 ] </code>  los elementos corresponden secuencialmente a
+			Identificador, Titulo, Año, Lista de Generos y Calificación Promedio, Número de votos. Escribe un método
+			llamado <code> recorta(pelicula) </code> que reciba una pelicula representada como lista y regrese
+			otra lista que solo incluya Titulo y Año. Por ejemplo para la pelicula anterior regresaría
+			<code> ['X-Men: Days of Future Past', 2014] </code> </p>
+            """,
+            'unit_test':u"""
+import sys
+import unittest
+import json
+
+class ResultadoPrueba(unittest.TestResult):
+    def __init__(self):
+         super(ResultadoPrueba, self).__init__()
+         self.success = []
+    def addSuccess(self, test):
+         self.success.append(test)
+    def shouldStop(self, test):
+         return False
+
+
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_corte(self):
+        self.assertEqual(recorta(['tt', 'X', 1, [], 1,  1 ]), [ 'X', 1])
+
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+Resultado = ResultadoPrueba()
+suite.run(Resultado)
+result = {}
+
+if Resultado.wasSuccessful():
+    result['result'] = "Success"
+else:
+    result['result'] = "Failure"
+result['errors']=  [str(e[0])   for e in Resultado.errors]
+result['failures']=  [str(e[0]) for e in Resultado.failures]
+result['successes']=  [str(e)  for e in Resultado.success]
+print "!!!---"
+print json.dumps(result)
+"""},
+
+{'_id': '/program/PPP/10',  'title':u"¡Pura Acción!",
+        'description':u"Lista",
+        'type':"Programa",
+        'icon':"coffee",
+        'level':'principiante',
+        "lang":"python",
+        "type":"unit_test" ,
+
+
+            'initial_code':u"""
+def es_accion(pelicula):
+    pass
+""",
+            'correct_code':u""" """,
+             'instructions':u"""<p> Un sistema externo nos envía en una lista información sobre peliculas,
+             aquí un ejemplo: <code> ['tt1877832', 'X-Men: Days of Future Past', 2014,
+			['Action', 'Adventure', 'Fantasy'], 8.1,  14740 ] </code>  los elementos corresponden secuencialmente a
+			Identificador, Titulo, Año, Lista de Generos, Calificación Promedio y Número de votos. Escribe un método
+			llamado <code> es_accion(pelicula) </code> que reciba una pelicula representada como lista y regrese
+			<code> True </code> si es pelicula de acción, y <code> False </code> si no lo es.Por ejemplo para la pelicula anterior regresaría
+			<code>True </code>, pero para la pelicula <code>['tt2004420', 'Neighbors', 2014, ['Comedy'], 7.2,  26920]</code>
+			  regresaría  <code> False </code>.</p>
+            """,
+            'unit_test':u"""
+import sys
+import unittest
+import json
+
+class ResultadoPrueba(unittest.TestResult):
+    def __init__(self):
+         super(ResultadoPrueba, self).__init__()
+         self.success = []
+    def addSuccess(self, test):
+         self.success.append(test)
+    def shouldStop(self, test):
+         return False
+
+
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_Action(self):
+        self.assertEqual(es_accion(['tt', 'X', 1, ['Action'], 1,  1 ]), True)
+    def test_Not_Action(self):
+        self.assertEqual(es_accion(['tt', 'X', 1, ['Otra'], 1,  1 ]), False)
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+Resultado = ResultadoPrueba()
+suite.run(Resultado)
+result = {}
+
+if Resultado.wasSuccessful():
+    result['result'] = "Success"
+else:
+    result['result'] = "Failure"
+result['errors']=  [str(e[0])   for e in Resultado.errors]
+result['failures']=  [str(e[0]) for e in Resultado.failures]
+result['successes']=  [str(e)  for e in Resultado.success]
+print "!!!---"
+print json.dumps(result)
+"""},
+
+
+{'_id': '/program/PPP/11',
+
+ 'title':u"Mutantes",
+
+        'description':u"Mutantes",
+        'type':"Programa",
+        'icon':"coffee",
+        'level':'principiante',
+        "lang":"python",
+        "type":"unit_test" ,
+
+            'initial_code':u"""
+def activa_usuario(usr):
+    pass
+""",
+            'correct_code':u""" """,
+             'instructions':u"""<p> Un sistema externo nos envía en una lista información sobre usuarios,
+             aquí un ejemplo: <code> ['812202', 'Ana', 'Activo'] </code>  los elementos corresponden secuencialmente a
+			Identificador, Nombre y Status. Status tiene solo dos valores válidos:<code> 'Activo'</code>  e <code> 'Inactivo'</code>   Escribe un método
+			llamado <code> activa_usuario(usr) </code> que reciba a un usuario representado como lista, modifique su
+			estado a  <code>'Activo'</code> y regrese la lista.</p>
+
+            <div class="alert alert-warning"> Para usuarios más avanzados: Como el usuario es una lista,
+          al pasarse como argumento la modificación se realiza a la  referencia por lo que no es necesario regresar la
+          lista. Si está en chino no te preocupes, ésto lo explicaremos más adelante.</div>
+            """,
+            'unit_test':u"""
+import sys
+import unittest
+import json
+
+class ResultadoPrueba(unittest.TestResult):
+    def __init__(self):
+         super(ResultadoPrueba, self).__init__()
+         self.success = []
+    def addSuccess(self, test):
+         self.success.append(test)
+    def shouldStop(self, test):
+         return False
+
+
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_Action(self):
+        self.assertEqual(activa_usuario(['2', 'A', 'Inactivo']) , ['2', 'A', 'Activo'])
+
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+Resultado = ResultadoPrueba()
+suite.run(Resultado)
+result = {}
+
+if Resultado.wasSuccessful():
+    result['result'] = "Success"
+else:
+    result['result'] = "Failure"
+result['errors']=  [str(e[0])   for e in Resultado.errors]
+result['failures']=  [str(e[0]) for e in Resultado.failures]
+result['successes']=  [str(e)  for e in Resultado.success]
+print "!!!---"
+print json.dumps(result)
+"""},
+
+{'_id': '/program/PPP/12',
+ 'title':u"Ordena la Lista",
+        'description':u"Ordena la Lista",
+        'type':"Programa",
+        'icon':"coffee",
+        'level':'principiante',
+        "lang":"python",
+        "type":"unit_test" ,
+            'initial_code':u"""
+# Funcion que ordena una lista, puedes utilizar sort()
+def solution():
+    pass
+""",
+            'correct_code':u"""# Solution:
+def solution(l):
+    if l is None:
+        return []
+    else:
+        l.sort()
+        return l""",
+            'instructions':u"""<p>Escribe una función llamada <code>solution</code> la cual reciba como parámetro
+                una lista y regrese la lista ordenada.</p>
+            <p>En caso de recibir como parámetro el valor <code>None</code> debe regresar una lista vacía. </p>
+            <code>
+                <p>>>> solution([4,3,5,1])</p>
+                <p>[1, 3, 4, 5]</p>
+                <p>>>> solution(None)</p>
+                <p>[]</p>
+            </code>""",
+            'unit_test':u"""
+import sys
+import unittest
+import json
+
+class ResultadoPrueba(unittest.TestResult):
+    def __init__(self):
+         super(ResultadoPrueba, self).__init__()
+         self.success = []
+    def addSuccess(self, test):
+         self.success.append(test)
+    def shouldStop(self, test):
+         return False
+
+
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_order(self):
+        self.assertEqual(solution([2,6,1,5]),[1,2,5,6])
+    def test_none(self):
+        self.assertEqual(solution(None),[])
+
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+Resultado = ResultadoPrueba()
+suite.run(Resultado)
+result = {}
+
+if Resultado.wasSuccessful():
+    result['result'] = "Success"
+else:
+    result['result'] = "Failure"
+result['errors']=  [str(e[0])   for e in Resultado.errors]
+result['failures']=  [str(e[0]) for e in Resultado.failures]
+result['successes']=  [str(e)  for e in Resultado.success]
+print "!!!---"
+print json.dumps(result)
+"""}
+        ,
+
+ {'_id': '/program/PPP/13',
+
+  'title':u"Producto punto",
+         'description':u"Producto punto",
+        'type':"Programa",
+        'icon':"coffee",
+        'level':'principiante',
+        "lang":"python",
+        "type":"unit_test" ,
+            'initial_code':u"""
+def producto(l1,l2):
+    pass
+""",
+            'correct_code':u""" """,
+             'instructions':u"""<p> Escribe un método llamado <code> producto(l1, l2) </code> el cual reciba
+              dos listas de enteros del mismo tamaño y regrese el producto escalar entre ellas. El producto escalar
+              se calcula de la siguiente manera: Tenemos <b>a</b> = [a<sub>1</sub>, a<sub>2</sub> , ... ,a<sub>n</sub>] y
+            <b>b</b>  =  [b<sub>1</sub>, b<sub>2</sub> , ... , b<sub>n</sub>] entonces
+            <b> a</b> ·<b> b </b>= a<sub>1</sub>b<sub>1</sub> + a<sub>2</sub>b<sub>2</sub> + .. + a<sub>n</sub>b<sub>n</sub> Se suman
+             los productos de los elementos con el mismo indice, el primero con el primero, segundo con el segundo, etc.
+
+            </p>
+          <div class="alert alert-warning"> Puedes utilizar <code>map</code> y <code>zip</code></div>
+
+            """,
+            'unit_test':u"""
+import sys
+import unittest
+import json
+
+class ResultadoPrueba(unittest.TestResult):
+    def __init__(self):
+         super(ResultadoPrueba, self).__init__()
+         self.success = []
+    def addSuccess(self, test):
+         self.success.append(test)
+    def shouldStop(self, test):
+         return False
+
+
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_Action(self):
+        self.assertEqual(producto([2, 1, 3], [2, 3, 1]), 10)
+suite = unittest.TestLoader().loadTestsFromTestCase(Test)
+Resultado = ResultadoPrueba()
+suite.run(Resultado)
+result = {}
+
+if Resultado.wasSuccessful():
+    result['result'] = "Success"
+else:
+    result['result'] = "Failure"
+result['errors']=  [str(e[0])   for e in Resultado.errors]
+result['failures']=  [str(e[0]) for e in Resultado.failures]
+result['successes']=  [str(e)  for e in Resultado.success]
+print "!!!---"
+print json.dumps(result)
+"""}
 
     ]
 
