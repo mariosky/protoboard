@@ -4,7 +4,7 @@
 
 {% block content %}
 
-        <h3 id="course-title">Bases de Datos Distribuidas</h3>
+        <h3 id="course-title">  Display Name                 <small id="course-url"> /activity/{{ course_id }}  </small>  </h3>
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -336,6 +336,8 @@
 
 
 
+
+
           return JSON.stringify(tree);
 
 
@@ -540,6 +542,8 @@
 
   $('body').on('click','#saveActivityBtn',function (e) {
     var container_id  = $('#activityURI').val();
+
+
     learning_activities[container_id].attempt_limit = $('#maxAttempts').val();
 
 
@@ -641,11 +645,6 @@
       learning_activities[container_id].slug=$('#containerSlug').val();
       learning_activities[container_id].uri =  $('#changeURI').val();
 
-      var escaped_container_id = "#" + container_id.replace( "/", "\\/" );
-
-      $(escaped_container_id).find('.container_name').first().text(learning_activities[container_id].name);
-
-
 
       if ( $('#containerIsVisible').prop("checked") == true)
       {
@@ -656,6 +655,18 @@
         learning_activities[container_id].is_visible = false;
       }
 
+      if   ('{{ course_id }}' == container_id ) //is root container ?
+      {
+            $("#course-title").html(learning_activities[container_id].name + '  <small>'+ learning_activities[container_id].uri  + '</small>'        );
+      }
+      else
+      {
+
+      var escaped_container_id = "#" + container_id.replace( "/", "\\/" );
+
+      $(escaped_container_id).find('.container_name').first().text(learning_activities[container_id].name);
+
+      }
 
 
       $('#modalContainer').modal('hide');
