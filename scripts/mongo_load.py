@@ -155,7 +155,7 @@ public class Product
 }
 """,
      'description':u"Completa la definción de una clase sencilla",
-     'type':"Completa",
+     'type':"Completar",
      'icon':"puzzle-piece",
      'level':'principiante',
 
@@ -349,70 +349,17 @@ public class CalculatorTest {
 }""",
      "lang":"java" },
 
-    {'_id': '/program/suma/3',
-     'title':u"Clase Producto",
-     'initial_code':u"""
-using System.IO;
-using System;
-public class Product
-{
-        public   code;
-        public   desc;
 
-        public Product(int c, string d)
-        {
-        code=c;
-        desc=d;
-        }
-
-        public void Print()
-        {
-        Console.WriteLine("Producto {0}: {1}", code,desc);
-        }
-
-}
-""",
-            'correct_code':u""" """,
-             'instructions':u"""<p>Completa la clase llamada <code> Producto </code> """,
-            'unit_test':u"""
-[TestFixture]
-public class ProductTest
-{
-
-    [Test, Description("Prueba del Constructor")]
-    public void Constructor()
-    {
-        Product p = new Product(1,"hola");
-        // Constraint Syntax
-        Assert.AreEqual(p.code,1);
-    }
-
-
-    [Test, Description("Imprimir la Descripción")]
-    public void PrintTest()
-    {
-        Product p = new Product(1,"hola");
-        p.Print();
-
-        using (StringWriter sw = new StringWriter())
-        {
-            Console.SetOut(sw);
-
-
-            p.Print();
-
-        string expected = "Producto 1: hola";
-        StringAssert.StartsWith(expected, sw.ToString());
-
-
-        }
-
-    }
-}""","lang":"csharp", "type":"unit_test" },
 
 {'_id': '/program/PPP/3',
-   'title':u"Suma dos números",
- 'description':u"Suma dos números",
+        'title':u"Suma dos números",
+        'description':u"Suma dos números",
+        'type':"Programa",
+        'icon':"coffee",
+        'level':'principiante',
+        "lang":"python",
+        "type":"Programa" ,
+
 
             'initial_code':u"""
 # Funcion que suma dos números
@@ -446,12 +393,12 @@ print json.dumps(result)
 
 {'_id': '/program/PPP/4',
         'title':u"distancia()",
-        'description':u"distancia",
+        'description':u"Valor absoluto de la diferencia",
         'type':"Programa",
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"unit_test" ,
+        "type":"Programa" ,
         'initial_code':u"""
 def distancia():
     pass
@@ -477,12 +424,12 @@ class Test(unittest.TestCase):
 
 {'_id': '/program/PPP/5',
         'title':u"mayor()",
-        'description':u"distancia",
+        'description':u"Regresa el mayor de dos números",
         'type':"Programa",
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"unit_test" ,
+        "type":"Programa" ,
         'initial_code':u"""
 def mayor():
     pass
@@ -537,12 +484,12 @@ print json.dumps(result)
 
 {'_id': '/program/PPP/6',
         'title':u"mayor()",
-        'description':u"distancia",
+        'description':u"Mayor de una lista",
         'type':"Programa",
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"unit_test" ,
+        "type":"Programa" ,
 
             'initial_code':u"""
 def regresa_lista():
@@ -599,12 +546,12 @@ print json.dumps(result)
 
 {'_id': '/program/PPP/7',
         'title':u"Dame una tupla",
-        'description':u"distancia",
+        'description':u"Crear una tupla",
         'type':"Programa",
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"unit_test" ,
+        "type":"Programa" ,
             'initial_code':u"""
 def regresa_tupla(a,b,c):
     pass
@@ -661,12 +608,12 @@ print json.dumps(result)
 {'_id': '/program/PPP/8',
 
  'title':u"Solo una tajada",
-        'description':u"distancia",
+        'description':u"Slicing o tajadas de una lista",
         'type':"Programa",
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"unit_test" ,
+        "type":"Programa" ,
             'initial_code':u"""
 def recorta(pelicula):
     pass
@@ -718,12 +665,12 @@ print json.dumps(result)
 """},
 {'_id': '/program/PPP/9', 'title':u"Solo una tajadita",
 
-        'description':u"distancia",
+        'description':u"Solo una tajadita",
         'type':"Programa",
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"unit_test" ,
+        "type":"Programa" ,
 
             'initial_code':u"""
 def recorta(pelicula):
@@ -776,12 +723,12 @@ print json.dumps(result)
 """},
 
 {'_id': '/program/PPP/10',  'title':u"¡Pura Acción!",
-        'description':u"Lista",
+        'description':u"Elementos de una Lista",
         'type':"Programa",
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"unit_test" ,
+        "type":"Programa" ,
 
 
             'initial_code':u"""
@@ -841,12 +788,12 @@ print json.dumps(result)
 
  'title':u"Mutantes",
 
-        'description':u"Mutantes",
+        'description':u"Parametros Mutantes",
         'type':"Programa",
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"unit_test" ,
+        "type":"Programa" ,
 
             'initial_code':u"""
 def activa_usuario(usr):
@@ -902,12 +849,12 @@ print json.dumps(result)
 
 {'_id': '/program/PPP/12',
  'title':u"Ordena la Lista",
-        'description':u"Ordena la Lista",
+        'description':u"Ordena una Lista en python",
         'type':"Programa",
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"unit_test" ,
+        "type":"Programa" ,
             'initial_code':u"""
 # Funcion que ordena una lista, puedes utilizar sort()
 def solution():
@@ -972,12 +919,12 @@ print json.dumps(result)
  {'_id': '/program/PPP/13',
 
   'title':u"Producto punto",
-         'description':u"Producto punto",
+         'description':u"Producto punto entre dos vectores",
         'type':"Programa",
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"unit_test" ,
+        "type":"Programa" ,
             'initial_code':u"""
 def producto(l1,l2):
     pass

@@ -76,10 +76,13 @@ def my_courses(request):
 def course(request,course_id):
     print request.POST
 
-    return render_to_response('activitytree/course_builder.html',
-            {'user_name':None, 'course_name': request.POST['course-name']
+    if 'course_id' in request.POST:
+        return render_to_response('activitytree/course_builder.html',
+            {'user_name':None, 'course_id': request.POST['course_id']
             },
                 context_instance=RequestContext(request))
+    else:
+        return HttpResponseNotFound('<h1>Course ID not Found</h1>')
 
 
 

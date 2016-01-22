@@ -207,8 +207,9 @@
 
      learning_activities = [];
 
-     course_root =  new LearningActivity( '/activity/'+container_id ,true );
-     learning_activities[container_id]=container;
+     var course_root =  new LearningActivity( '/activity/'+'{{ course_id }}' ,true );
+     learning_activities['{{ course_id }}']=course_root;
+
 
 
 
@@ -572,8 +573,26 @@
 
     $('body').on('click', '.containerEditBtn', function(){
 
-      var container_id  = $( this).parentsUntil('li').parent().attr("id");
+        var container_id  = $( this).parentsUntil('li').parent().attr("id");
 
+        containerEdit(container_id);
+
+    });
+
+
+
+    $('body').on('click', '#courseSettingsBtn', function(){
+
+
+
+        containerEdit('{{ course_id }}');
+
+    });
+
+
+
+    function containerEdit (container_id)
+    {
       var learning_activity = learning_activities[container_id];
 
       if (learning_activity.is_container == true)
@@ -609,7 +628,7 @@
 
       $('#modalContainer').modal();
 
-    });
+    }
 
     $('body').on('click','#saveContainerEditBtn',function (e) {
 
