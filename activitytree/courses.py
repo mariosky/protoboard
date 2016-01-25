@@ -91,5 +91,6 @@ def activity_tree(parent, nodes):
 
 def get_activity_tree(id):
     tree = sql_activity_tree(id)
+    print tree
     result = activity_tree(None,tree)
     return result

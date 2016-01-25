@@ -283,7 +283,7 @@
               }
            }
 
-          traverse(tree);
+           traverse(tree);
 
 
 
@@ -335,10 +335,15 @@
           traverse(tree);
 
 
+         var course = [{
+             "id": '/activity/'+'{{ course_id }}',
+             "order": 0,
+             "children":tree,
+             "learning_activity":course_root
+            }]
 
-
-
-          return JSON.stringify(tree);
+          console.log(JSON.stringify(course));
+          return JSON.stringify(course);
 
 
 
