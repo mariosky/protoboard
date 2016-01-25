@@ -85,6 +85,8 @@ def course(request,course_id):
                     context_instance=RequestContext(request))
         else:
             return HttpResponseNotFound('<h1>Course ID not Found</h1>')
+    #GET:
+    #Edit course
     elif request.method == 'GET':
         if course_id :
 
