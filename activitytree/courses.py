@@ -75,7 +75,7 @@ def activity_tree(parent, nodes):
         children = [v for k,v in nodes.items() if  v["parent_id"] is None]
     else:
         children = [v for k,v in nodes.items() if parent == v["parent_id"]]
-
+    print 'children',children
     node_list = []
 
     if children:
@@ -91,6 +91,6 @@ def activity_tree(parent, nodes):
 
 def get_activity_tree(id):
     tree = sql_activity_tree(id)
-    print tree
+    #print tree
     result = activity_tree(None,tree)
     return result

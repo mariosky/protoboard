@@ -204,8 +204,15 @@
 
 
 
-
      learning_activities = [];
+
+     if ('{{ action }}' == 'update')
+     {
+          alert('update ' + {{ course_id }} );
+         get_course();
+     }
+
+
 
      var course_root =  new LearningActivity( '/activity/'+'{{ course_id }}' ,true );
      learning_activities['{{ course_id }}']=course_root;
@@ -349,6 +356,151 @@
 
   }
 
+function get_course() {
+
+              $.ajax(   {
+                    url: '/get_course',
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({"jsonrpc": "2.0", "method": "get_course", "params": [{{ course_id }}],
+                    "id": 1 }),
+                    dataType: "json",
+                    success: function(data, textStatus, jqXHR) {
+                            console.log(data);
+
+                            // var tree = JSON.parse(data);
+
+                            traverse(data);
+
+
+
+
+
+
+                        },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        }
+                    });
+
+
+
+
+
+     function traverse(jsonObj,parent_id) {
+
+
+        if( typeof jsonObj == "object" ) {
+
+
+          $.each(jsonObj, function(k,v) {
+
+            if (typeof k == "number" && typeof v == "object")
+            {
+              traverse(v, parent_id);
+            }
+            if ( k == "learning_activity")
+            {
+              var activity_id =  generateUUID();
+              jsonObj.id = activity_id;
+
+              learning_activities[activity_id]=v;
+
+
+              if (v.is_container == true){
+                  var container_template = $('#container_template').html();
+                  Mustache.parse(container_template);
+                  rendered = Mustache.render(container_template, { container_id:activity_id, container_name:v.name});
+
+
+                  if (parent_id === undefined) {
+                      $("#sTree2").append(rendered);
+
+                  }
+                  else
+                  {
+                    console.log(parent_id);
+
+                    if ($("#" +parent_id).children("ul").length)
+                    {
+                      $("#" +parent_id).children("ul").append(rendered);
+
+                    }
+                    else
+                    {
+                     $("#" +parent_id).append("<ul></ul>");
+                     $("#" +parent_id).children("ul").append(rendered);
+
+                    }
+
+                  }
+
+
+
+
+                  if (jsonObj.children.length )
+                  {
+
+                  traverse(jsonObj.children,jsonObj.id);
+
+                  }
+
+
+                }
+                else{
+
+                  var activity_template = $('#activity_template').html();
+                  Mustache.parse(activity_template);
+                  rendered = Mustache.render(activity_template, { activity_id:activity_id, activity_name: v.name});
+
+                if (parent_id === undefined) {
+                  $("#sTree2").append(rendered);
+
+                }
+                else
+                {
+                  console.log(parent_id);
+
+                  if ($("#" +parent_id).children("ul").length)
+                  {
+                    $("#" +parent_id).children("ul").append(rendered);
+
+                  }
+                  else
+                  {
+                    $("#" +parent_id).append("<ul></ul>");
+                    $("#" +parent_id).children("ul").append(rendered);
+
+                  }
+
+                }
+
+
+
+              }
+
+
+
+
+
+            }
+
+
+          });
+        }
+        else
+        {
+          return;
+          // jsonOb is a number or string
+        }
+      }
+
+      //traverse(tree);
+
+
+
+    }
+
+
     $('#toStrBtn').on('click', function() {
 
               $.ajax(   {
@@ -393,7 +545,7 @@
             }
             if ( k == "learning_activity")
             {
-              var activity_id = generateUUID();
+              var activity_id =  generateUUID();
               jsonObj.id = activity_id;
 
               learning_activities[activity_id]=v;
@@ -496,7 +648,7 @@
 
 
     $('#newContainerBtn').on('click', function(){
-      var container_id = generateUUID();
+      var container_id = 'new-'+ generateUUID();
       var container_template = $('#container_template').html();
       Mustache.parse(container_template);
 
@@ -514,7 +666,7 @@
 
       var activity_template = $('#activity_template').html();
       Mustache.parse(activity_template);
-      var activity_id = generateUUID();
+      var activity_id = 'new-'+generateUUID();
       var activity = new LearningActivity( "/activity/"+activity_id, false );
       learning_activities[activity_id]=activity;
 

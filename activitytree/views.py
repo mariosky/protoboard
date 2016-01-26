@@ -80,7 +80,7 @@ def course(request,course_id):
     if request.method == 'POST':
         if 'course_id' in request.POST:
             return render_to_response('activitytree/course_builder.html',
-                {'user_name':None, 'course_id': request.POST['course_id']
+                {'user_name':None, 'course_id': request.POST['course_id'], 'action':'create'
                 },
                     context_instance=RequestContext(request))
         else:
@@ -89,9 +89,10 @@ def course(request,course_id):
     #Edit course
     elif request.method == 'GET':
         if course_id :
-
-            course = get_activity_tree( course_id)
-            return HttpResponse(json.dumps(course), content_type='application/javascript')
+            return render_to_response('activitytree/course_builder.html',
+                {'user_name':None, 'course_id':course_id, 'action':'update'
+                },
+                    context_instance=RequestContext(request))
         else:
             return HttpResponseNotFound('<h1>Course ID not Found</h1>')
 
@@ -550,6 +551,7 @@ def course_view(request):
         elif rpc["method"]=='get_course':
             rpc=json.loads(request.body)
             course = get_activity_tree( rpc['params'][0])
+            print course
             return HttpResponse(json.dumps(course), content_type='application/javascript')
     else:
         result= {"result":"added" , "error": "Error", "id": 1}
