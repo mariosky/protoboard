@@ -32,7 +32,7 @@ import urlparse
 from eval_code.RedisCola import Cola, Task
 import json
 from django.conf import settings
-from courses import  create_course_from_json, get_activity_tree
+from courses import  create_course_from_json, get_activity_tree, update_course_from_json, create_empty_course
 
 import redis
 
@@ -77,14 +77,18 @@ def course(request,course_id):
 
     #POST:
     #   Add New Course
+
+    # Must have credentials
     if request.method == 'POST':
         if 'course_id' in request.POST:
+            courseid=create_empty_course(course_id, request.user)
+
             return render_to_response('activitytree/course_builder.html',
-                {'user_name':None, 'course_id': request.POST['course_id'], 'action':'create'
+                {'user_name':None, 'course_id': courseid, 'action':'create'
                 },
                     context_instance=RequestContext(request))
         else:
-            return HttpResponseNotFound('<h1>Course ID not Found</h1>')
+            return HttpResponseNotFound('<h1>Course ID not Found in request</h1>')
     #GET:
     #Edit course
     elif request.method == 'GET':
