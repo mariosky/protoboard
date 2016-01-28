@@ -400,10 +400,20 @@ function get_course() {
             }
             if ( k == "learning_activity")
             {
-              var activity_id =  generateUUID();
+              //Extract the learning activity id
+              var activity_id = v.id;
               jsonObj.id = activity_id;
 
               learning_activities[activity_id]=v;
+
+              if ('{{ course_id }}' == activity_id )
+                {
+
+                      $("#course-title").html(learning_activities[activity_id].name + '  <small>'+ learning_activities[activity_id].uri  + '</small>') ;
+
+                }
+
+
 
 
               if (v.is_container == true){
@@ -412,13 +422,12 @@ function get_course() {
                   rendered = Mustache.render(container_template, { container_id:activity_id, container_name:v.name});
 
 
-                  if (parent_id === undefined) {
+                  if (parent_id == '{{ course_id }}') {
                       $("#sTree2").append(rendered);
 
                   }
                   else
                   {
-                    console.log(parent_id);
 
                     if ($("#" +parent_id).children("ul").length)
                     {
@@ -452,7 +461,7 @@ function get_course() {
                   Mustache.parse(activity_template);
                   rendered = Mustache.render(activity_template, { activity_id:activity_id, activity_name: v.name});
 
-                if (parent_id === undefined) {
+                if (parent_id == '{{ course_id }}') {
                   $("#sTree2").append(rendered);
 
                 }
