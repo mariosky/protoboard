@@ -80,13 +80,14 @@ def course(request,course_id):
 
     # Must have credentials
     if request.method == 'POST':
-        if 'course_id' in request.POST:
-            courseid=create_empty_course(course_id, request.user)
+        if 'course_uri' in request.POST:
+
+            course_id, course_uri = create_empty_course(request.POST['course_uri'], request.user,request.POST['course_name'],
+                                           request.POST['course_short_description'])
 
             return render_to_response('activitytree/course_builder.html',
-                {'user_name':None, 'course_id': courseid, 'action':'create'
-                },
-                    context_instance=RequestContext(request))
+                {'user_name':None,'course_uri': course_uri,'course_id': course_id, 'action':'create','course_name':request.POST['course_name']
+                },context_instance=RequestContext(request))
         else:
             return HttpResponseNotFound('<h1>Course ID not Found in request</h1>')
     #GET:
@@ -546,16 +547,13 @@ def course_view(request):
         rpc=json.loads(request.body)
 
         if rpc["method"]=='post_course':
-            create_course_from_json( rpc['params'][0], request.user)
-
-
+            update_course_from_json(json_tree= rpc['params'][0], user= request.user)
             result= {"result":"added" , "error": None, "id": 1}
             return HttpResponse(json.dumps(result), content_type='application/javascript')
 
         elif rpc["method"]=='get_course':
             rpc=json.loads(request.body)
             course = get_activity_tree( rpc['params'][0])
-            print course
             return HttpResponse(json.dumps(course), content_type='application/javascript')
     else:
         result= {"result":"added" , "error": "Error", "id": 1}

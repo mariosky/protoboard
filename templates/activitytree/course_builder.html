@@ -4,7 +4,7 @@
 
 {% block content %}
 
-        <h3 id="course-title">  Display Name                 <small id="course-url"> /activity/{{ course_id }}  </small>  </h3>
+        <h3 id="course-title">  {{ course_name }}                 <small id="course-url"> {{ course_uri }}  </small>  </h3>
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -181,7 +181,7 @@
 
     var LearningActivity = function (uri, is_container)
     {
-      this.name = "Container Name";
+      this.name = "New Name";
       this.heading = "";
       this.secondary_text = "";
       this.description = "";
@@ -227,6 +227,7 @@
 
     $('#saveChangesBtn').on('click', function(){
         var tree = tree_to_json( '#sTree2');
+        console.log(tree);
         $.ajaxSetup({
                 crossDomain: false, // obviates need for sameOrigin test
                 beforeSend: function(xhr, settings) {
@@ -345,7 +346,7 @@
 
 
          var course = [{
-             "id": '/activity/'+'{{ course_id }}',
+             "id": '{{ course_id }}',
              "order": 0,
              "children":tree,
              "learning_activity":course_root
@@ -360,6 +361,8 @@
 
 function get_course() {
 
+
+
               $.ajax(   {
                     url: '/get_course',
                     type: "POST",
@@ -368,9 +371,13 @@ function get_course() {
                     "id": 1 }),
                     dataType: "json",
                     success: function(data, textStatus, jqXHR) {
-                            console.log(data);
+                            console.log("c:",data);
 
-                            // var tree = JSON.parse(data);
+                            // Clear Main Conatainer
+                            $('#sTree2').empty();
+                            // Empty Array, please we must only reference this list with this name
+
+                           learning_activities = [];
 
                             traverse(data);
 
@@ -665,6 +672,7 @@ function get_course() {
 
       var container = new LearningActivity( '/activity/'+container_id ,true );
       learning_activities[container_id]=container;
+      learning_activities[container_id].state = "Added";
 
       rendered = Mustache.render(container_template, { container_id:container_id, container_name:container.name});
       $("#sTree2").append(rendered);
@@ -680,6 +688,8 @@ function get_course() {
       var activity_id = 'new-'+generateUUID();
       var activity = new LearningActivity( "/activity/"+activity_id, false );
       learning_activities[activity_id]=activity;
+      learning_activities[activity_id].state = "Added";
+
 
       rendered = Mustache.render(activity_template, { activity_id:activity_id, activity_name:"Activity Name"});
       $("#sTree2").append(rendered);
@@ -689,7 +699,27 @@ function get_course() {
 
 
     $('body').on('click', '.deleteBtn', function(){
-      $( this).parentsUntil('li').parent().remove();
+
+
+        if ($(this).parentsUntil('li').parent().children("ul").length ) {
+            alert("Container must be empty for deletion");
+
+        }
+        else
+        {
+            var activity_to_delete = $(this).parentsUntil('li').parent().attr("id");
+            alert("Delete:" + activity_to_delete + learning_activities[activity_to_delete] );
+            learning_activities[activity_to_delete].state ="Deleted";
+            $( this).parentsUntil('li').parent().addClass("hidden");
+
+
+
+
+        }
+
+
+
+
     });
 
 
