@@ -98,7 +98,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
     #If root is None then this is the root activity,
     #it must be created in advance, so we get the activity.
     print 'state' in activity['learning_activity'] and  activity['learning_activity']['state']=="Deleted" or "No state"
-
+    print 'order:',('order_in_container' in activity['learning_activity'] and activity['learning_activity']['order_in_container']) or "Non Order"
     if root is None:
         root = LearningActivity.objects.get(pk=activity['id'])
         learning_activity = root
@@ -203,6 +203,6 @@ def activity_tree(parent, nodes):
 
 def get_activity_tree(id):
     tree = sql_activity_tree(id)
-    print 'tree',tree
     result = activity_tree(None,tree)
+    print result
     return result

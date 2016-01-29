@@ -145,6 +145,24 @@ def dashboard(request,path_id):
                                       context_instance=RequestContext(request))
 
 
+@csrf_protect
+def course_view(request):
+    if request.user.is_authenticated() and request.user != 'AnonymousUser' and request.method == 'POST' :
+        rpc=json.loads(request.body)
+
+        if rpc["method"]=='post_course':
+            update_course_from_json(json_tree= rpc['params'][0], user= request.user)
+            result= {"result":"added" , "error": None, "id": 1}
+            return HttpResponse(json.dumps(result), content_type='application/javascript')
+
+        elif rpc["method"]=='get_course':
+            rpc=json.loads(request.body)
+            course = get_activity_tree( rpc['params'][0])
+            return HttpResponse(json.dumps(course), content_type='application/javascript')
+    else:
+        result= {"result":"added" , "error": "Error", "id": 1}
+        return HttpResponse(json.dumps(result), content_type='application/javascript')
+
 def path_activity(request,path_id, uri):
     learning_activity = None
     try:
@@ -544,23 +562,6 @@ def execute_queue(request):
 
 
 
-@csrf_protect
-def course_view(request):
-    if request.user.is_authenticated() and request.user != 'AnonymousUser' and request.method == 'POST' :
-        rpc=json.loads(request.body)
-
-        if rpc["method"]=='post_course':
-            update_course_from_json(json_tree= rpc['params'][0], user= request.user)
-            result= {"result":"added" , "error": None, "id": 1}
-            return HttpResponse(json.dumps(result), content_type='application/javascript')
-
-        elif rpc["method"]=='get_course':
-            rpc=json.loads(request.body)
-            course = get_activity_tree( rpc['params'][0])
-            return HttpResponse(json.dumps(course), content_type='application/javascript')
-    else:
-        result= {"result":"added" , "error": "Error", "id": 1}
-        return HttpResponse(json.dumps(result), content_type='application/javascript')
 
 
 

@@ -461,7 +461,15 @@ function get_course() {
 
                   if (jsonObj.children.length )
                   {
+                  console.log("Before:");
+                  console.log(jsonObj.children);
+                  jsonObj.children.sort( function(a,b ){
+                              return a.learning_activity.order_in_container - b.learning_activity.order_in_container;
+                          }
 
+                  );
+                   console.log("After:");
+                  console.log(jsonObj.children);
                   traverse(jsonObj.children,jsonObj.id);
 
                   }
