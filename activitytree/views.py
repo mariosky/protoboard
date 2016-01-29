@@ -10,6 +10,8 @@ from django.template import RequestContext
 from django.db import transaction
 from django.http import JsonResponse
 
+from django.core.urlresolvers import reverse
+
 import logging
 import xml.etree.ElementTree as ET
 from django.contrib.auth import authenticate, login, logout
@@ -73,7 +75,7 @@ def my_courses(request):
 
 
 
-def course(request,course_id):
+def course(request,course_id= None):
 
     #POST:
     #   Add New Course
@@ -85,9 +87,10 @@ def course(request,course_id):
             course_id, course_uri = create_empty_course(request.POST['course_uri'], request.user,request.POST['course_name'],
                                            request.POST['course_short_description'])
 
-            return render_to_response('activitytree/course_builder.html',
-                {'user_name':None,'course_uri': course_uri,'course_id': course_id, 'action':'create','course_name':request.POST['course_name']
-                },context_instance=RequestContext(request))
+            #return render_to_response('activitytree/course_builder.html',
+            #    {'user_name':None,'course_uri': course_uri,'course_id': course_id, 'action':'create','course_name':request.POST['course_name']
+            #    },context_instance=RequestContext(request))
+            return HttpResponseRedirect(reverse('course', args=[course_id]))
         else:
             return HttpResponseNotFound('<h1>Course ID not Found in request</h1>')
     #GET:
