@@ -310,6 +310,8 @@
 
   function tree_to_json(id_selector){
 
+       var order= 100;
+
        tree =  $(id_selector).sortableListsToHierarchy();
 
 
@@ -325,8 +327,10 @@
                 if ( k == "id")
                 {
                   jsonObj.learning_activity = learning_activities[v];
+                  jsonObj.learning_activity.order_in_container = order++;
 
                 }
+
 
                 if ( k == "children" && typeof v == "object")
                 {

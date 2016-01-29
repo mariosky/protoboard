@@ -17,6 +17,7 @@ import json
 from activitytree.models import LearningActivity, Course, AuthorLearningActivity,UserLearningActivity
 from interaction_handler import sql_activity_tree
 
+
 def create_course_from_json( json_tree, user ):
     activity_tree = json.loads(json_tree)[0]
     _traverse_create(activity_tree, user=user)
@@ -92,6 +93,7 @@ def _traverse_create(activity, parent=None, root=None, user=None):
 
 
 def _traverse_update(activity, parent=None, root=None, user=None):
+
     learning_activity = None
     #If root is None then this is the root activity,
     #it must be created in advance, so we get the activity.
@@ -120,7 +122,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
             rollup_rule  =activity['learning_activity']['rollup_rule'],
             is_container = activity['learning_activity']['is_container'],
             is_visible = activity['learning_activity']['is_visible'],
-            order_in_container = activity['order'],
+            order_in_container = activity['learning_activity']['order_in_container'],
             choice_exit = activity['learning_activity']['choice_exit'],
             rollup_progress= activity['learning_activity']['rollup_progress'])
         learning_activity.save()
@@ -161,7 +163,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
         learning_activity.rollup_rule  = ('rollup_rule' in activity['learning_activity'] and  activity['learning_activity']['rollup_rule']) or ""
         learning_activity.is_container = activity['learning_activity']['is_container']
         learning_activity.is_visible = activity['learning_activity']['is_visible']
-        learning_activity.order_in_container = activity['order']
+        learning_activity.order_in_container = activity['learning_activity']['order_in_container']
         learning_activity.choice_exit = activity['learning_activity']['choice_exit']
         learning_activity.rollup_progress= ('rollup_progress' in activity['learning_activity'] and activity['learning_activity']['rollup_progress']) or ""
         learning_activity.save()
