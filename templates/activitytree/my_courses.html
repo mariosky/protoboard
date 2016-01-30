@@ -4,36 +4,27 @@
 {% block content %}
 <div class="container">
       <!-- Example row of columns -->
+
+        <h4>Mis cursos</h4>
+
+
+     {% for c in courses %}
       <div class="row">
 
 
-        <div class="col-md-8">
-        <h4>Mis cursos</h4>
-            {% for c in courses %}
-        <div class="media">
-            <div class="media-left">
-                <a href="#">
-                     <i class="fa fa-graduation-cap fa-lg"></i>
-                </a>
+            <div class="col-md-8">
+                <a href="/course-builder/{{c.id }}" class="page-header"> <h4>{{c.name}}</h4></a>
+                <p> {{ c.course.short_description|safe }} </p>
 
             </div>
-             <div class="media-body">
-             {% if user.is_authenticated %}
-               <a class="media-heading" href="/{{c.id }}{{c.uri }}" role="button"> <h4>{{c.name}} &raquo;</h4></a>
-             {% endif %}
 
-
-            <p><span class="label label-info">mini-curso</span>
-                <span class="label label-default">python</span> <span class="label label-default">principiantes</span></p>
-                 {{ c.course.short_description|safe }}
-
+            <div class="col-md-4">
+                <p>
+                    <span class="label label-info">mini-curso</span>
+                </p>
             </div>
-        </div>
-         {% endfor %}
-        </div>
-
-
       </div>
+  {% endfor %}
 
       <hr>
 

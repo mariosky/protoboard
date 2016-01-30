@@ -97,7 +97,7 @@ def course(request,course_id= None):
     elif request.method == 'GET':
         if course_id :
             return render_to_response('activitytree/course_builder.html',
-                {'user_name':None, 'course_id':course_id, 'action':'update'
+                {'user_name':None, 'course_id':course_id
                 },
                     context_instance=RequestContext(request))
         else:
