@@ -58,13 +58,12 @@ def welcome(request):
                  },
                 context_instance=RequestContext(request))
 
+
 def my_courses(request):
     if request.user.is_authenticated() and request.user != 'AnonymousUser' :
+         courses = LearningActivity.objects.filter(authorlearningactivity__user = request.user, root= None )
 
-
-         courses = LearningActivity.objects.filter(authorlearningactivity__user = request.user )
-
-         return render_to_response('activitytree/welcome.html',
+         return render_to_response('activitytree/my_courses.html',
             {'courses':courses
                 #, 'plus_scope':plus_scope,'plus_id':plus_id
             },

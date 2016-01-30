@@ -280,7 +280,7 @@ class UserLearningActivity(models.Model):
 class Course(models.Model):
     short_description = models.TextField()
     image = models.ImageField(upload_to='courses', blank=True)
-    root = models.ForeignKey('LearningActivity')
+    root = models.OneToOneField('LearningActivity')
     start_date = models.DateField(auto_now=True)
 
 
