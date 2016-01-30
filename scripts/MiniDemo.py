@@ -12,9 +12,10 @@ if __name__ == "__main__":
     os.environ['DJANGO_SETTINGS_MODULE'] = "protoboard.settings"
     application = get_wsgi_application()
 
-from activitytree.models import LearningStyleInventory, LearningActivity, Course, UserLearningActivity
+from activitytree.models import  LearningActivity, Course, AuthorLearningActivity
 from django.contrib.auth.models import User
 from activitytree.interaction_handler import SimpleSequencing
+
 
 
 
@@ -42,6 +43,10 @@ description= u"""
 
 cursoDemo = Course(short_description=description, root=Demo)
 cursoDemo.save()
+u = User.objects.filter(email='mariosky@gmail.com')[0]
+
+auth = AuthorLearningActivity(user=u, learning_activity=Demo )
+auth.save()
 
 
 

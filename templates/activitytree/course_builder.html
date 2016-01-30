@@ -42,11 +42,8 @@
     </ul>
 
     <section>
-      <p><strong>JQuery sortable lists</strong> also supports export methods. Look at the console log to see the result of buttons below.</p>
-      <span id="toArrBtn" class="btn">To array</span>
-      <span id="toHierBtn" class="btn">To hierarchy</span>
-      <span id="toStrBtn" class="btn">To string</span>
-    </section>
+      <p>Don't forget to <strong> Save </strong> changes.</p>
+        </section>
 
 
 
@@ -207,11 +204,10 @@
 
      learning_activities = [];
 
-     if ('{{ action }}' == 'update')
-     {
-          alert('update ' + {{ course_id }} );
-         get_course();
-     }
+      //alert( {{ course_id }} );
+
+      get_course();
+
 
 
 
@@ -247,7 +243,7 @@
                     "id": 1 }),
                     dataType: "json",
                     success: function(data, textStatus, jqXHR) {
-                        alert('success');
+                        alert('Changes are Saved');
                         get_course();
                         },
                     error: function(jqXHR, textStatus, errorThrown) {
@@ -258,55 +254,6 @@
 
 
     });
-    $('#toHierBtn').on('click', function()
-    {
-
-         tree =  $('#sTree2').sortableListsToHierarchy();
-
-
-
-         function traverse(jsonObj) {
-           if( typeof jsonObj == "object" ) {
-              $.each(jsonObj, function(k,v) {
-
-                if (typeof k == "number" && typeof v == "object")
-                {
-                  traverse(v);
-                }
-                if ( k == "id")
-                {
-                  jsonObj.learning_activity = learning_activities[v];
-
-                }
-
-                if ( k == "children" && typeof v == "object")
-                {
-                  traverse(v);
-
-                }
-              });
-              }
-              else
-              {
-                return;
-                // jsonOb is a number or string
-              }
-           }
-
-           traverse(tree);
-
-
-
-            console.log(JSON.stringify(tree));
-
-
-
-
-
-
-
-    });
-
 
   function tree_to_json(id_selector){
 
@@ -366,6 +313,7 @@
 function get_course() {
 
 
+              //Wait.show();
 
               $.ajax(   {
                     url: '/get_course',
@@ -385,13 +333,16 @@ function get_course() {
 
                             traverse(data);
 
-
+                           // Wait.hide();
 
 
 
 
                         },
                     error: function(jqXHR, textStatus, errorThrown) {
+
+                        Wait.hide();
+
                         }
                     });
 
@@ -531,151 +482,6 @@ function get_course() {
     }
 
 
-    $('#toStrBtn').on('click', function() {
-
-              $.ajax(   {
-                    url: '/get_course',
-                    type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify({"jsonrpc": "2.0", "method": "get_course", "params": [31],
-                    "id": 1 }),
-                    dataType: "json",
-                    success: function(data, textStatus, jqXHR) {
-                            console.log(data);
-
-                            // var tree = JSON.parse(data);
-
-                            traverse(data);
-
-
-
-
-
-
-                        },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        }
-                    });
-
-
-
-
-
-     function traverse(jsonObj,parent_id) {
-
-
-        if( typeof jsonObj == "object" ) {
-
-
-          $.each(jsonObj, function(k,v) {
-
-            if (typeof k == "number" && typeof v == "object")
-            {
-              traverse(v, parent_id);
-            }
-            if ( k == "learning_activity")
-            {
-              var activity_id =  generateUUID();
-              jsonObj.id = activity_id;
-
-              learning_activities[activity_id]=v;
-
-
-              if (v.is_container == true){
-                  var container_template = $('#container_template').html();
-                  Mustache.parse(container_template);
-                  rendered = Mustache.render(container_template, { container_id:activity_id, container_name:v.name});
-
-
-                  if (parent_id === undefined) {
-                      $("#sTree2").append(rendered);
-
-                  }
-                  else
-                  {
-                    console.log(parent_id);
-
-                    if ($("#" +parent_id).children("ul").length)
-                    {
-                      $("#" +parent_id).children("ul").append(rendered);
-
-                    }
-                    else
-                    {
-                     $("#" +parent_id).append("<ul></ul>");
-                     $("#" +parent_id).children("ul").append(rendered);
-
-                    }
-
-                  }
-
-
-
-
-                  if (jsonObj.children.length )
-                  {
-
-                  traverse(jsonObj.children,jsonObj.id);
-
-                  }
-
-
-                }
-                else{
-
-                  var activity_template = $('#activity_template').html();
-                  Mustache.parse(activity_template);
-                  rendered = Mustache.render(activity_template, { activity_id:activity_id, activity_name: v.name});
-
-                if (parent_id === undefined) {
-                  $("#sTree2").append(rendered);
-
-                }
-                else
-                {
-                  console.log(parent_id);
-
-                  if ($("#" +parent_id).children("ul").length)
-                  {
-                    $("#" +parent_id).children("ul").append(rendered);
-
-                  }
-                  else
-                  {
-                    $("#" +parent_id).append("<ul></ul>");
-                    $("#" +parent_id).children("ul").append(rendered);
-
-                  }
-
-                }
-
-
-
-              }
-
-
-
-
-
-            }
-
-
-          });
-        }
-        else
-        {
-          return;
-          // jsonOb is a number or string
-        }
-      }
-
-      //traverse(tree);
-
-
-
-    });
-
-
 
     $('#newContainerBtn').on('click', function(){
       var container_id = 'new-'+ generateUUID();
@@ -744,8 +550,22 @@ function get_course() {
     $('#activityURI').val(container_id);
     $('#maxAttempts').val(learning_activity.attempt_limit);
 
+    if (learning_activity.choice_exit)
+      {
+
+        $('#activityExitCb').prop("checked",true);
+
+      }
+      else{
+        $('#activityExitCb').prop("checked",false);
+      }
+
+
+
     $('#activityRollupProgressCb').val(learning_activity.secondary_text);
-    $('#activityExitCb').val(learning_activity.heading);
+
+
+
     $('#modalActivity').modal();
 
   });
@@ -760,11 +580,11 @@ function get_course() {
 
     if ( $('#activityRollupProgressCb').prop("checked") == true)
     {
-      learning_activities[container_id].is_visible = true;
+      learning_activities[container_id].rollup_progress = true;
     }
     else
     {
-      learning_activities[container_id].is_visible = false;
+      learning_activities[container_id].rollup_progress = false;
     }
 
     if ( $('#activityExitCb').prop("checked") == true)

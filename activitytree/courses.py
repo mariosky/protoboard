@@ -18,10 +18,6 @@ from activitytree.models import LearningActivity, Course, AuthorLearningActivity
 from interaction_handler import sql_activity_tree
 
 
-def create_course_from_json( json_tree, user ):
-    activity_tree = json.loads(json_tree)[0]
-    _traverse_create(activity_tree, user=user)
-
 def update_course_from_json( json_tree, user):
     activity_tree = json.loads(json_tree)[0]
     print "update_course_from_json",activity_tree
@@ -47,48 +43,6 @@ def create_empty_course(url,user, name ='New Course', short_description=""):
         return learning_activity.id,learning_activity.uri
 
 
-def _traverse_create(activity, parent=None, root=None, user=None):
-    learning_activity = LearningActivity(
-        parent = parent or None,
-        root   = root or None,
-        name = activity['learning_activity']['name'],
-        slug = activity['learning_activity']['slug'],
-        uri = activity['learning_activity']['uri'],
-        lom = activity['learning_activity']['lom'] or "",
-        secondary_text=activity['learning_activity']['secondary_text'],
-        attempt_limit=activity['learning_activity']['attempt_limit'] ,
-        available_until=activity['learning_activity']['available_until'] ,
-        available_from =activity['learning_activity']['available_from'],
-        heading=activity['learning_activity']['heading'],
-        description =activity['learning_activity']['description'],
-        image = activity['learning_activity']['image'],
-        pre_condition_rule =activity['learning_activity']['pre_condition_rule'] or "",
-        rollup_rule  =activity['learning_activity']['rollup_rule'],
-        is_container = activity['learning_activity']['is_container'],
-        is_visible = activity['learning_activity']['is_visible'],
-        order_in_container = activity['order'],
-        choice_exit = activity['learning_activity']['choice_exit'],
-        rollup_progress= activity['learning_activity']['rollup_progress'])
-
-    learning_activity.save()
-
-    # Si es raiz es curso
-    if root is None:
-        root = learning_activity
-        curso = Course(short_description=activity['learning_activity']['description'], root=root)
-        curso.save()
-
-        auth = AuthorLearningActivity(user=user, learning_activity=root )
-        auth.save()
-
-
-
-    if 'children' in activity:
-        if activity['children']:
-            for child in activity['children']:
-                _traverse_create(child, learning_activity, root)
-    else:
-        pass
 
 
 
@@ -166,6 +120,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
         learning_activity.order_in_container = activity['learning_activity']['order_in_container']
         learning_activity.choice_exit = activity['learning_activity']['choice_exit']
         learning_activity.rollup_progress= ('rollup_progress' in activity['learning_activity'] and activity['learning_activity']['rollup_progress']) or ""
+        print activity['learning_activity']['name'],activity['learning_activity']['choice_exit']
         learning_activity.save()
 
     if 'children' in activity:

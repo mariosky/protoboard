@@ -34,7 +34,7 @@ import urlparse
 from eval_code.RedisCola import Cola, Task
 import json
 from django.conf import settings
-from courses import  create_course_from_json, get_activity_tree, update_course_from_json, create_empty_course
+from courses import get_activity_tree, update_course_from_json, create_empty_course
 
 import redis
 
