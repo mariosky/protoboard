@@ -841,6 +841,13 @@ function get_course() {
 
   });
 
+  $('body').on('click', '#courseDeleteBtn', function(){
+
+    $('#modalDeleteCourse').modal();
+
+
+  });
+
 
 </script>
 
@@ -1088,6 +1095,33 @@ function get_course() {
 
 
 
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+ <div class="modal fade" id="modalDeleteCourse">
+  <div class="modal-dialog">
+    <div class="modal-content">
+       <form action="/delete_course/{{ course_id }}" method="post">{% csrf_token %}
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Delete Course</h4>
+      </div>
+
+
+      <div class="modal-body">
+          <h4>Please confirm, all data will be deleted!</h4>
+
+
+
+      </div><!-- /.modal-body -->
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="createCourseBtn" type="submit" class="btn btn-danger">Delete</button>
+      </div>
+           </form>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

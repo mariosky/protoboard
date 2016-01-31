@@ -27,7 +27,9 @@ urlpatterns = patterns('',
       (r'^execute_queue$','activitytree.views.execute_queue'),
       (r'^post_course$','activitytree.views.course_view'),
       (r'^get_course$','activitytree.views.course_view'),
-      (r'^my_courses$','activitytree.views.my_courses'),
+      (r'^delete_course/(?P<course_id>[0-9]*)$','activitytree.views.course'),
+
+      url(r'^my_courses$','activitytree.views.my_courses','my_courses'),
 
       (r'^javascript_result$','activitytree.views.javascript_result'),
       (r'^get_activities$','activitytree.views.get_activities'),

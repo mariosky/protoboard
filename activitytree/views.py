@@ -80,7 +80,15 @@ def course(request,course_id= None):
     #   Add New Course
 
     # Must have credentials
+    print "Method",request.method
+
     if request.method == 'POST':
+        # IF course_id is a DELETE
+        if course_id:
+            LearningActivity.objects.filter(root=course_id).delete()
+            return HttpResponseRedirect(reverse('my_courses'))
+
+
         if 'course_uri' in request.POST:
 
             course_id, course_uri = create_empty_course(request.POST['course_uri'], request.user,request.POST['course_name'],
