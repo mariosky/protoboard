@@ -29,7 +29,7 @@ urlpatterns = patterns('',
       (r'^get_course$','activitytree.views.course_view'),
       (r'^delete_course/(?P<course_id>[0-9]*)$','activitytree.views.course'),
 
-      url(r'^my_courses$','activitytree.views.my_courses','my_courses'),
+      url(r'^my_courses$','activitytree.views.my_courses',name='my_courses'),
 
       (r'^javascript_result$','activitytree.views.javascript_result'),
       (r'^get_activities$','activitytree.views.get_activities'),

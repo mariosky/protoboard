@@ -60,6 +60,7 @@ def welcome(request):
 
 
 def my_courses(request):
+
     if request.user.is_authenticated() and request.user != 'AnonymousUser' :
          courses = LearningActivity.objects.filter(authorlearningactivity__user = request.user, root= None )
 
@@ -86,6 +87,8 @@ def course(request,course_id= None):
         # IF course_id is a DELETE
         if course_id:
             LearningActivity.objects.filter(root=course_id).delete()
+            LearningActivity.objects.get(id=course_id).delete()
+
             return HttpResponseRedirect(reverse('my_courses'))
 
 
