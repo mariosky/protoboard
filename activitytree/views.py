@@ -1083,7 +1083,7 @@ def google_link(request):
 
 
 def get_activities(request):
-    activities = Activity.get_all_programming()
+    activities = Activity.get_all()
     json_docs = [doc for doc in activities]
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 

@@ -5,6 +5,8 @@ activities = [
 
     {
  '_id':'/activity/SecuenciadoSimple',
+ 'title':u"Introducción al Secuenciado Simple",
+ 'type':'text',
   'content':u"""
         <h3>Introducción</h3>
 		<p>
@@ -72,6 +74,7 @@ else:
 
     {'_id':'/activity/video/intro',
      'title':u'Ejemplo de video',
+     'type':u"video",
      'url':u"http://www.youtube.com/embed/qM5nKU40KVg?rel=0",
      'youtube_id':'iUrrwxOG9uU',
      'startSeconds':0,
@@ -84,6 +87,8 @@ else:
 
 
     {'_id':'/test/demo',
+      'title':u"Ejemplo de un Quiz",
+      'type':u"quiz",
 
     'questions':  [{'id': 1324,
                     'interaction': 'choiceInteraction',
@@ -155,7 +160,7 @@ public class Product
 }
 """,
      'description':u"Completa la definción de una clase sencilla",
-     'type':"Completar",
+     'type':"complete",
      'icon':"puzzle-piece",
      'level':'principiante',
 
@@ -244,7 +249,7 @@ public class ProductTest
 
     {'_id':'/program/js/1', 'title':u"suma.js",
      'description':u"Programa una función sencilla",
-     'type':"Programa",
+     'type':"program",
      'icon':"coffee",
      'level':'principiante',
                 'initial_code':u"""//Completa el código
