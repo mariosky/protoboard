@@ -133,7 +133,7 @@ else:
 #
 #     },
     {'_id':'/test/python1',
-      'title':u"Primer Quix",
+      'title':u"Primer Quiz",
       'type':u"quiz",
 
     'questions':  [{'id': 1324,
@@ -144,7 +144,7 @@ else:
                     'can_check': "True",
                     'can_show': "True",
                     'can_hint': "True",
-                    'options': ["El número de elementos que pueden almacenar","La velocidad","Las listas son mutables","La manera en que leemos sus elementos"],
+                    'options': [u"El número de elementos que pueden almacenar","La velocidad","Las listas son mutables","La manera en que leemos sus elementos"],
                     'answer': [0,1,1,0],
                     'answer_text': "",
                     'hints': []
@@ -158,7 +158,7 @@ else:
                     'can_check': "True",
                     'can_show': "True",
                     'can_hint': "True",
-                    'options': ["Para definir los bloques de código","Para que sea más legible","Para nada","Es igual que C#"],
+                    'options': [u"Para definir los bloques de código",u"Para que sea más legible","Para nada","Es igual que C#"],
                     'answer': [1,0,0,0],
                     },
                     {
@@ -166,7 +166,7 @@ else:
                     'interaction': 'textEntryInteraction',
                     'inline': 0,
                     'title': "Pregunta Abierta",
-                    'question': "Como se llama el  método que sirve para agregar un elemento al final de una secuencia?",
+                    'question': u"Como se llama el  método que sirve para agregar un elemento al final de una secuencia?",
                     'can_check': "True",
                     'can_show': "True",
                     'can_hint': "True",
@@ -180,7 +180,7 @@ else:
                     'interaction': 'textEntryInteraction',
                     'inline': 0,
                     'title': "Pregunta Abierta",
-                    'question': "Que tipo de colección son las Listas, Tuplas y Cadenas?",
+                    'question': u"Que tipo de colección son las Listas, Tuplas y Cadenas?",
                     'can_check': "True",
                     'can_show': "True",
                     'can_hint': "True",
