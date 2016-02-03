@@ -582,7 +582,7 @@ def program(request, uri):
 
 @csrf_protect
 def execute_queue(request):
-    logger.error("VIEW execute_queue")
+    #logger.error("VIEW execute_queue")
     if request.method == 'POST':
         rpc=json.loads(request.body)
         import os
