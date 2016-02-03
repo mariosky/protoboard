@@ -132,6 +132,68 @@ else:
   #                """
 #
 #     },
+    {'_id':'/test/python1',
+      'title':u"Primer Quix",
+      'type':u"quiz",
+
+    'questions':  [{'id': 1324,
+                    'interaction': 'choiceInteraction',
+                    'inline': 0 ,
+                    'title': "Pregunta Abierta",
+                    'question': "Diferencias entre Tuplas y Listas",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["El número de elementos que pueden almacenar","La velocidad","Las listas son mutables","La manera en que leemos sus elementos"],
+                    'answer': [0,1,1,0],
+                    'answer_text': "",
+                    'hints': []
+                    },
+                    {
+                    'id':1323,
+                    'interaction': 'choiceInteraction',
+                    'inline': 1,
+                    'title': "Pregunta Abierta",
+                    'question': "Para que sirve el espacio en blanco en Python?",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': ["Para definir los bloques de código","Para que sea más legible","Para nada","Es igual que C#"],
+                    'answer': [1,0,0,0],
+                    },
+                    {
+                    'id':1311,
+                    'interaction': 'textEntryInteraction',
+                    'inline': 0,
+                    'title': "Pregunta Abierta",
+                    'question': "Como se llama el  método que sirve para agregar un elemento al final de una secuencia?",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': [],
+                    'type':"str",
+                    'answer': ["append", "append()"],
+                    }
+                   ,
+                    {
+                    'id':1311,
+                    'interaction': 'textEntryInteraction',
+                    'inline': 0,
+                    'title': "Pregunta Abierta",
+                    'question': "Que tipo de colección son las Listas, Tuplas y Cadenas?",
+                    'can_check': "True",
+                    'can_show': "True",
+                    'can_hint': "True",
+                    'options': [],
+                    'type':"str",
+                    'answer': ["secuencias", "Secuencias"],
+                    }
+                    ],
+    'intro':"""<h3>Evaluación Previa</h3>
+    <p> Contesta las preguntas, eligiendo la opción mas adecuada de la lista </p>""",
+    'bye':"""""",
+     'satisfied_at_least':3
+                    },
 
     {'_id':'/test/demo',
       'title':u"Ejemplo de un Quiz",
