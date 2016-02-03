@@ -115,6 +115,58 @@ def course(request,course_id= None):
             return HttpResponseNotFound('<h1>Course ID not Found</h1>')
 
 
+def prueba(request):
+    if request.is_ajax():
+        if request.method == 'POST':
+            message = json.dumps(request.body)
+            return HttpResponse(message)
+        else:
+            message = "nope"
+        return HttpResponse(message)
+
+
+def actividad(request,course_id):
+
+    if request.method == 'POST':
+        if 'course_id' in request.POST:
+            return render_to_response('activitytree/activity_builder.html',
+                {'user_name':None, 'course_id': request.POST['course_id']
+                },
+                    context_instance=RequestContext(request))
+        else:
+            return HttpResponseNotFound('<h1>Course ID not Found</h1>')
+    #GET:
+    #Edit course
+    elif request.method == 'GET':
+        if course_id :
+
+            course = get_activity_tree(course_id)
+            return HttpResponse(json.dumps(course), content_type='application/javascript')
+        else:
+            return HttpResponseNotFound('<h1>Course ID not Found</h1>')
+
+
+
+
+def typeactivity(request):
+    if request.method == 'POST':
+        if '_html' in request.POST:
+            lista = request.POST['lista']
+            return render_to_response('activitytree/videoActivity.html',
+                                  {'lista': lista, 'course_id': request.POST['course_id']},
+                                  context_instance=RequestContext(request))
+        elif '_video' in request.POST:
+            lista = request.POST['lista']
+            return render_to_response('activitytree/videoActivity.html',
+                                  {'lista': lista},
+                                  context_instance=RequestContext(request))
+    elif request.method == 'GET':
+        if 'video' in request.GET:
+            return render_to_response('activitytree/videoActivity.html',
+                                    {'course_id': request.GET['course_id']},  context_instance=RequestContext(request))
+        else:
+            return render_to_response('activitytree/mstacheTest.html',  context_instance=RequestContext(request))
+
 
 
 def dashboard(request,path_id):

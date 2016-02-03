@@ -41,6 +41,9 @@ urlpatterns = patterns('',
       url(r'^course-builder/(?P<course_id>([\w+](\/*)(-*))+)$','activitytree.views.course',name="course"),
       url(r'^course-builder/?$','activitytree.views.course',name="course"),
 
+      (r'^activity-builder/(?P<course_id>([\w+](\/*)(-*))+)$','activitytree.views.actividad'),
+      (r'^actividad$','activitytree.views.typeactivity'),
+      (r'^prueba$','activitytree.views.prueba'),
 
 
       (r'^unlink_facebook/?$', 'activitytree.views.unlink_facebook'),
@@ -55,7 +58,7 @@ urlpatterns = patterns('',
       (r'^logout/?$', 'activitytree.views.logout_view'),
       (r'^login/$', 'activitytree.views.login_view', {'template_name': 'registration/login.html'}),
 
-#      url(r'^register/$', RegistrationView.as_view(), name='registration_register'),
+#     url(r'^register/$', RegistrationView.as_view(), name='registration_register'),
       url(r'^password_reset/$', 'django.contrib.auth.views.password_reset',{'password_reset_form':ProtoPasswordResetForm } ),
       url(r'^logout/$', 'activitytree.views.logout'),
       # Hack horrible para el logout

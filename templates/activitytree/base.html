@@ -97,7 +97,7 @@
             <li><a class="create-course" href="#">Nuevo Curso</a></li>
             <li><a  href="/my_courses">Mis Cursos </a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="#">Nueva Actividad</a></li>
+            <li><a class="create-activity" href="#">Nueva Actividad</a></li>
             <li><a href="#">Mis Actividades</a></li>
           </ul>
         </li>
@@ -207,9 +207,11 @@
     <script src="{{ STATIC_URL }}app/scripts/bootstrap.min.js"></script>
     <script src="{{ STATIC_URL }}app/scripts/jquery-sortable-lists.min.js"></script>
     <script src="{{ STATIC_URL }}app/scripts/mustache.min.js"></script>
+    <script type="text/javascript" src="https://b072a7493b24d80848609d1f4876edab240dff84.googledrive.com/host/0B4KIaVIuZK2JUEZmX0ZxQWgwb0k/jquery.oembed.js"></script>
     <script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.raty.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>
-
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script>tinymce.init({ selector:'textarea' });</script>
 
 <!-- endbuild -->
 
@@ -394,6 +396,17 @@ $('#rating-info').raty({
 
   });
 
+              $('body').on('click', '.create-activity', function() {
+
+      $('#modalCreateActivity').modal();
+  });
+
+    $('body').on('click', '#createActivityBtn', function(e){
+
+        $('#modalCreateActivity').modal('hide');
+    });
+
+
         {% else %}
 
         {% endif %}
@@ -454,6 +467,48 @@ $('#rating-info').raty({
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+  <div class="modal fade" id="modalCreateActivity" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+       <form action="/activity-builder/1" method="post">{% csrf_token %}
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Create Activity</h4>
+      </div>
+
+
+      <div class="modal-body">
+
+        <div class="form-group">
+          <input type="text" class="form-control hidden" id="containerId" placeholder="" required pattern="https?://.+" disabled>
+        </div>
+
+        <div class="form-group">
+          <label for="containerName">Display Name</label>
+          <input type="text" name="course_id" class="form-control" id="containerName" placeholder="" required='true'>
+        </div>
+
+        <div class="form-group">
+          <div class="checkbox">
+            <label> <input id="containerIsVisible" type="checkbox"> Public </label>
+          </div>
+
+        </div>
+
+
+      </div><!-- /.modal-body -->
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="createActivityBtn" type="submit" class="btn btn-primary">Create</button>
+      </div>
+           </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="pleaseWaitDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
