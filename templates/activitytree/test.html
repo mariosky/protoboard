@@ -28,9 +28,9 @@
 
         {% for q in content.questions %}
             {% if q.feedback.correct %}
-            <h4> <span class="glyphicon glyphicon-ok"></span> {{q.question}} </h4>
+            <h4> <span><i class="fa fa-check"></i></span> {{q.question}} </h4>
             {% else %}
-            <h4> <span class="glyphicon glyphicon-remove"></span> {{q.question}} </h4>
+            <h4>  <span><i class="fa fa-times"></i></span></span> {{q.question}} </h4>
             {% endif %}
             {% if q.options %}
                 {% for o in q.feedback_options %}
