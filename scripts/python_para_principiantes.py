@@ -50,7 +50,7 @@ PPP.save()
 description= u"""
           <p> Curso de Python básico, ¡Aprende desde cero!</p>
             <p><code>print "hola mundo"</code></p>
-          <p> Python es utilizado por la  Nasa, Google, Instagram y por su puesto protoboard.org</p>
+          <p>  Python es utilizado por la  Nasa, Google, Instagram y por su puesto protoboard.org</p>
 """
 
 

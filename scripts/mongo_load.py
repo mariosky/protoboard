@@ -4,7 +4,7 @@
 activities = [
 
     {
- '_id':'/activity/SecuenciadoSimple',
+ '_id':'/activity/bienvenidos',
  'title':u"Introducción al Secuenciado Simple",
  'type':'text',
   'content':u"""
@@ -73,6 +73,16 @@ else:
 
 
     {'_id':'/activity/video/intro',
+     'title':u'Python para principiantes video 1',
+     'url':u"http://www.youtube.com/embed/qM5nKU40KVg?rel=0",
+     'youtube_id':'qM5nKU40KVg',
+      'content' : u"""
+                <p>Primer video de presentación</p>
+                  """
+
+     },
+
+    {'_id':'/activity/video/intro2',
      'title':u'Ejemplo de video',
      'type':u"video",
      'url':u"http://www.youtube.com/embed/qM5nKU40KVg?rel=0",
@@ -84,7 +94,6 @@ else:
                   """
 
      },
-
 
     {'_id':'/test/demo',
       'title':u"Ejemplo de un Quiz",
