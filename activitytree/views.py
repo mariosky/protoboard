@@ -681,7 +681,7 @@ def get_result(request):
                 try:
                     string_json = json.loads( t.result[0])
                 except Exception, e:
-                    print e
+                    print "string_json exception", e
 
                 if request.user.is_authenticated():
                     try:
@@ -694,7 +694,7 @@ def get_result(request):
                         else:
                             s.update(ula,attempt=True)
                     except Exception, e:
-                        print e
+                        print "update ULA", e
 
                 result = json.dumps({'result':string_json, 'outcome': t.result[1]})
                 return HttpResponse(result , content_type='application/javascript')
