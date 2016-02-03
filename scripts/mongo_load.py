@@ -73,7 +73,7 @@ else:
 
 
     {'_id':'/activity/video/intro',
-     'title':u'Python para principiantes video 1',
+     'title':u'Python para principiantes (1)',
      'url':u"http://www.youtube.com/embed/qM5nKU40KVg?rel=0",
      'youtube_id':'qM5nKU40KVg',
       'content' : u"""
@@ -82,18 +82,56 @@ else:
 
      },
 
-    {'_id':'/activity/video/intro2',
-     'title':u'Ejemplo de video',
-     'type':u"video",
-     'url':u"http://www.youtube.com/embed/qM5nKU40KVg?rel=0",
-     'youtube_id':'iUrrwxOG9uU',
-     'startSeconds':0,
-     'endSeconds':10,
+        {'_id':'/activity/video/secuencias',
+     'title':u'Listas, Tuplas y Cadenas',
+     'url':u"http://www.youtube.com/embed/aTDJDB_ZjXA?rel=0",
+     'youtube_id':'aTDJDB_ZjXA',
+    'type':u"video",
       'content' : u"""
-                <p> Este video salta a la siguiente actividad después de 10 segundos. </p>
+                <p>Listas, Tuplas y Cadenas</p>
                   """
 
      },
+
+            {'_id':'/activity/video/paradigma',
+     'title':u'¿Que es un paradigma de programación? Primera versión de prueba.',
+      'type':u"video",
+     'url':u"http://www.youtube.com/embed/1SyVe0v0iVA?rel=0",
+     'youtube_id':'1SyVe0v0iVA',
+      'content' : u"""
+                <p>¿Que es un paradigma de programación? Primera versión de prueba.</p>
+                  """
+
+     },
+
+
+            {'_id':'/activity/video/pruebas',
+     'title':u'Ejercicios basados en pruebas',
+      'type':u"video",
+     'url':u"http://www.youtube.com/embed/6BL6P48r_9A?rel=0",
+     'youtube_id':'6BL6P48r_9A',
+      'content' : u"""
+                <p>Ejercicios basados en pruebas</p>
+                  """
+
+     },
+
+
+
+
+
+#    {'_id':'/activity/video/intro2',
+#     'title':u'Ejemplo de video',
+##     'type':u"video",
+#     'url':u"http://www.youtube.com/embed/qM5nKU40KVg?rel=0",
+ #    'youtube_id':'iUrrwxOG9uU',
+  #   'startSeconds':0,
+   #  'endSeconds':10,
+    #  'content' : u"""
+  #              <p> Este video salta a la siguiente actividad después de 10 segundos. </p>
+  #                """
+#
+#     },
 
     {'_id':'/test/demo',
       'title':u"Ejemplo de un Quiz",
@@ -399,8 +437,6 @@ class Test(unittest.TestCase):
         self.assertEqual(suma(3,9),12)
     def test_negativos(self):
         self.assertEqual(suma(5,-12),-7)
-"
-print json.dumps(result)
 """, "lang":"python", "type":"unit_test"  },
 
 
