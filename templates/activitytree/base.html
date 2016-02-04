@@ -329,14 +329,17 @@
 
 
 $(document).ready(function() {
-  $('.nav_prev').click(function() {
-    $('.nav_prev').hide(0);
-    $('.nav_next').hide(0);
+
+
+
+  $("#nav_form").submit(function(){
+    this.submit();
+    $("input[type=submit]").prop("disabled", true);
+    console.log("disabled");
+    return false;
   });
-  $('.nav_next').click(function() {
-    $('.nav_prev').hide(0);
-    $('.nav_next').hide(0);
-  });
+
+
 });
 
           {% else %}
