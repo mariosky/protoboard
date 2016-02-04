@@ -2,7 +2,6 @@
 
 {% block content %}
 
-        <h3 id="course-title">  Display Name                 <small id="course-url"> /activity/{{ course_id }}  </small>  </h3>
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -26,15 +25,6 @@
                       <li><a href="#">Actividad Quiz</a></li>
                   </ul>
               </li>
-            <li><button id="newContainerBtn" type="button" class="btn btn-default navbar-btn">New Container</button></li>
-            <li><button id="newActivityBt" type="button" class="btn btn-default navbar-btn">New Activity</button></li>
-            <li><button  id="saveChangesBtn" type="button" class="btn btn-default navbar-btn">Save</button></li>
-          </ul>
-
-           <ul class="nav navbar-nav navbar-right">
-           <li> <button id="courseSettingsBtn" type="button"  class="btn btn-default navbar-btn"><i class="fa fa-cog"></i> </button></li>
-           <li> <button id="courseCalendarBtn"  type="button" class="btn btn-default navbar-btn"><i class="fa fa-calendar"></i></button></li>
-           <li> <button id="courseDeleteBtn"  type="button" class="btn btn-default navbar-btn"><i class="fa fa-trash-o"></i></button></li>
            </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
@@ -121,7 +111,6 @@
  </li>
 
 </script>
-
 
 
 
@@ -779,7 +768,7 @@ $(document).ready(function(){
 
   });
 
-    function agregar(){
+function agregar(){
             var activity_template = $('#activity_template').html();
             Mustache.parse(activity_template);
             var activity_id = generateUUID();
@@ -801,144 +790,8 @@ $(document).ready(function(){
 </script>
 
 <!-- modal para actividad html -->
-<div class="modal fade" id="modalhtml">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Actividad</h4>
-            </div>
-            <div class="modal-body" >
-        <div class="form-group">
-          <input type="text" class="form-control hidden" id="containerId" placeholder="" required pattern="https?://.+" disabled>
-        </div>
-                <div class="form-group">
-                    <form id="forma" >{% csrf_token %}
-                        <div id="htmlForm">
-                        </div>
-                        <textarea name="contenthtml" rows="5"></textarea>
-                        <div class="modal-footer">
-                            <div class="form-group" align="center">
-                                <button id="_htmlActivity" type="submit" class="btn btn-default">Agregar</button>
-                                <button type="button" id="_htmlPreview" class="btn btn-default">Preview</button>
-                            </div>
-                        </div>
-                        </form>
-                        <script>
-
-                        $(function(){
-                            $('#htmlForm').load('/actividad #mstacheHtml', function(){
-                                var template1= document.getElementById('mstacheHtml').innerHTML;
-                                var output = Mustache.render(template1);
-                                $('#htmlForm').html(output);
-
-                            $( "#datepicker" ).datepicker();
-                            $( "#finalDate" ).datepicker();
-                            $("#forma").on('submit', function(e){
-                                var data= $(this).serializeArray();
-                            $.ajax({
-                                type: 'post',
-                                url: '/prueba',
-                                contentType: "application/json",
-                                data: JSON.stringify(data),
-                                success: function (data) {
-                                    agregar();
-                                    $('#forma')[0].reset();
-                                    $("#modalhtml").modal('hide');
-                                    console.log(learning_activities[0]);
-                                    },
-                                error: function(data){
-                                    $("#div1").html(data);
-                            }
-                        });
-                        e.preventDefault();
-                        });
-
-                                $("#_htmlPreview").click(function(){
-                                $.get("/prueba", function(data, status){
-                                    alert("Data:" + data + status)
-                            })
-                        });
-                            }
-                            );
-                        });
-
-                    </script>
-                   <!--</form>-->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
-<div class="modal fade" id="modalVideo">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content modal-lg">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Edit Container</h4>
-            </div>
-            <div class="modal-body">
-        <div class="form-group">
-          <input type="text" class="form-control hidden" id="containerId" placeholder="" required pattern="https?://.+" disabled>
-        </div>
-                <div class="form-group">
-                    <form id="formaVideo" >{% csrf_token %}
-                        <div id="videoForm">
-
-                        </div>
-                        <div class="modal-footer">
-                            <div class="form-group" align="center">
-                        <button id="_videoActivity" type="submit" class="btn btn-default">Agregar</button>
-                        <button type="button" id="_videoPreview" class="btn btn-default">Preview</button>
-                            </div>
-                        </div>
-                        <script>
-                            var view = {
-                                course_id: "{{ course_id }}"
-                            };
-                        $(function(){
-                            $('#videoForm').load('/actividad #mstacheVideo', function(){
-                                var template1= document.getElementById('mstacheVideo').innerHTML;
-                                var output = Mustache.render(template1, view);
-                                $('#videoForm').html(output);
-                            }
-                            );
-                        });
-
-                        $('#formaVideo').on('submit', function(e){
-                            tinymce.triggerSave();
-                            var data= $(this).serialize();
-                        $.ajax({
-                            type: 'post',
-                            url: '/prueba',
-                            data: data,
-                            success: function (data) {
-                                $("#div1").html(data);
-                                agregar();
-                                $('#formaVideo')[0].reset();
-                                $("#modalVideo").modal('hide');
-                            },
-                            error: function(data){
-                                $("#div1").html("wat" + data);
-                            }
-                        });
-                            e.preventDefault();
-                      });
-                        $("#_videoPreview").click(function(){
-                        $.get("/prueba", function(data, status){
-                            alert("Data:" + data + status)
-                            })
-                        });
-                    </script>
-                   </form>
-                </div>
-
-                </div>
-        </div>
-    </div>
-</div>
 
 <div class="modal fade" id="modalContainer">
   <div class="modal-dialog">

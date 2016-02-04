@@ -1,6 +1,6 @@
 
 
-<form id="hola">
+<form id="html">
 <div class="container" id="mstacheHtml">
      <h2> Ingresar informacion de actividad {{ course_id }}</h2>
      <div class="form-group">
@@ -28,15 +28,12 @@
      <div class="form-group">
          <input type="hidden" name="course_id" value="{{ course_id }}">
          <label for="activityName">Nombre de Actividad</label>
-         <input type="text" class="form-control" id="activityName" name="activityName" placeholder="Activity Name" required="true">
+         <input type="text" class="form-control" id="activityNameV" name="activityName" placeholder="Activity Name" required="true">
          <label for="activityTitle">Titulo de Actividad</label>
          <input type="text" class="form-control" id="activityTitle" placeholder="Titulo de actividad">
          <label for="activityDescription">Descripcion de la actividad</label>
-         <input type="text" class="form-control" id="activityDescription" name="activityDescription" placeholder="Ingrese la descripcion">
-         <label for="activityURL">Ingrese la direccion URL:</label>
-         <input type="text" id="activityURL" name="activityURL" class="form-control" placeholder="URL Video">
-         <div id="ytVideo">
-         <iframe></iframe>
+         <input type="text" class="form-control" id="activityDescription" rows="3" name="activityDescription" placeholder="Ingrese la descripcion">
+
          </div>
      </div>
 </div>

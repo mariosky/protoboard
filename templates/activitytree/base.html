@@ -91,6 +91,7 @@
 
             </li>
 
+
              <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Crear  <span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -98,7 +99,7 @@
             <li><a  href="/my_courses">Mis Cursos </a></li>
             <li role="separator" class="divider"></li>
             <li><a class="create-activity" href="#">Nueva Actividad</a></li>
-            <li><a href="#">Mis Actividades</a></li>
+            <li><a href="/activity-builder/1">Mis Actividades</a></li>
           </ul>
         </li>
 
@@ -211,7 +212,7 @@
     <script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.raty.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-    <script>tinymce.init({ selector:'textarea' });</script>
+    <script>tinymce.init({ selector:'tinytext', height:"220" });</script>
 
 <!-- endbuild -->
 
@@ -398,7 +399,7 @@ $('#rating-info').raty({
 
               $('body').on('click', '.create-activity', function() {
 
-      $('#modalCreateActivity').modal();
+      $('#modalChooseType').modal();
   });
 
     $('body').on('click', '#createActivityBtn', function(e){
@@ -406,15 +407,21 @@ $('#rating-info').raty({
         $('#modalCreateActivity').modal('hide');
     });
 
+     $('body').on('click', '#htmlBtn', function(e){
+        $('#modalChooseType').modal('hide');
+        $('#modalhtml').modal();
+    });
+
+     $('body').on('click', '#videoBtn', function(e){
+        $('#modalChooseType').modal('hide');
+        $('#modalvideo').modal();
+     });
 
         {% else %}
 
         {% endif %}
 
-
     </script>
-
-
 
 
   {% block scripts %}
@@ -468,46 +475,179 @@ $('#rating-info').raty({
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-  <div class="modal fade" id="modalCreateActivity" >
+  <div class="modal fade" id="modalChooseType">
   <div class="modal-dialog">
     <div class="modal-content">
-       <form action="/activity-builder/1" method="post">{% csrf_token %}
         <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Create Activity</h4>
+        <h4 class="modal-title">Tipo de actividad</h4>
       </div>
-
-
       <div class="modal-body">
 
-        <div class="form-group">
-          <input type="text" class="form-control hidden" id="containerId" placeholder="" required pattern="https?://.+" disabled>
+        <div class="form-group" align="center">
+            <button type="button" id="htmlBtn"  class="btn btn-primary">HTML</button>
+            <button type="button" id="videoBtn" class="btn btn-primary">Video</button>
         </div>
-
-        <div class="form-group">
-          <label for="containerName">Display Name</label>
-          <input type="text" name="course_id" class="form-control" id="containerName" placeholder="" required='true'>
-        </div>
-
-        <div class="form-group">
-          <div class="checkbox">
-            <label> <input id="containerIsVisible" type="checkbox"> Public </label>
-          </div>
-
-        </div>
-
 
       </div><!-- /.modal-body -->
-
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button id="createActivityBtn" type="submit" class="btn btn-primary">Create</button>
-      </div>
-           </form>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
+
+
+<div class="modal fade" id="modalvideo">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit Container</h4>
+            </div>
+            <div class="modal-body">
+        <div class="form-group">
+          <input type="text" class="form-control hidden" id="containerId" placeholder="" required pattern="https?://.+" disabled>
+        </div>
+                <div class="form-group">
+                    <form id="formaVideo" >{% csrf_token %}
+                        <input type="hidden" name="course_id" value="{{ course_id }}">
+                        <label for="activityName">Nombre de Actividad</label>
+                        <input type="text" class="form-control" id="activityNameV" name="activityName" placeholder="Activity Name" required="true">
+                        <label for="activityTitle">Titulo de Actividad</label>
+                        <input type="text" class="form-control" id="activityTitle" placeholder="Titulo de actividad">
+                        <label for="activityDescription">Descripcion de la actividad</label>
+                        <input type="text" class="form-control" id="activityDescription" name="activityDescription" placeholder="Ingrese la descripcion">
+                        <div id="videoForm">
+                        </div>
+                        <label for="activityURL">Ingrese la direccion URL:</label>
+                        <input type="text" id="activityURL" name="activityURL" class="form-control" placeholder="URL Video"><br>
+                        <div id="ytVideo" align="center">
+
+                        </div>
+                        <div class="modal-footer">
+                            <div class="form-group" align="center">
+                        <button id="_videoActivity" type="submit" class="btn btn-default">Agregar</button>
+                        <button type="button" id="_videoPreview" class="btn btn-default">Preview</button>
+                            </div>
+                        </div>
+                        <script>
+
+                        function loadVideo() {
+                            var url = $('#activityURL').val();
+                            var urlchange = url.replace('https://www.youtube.com/watch?v=', 'http://www.youtube.com/embed/');
+                            var htm = '<iframe width="425" height="300" src="' + urlchange + '?rel=0" frameborder="0" allowfullscreen ></iframe>';
+                                $('#ytVideo').html(htm);
+                            return false;
+                        }
+
+                        $(function () {
+                            $('#activityURL').on('change', loadVideo)
+                         });
+
+                        $('#formaVideo').on('submit', function(e){
+                            var data= $(this).serialize();
+                        $.ajax({
+                            type: 'post',
+                            url: '/prueba',
+                            contentType: "application/json",
+                            data: JSON.stringify(data),
+                            success: function (data) {
+                                //agregar();
+                                $('#formaVideo')[0].reset();
+                                $("#modalvideo").modal('hide');
+                                console.log(data);
+                            },
+                            error: function(data) {
+                                console.log("Error");
+                            }
+                        });
+                            e.preventDefault();
+                      });
+                        $("#_videoPreview").click(function(){
+                        $.get("/prueba", function(data, status){
+                            alert("Data:" + data + status)
+                            })
+                        });
+                    </script>
+                   </form>
+                </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <div class="modal fade" id="modalhtml">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Actividad</h4>
+            </div>
+            <div class="modal-body" >
+        <div class="form-group">
+          <input type="text" class="form-control hidden" id="containerId" placeholder="" required pattern="https?://.+" disabled>
+        </div>
+                <div class="form-group">
+                    <form id="forma" >{% csrf_token %}
+                        <h2> Ingresar informacion de actividad {{ course_id }}</h2>
+                        <div class="form-group">
+                            <input type="hidden" id="_id" name="_id" value="/activity/">
+                            <label for="activityTitle">Titulo de Actividad</label>
+                            <input type="text" class="form-control" id="activityTitle" placeholder="Titulo de actividad" required="true">
+                            <label for="activityDescription">Descripcion de la actividad</label>
+                            <input type="text" class="form-control" id="activityDescription" name="activityDescription" placeholder="Ingrese la descripcion"><br>
+                            <input type="hidden" id="type" name="type" value="htmlActivity">
+                            <input type="hidden" id="author" name="author" value="{{ user.first_name }}">
+                            <label for="contenthtml">Contenido</label>
+                            <tinytext name="contenthtml" id="contenthtml" rows="40"></tinytext>
+                            <div class="modal-footer">
+                                <div class="form-group" align="center">
+                                    <button id="_htmlActivity" type="submit" class="btn btn-default">Agregar</button>
+                                    <button type="button" id="_htmlPreview" class="btn btn-default">Preview</button>
+                                </div>
+                            </div>
+                    </form>
+                        <script>
+
+                        $(function(){
+                            $("#forma").on('submit', function(e){
+                                tinyMCE.triggerSave();
+                                var data= $(this).serializeArray();
+                            $.ajax({
+                                type: 'post',
+                                url: '/prueba',
+                                contentType: "application/json",
+                                data: JSON.stringify(data),
+                                success: function (data) {
+                                    //agregar();
+                                    $("#div1").html(data);
+                                    $('#forma')[0].reset();
+                                    $("#modalhtml").modal('hide');
+                                    console.log(data);
+                                    },
+                                error: function(data){
+                                    $("#div1").html(data);
+                            }
+                        });
+                        e.preventDefault();
+                        });
+
+                                $("#_htmlPreview").click(function(){
+                                $.get("/prueba", function(data, status){
+                                    alert("Data:" + data + status)
+                            })
+                        });
+
+                        });
+
+                    </script>
+                   <!--</form>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
 
 
 <!-- Modal -->

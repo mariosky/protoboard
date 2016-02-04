@@ -138,12 +138,9 @@ def actividad(request,course_id):
     #GET:
     #Edit course
     elif request.method == 'GET':
-        if course_id :
-
-            course = get_activity_tree(course_id)
-            return HttpResponse(json.dumps(course), content_type='application/javascript')
-        else:
-            return HttpResponseNotFound('<h1>Course ID not Found</h1>')
+        return render_to_response('activitytree/activity_builder.html', context_instance=RequestContext(request))
+    else:
+        return HttpResponseNotFound('<h1>Course ID not Found</h1>')
 
 
 
