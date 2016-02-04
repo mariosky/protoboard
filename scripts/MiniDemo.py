@@ -95,9 +95,7 @@ video = LearningActivity( name = 'Video',
     uri = "/activity/video/intro",
     parent = recursos, root  = Demo,
     description = u"""Ejemplo de video, al llegar a los 15 segundos se salta a la siguiente actividad.""",
-
     pre_condition_rule = "",
-
     is_container = False,
     is_visible = True,
     order_in_container = 0
