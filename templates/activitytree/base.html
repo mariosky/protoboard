@@ -334,7 +334,8 @@ $(document).ready(function() {
 
   $("#nav_form").submit(function(){
     this.submit();
-    $("input[type=submit]").prop("disabled", true);
+    $(".nav_next").prop("disabled", true);
+      $(".nav_prev").prop("disabled", true);
     console.log("disabled");
     return false;
   });
