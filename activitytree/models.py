@@ -28,11 +28,8 @@ class UserProfile(models.Model):
 class LearningActivity(models.Model):
     """ Esta clase implementa los nodos del arbol de actividades """
     name = models.CharField(max_length=128)
-    heading = models.CharField(max_length=128,blank=True)
-    secondary_text = models.CharField(max_length=128,blank=True)
     description = models.TextField(blank=True)
     image = models.URLField(blank=True)
-    slug = models.SlugField(blank=True)
 
     uri = models.URLField(blank=True)
     lom = models.URLField(blank=True)

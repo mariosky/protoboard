@@ -179,11 +179,8 @@
     var LearningActivity = function (uri, is_container)
     {
       this.name = "New Name";
-      this.heading = "";
-      this.secondary_text = "";
       this.description = "";
       this.image =  "";
-      this.slug = "";
       this.uri =  uri;
       this.lom = null;
       this.pre_condition_rule  =  null;
@@ -639,11 +636,8 @@ function get_course() {
       }
 
       $('#containerName').val(learning_activity.name);
-      $('#containerSecondaryText').val(learning_activity.secondary_text);
-      $('#containerHeading').val(learning_activity.heading);
       $('#containerDescription').val(learning_activity.description);
       $('#containerImage').val(learning_activity.image);
-      $('#containerSlug').val(learning_activity.slug);
       $('#containerId').val(container_id);
       $('#changeURI').val(learning_activity.uri);
 
@@ -668,11 +662,8 @@ function get_course() {
 
       var container_id  = $('#containerId').val();
       learning_activities[container_id].name = $('#containerName').val();
-      learning_activities[container_id].secondary_text =  $('#containerSecondaryText').val();
-      learning_activities[container_id].heading = $('#containerHeading').val();
       learning_activities[container_id].description=$('#containerDescription').val();
       learning_activities[container_id].image=$('#containerImage').val();
-      learning_activities[container_id].slug=$('#containerSlug').val();
       learning_activities[container_id].uri =  $('#changeURI').val();
 
 
@@ -875,19 +866,8 @@ function get_course() {
           <label for="containerName">Display Name</label>
           <input type="text" class="form-control" id="containerName" placeholder="Container Name">
         </div>
-        <div class="form-group">
-          <label for="containerSlug">Slug</label>
-          <input type="url" class="form-control" id="containerSlug" placeholder="" required pattern="https?://.+">
-        </div>
 
-        <div class="form-group">
-          <label for="containerHeading">Header</label>
-          <input type="url" class="form-control" id="containerHeading" placeholder="" required pattern="https?://.+">
-        </div>
-        <div class="form-group">
-          <label for="containerSecondaryText">Secondary Text</label>
-          <input type="url" class="form-control" id="containerSecondaryText" placeholder="" required pattern="https?://.+">
-        </div>
+
         <div class="form-group">
           <label for="containerDescription">Description</label>
           <textarea class="form-control" id="containerDescription" rows="3"></textarea>

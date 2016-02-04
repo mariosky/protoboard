@@ -189,7 +189,7 @@
                     icon.icon = "fa fa-check"
                 }
             children[children.length] =  {
-                heading: this.getAttribute("heading"),
+                heading: this.getAttribute("name"),
                 uri:uri_string,
                 icon:icon.icon,
                 disabled:(this.getAttribute("pre_condition")=="disabled"),
@@ -286,7 +286,7 @@
 
 
                     rendered = Mustache.render(progress_template, {
-                        heading: this.getAttribute("heading"),
+                        heading: this.getAttribute("name"),
                         uri: this.getAttribute("uri"),
                         icon: icon,
                         item_class:item_class,
