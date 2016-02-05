@@ -249,7 +249,7 @@
                     icon.icon = icon.icon + " fa fa-check"
                     }
                 children[children.length] =  {
-                    heading: this.getAttribute("heading"),
+                    heading: this.getAttribute("name"),
                     uri:uri_string,
                     path_id: this.getAttribute("id"),
                     icon:icon.icon,
@@ -295,7 +295,7 @@
                             template = container_template;
 
                         rendered = Mustache.render(template, {
-                            name: this.getAttribute("heading"),
+                            name: this.getAttribute("name"),
                             uri: uri_string,
                             path_id:this.getAttribute("id"),
                             icon: "fa fa-folder-open",
@@ -327,7 +327,7 @@
 
 
                         rendered = Mustache.render(template, {
-                            name: this.getAttribute("heading"),
+                            name: this.getAttribute("name"),
                             uri: uri_string,
                             icon: activity_type.icon,
                             image: this.getAttribute("image"),
@@ -372,12 +372,12 @@
                                     template = container_template;
 
                                 rendered = Mustache.render(template, {
-                                    name: this.getAttribute("heading"),
+                                    name: this.getAttribute("name"),
                                     uri: uri_string,
                                     icon: "fa fa-folder-open",
                                     image: this.getAttribute("image"),
                                     description: this.getAttribute("description"),
-                                    activity_type: this.getAttribute("secondary_text"),
+                                    activity_type: activity_type.activity_type,
                                     id: this.getAttribute("activity"),
                                     path_id: this.getAttribute("id"),
                                     rating: recommended_value,
@@ -404,7 +404,7 @@
 
 
                                 rendered = Mustache.render(template, {
-                                            name: this.getAttribute("heading"),
+                                            name: this.getAttribute("name"),
                                             uri: uri_string,
                                             icon: activity_type.icon,
                                             image: this.getAttribute("image"),

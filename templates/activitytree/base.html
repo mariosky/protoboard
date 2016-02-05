@@ -329,14 +329,18 @@
 
 
 $(document).ready(function() {
-  $('.previous').click(function() {
-    $('.previous').hide(0);
-    $('.next').hide(0);
+
+
+
+  $("#nav_form").submit(function(){
+    this.submit();
+    $(".nav_next").prop("disabled", true);
+      $(".nav_prev").prop("disabled", true);
+    console.log("disabled");
+    return false;
   });
-  $('.next').click(function() {
-    $('.previous').hide(0);
-    $('.next').hide(0);
-  });
+
+
 });
 
           {% else %}

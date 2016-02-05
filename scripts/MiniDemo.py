@@ -21,7 +21,7 @@ from activitytree.interaction_handler import SimpleSequencing
 
 LearningActivity.objects.all().delete()
 
-Demo = LearningActivity( name = 'Protoboard 101', slug = 'Demo',
+Demo = LearningActivity( name = 'Protoboard 101',
     uri = "/activity/demo",
     parent = None,
     root   = None,
@@ -52,11 +52,10 @@ auth.save()
 
 preliminar = LearningActivity(
     name = 'El secuenciado simple',
-    slug = 'Preliminar',
+
     uri = "/activity/SecuenciadoSimple",
 #   lom =
     parent = Demo, root   = Demo,
-    heading="1. Secuenciado simple",
     description = u"""Protoboard utiliza reglas para el secuenciado de actividades de aprendizaje. Aquí se explica de que se trata. De hecho hay una regla que estipula que no puedes visitar la actividad siguiente hasta ver esta.""",
     image = "https://s3.amazonaws.com/learning-python/IntroVideo.png",
 
@@ -70,12 +69,11 @@ preliminar = LearningActivity(
     )
 preliminar.save()
 
-recursos = LearningActivity( name = 'Recursos', slug = 'Recursos',
+recursos = LearningActivity( name = 'Recursos',
     uri = "/activity/Recursos",
 #   lom =
     parent = Demo, root  = Demo,
-    heading="2. Recursos",
-    secondary_text = "Contenedor",
+
     description = u"""Este es un contenedor con varias actividades, estará deshabilitado hasta que visites la actividad Secuenciado Simple.""",
 
     pre_condition_rule = """
@@ -93,24 +91,20 @@ else:
 recursos.save()
 
 
-video = LearningActivity( name = 'Video', slug = '',
+video = LearningActivity( name = 'Video',
     uri = "/activity/video/intro",
     parent = recursos, root  = Demo,
-    heading="Ejemplo de Video",
     description = u"""Ejemplo de video, al llegar a los 15 segundos se salta a la siguiente actividad.""",
-
     pre_condition_rule = "",
-
     is_container = False,
     is_visible = True,
     order_in_container = 0
     )
 video.save()
 
-test = LearningActivity( name = 'Quiz', slug = '',
+test = LearningActivity( name = 'Quiz',
     uri = "/test/demo",
     parent = recursos, root  = Demo,
-    heading="Ejemplo de un Quiz",
     description = u"""Máximo 4 intentos.""",
 
     pre_condition_rule = "",
@@ -122,12 +116,10 @@ test = LearningActivity( name = 'Quiz', slug = '',
 test.save()
 
 
-programas = LearningActivity( name = 'Ejercicios de Programación', slug = '',
+programas = LearningActivity( name = 'Ejercicios de Programación',
     uri = "/activity/Ejercicios",
 #   lom =
     parent = Demo, root  = Demo,
-    heading="3. Ejercicios",
-    secondary_text = "Contenedor",
     description = u"""Ejemplos de los distintos lenguajes de programación, con los que se pueden hacer ejercicios""",
 
     pre_condition_rule = "",
@@ -142,10 +134,9 @@ programas = LearningActivity( name = 'Ejercicios de Programación', slug = '',
 programas.save()
 
 
-csharp = LearningActivity( name = 'CSharp', slug = '',
+csharp = LearningActivity( name = 'CSharp',
     uri = "/program/csharp/1",
     parent = programas, root  = Demo,
-    heading="C#",
     description = u"""C# es un lenguaje de programación orientado a objetos desarrollado y estandarizado por Microsoft como parte de su plataforma .NET""",
     choice_exit = False,
     is_container = False,
@@ -154,10 +145,9 @@ csharp = LearningActivity( name = 'CSharp', slug = '',
     )
 csharp.save()
 
-javascript = LearningActivity( name = 'Javascript', slug = '',
+javascript = LearningActivity( name = 'Javascript',
     uri = "/program/js/1",
     parent = programas, root  = Demo,
-    heading="javascript",
     description = u"""es un lenguaje de programación interpretado, dialecto del estándar ECMAScript. Se define como orientado a objetos,3 basado en prototipos, imperativo, débilmente tipado y dinámico.""",
     choice_exit = False,
     is_container = False,
@@ -167,10 +157,9 @@ javascript = LearningActivity( name = 'Javascript', slug = '',
 javascript.save()
 
 
-Java = LearningActivity( name = 'Java', slug = '',
+Java = LearningActivity( name = 'Java',
     uri = "/program/java/1",
     parent = programas, root  = Demo,
-    heading="Java",
     description = u"""Su intención es permitir que los desarrolladores de aplicaciones escriban el programa una vez y lo ejecuten en cualquier dispositivo""",
     choice_exit = False,
     is_container = False,
@@ -180,10 +169,9 @@ Java = LearningActivity( name = 'Java', slug = '',
 Java.save()
 
 
-JQuery= LearningActivity( name = 'jQuery', slug = '',
+JQuery= LearningActivity( name = 'jQuery',
     uri = "/program/js/2",
     parent = programas, root  = Demo,
-    heading="jQuery",
     description = u"""jQuery es una biblioteca de JavaScript, creada inicialmente por John Resig, que permite simplificar la manera de interactuar con los documentos HTML, manipular el árbol DOM, manejar eventos, desarrollar animaciones y agregar interacción con la técnica AJAX a páginas web.""",
     choice_exit = False,
     is_container = False,
@@ -192,10 +180,9 @@ JQuery= LearningActivity( name = 'jQuery', slug = '',
     )
 JQuery.save()
 
-Py = LearningActivity( name = 'Python', slug = '',
+Py = LearningActivity( name = 'Python',
     uri = "/program/suma/3",
     parent = programas, root  = Demo,
-    heading="Python",
     description = u"""Es un lenguaje interpretado, usa tipado dinámico y es multiplataforma. Debes completar la actividad de JQuery para desbloquear esta actividad.""",
     choice_exit = False,
     pre_condition_rule = """

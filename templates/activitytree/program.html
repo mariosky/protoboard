@@ -243,7 +243,8 @@ $(document).ready(function() {
                     "keypresses": keypresses, "mousepresses": mousepresses, "mousemovement": mouse }),
                     dataType: "json",
                     success: function(data, textStatus, jqXHR) {
-
+                            // TO DO:
+                            // Avisar que ya se envió la tarea al servidor exitósamente
 
                             task_id =data.id;
                             number_of_tries=0;
@@ -255,8 +256,18 @@ $(document).ready(function() {
 
                         },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        alert ("Error:" + textStatus+" "+errorThrown+" "+jqXHR.responseText);
+
+                        alert ("Lo sentimos, hubo un error al enviar tu programa al servidor. El error fué (en lenguaje informático): " +errorThrown);
+                        $("#sendButton").button('reset');
+
+                        },
+                    fail: function(xhr, textStatus, errorThrown) {
+                        alert ("Lo sentimos, hubo un error al enviar tu programa al servidor.. El error fué (en lenguaje informático): "+errorThrown);
+                        $("#sendButton").button('reset');
+
                         }
+
+
                     });
      });
 
@@ -378,7 +389,24 @@ $(document).ready(function() {
                    }
                }
             },
-            timeout: 5000 });
+            timeout: 5000,
+            error: function(jqXHR, textStatus, errorThrown) {
+
+                        alert ("Lo sentimos, hubo un error al recibir el resultado de la ejecución. El error fué (en lenguaje informático): " +errorThrown);
+                        $("#sendButton").button('reset');
+                        $("#result_panel_body").html("");
+                        $('#main_tab a[href="#instrucciones"]').tab('show');
+
+                        },
+                    fail: function(xhr, textStatus, errorThrown) {
+                        alert ("Lo sentimos, hubo un error al recibir el resultado de la ejecución. El error fué (en lenguaje informático): " +errorThrown);
+                        $("#sendButton").button('reset');
+                        $("#result_panel_body").html("");
+                        $('#main_tab a[href="#instrucciones"]').tab('show');
+
+                        }
+
+        });
     };
 
   });

@@ -215,7 +215,7 @@ def sql(root_id,user_id):
     query= """
 WITH RECURSIVE nodes_cte AS (
 SELECT 	n.id, n.parent_id, n.name, n.id::TEXT AS path,
-		n.heading, n.secondary_text, n.description, n.image, n.slug, n.uri, n.lom, n.root_id,
+		n.description, n.image,  n.uri, n.lom, n.root_id,
 		n.pre_condition_rule,
 		n.choice_exit, n.attempt_limit, n.available_from,
 		n.available_until, n.is_container, n.is_visible, n.order_in_container
@@ -223,7 +223,7 @@ FROM activitytree_learningactivity AS n
 WHERE n.parent_id = %s
 	UNION ALL
 SELECT 	c.id, c.parent_id, c.name, c.id::TEXT AS path,
-		c.heading, c.secondary_text, c.description, c.image, c.slug, c.uri, c.lom, c.root_id,
+		c.description, c.image,  c.uri, c.lom, c.root_id,
 		c.pre_condition_rule,
 		c.choice_exit, c.attempt_limit, c.available_from,
 		c.available_until, c.is_container, c.is_visible, c.order_in_container
@@ -232,7 +232,7 @@ WHERE c.parent_id = p.id
 )
 (
 SELECT  la.id, parent_id, name, ''as path,
-		heading, secondary_text, description, image, slug, uri, lom, root_id,
+		 description, image, uri, lom, root_id,
 		pre_condition_rule,
 		choice_exit, attempt_limit, available_from,
 		available_until, is_container, is_visible, order_in_container,
@@ -247,7 +247,7 @@ WHERE la.id = %s
 
 UNION ALL
 SELECT  nd.id, parent_id, name,path,
-		heading, secondary_text, description, image, slug, uri, lom, root_id,
+		description, image,  uri, lom, root_id,
 		pre_condition_rule,
 		choice_exit, attempt_limit, available_from,
 		available_until, is_container, is_visible, order_in_container,
@@ -280,7 +280,7 @@ def sql_activity_tree(root_id):
     query= """
 WITH RECURSIVE nodes_cte AS (
 SELECT 	n.id, n.parent_id, n.name, n.id::TEXT AS path,
-		n.heading, n.secondary_text, n.description, n.image, n.slug, n.uri, n.lom, n.root_id,
+	    n.description, n.image, n.uri, n.lom, n.root_id,
 		n.pre_condition_rule,
 		n.choice_exit, n.attempt_limit, n.available_from,
 		n.available_until, n.is_container, n.is_visible, n.order_in_container
@@ -288,7 +288,7 @@ FROM activitytree_learningactivity AS n
 WHERE n.id = %s
 	UNION ALL
 SELECT 	c.id, c.parent_id, c.name, path || '|'|| c.id::TEXT  AS path ,
-		c.heading, c.secondary_text, c.description, c.image, c.slug, c.uri, c.lom, c.root_id,
+	 c.description, c.image, c.uri, c.lom, c.root_id,
 		c.pre_condition_rule,
 		c.choice_exit, c.attempt_limit, c.available_from,
 		c.available_until, c.is_container, c.is_visible, c.order_in_container
