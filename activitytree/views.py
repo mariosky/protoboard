@@ -9,7 +9,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.template import RequestContext
 from django.db import transaction
 from django.http import JsonResponse
-
+from pymongo import MongoClient
 from django.core.urlresolvers import reverse
 
 import logging
@@ -118,23 +118,23 @@ def course(request,course_id= None):
 def prueba(request):
     if request.is_ajax():
         if request.method == 'POST':
-            message = json.dumps(request.body)
+            actividad = json.loads(request.body)
+            client = MongoClient(settings.MONGO_DB)
+            db = client.protoboard_database
+
+            activities_collection = db.activities_collection
+            activities_collection.insert(actividad)
+            return HttpResponse(json.dumps(actividad))
+        elif request.method == 'GET':
             return HttpResponse(message)
-        else:
-            message = "nope"
         return HttpResponse(message)
 
 
-def actividad(request,course_id):
 
+@login_required()
+def activity_builder(request):
     if request.method == 'POST':
-        if 'course_id' in request.POST:
-            return render_to_response('activitytree/activity_builder.html',
-                {'user_name':None, 'course_id': request.POST['course_id']
-                },
-                    context_instance=RequestContext(request))
-        else:
-            return HttpResponseNotFound('<h1>Course ID not Found</h1>')
+        return HttpResponse('Error')
     #GET:
     #Edit course
     elif request.method == 'GET':
@@ -1133,6 +1133,13 @@ def google_link(request):
 
 def get_activities(request):
     activities = Activity.get_all()
+    json_docs = [doc for doc in activities]
+    return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+
+@login_required
+def my_activities(request):
+    user = request.GET['user']
+    activities = Activity.get_by_user(user)
     json_docs = [doc for doc in activities]
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 

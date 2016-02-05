@@ -98,7 +98,7 @@
             <li><a  href="/my_courses">Mis Cursos </a></li>
             <li role="separator" class="divider"></li>
             <li><a class="create-activity" href="#">Nueva Actividad</a></li>
-            <li><a href="/activity-builder/1">Mis Actividades</a></li>
+            <li><a href="/activitybuilder">Mis Actividades</a></li>
           </ul>
         </li>
 
@@ -424,7 +424,24 @@ $('#rating-info').raty({
 
         {% endif %}
 
+  function indexdata(data){
+      var indexed = {};
+      $.map(data, function(n, i){
+          indexed[n['name']] = n['value'];
+      });
+      if (indexed['type'] == 'video'){
+          indexed['_id'] = '/activity/video/'+ indexed['title'].replace(/ /g, '_');
+          indexed['content'] = indexed['content1'];
+          delete indexed['content1'];
+      }
+      else if (indexed['type'] == 'text'){
+          indexed['_id'] = '/activity/'+ indexed['title'].replace(/ /g, '_');
+      }
+      else{
 
+      }
+      return indexed
+  }
     </script>
 
 
@@ -514,17 +531,19 @@ $('#rating-info').raty({
         </div>
                 <div class="form-group">
                     <form id="formaVideo" >{% csrf_token %}
-                        <input type="hidden" name="course_id" value="{{ course_id }}">
-                        <label for="activityName">Nombre de Actividad</label>
-                        <input type="text" class="form-control" id="activityNameV" name="activityName" placeholder="Activity Name" required="true">
-                        <label for="activityTitle">Titulo de Actividad</label>
-                        <input type="text" class="form-control" id="activityTitle" placeholder="Titulo de actividad">
-                        <label for="activityDescription">Descripcion de la actividad</label>
-                        <input type="text" class="form-control" id="activityDescription" name="activityDescription" placeholder="Ingrese la descripcion">
+                        <input type="hidden" name="_id" value="">
+                        <label for="title">Nombre de Actividad</label>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="Activity Name" required="true">
+                        <label for="content1">Descripcion de la actividad</label>
+                        <input type="text" class="form-control" id="content1" name="content1" placeholder="Ingrese la descripcion">
+                        <input type="hidden" id="type" name="type" value="video">
+                        <input type="hidden" id="author" name="author" value="{{ user.email }}">
+                        <input type="hidden" id="youtube_id" name="youtube_id">
+                        <input type="hidden" id="icon" name="icon" value="youtube-play">
                         <div id="videoForm">
                         </div>
-                        <label for="activityURL">Ingrese la direccion URL:</label>
-                        <input type="text" id="activityURL" name="activityURL" class="form-control" placeholder="URL Video"><br>
+                        <label for="url">Ingrese la direccion URL:</label>
+                        <input type="text" id="url" name="url" class="form-control" placeholder="URL Video"><br>
                         <div id="ytVideo" align="center">
 
                         </div>
@@ -537,35 +556,39 @@ $('#rating-info').raty({
                         <script>
 
                         function loadVideo() {
-                            var url = $('#activityURL').val();
+                            var url = $('#url').val();
                             var urlchange = url.replace('https://www.youtube.com/watch?v=', 'http://www.youtube.com/embed/');
+                            var vid_id=url.replace('https://www.youtube.com/watch?v=','');
+                            $('#youtube_id').val(vid_id);
                             var htm = '<iframe width="425" height="300" src="' + urlchange + '?rel=0" frameborder="0" allowfullscreen ></iframe>';
                                 $('#ytVideo').html(htm);
                             return false;
                         }
 
                         $(function () {
-                            $('#activityURL').on('change', loadVideo)
+                            $('#url').on('change', loadVideo)
                          });
 
                         $('#formaVideo').on('submit', function(e){
-                            var data= $(this).serialize();
+                            var data= $(this).serializeArray();
+                            data=indexdata(data);
+                            console.log(data);
                         $.ajax({
                             type: 'post',
                             url: '/prueba',
                             contentType: "application/json",
                             data: JSON.stringify(data),
                             success: function (data) {
-                                //agregar();
+                                alert("Actividad agregada");
                                 $('#formaVideo')[0].reset();
                                 $("#modalvideo").modal('hide');
                                 console.log(data);
                             },
                             error: function(data) {
-                                console.log("Error");
+                                alert("Error");
                             }
                         });
-                            e.preventDefault();
+                        e.preventDefault();
                       });
                         $("#_videoPreview").click(function(){
                         $.get("/prueba", function(data, status){
@@ -595,17 +618,18 @@ $('#rating-info').raty({
         </div>
                 <div class="form-group">
                     <form id="forma" >{% csrf_token %}
-                        <h2> Ingresar informacion de actividad {{ course_id }}</h2>
+                        <h2> Ingresar informacion de actividad</h2>
                         <div class="form-group">
-                            <input type="hidden" id="_id" name="_id" value="/activity/">
-                            <label for="activityTitle">Titulo de Actividad</label>
-                            <input type="text" class="form-control" id="activityTitle" placeholder="Titulo de actividad" required="true">
-                            <label for="activityDescription">Descripcion de la actividad</label>
-                            <input type="text" class="form-control" id="activityDescription" name="activityDescription" placeholder="Ingrese la descripcion"><br>
-                            <input type="hidden" id="type" name="type" value="htmlActivity">
-                            <input type="hidden" id="author" name="author" value="{{ user.first_name }}">
-                            <label for="contenthtml">Contenido</label>
-                            <tinytext name="contenthtml" id="contenthtml" rows="40"></tinytext>
+                            <input type="hidden" id="_id" name="_id" value="">
+                            <label for="title">Titulo de Actividad</label>
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Titulo de actividad" required="true">
+                            <label for="description">Descripcion de la actividad</label>
+                            <input type="text" class="form-control" id="description" name="description" placeholder="Ingrese la descripcion"><br>
+                            <input type="hidden" id="type" name="type" value="text">
+                            <input type="hidden" id="author" name="author" value="{{ user.email }}">
+                            <input type="hidden" id="icon" name='icon' value="file">
+                            <label for="content">Contenido</label>
+                            <tinytext name="content" id="content"></tinytext>
                             <div class="modal-footer">
                                 <div class="form-group" align="center">
                                     <button id="_htmlActivity" type="submit" class="btn btn-default">Agregar</button>
@@ -619,20 +643,21 @@ $('#rating-info').raty({
                             $("#forma").on('submit', function(e){
                                 tinyMCE.triggerSave();
                                 var data= $(this).serializeArray();
+                                data=indexdata(data);
+                                console.log(data);
                             $.ajax({
                                 type: 'post',
                                 url: '/prueba',
                                 contentType: "application/json",
                                 data: JSON.stringify(data),
                                 success: function (data) {
-                                    //agregar();
-                                    $("#div1").html(data);
+                                    alert("Actividad agregada");
                                     $('#forma')[0].reset();
                                     $("#modalhtml").modal('hide');
                                     console.log(data);
                                     },
                                 error: function(data){
-                                    $("#div1").html(data);
+                                    alert("Error. La actividad no se agrego");
                             }
                         });
                         e.preventDefault();
