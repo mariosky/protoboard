@@ -432,6 +432,7 @@ $('#rating-info').raty({
       if (indexed['type'] == 'video'){
           indexed['_id'] = '/activity/video/'+ indexed['title'].replace(/ /g, '_');
           indexed['content'] = indexed['content1'];
+          indexed['description'] = indexed['content'];
           delete indexed['content1'];
       }
       else if (indexed['type'] == 'text'){
@@ -442,6 +443,30 @@ $('#rating-info').raty({
       }
       return indexed
   }
+
+   function check(valor){
+
+       $.ajax({
+           type: 'get',
+           url: '/get_activity',
+           data: { valor: valor},
+           success: function (data) {
+               var obj =jQuery.parseJSON(data);
+               console.log(obj);
+               if (jQuery.isEmptyObject(obj)){
+                   console.log("No existe")
+               }
+               else{
+                   alert("Nombre de actividad ya existe")
+               }
+           },
+           error: function (data){
+               console.log("Error")
+           }
+       });
+
+   }
+
     </script>
 
 
@@ -533,7 +558,7 @@ $('#rating-info').raty({
                     <form id="formaVideo" >{% csrf_token %}
                         <input type="hidden" name="_id" value="">
                         <label for="title">Nombre de Actividad</label>
-                        <input type="text" class="form-control" id="title" name="title" placeholder="Activity Name" required="true">
+                        <input type="text" class="form-control" id="titleVideo" name="title" placeholder="Activity Name" required="true">
                         <label for="content1">Descripcion de la actividad</label>
                         <input type="text" class="form-control" id="content1" name="content1" placeholder="Ingrese la descripcion">
                         <input type="hidden" id="type" name="type" value="video">
@@ -569,6 +594,12 @@ $('#rating-info').raty({
                             $('#url').on('change', loadVideo)
                          });
 
+                        $(function () {
+                                $('#titleVideo').on('change', function(){
+                                    check(this.value);
+                                })
+                            });
+
                         $('#formaVideo').on('submit', function(e){
                             var data= $(this).serializeArray();
                             data=indexdata(data);
@@ -585,7 +616,12 @@ $('#rating-info').raty({
                                 console.log(data);
                             },
                             error: function(data) {
-                                alert("Error");
+                                if (data){
+                                        if (data.name == 'errmsg' && data.code== 11000){
+                                            alert("Error. Intente otro nombre para su actividad");
+                                            }
+                                        return alert("Error. La actividad no se agrego")
+                                     }
                             }
                         });
                         e.preventDefault();
@@ -622,7 +658,7 @@ $('#rating-info').raty({
                         <div class="form-group">
                             <input type="hidden" id="_id" name="_id" value="">
                             <label for="title">Titulo de Actividad</label>
-                            <input type="text" class="form-control" id="title" name="title" placeholder="Titulo de actividad" required="true">
+                            <input type="text" class="form-control" id="titleHtml" name="title" placeholder="Titulo de actividad" required="true">
                             <label for="description">Descripcion de la actividad</label>
                             <input type="text" class="form-control" id="description" name="description" placeholder="Ingrese la descripcion"><br>
                             <input type="hidden" id="type" name="type" value="text">
@@ -639,7 +675,15 @@ $('#rating-info').raty({
                     </form>
                         <script>
 
+
+
                         $(function(){
+                             $(function () {
+                                $('#titleHtml').on('change', function(){
+                                    check(this.value);
+                                })
+                            });
+
                             $("#forma").on('submit', function(e){
                                 tinyMCE.triggerSave();
                                 var data= $(this).serializeArray();
@@ -657,7 +701,13 @@ $('#rating-info').raty({
                                     console.log(data);
                                     },
                                 error: function(data){
-                                    alert("Error. La actividad no se agrego");
+                                    if (data){
+                                        if (data.name == 'errmsg' && data.code== 11000){
+                                            alert("Error. Intente otro nombre para su actividad");
+                                            }
+                                        return alert("Error. La actividad no se agrego")
+                                     }
+
                             }
                         });
                         e.preventDefault();

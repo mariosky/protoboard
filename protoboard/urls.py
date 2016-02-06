@@ -46,6 +46,7 @@ urlpatterns = patterns('',
       (r'^actividad$','activitytree.views.typeactivity'),
       (r'^my_activities$','activitytree.views.my_activities'),
       (r'^prueba$','activitytree.views.prueba'),
+      (r'^get_activity$','activitytree.views.check_activity'),
 
 
       (r'^unlink_facebook/?$', 'activitytree.views.unlink_facebook'),

@@ -1143,6 +1143,13 @@ def my_activities(request):
     json_docs = [doc for doc in activities]
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 
+
+def check_activity(request):
+    actividad = Activity.get_title(request.GET['valor'])
+    json_docs = [doc for doc in actividad]
+    return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+
+
 @login_required
 def users(request,user_id=None,course_id=None,):
     if user_id == None or user_id == "":
