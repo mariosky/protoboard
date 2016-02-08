@@ -121,9 +121,22 @@ def prueba(request):
             actividad = json.loads(request.body)
             client = MongoClient(settings.MONGO_DB)
             db = client.protoboard_database
-
             activities_collection = db.activities_collection
-            activities_collection.insert(actividad)
+            if actividad['type'] == 'video':
+                actividad['_id'] = '/activity/video/' + actividad['title'].replace(" ", "_")
+                actividad['content'] = actividad['content1']
+                actividad['description'] = actividad['content']
+                del actividad['content1']
+                activities_collection.insert(actividad)
+            elif actividad['type'] == 'text':
+                actividad['_id'] = '/activity/' + actividad['title'].replace(" ", '_')
+                activities_collection.insert(actividad)
+            elif actividad['type'] == 'quiz':
+                "do this"
+            elif actividad['type'] == 'prog':
+                "do this"
+            else:
+                "Tipo de actividad no existe"
             return HttpResponse(json.dumps(actividad))
         elif request.method == 'GET':
             return HttpResponse(message)

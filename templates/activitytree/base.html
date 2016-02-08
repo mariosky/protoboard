@@ -429,18 +429,7 @@ $('#rating-info').raty({
       $.map(data, function(n, i){
           indexed[n['name']] = n['value'];
       });
-      if (indexed['type'] == 'video'){
-          indexed['_id'] = '/activity/video/'+ indexed['title'].replace(/ /g, '_');
-          indexed['content'] = indexed['content1'];
-          indexed['description'] = indexed['content'];
-          delete indexed['content1'];
-      }
-      else if (indexed['type'] == 'text'){
-          indexed['_id'] = '/activity/'+ indexed['title'].replace(/ /g, '_');
-      }
-      else{
 
-      }
       return indexed
   }
 
