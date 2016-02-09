@@ -1,0 +1,108 @@
+{% extends 'activitytree/base.html' %}
+
+{% block content %}
+<h3>Haz un quiz</h3>
+<div class="container-fluid" id="wth">
+    <div class="container-fluid" id="check" style="font-style: italic" >
+
+    </div>
+    <label for="txtQuestion" class="control-label">Ingresa la pregunta deseada: </label>
+    <input type="text" id="txtQuestion" placeholder="Pregunta">
+    <div class="container-fluid" id="preguntas">
+        <table id="tbl" border="0" cellspacing="5">
+
+        </table>
+    </div>
+    <input type="button" class="btn btn-default" id="addAnswer" value="Nueva respuesta">
+    <input type="button" class="btn btn-default" id="endQuestion" value="Agregar Pregunta">
+    <input type="button" class="btn btn-default" id="addQuestion" value="Terminar pregunta">
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+    cont = 0;
+    quiz = {};
+    $('#addAnswer').click(function(){
+        if (cont <= 3){
+            $('#tbl').append('<tr><td><input type="text" id="answer" /></td></tr>');
+            $('#answer').attr({
+                "placeholder": "Hola"+cont,
+                "id": "answer"+cont
+            });
+            console.log("Agregada" + cont);
+            cont = cont + 1;}
+        else{
+            console.log("Limite de respuestas")}
+    });
+
+    $("#endQuestion").click(function(){
+        var preg={};
+        if (cont>2){
+            var opciones = [];
+            for (var i=0; i < cont; i++){
+                opcion=$("#answer"+i).val();
+                opciones[i] = opcion;
+            }
+            var question = $('#txtQuestion').val();
+            preg['question'] = question;
+            preg['options'] = opciones;
+            $("#tbl tr").remove();
+            $("#txtQuestion").val('');
+            cont=0;
+            addCheckbox(preg);
+            if (jQuery.isEmptyObject(quiz)){
+                quiz["Pregunta 1"]=preg;
+            }
+            else
+            {
+                var indice = Object.keys(quiz).length + 1;
+                quiz["Pregunta " + indice] = preg;
+            }
+            console.log(quiz);
+        }
+        else{
+            alert("No hay suficientes opciones")
+            }
+
+    });
+
+    function addCheckbox(name) {
+        var container = $('#check');
+        $('<br>').appendTo(container);
+        $('<label /> ', {  text: name.question }).appendTo(container);
+        $('<br>').appendTo(container);
+        for (var i=0 ;i < name.options.length;i++){
+            $('<input />', { type: 'checkbox', name: 'checkboxes',id: i, value: name.options[i] }).appendTo(container);
+            $('<label />', { 'for': 'cb'+i, text: name.options[i] }).appendTo(container);
+            $('<br>').appendTo(container);
+        }
+    }
+
+    $('#addQuestion').click(function(){
+        showSelectedValues();
+    });
+
+    function showSelectedValues()
+    {
+        //var ind = $("input[name=checkboxes]:checked").map(function () {return this.id;}).get().join(",")
+        opciones=[0,0,0,0];
+        $("input[name=checkboxes]:checked").map(function(n){
+            opciones[this.id] = 1;
+            //console.log(opciones)
+      });
+        console.log(opciones)
+    }
+
+
+    $(document).on('change', '[type=checkbox]', function() {
+
+
+    });
+
+</script>
+
+{% endblock %}

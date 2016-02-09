@@ -143,6 +143,16 @@ def prueba(request):
         return HttpResponse(message)
 
 
+def addQuiz(request):
+    if request.method == 'POST':
+        return HttpResponse('Error')
+    #GET:
+    #Edit course
+    elif request.method == 'GET':
+        return render_to_response('activitytree/quiztest.html', context_instance=RequestContext(request))
+    else:
+        return HttpResponseNotFound('<h1>Course ID not Found</h1>')
+
 
 @login_required()
 def activity_builder(request):
