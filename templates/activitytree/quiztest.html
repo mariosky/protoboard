@@ -2,36 +2,91 @@
 
 {% block content %}
 <h3>Haz un quiz</h3>
-<div class="container-fluid" id="wth">
+    <nav class="nav navbar-default " style="align-content: center " >
+        <button type="button" id="btn1" class="btn btn-default navbar-btn">Add</button>
+        <button type="button" id="btn2" class="btn btn-default navbar-btn">Upload Quiz</button>
+    </nav>
+
+<div class="col-md-6" id="preguntas">
+
+</div>
+
+<div class="container-fluid" id="wth" align="center">
     <div class="container-fluid" id="check" style="font-style: italic" >
 
     </div>
     <label for="txtQuestion" class="control-label">Ingresa la pregunta deseada: </label>
-    <input type="text" id="txtQuestion" placeholder="Pregunta">
+    <input type="text" id="txtQuestion" placeholder="Pregunta" required="true">
     <div class="container-fluid" id="preguntas">
+        <form id="forma1">
         <table id="tbl" border="0" cellspacing="5">
 
         </table>
+        </form>
     </div>
-    <input type="button" class="btn btn-default" id="addAnswer" value="Nueva respuesta">
-    <input type="button" class="btn btn-default" id="endQuestion" value="Agregar Pregunta">
+    <input type="submit" class="btn btn-default" id="addAnswer" value="Nueva respuesta">
+    <input type="submit" class="btn btn-default" id="endQuestion" value="Agregar Pregunta">
     <input type="button" class="btn btn-default" id="addQuestion" value="Terminar pregunta">
 
+</div>
+
+ <div class="modal fade" id="modalUpload">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Subir Quiz</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group" align="center">
+            <label for="idQuiz">Ingresar ID:</label>
+            <input type="text" id="idQuiz">
+            <label for="titleQuiz">Ingresar titulo de quiz:</label>
+            <input type="text" id="titleQuiz">
+            <button type="button" id="subirQuiz"  class="btn btn-primary">Subir</button>
+            <button type="button" id="CancelQuiz" class="btn btn-primary">Cancelar</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock %}
 
 {% block scripts %}
+
+ <script id="quiz-template" type="x-tmpl-mustache">
+         <div class="panel panel-default">
+            <div class="panel-heading">
+            <div class='controls form-inline'>
+                <span><a href="[[]]"><i class=""></i>
+                <a  href="[[]]" role="button"> <h4>[[question]]</span>
+            </div>
+            </div>
+             <div class="panel-body">
+               [[option1]]<br>
+               [[option2]]<br>
+               [[option3]]<br>
+               [[option4]]
+            </div>
+        </div>
+
+</script>
+
+
+
 <script>
 
     cont = 0;
     quiz = {};
+    quiz['questions'] = [];
     $('#addAnswer').click(function(){
         if (cont <= 3){
-            $('#tbl').append('<tr><td><input type="text" id="answer" /></td></tr>');
+            $('#tbl').append('<tr><td><input type="text" id="answer" required="true" /></td></tr><tr></tr>');
             $('#answer').attr({
-                "placeholder": "Hola"+cont,
-                "id": "answer"+cont
+                "placeholder": "Respuesta" + cont,
+                "id": "answer" + cont
             });
             console.log("Agregada" + cont);
             cont = cont + 1;}
@@ -54,13 +109,14 @@
             $("#txtQuestion").val('');
             cont=0;
             addCheckbox(preg);
-            if (jQuery.isEmptyObject(quiz)){
-                quiz["Pregunta 1"]=preg;
+            console.log(Object.keys(quiz['questions']).length);
+            if (Object.keys(quiz['questions']).length==0){
+                quiz['questions']["Pregunta 1"]=preg;
             }
             else
             {
-                var indice = Object.keys(quiz).length + 1;
-                quiz["Pregunta " + indice] = preg;
+                var indice = Object.keys(quiz['questions']).length + 1;
+                quiz['questions']["Pregunta " + indice] = preg;
             }
             console.log(quiz);
         }
@@ -76,33 +132,63 @@
         $('<label /> ', {  text: name.question }).appendTo(container);
         $('<br>').appendTo(container);
         for (var i=0 ;i < name.options.length;i++){
-            $('<input />', { type: 'checkbox', name: 'checkboxes',id: i, value: name.options[i] }).appendTo(container);
+            $('<input />', {  type: 'checkbox', name: 'checkboxes',id: i, value: name.options[i] }).appendTo(container);
             $('<label />', { 'for': 'cb'+i, text: name.options[i] }).appendTo(container);
             $('<br>').appendTo(container);
         }
     }
 
     $('#addQuestion').click(function(){
-        showSelectedValues();
+        addPregunta()
     });
 
     function showSelectedValues()
     {
-        //var ind = $("input[name=checkboxes]:checked").map(function () {return this.id;}).get().join(",")
         opciones=[0,0,0,0];
         $("input[name=checkboxes]:checked").map(function(n){
             opciones[this.id] = 1;
-            //console.log(opciones)
       });
-        console.log(opciones)
+        return opciones;
     }
 
+    function addPregunta()
+    {
 
-    $(document).on('change', '[type=checkbox]', function() {
+        var opt = showSelectedValues();
+        var ind = "Pregunta " + Object.keys(quiz['questions']).length ;
+        quiz['questions'][ind]['answer'] = opt;
+        $('#check').empty();
+        //$('input[name="checkboxes"]').remove();
+        var obj = quiz['questions'][ind];
+
+        Mustache.tags = ['[[', ']]'];
+        var quiz_template = $('#quiz-template').html();
+        Mustache.parse(quiz_template);
+        rendered = Mustache.render(quiz_template, {
+            question: obj.question,
+            option1: obj.options[0],
+            option2: obj.options[1],
+            option3: obj.options[2],
+            option4: obj.options[3]
+            });
+        $("#preguntas").append(rendered);
 
 
+    }
+
+    $("#btn2").click(function(){
+        $("#modalUpload").modal();
+    });
+
+    $("#subirQuiz").click(function(){
+        quiz['title'] = $('#titleQuiz').val();
+        quiz['id'] = $('#idQuiz').val();
+        quiz['author'] = '{{ user.email }}';
+        console.log(quiz);
+        $("#modalUpload").modal('hide');
     });
 
 </script>
 
 {% endblock %}
+
