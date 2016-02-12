@@ -11,7 +11,7 @@ from django.db import transaction
 from django.http import JsonResponse
 from pymongo import MongoClient
 from django.core.urlresolvers import reverse
-
+from pymongo import errors
 import logging
 import xml.etree.ElementTree as ET
 from django.contrib.auth import authenticate, login, logout
@@ -114,7 +114,7 @@ def course(request,course_id= None):
         else:
             return HttpResponseNotFound('<h1>Course ID not Found</h1>')
 
-
+@login_required()
 def prueba(request):
     if request.is_ajax():
         if request.method == 'POST':
@@ -123,22 +123,33 @@ def prueba(request):
             db = client.protoboard_database
             activities_collection = db.activities_collection
             if actividad['type'] == 'video':
-                actividad['_id'] = '/activity/video/' + actividad['title'].replace(" ", "_")
-                actividad['content'] = actividad['content1']
-                actividad['description'] = actividad['content']
-                del actividad['content1']
-                activities_collection.insert(actividad)
+                try:
+                    actividad['_id'] = '/activity/video/' + actividad['title'].replace(" ", "_")
+                    actividad['content'] = actividad['content1']
+                    actividad['description'] = actividad['content']
+                    del actividad['content1']
+                    activities_collection.insert(actividad)
+                    return HttpResponse("Agregado")
+                except errors.DuplicateKeyError:
+                    return HttpResponse("Duplicate")
             elif actividad['type'] == 'text':
-                actividad['_id'] = '/activity/' + actividad['title'].replace(" ", '_')
-                activities_collection.insert(actividad)
+                try:
+                    actividad['_id'] = '/activity/' + actividad['title'].replace(" ", '_')
+                    activities_collection.insert(actividad)
+                    return HttpResponse("Agregado")
+                except errors.DuplicateKeyError:
+                    return HttpResponse("Duplicate")
             elif actividad['type'] == 'quiz':
-                actividad['_id'] = '/test/' + actividad['title'].replace(" ", '_')
-                activities_collection.insert(actividad)
+                try:
+                    actividad['_id'] = '/test/' + actividad['title'].replace(" ", '_')
+                    activities_collection.insert(actividad)
+                    return HttpResponse('Agregado')
+                except errors.DuplicateKeyError:
+                    return HttpResponse("Duplicate")
             elif actividad['type'] == 'prog':
                 "do this"
             else:
                 "Tipo de actividad no existe"
-            return HttpResponse(json.dumps(actividad))
         elif request.method == 'GET':
             return HttpResponse(message)
         return HttpResponse(message)
@@ -154,7 +165,7 @@ def addQuiz(request):
     else:
         return HttpResponseNotFound('<h1>Course ID not Found</h1>')
 
-
+@login_required()
 def quiz2(request):
     if request.method == 'POST':
         return HttpResponse('Error')

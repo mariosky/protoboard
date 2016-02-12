@@ -42,10 +42,12 @@
       </div>
       <div class="modal-body">
         <div class="form-group" align="center">
+            <form id="formaUpload">
             <label for="idQuiz">Ingresar ID:</label>
-            <input type="text" class="form-control" id="idQuiz" required="required">
+            <input type="text" class="form-control" id="idQuiz" required="true">
             <label for="titleQuiz">Ingresar titulo de quiz:</label>
-            <input type="text" class="form-control" id="titleQuiz" required="required">
+            <input type="text" class="form-control" id="titleQuiz" required="true">
+            </form>
         </div>
         <div class="modal-footer">
             <div class="form-group" align="center">
@@ -96,8 +98,8 @@
             $('#modalUpload').modal()
         });
 
-        $('#subirQuiz').click(function(){
-            subirQuiz()
+        $('#subirQuiz').click(function(e){
+            checkData(e)
         });
 
         $('body').on('click', '.deleteBtn', function() {
@@ -126,8 +128,6 @@ function check(e){
             });
 
             var check = $('input:checkbox').is(':checked');
-
-            console.log(check);
             if (check == false){
                 isValid = false;
                 alert("Elija al menos una respuesta correcta")
@@ -214,8 +214,6 @@ function subirQuiz(){
     quiz['_id'] = $('#idQuiz').val();
     quiz['author'] = '{{ user.email }}';
     quiz['type'] = 'quiz';
-    valor=JSON.stringify(quiz);
-    console.log(valor);
     if (cola.isEmptyObject){
         console.log("vacia")
     }
@@ -230,17 +228,22 @@ function subirQuiz(){
         contentType: "application/json",
         data: JSON.stringify(quiz),
         success: function (data) {
-            alert("Actividad agregada");
-            $("#modalUpload").modal('hide');
-            console.log(data);
+            if (data == 'Duplicate'){
+                alert("Error. Intente otro nombre para su actividad");
+            }
+            else{
+                alert("Actividad agregada");
+                $('#formaQuiz')[0].reset();
+                $("#modalUpload").modal('hide');
+                $("#preguntas").empty();
+                $("#formaUpload")[0].reset();
+                window.location.href = "http://localhost:8000/quiz2";
+            }
         },
         error: function(data) {
-            if (data){
-                if (data.name == 'errmsg' && data.code== 11000){
-                    alert("Error. Intente otro nombre para su actividad");
-                }
-                return alert("Error. La actividad no se agrego")
-            }
+
+            alert("Error. La actividad no se agrego")
+
         }
     });
 
@@ -248,6 +251,41 @@ function subirQuiz(){
 
 function delQuestion(id){
     delete quiz['questions'][id];
+}
+
+function checkData(e){
+    var isValid = true;
+    $('#formaUpload input[type="text"]').each(function () {
+        if ($.trim($(this).val()) == '') {
+            isValid = false;
+            $(this).css({
+                "border": "1px solid red",
+                        "background": "#FFCECE"
+            });
+        }
+        else {
+            $(this).css({
+                "border": "",
+                "background": ""
+            });
+        }
+    });
+
+    if (quiz['questions'].length==0){
+        e.preventDefault();
+        alert("Agregue al menos una pregunta");
+        return false;
+    }
+
+    if (isValid == false){
+        e.preventDefault();
+        return false;
+    }
+    else {
+        subirQuiz();
+        return false
+    }
+
 }
 
 </script>

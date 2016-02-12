@@ -96,8 +96,15 @@
           <ul class="dropdown-menu">
             <li><a class="create-course" href="#">Nuevo Curso</a></li>
             <li><a  href="/my_courses">Mis Cursos </a></li>
-            <li role="separator" class="divider"></li>
-            <li><a class="create-activity" href="#">Nueva Actividad</a></li>
+            <li role="separator" class="divider"><
+                <li class="dropdown dropdown-submenu"><a class="dropdown-toggle" data-toggle="dropdown">Nueva Actividad<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" id="htmlBtn">HTML</a></li>
+	                        <li><a href="#" id="videoBtn">Video</a></li>
+	                        <li><a href="/quiz2">Quiz</a></li>
+	                        <li><a href="#">Programa</a></li>
+                        </ul>
+                </li>
             <li><a href="/activitybuilder">Mis Actividades</a></li>
           </ul>
         </li>
@@ -411,12 +418,10 @@ $('#rating-info').raty({
     });
 
      $('body').on('click', '#htmlBtn', function(e){
-        $('#modalChooseType').modal('hide');
         $('#modalhtml').modal();
     });
 
      $('body').on('click', '#videoBtn', function(e){
-        $('#modalChooseType').modal('hide');
         $('#modalvideo').modal();
      });
 
@@ -456,6 +461,31 @@ $('#rating-info').raty({
 
    }
 
+    (function ($) {
+    $(document).ready(function () {
+        $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            $(this).parent().siblings().removeClass('open');
+            $(this).parent().toggleClass('open');
+        });
+    });
+    })(jQuery);
+
+    (function($){
+    $(document).ready(function () {
+        var user = '{{ user }}';
+        if(user =='AnonymousUser')  {
+            $('#_htmlActivity').attr("disabled",true);
+            $('#_videoActivity').attr("disabled",true);
+        }
+        else {
+            $('#_htmlActivity').removeAttr("disabled");
+            $('#_videoActivity').removeAttr("disabled");
+        }
+
+    });
+    })(jQuery);
     </script>
 
 
@@ -511,25 +541,6 @@ $('#rating-info').raty({
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-  <div class="modal fade" id="modalChooseType">
-  <div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Tipo de actividad</h4>
-      </div>
-      <div class="modal-body">
-
-        <div class="form-group" align="center">
-            <button type="button" id="htmlBtn"  class="btn btn-primary">HTML</button>
-            <button type="button" id="videoBtn" class="btn btn-primary">Video</button>
-        </div>
-
-      </div><!-- /.modal-body -->
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div>
 
 
 <div class="modal fade" id="modalvideo">
@@ -591,6 +602,7 @@ $('#rating-info').raty({
 
                         $('#formaVideo').on('submit', function(e){
                             var data= $(this).serializeArray();
+                            console.log(data);
                             data=indexdata(data);
                             console.log(data);
                         $.ajax({
@@ -599,18 +611,19 @@ $('#rating-info').raty({
                             contentType: "application/json",
                             data: JSON.stringify(data),
                             success: function (data) {
-                                alert("Actividad agregada");
-                                $('#formaVideo')[0].reset();
-                                $("#modalvideo").modal('hide');
-                                console.log(data);
+                                if (data == 'Duplicate'){
+                                      alert("Error. Intente otro nombre para su actividad");
+                                    }
+                                else {
+                                    alert("Actividad agregada");
+                                    $('#formaVideo')[0].reset();
+                                    $("#modalvideo").modal('hide');
+                                    $("#ytVideo").empty();
+                                    console.log(data);
+                                }
                             },
                             error: function(data) {
-                                if (data){
-                                        if (data.name == 'errmsg' && data.code== 11000){
-                                            alert("Error. Intente otro nombre para su actividad");
-                                            }
-                                        return alert("Error. La actividad no se agrego")
-                                     }
+                                alert(data)
                             }
                         });
                         e.preventDefault();
@@ -683,11 +696,16 @@ $('#rating-info').raty({
                                 url: '/prueba',
                                 contentType: "application/json",
                                 data: JSON.stringify(data),
-                                success: function (data) {
-                                    alert("Actividad agregada");
-                                    $('#forma')[0].reset();
-                                    $("#modalhtml").modal('hide');
-                                    console.log(data);
+                                success: function (data){
+                                    if (data == 'Duplicate'){
+                                      alert("Error. Intente otro nombre para su actividad");
+                                    }
+                                    else{
+                                        alert("Actividad agregada");
+                                        $('#forma')[0].reset();
+                                        $("#modalhtml").modal('hide');
+                                        console.log(data);
+                                    }
                                     },
                                 error: function(data){
                                     if (data){
