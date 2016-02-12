@@ -132,7 +132,8 @@ def prueba(request):
                 actividad['_id'] = '/activity/' + actividad['title'].replace(" ", '_')
                 activities_collection.insert(actividad)
             elif actividad['type'] == 'quiz':
-                "do this"
+                actividad['_id'] = '/test/' + actividad['title'].replace(" ", '_')
+                activities_collection.insert(actividad)
             elif actividad['type'] == 'prog':
                 "do this"
             else:
@@ -150,6 +151,17 @@ def addQuiz(request):
     #Edit course
     elif request.method == 'GET':
         return render_to_response('activitytree/quiztest.html', context_instance=RequestContext(request))
+    else:
+        return HttpResponseNotFound('<h1>Course ID not Found</h1>')
+
+
+def quiz2(request):
+    if request.method == 'POST':
+        return HttpResponse('Error')
+    #GET:
+    #Edit course
+    elif request.method == 'GET':
+        return render_to_response('activitytree/quizbuild2.html', context_instance=RequestContext(request))
     else:
         return HttpResponseNotFound('<h1>Course ID not Found</h1>')
 
