@@ -47,6 +47,8 @@
             <input type="text" class="form-control" id="idQuiz" required="true">
             <label for="titleQuiz">Ingresar titulo de quiz:</label>
             <input type="text" class="form-control" id="titleQuiz" required="true">
+            <label for="descriptionQuiz">Ingresar descripcion del quiz</label>
+            <input type="text" class="form-control" id="descriptionQuiz">
             </form>
         </div>
         <div class="modal-footer">
@@ -66,15 +68,15 @@
 
 <script id="quiz-template" type="x-tmpl-mustache">
     <li id="[[ind]]">
-     <div class="panel panel-default">
-        <div class="panel-heading">
-        <div class="btn-group navbar-right" role="group" aria-label="..." >
-            <button type="button" class="btn btn-default  clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i></button>
-          </div>
-            <div class='controls form-inline'>
-                <a role="button"><h4>[[question]]</h4></span>
+     <div class="panel panel-default container-fluid">
+        <div class="panel-heading row">
+            <div class="col-xs-15 text-right">
+                <button type="button" class="btn btn-default clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i></button>
             </div>
+            <div class='col-lg-12'>
+                <h4>[[question]]</h4>
             </div>
+        </div>
              <div class="panel-body">
                [[option1]]<br>
                [[option2]]<br>
@@ -214,6 +216,8 @@ function subirQuiz(){
     quiz['_id'] = $('#idQuiz').val();
     quiz['author'] = '{{ user.email }}';
     quiz['type'] = 'quiz';
+    quiz['icon'] = 'puzzle-piece';
+    quiz['description'] = $('#descriptionQuiz').val();
     if (cola.isEmptyObject){
         console.log("vacia")
     }

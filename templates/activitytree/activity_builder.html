@@ -22,7 +22,7 @@
                   <ul class="dropdown-menu">
                       <li><a href="#" id="htmlBtn">Actividad HTML</a></li>
                       <li><a href="#" id="videoBtn">Actividad Video</a></li>
-                      <li><a href="#">Actividad</a></li>
+                      <li><a href="/quiz2">Actividad Quiz</a></li>
                   </ul>
               </li>
            </ul>
@@ -40,11 +40,11 @@
 
 
 <script id="activities_template" type="x-tmpl-mustache">
-         <div class="panel panel-default">
-            <div class="panel-heading">
+         <div class="panel panel-default container-fluid">
+            <div class="panel-heading row">
             <div class='controls form-inline'>
-                <span><a href="[[uri]]"><i class="fa fa-[[icon]] fa-lg"></i>
-                <a  href="[[uri]]" role="button"> <h4>[[title]] &raquo;</h4></a>
+                <span><a href="[[uri]]" class="col-xs-4"><i class="fa fa-[[icon]] fa-lg"></i>
+                <a  href="[[uri]]" class="col-lg-12 text-center" role="button"> <h4>[[title]] &raquo;</h4></a>
                 </a></span>
             </div>
             </div>
