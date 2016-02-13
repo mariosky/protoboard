@@ -1195,6 +1195,17 @@ def check_activity(request):
     json_docs = [doc for doc in actividad]
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 
+@login_required
+def delActivity(request):
+    if request.method == 'POST':
+        user = request.POST['user']
+        _id = request.POST['_id']
+        try:
+            message = Activity.del_activity(_id, user)
+            return HttpResponse(message)
+        except Exception as e:
+            return HttpResponse(e)
+
 
 @login_required
 def users(request,user_id=None,course_id=None,):

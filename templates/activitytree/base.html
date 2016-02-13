@@ -691,6 +691,7 @@ $('#rating-info').raty({
                                 var data= $(this).serializeArray();
                                 data=indexdata(data);
                                 console.log(data);
+                                var current = window.location.pathname;
                             $.ajax({
                                 type: 'post',
                                 url: '/prueba',
@@ -704,7 +705,9 @@ $('#rating-info').raty({
                                         alert("Actividad agregada");
                                         $('#forma')[0].reset();
                                         $("#modalhtml").modal('hide');
-                                        console.log(data);
+                                        if (current == '/activitybuilder'){
+                                            location.reload()
+                                        }
                                     }
                                     },
                                 error: function(data){

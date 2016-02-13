@@ -29,10 +29,27 @@
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
-    <div class="col-md-6" id="actividades"  >
-    <h2>Mis Actividades</h2>
+    <div class="container-fluid center" align="center">
+    <div class="" id="actividades" style="width: 70%" >
+        <h2>Mis Actividades</h2>
     </div>
-
+    </div>
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" align="center" style="font-size: large">
+                Alerta <i class="fa fa-exclamation-circle"></i>
+            </div>
+            <div class="modal-body" align="center">
+               <h5> Mensaje <p class="debug-url"></p> </h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 
@@ -42,14 +59,13 @@
 <script id="activities_template" type="x-tmpl-mustache">
          <div class="panel panel-default container-fluid">
             <div class="panel-heading row">
-            <div class='controls form-inline'>
-                <span><a href="[[uri]]" class="col-xs-4"><i class="fa fa-[[icon]] fa-lg"></i>
-                <a  href="[[uri]]" class="col-lg-12 text-center" role="button"> <h4>[[title]] &raquo;</h4></a>
-                </a></span>
-            </div>
+                <div class="col-xs-15 text-right">
+                    <button type="button" value="[[id]]" data-toggle="modal" data-target="#confirm-delete"  data-href="[[id]]" class="btn btn-default clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i></button>
+                </div>
+                <p style='line-height: 10px'>
+                <a href="[[id]]" class=""><i class="fa fa-[[icon]] fa-lg" style='vertical-align:middle'> [[title]] </i></a>
             </div>
              <div class="panel-body">
-
 
                [[#description]]
                     <b>Descripcion: [[description]]
@@ -69,6 +85,25 @@
 
 </script>
 
+<script>
+    $(function(){
+
+        $('#confirm-delete').on('show.bs.modal', function(e) {
+            var value = ($(e.relatedTarget).data('href'));
+            console.log(value);
+            $('.debug-url').html('Confirmar. Quieres borrar la actividad: <strong>' + value + '? </strong>');
+
+            $('.btn-ok').click(function(){
+                delActivity(value);
+                $('#confirm-delete').modal('hide');
+            })
+
+        });
+    });
+
+</script>
+
+
 <script type="text/javascript">
 
 function loadactivities(){
@@ -84,7 +119,7 @@ function loadactivities(){
             $.each(obj, function( index, value ) {
                 rendered = Mustache.render(activities_template, {
                     title: value.title,
-                    uri: value._id,
+                    id: value._id,
                     icon:value.icon,
                     description: value.description,
                     lang:value.lang,
@@ -106,6 +141,26 @@ $(function(){
     loadactivities();
 });
 
+function delActivity(activity){
+    $.ajax({
+        type: 'post',
+        url: '/delete_activity',
+        data: { _id: activity,
+                user: '{{ user.email }}'},
+        success: function (data){
+            if (data == "okn"){
+                alert("Actividad borrada");
+                location.reload()
+            }
+            else{
+                alert("Error")
+            }
+        },
+        error: function(data){
+            console.log(data)
+        }
+    });
+}
 
 </script>
 
