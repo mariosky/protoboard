@@ -147,12 +147,17 @@ def prueba(request):
                 except errors.DuplicateKeyError:
                     return HttpResponse("Duplicate")
             elif actividad['type'] == 'prog':
-                "do this"
+                try:
+                    actividad['_id'] = '/program/' + actividad['title'].replace(" ", '_')
+                    activities_collection.insert(actividad)
+                    return HttpResponse('Agregado')
+                except errors.DuplicateKeyError:
+                    return HttpResponse("Duplicate")
             else:
                 "Tipo de actividad no existe"
         elif request.method == 'GET':
-            return HttpResponse(message)
-        return HttpResponse(message)
+            return HttpResponse("Error")
+        return HttpResponse("Error")
 
 
 def addQuiz(request):
@@ -165,16 +170,26 @@ def addQuiz(request):
     else:
         return HttpResponseNotFound('<h1>Course ID not Found</h1>')
 
+
 @login_required()
-def quiz2(request):
+def build_quiz(request):
     if request.method == 'POST':
         return HttpResponse('Error')
     #GET:
     #Edit course
     elif request.method == 'GET':
-        return render_to_response('activitytree/quizbuild2.html', context_instance=RequestContext(request))
+        return render_to_response('activitytree/quizbuilder.html', context_instance=RequestContext(request))
     else:
         return HttpResponseNotFound('<h1>Course ID not Found</h1>')
+
+
+def build_program(request):
+    if request.method == 'POST':
+        return HttpResponse('')
+    elif request.method == 'GET':
+        return render_to_response('activitytree/program_builder.html', context_instance=RequestContext(request))
+    else:
+        return HttpResponseNotFound('Not Found')
 
 
 @login_required()
