@@ -43,10 +43,9 @@ urlpatterns = patterns('',
 
 
       (r'^activitybuilder$','activitytree.views.activity_builder'),
-      (r'^actividad$','activitytree.views.typeactivity'),
       (r'^my_activities$','activitytree.views.my_activities'),
       (r'^delete_activity$','activitytree.views.delActivity'),
-      (r'^prueba$','activitytree.views.prueba'),
+      (r'^upload_activity$','activitytree.views.upload_activity'),
       (r'^get_activity$','activitytree.views.check_activity'),
       (r'^addquiz$','activitytree.views.addQuiz'),
       (r'^build_quiz$','activitytree.views.build_quiz'),

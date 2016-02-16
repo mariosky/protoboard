@@ -114,8 +114,9 @@ def course(request,course_id= None):
         else:
             return HttpResponseNotFound('<h1>Course ID not Found</h1>')
 
+
 @login_required()
-def prueba(request):
+def upload_activity(request):
     if request.is_ajax():
         if request.method == 'POST':
             actividad = json.loads(request.body)
@@ -203,27 +204,6 @@ def activity_builder(request):
     else:
         return HttpResponseNotFound('<h1>Course ID not Found</h1>')
 
-
-
-
-def typeactivity(request):
-    if request.method == 'POST':
-        if '_html' in request.POST:
-            lista = request.POST['lista']
-            return render_to_response('activitytree/videoActivity.html',
-                                  {'lista': lista, 'course_id': request.POST['course_id']},
-                                  context_instance=RequestContext(request))
-        elif '_video' in request.POST:
-            lista = request.POST['lista']
-            return render_to_response('activitytree/videoActivity.html',
-                                  {'lista': lista},
-                                  context_instance=RequestContext(request))
-    elif request.method == 'GET':
-        if 'video' in request.GET:
-            return render_to_response('activitytree/videoActivity.html',
-                                    {'course_id': request.GET['course_id']},  context_instance=RequestContext(request))
-        else:
-            return render_to_response('activitytree/mstacheTest.html',  context_instance=RequestContext(request))
 
 
 
@@ -1197,6 +1177,7 @@ def get_activities(request):
     json_docs = [doc for doc in activities]
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 
+
 @login_required
 def my_activities(request):
     user = request.GET['user']
@@ -1209,6 +1190,7 @@ def check_activity(request):
     actividad = Activity.get_title(request.GET['valor'])
     json_docs = [doc for doc in actividad]
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+
 
 @login_required
 def delActivity(request):

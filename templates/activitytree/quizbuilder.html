@@ -8,7 +8,7 @@
 
 
 
-<div class="container-fluid" id="wth" align="center">
+<div class="container-fluid" align="center">
     <div class="container-fluid">
         <form id="formaQuiz" style="align-content: center" onsubmit="return false" >
             <div class="col-lg-6 col-md-offset-3 " align="center">
@@ -28,11 +28,13 @@
         </form><br>
     </div>
 </div>
-<div class="container-fluid">
-<div class="col-md-6 col-md-offset-3" id="preguntas" align="center">
 
+<div class="container-fluid">
+    <div class="col-md-6 col-md-offset-3" id="preguntas" align="center">
+
+    </div>
 </div>
-</div>
+
  <div class="modal fade" id="modalUpload">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -43,8 +45,6 @@
       <div class="modal-body">
         <div class="form-group" align="center">
             <form id="formaUpload">
-            <label for="idQuiz">Ingresar ID:</label>
-            <input type="text" class="form-control" id="idQuiz" required="true">
             <label for="titleQuiz">Ingresar titulo de quiz:</label>
             <input type="text" class="form-control" id="titleQuiz" required="true">
             <label for="descriptionQuiz">Ingresar descripcion del quiz</label>
@@ -54,7 +54,7 @@
         <div class="modal-footer">
             <div class="form-group" align="center">
             <button type="submit" id="subirQuiz"  class="btn btn-primary">Subir</button>
-            <button type="button" id="CancelQuiz" class="btn btn-default">Cancelar</button>
+            <button type="button" data-dismiss="modal" id="CancelQuiz" class="btn btn-default">Cancelar</button>
             </div>
         </div>
       </div>
@@ -78,15 +78,16 @@
             </div>
         </div>
              <div class="panel-body">
-               [[option1]]<br>
-               [[option2]]<br>
-               [[option3]]<br>
+               [[option1]] [[#answer1]]<i class="fa fa-check"></i>[[/answer1]] [[^answer1]] <i class="fa fa-close"></i> [[/answer1]] <br>
+               [[option2]] [[#answer2]]<i class="fa fa-check"></i>[[/answer2]] [[^answer2]] <i class="fa fa-close"></i> [[/answer2]] <br>
+               [[option3]] [[#answer3]]<i class="fa fa-check"></i>[[/answer3]] [[^answer3]] <i class="fa fa-close"></i> [[/answer3]] <br>
             </div>
      </div>
 </script>
 
 
 <script>
+
     $(function () {
         $('#txtPregunta').on('change', function(){
             $('#respuestas').css('display', 'block');
@@ -110,6 +111,7 @@
             $(this).parentsUntil('li').parent().addClass("hidden");
         })
     });
+
 cola=[];
 function check(e){
     var isValid = true;
@@ -183,6 +185,17 @@ function addQuestion(opciones,respuesta,pregunta){
 
 }
 
+function disAnswer(item){
+    if (item == 1){
+        return true
+    }
+    else{
+        return false
+    }
+}
+
+
+
 c=0;
 function showQuestion(obj){
 
@@ -195,6 +208,9 @@ function showQuestion(obj){
         option1: obj.options[0],
         option2: obj.options[1],
         option3: obj.options[2],
+        answer1: disAnswer(obj.answer[0]),
+        answer2: disAnswer(obj.answer[1]),
+        answer3: disAnswer(obj.answer[2]),
         ind: c
     });
     $("#preguntas").append(rendered);
@@ -213,7 +229,7 @@ function endQuestion(){
 
 function subirQuiz(){
     quiz['title'] = $('#titleQuiz').val();
-    quiz['_id'] = $('#idQuiz').val();
+    quiz['_id'] = '';
     quiz['author'] = '{{ user.email }}';
     quiz['type'] = 'quiz';
     quiz['icon'] = 'puzzle-piece';
@@ -228,7 +244,7 @@ function subirQuiz(){
         }
     $.ajax({
         type: 'post',
-        url: '/prueba',
+        url: '/upload_activity',
         contentType: "application/json",
         data: JSON.stringify(quiz),
         success: function (data) {
@@ -241,7 +257,7 @@ function subirQuiz(){
                 $("#modalUpload").modal('hide');
                 $("#preguntas").empty();
                 $("#formaUpload")[0].reset();
-                window.location.href = "http://localhost:8000/quiz2";
+                window.location.href = "http://localhost:8000/build_quiz";
             }
         },
         error: function(data) {

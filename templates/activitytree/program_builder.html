@@ -219,7 +219,7 @@ return x;}
         data=indexdata(data);
         $.ajax({
             type: 'post',
-            url: '/prueba',
+            url: '/upload_activity',
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (data) {
@@ -230,7 +230,7 @@ return x;}
                     alert("Actividad agregada");
                     $('#formaProg')[0].reset();
                     console.log(data);
-                    //window.location.href = "http://localhost:8000/build_program";
+                    window.location.href = "http://localhost:8000/build_program";
                 }
             },
             error: function(data) {
