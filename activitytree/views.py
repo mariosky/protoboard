@@ -126,9 +126,7 @@ def upload_activity(request):
             if actividad['type'] == 'video':
                 try:
                     actividad['_id'] = '/activity/video/' + actividad['title'].replace(" ", "_")
-                    actividad['content'] = actividad['content1']
-                    actividad['description'] = actividad['content']
-                    del actividad['content1']
+                    actividad['content'] = actividad['description']
                     activities_collection.insert(actividad)
                     return HttpResponse("Agregado")
                 except errors.DuplicateKeyError:
