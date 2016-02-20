@@ -165,7 +165,7 @@ def addQuiz(request):
     #GET:
     #Edit course
     elif request.method == 'GET':
-        return render_to_response('activitytree/quiztest.html', context_instance=RequestContext(request))
+        return render_to_response('activitytree/quiz_builder.html', context_instance=RequestContext(request))
     else:
         return HttpResponseNotFound('<h1>Course ID not Found</h1>')
 

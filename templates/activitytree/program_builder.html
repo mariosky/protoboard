@@ -11,15 +11,20 @@
     #editor1 {
 
         height: 340px;
-        width: 600px;
+        width: 200;
 
     }
 
     #editor2{
 
         height: 340px;
-        width: 600px;
+        width: 200;
 
+    }
+
+    #editor3{
+        height: 340px;
+        width: 200;
     }
 
  p.test_error, p.test_failure {
@@ -42,7 +47,7 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container" style="width: 100%">
   <h3>Menu</h3>
   <ul class="nav nav-tabs">
     <li class="active"><a href="#inicio" data-toggle="tab">Inicio</a></li>
@@ -51,7 +56,7 @@
   </ul>
   <br>
 
-    <div class="tab-content">
+    <div class="tab-content" style="width: 100%">
         <div class="tab-pane fade in active" id="inicio">
             <div class="container-fluid">
                 <h3>Inicio</h3>
@@ -60,9 +65,82 @@
         </div>
 
         <div class="tab-pane fade" id="info">
-            <div class="container-fluid" style="float: left; width: 400px">
+            <div class="container-fluid" style="float: left; width: 45%">
             <form id="formaProg" class="form-group" onsubmit="return false">
-                <input type="hidden" id="txtId" name="_id" value="">
+                <label for="displayprog">Display Name</label>
+                <input type="text" id="displayprog" name="title" class="form-control">
+                <label for="idprog">ID</label>
+                <input type="text" readonly="readonly" class="form-control" id="idprog" name="_id">
+                <label for="descriptionprog">Description</label>
+                <input type="text" class="form-control" id="descriptionprog" name="description">
+                <label for="rightsprog">Rights</label>
+                <input type="hidden" name="type" value="prog">
+                <input type="hidden" name="author" value="{{ user.email }}">
+                <input type="text" class="form-control" id="rightsprog" name="rights">
+                <label for="externalprog">External URL</label>
+                <input type="text" class="form-control" id="externalprog" name="external_url">
+                <label for="publisherprog">Publisher</label>
+                <input type="text" class="form-control" id="publisherprog" name="publisher">
+                <label for="tagsprog">Tags</label>
+                <input type="text" class="form-control" id="tagsprog" name="tags"><br>
+                <label for="iconprog">Icon</label>
+                <select id="iconprog" name="icon" >
+                    <option value="coffee">Coffee</option>
+                    <option value="file">File</option>
+                    <option value="youtube-play">Youtube</option>
+                    <option value="puzzle-piece">Puzzle</option>
+                </select>
+                <label for="levelprog">Level</label>
+                <select id="levelprog" name="level">
+                    <option value="principiante">Principiante</option>
+                    <option value="intermedio">Intermedio</option>
+                    <option value="avanzado">Avanzado</option>
+                </select><br>
+                <input type="submit" class="btn btn-primary" id="submitProg" value="Save">
+                <input type="button" class="btn btn-default" id="cancelProg" value="Cancel">
+            </div>
+            <div class="" style="margin-left: 50%; height: 50%">
+                <label for="editor1">Ayuda avanzada</label>
+                <tinytext name="content" id="html"></tinytext>
+            </div>
+            </form>
+        </div>
+
+
+
+        <div class="tab-pane fade" id="programa" >
+
+            <div style="float: left;width: 33.3%">
+            <label for="editor1">Unit Test</label>
+            <div class="myeditor" id="editor1">
+function foo(items) {
+Unit test;
+return x;}
+            </div>
+            </div>
+
+            <div style="float: right; width: 33.3%">
+            <label for="editor2">Correct Code</label>
+                <div class="myeditor" id="editor2">
+function foo(items) {
+Correct code;
+return x;}
+                </div>
+            </div>
+
+                <div style="float: left; width: 33.3%">
+                    <label for="editor3">Initial Code</label>
+                    <div class="myeditor" id="editor3">
+function foo(items){
+Initial code;
+}
+                    </div>
+                </div>
+
+
+            <div class="container">
+                <div style="float:left;width: 35%">
+                <form id="formadetailp" onsubmit="return false">
                 <label for="txtLang">Elija lenguaje de programacion:</label>
                 <select id="txtLang" name="lang" class="form-control">
                     <option value="javascript">Javascript</option>
@@ -70,40 +148,18 @@
                     <option value="python">Python</option>
                     <option value="java">Java</option>
                 </select>
-                <label for="txtTitle">Ingrese titulo de actividad:</label>
-                <input type="text" class="form-control" id="txtTitle" name="title" placeholder="Titulo">
-                <label for="txtDescripcion">Ingrese descripcion de actividad:</label>
-                <input type="text" class="form-control" id="txtDescripcion" name="description" placeholder="Descripcion">
-                <label for="txtInstrucciones">Ingrese las instrucciones de la actividad: </label>
-                <textarea class="form-control" id="txtInstrucciones" name="instructions" rows="3"></textarea>
-                <input type="hidden" name="type" value="prog">
-                <input type="hidden" name="author" value="{{ user.email }}">
-                <input type="hidden" name="icon" value="coffee"><br>
-                <input type="submit" class="btn btn-primary" id="submitProg" value="Aceptar">
-                <input type="button" class="btn btn-default" id="cancelProg" value="Cancelar">
-            </form>
-            </div>
-            <div class="" style="margin-left: 400px">
-                <label for="editor1">Ingrese la version de codigo correcta</label>
-                <div class="myeditor" id="editor1">
-function foo(items) {
-var x = "Ejemplo";
-return x;}
+                <input type="button" id="probarProg" class="btn btn-primary" value="Test">
                 </div>
-                <input type="button" id="probarProg" class="btn btn-default" value="Probar">
-                <input type="button" id="borrarProg" class="btn btn-default" value="Borrar">
+
+                <div style="margin-left: 40%; width: 50%">
+                    <label for="txtInstrucciones">Instrucciones: </label>
+                    <textarea class="form-control" id="txtInstrucciones" name="instructions" rows="3" ></textarea>
+                </div>
+                </form>
+                </div>
+
             </div>
-        </div>
 
-
-
-        <div class="tab-pane fade" id="programa">
-            <label for="editor2">Ingrese la version de codigo incorrecta</label>
-            <div class="myeditor" id="editor2">
-function foo(items) {
-
-return x;}
-            </div>
         </div>
     </div>
 </div>
@@ -133,13 +189,19 @@ return x;}
 
     <script>
     $(document).ready(function(){
-        editor = ace.edit("editor1");
-        codigo = editor.getValue();
-        //editor.session.getUndoManager().markClean();
+        //unit_test = ace.edit("editor1");
+        //codigo = unit_test.getValue();
     });
 
 
     $(function(){
+
+        $('#displayprog').on('change', function(){
+            var valor = this.value;
+            check(valor);
+            $('#idprog').val('/activity/' + valor.replace(/ /g, '_'))
+        });
+
         var editor;
         $('.myeditor').each(function(){
             editor = ace.edit(this.id);
@@ -149,7 +211,7 @@ return x;}
 
         $('#submitProg').click(function(e){
 
-            var val = check(e);
+            var val = check_ifempty(e);
             if (val == true){
                 $("#confirmProg").modal();
             }
@@ -160,6 +222,14 @@ return x;}
 
         $('#acceptBtn').click(function(e){
             submitProg()
+        });
+
+        $('#cancelProg').click(function(){
+            $('#formaProg')[0].reset();
+            $('#formadetailp')[0].reset();
+            tinyMCE.activeEditor.setContent('');
+            window.location.href = "http://localhost:8000/build_program";
+
         });
 
         $('#txtLang').on('change', function(){
@@ -181,27 +251,27 @@ return x;}
         $('#borrarProg').click(function(){
             var editor = ace.edit("editor1");
             editor.setValue(codigo);
-        })
+        });
+
+
 
     });
 
-    function check(e){
+    function check_ifempty(e){
         var isValid = true;
-            $('#formaProg input[type="text"]').each(function () {
-                if ($.trim($(this).val()) == '') {
-                    isValid = false;
-                    $(this).css({
-                        "border": "1px solid red",
-                        "background": "#FFCECE"
+        if ($.trim($('#displayprog').val()) == ''){
+            isValid = false;
+            $('#displayprog').css({
+                "border": "1px solid red",
+                "background": "#FFCECE"
                     });
-                }
-                else {
-                    $(this).css({
-                        "border": "",
-                        "background": ""
+            }
+        else {
+            $('#displayprog').css({
+                "border": "",
+                "background": ""
                     });
-                }
-            });
+        }
 
             if (isValid == false){
                 e.preventDefault();
@@ -213,9 +283,12 @@ return x;}
     }
 
     function submitProg(){
-        var data= $('#formaProg').serializeArray();
+        tinyMCE.triggerSave();
+        var main= $('#formaProg').serializeArray();
+        var detail = $('#formadetailp').serializeArray();
+        var data = main.concat(detail);
         var obj = progData();
-        data.push(obj.obj1,obj.obj2);
+        data.push(obj.obj1,obj.obj2,obj.obj3);
         data=indexdata(data);
         $.ajax({
             type: 'post',
@@ -229,7 +302,7 @@ return x;}
                 else{
                     alert("Actividad agregada");
                     $('#formaProg')[0].reset();
-                    console.log(data);
+                    $('#formadetailp')[0].reset();
                     window.location.href = "http://localhost:8000/build_program";
                 }
             },
@@ -245,16 +318,21 @@ return x;}
     function progData(){
         var editor = ace.edit("editor1");
         var editor2 = ace.edit("editor2");
+        var editor3 = ace.edit("editor3");
         var obj1={
             'name': 'correct_code',
-            'value': editor.getValue()
+            'value': editor2.getValue()
         };
         var obj2={
               'name': 'initial_code',
-            'value': editor2.getValue()
+            'value': editor3.getValue()
+        };
+        var obj3={
+            'name': 'unit_test',
+            'value': editor.getValue()
         };
 
-        return {obj1:obj1,obj2:obj2}
+        return {obj1:obj1,obj2:obj2,obj3:obj3}
 
     }
     </script>
