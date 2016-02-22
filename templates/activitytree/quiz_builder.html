@@ -1,0 +1,360 @@
+{% extends 'activitytree/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid" align="center">
+    <div class="container-fluid">
+        <form id="formaQuiz" style="width: 100%;height: 100%;align-content: center" onsubmit="return false" >
+        <div class="form-group" style="width: 80%; height: 100%">
+            <label for="txtPregunta">Ingresar cuestionario: </label>
+            <tinytxt class="form-control" name="content" id="quiz">
+                Pregunta de opcion multiple encerrada entre [] con Enter entre respuestas<br>
+                Ejemplo<br>
+[ Pregunta 1. Equipos que han sido campeones del mundo ]<br>
+= Brasil =<br>
+= Mexico =<br>
+= Argentina =<br>
+                Pregunta de solo una respuesta encerrada entre !!<br>
+                Ejemplo<br>
+! Presidente actual de Mexico !<br>
+= Enrique pena Nieto =<br>
+= George Bush =<br>
+= Fidel Castro = <br>
+
+
+            </tinytxt>
+        </div>
+
+            <button type="button" id="preview" class="btn btn-primary">Preview</button>
+        </form><br>
+
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="col-md-6 col-md-offset-3" id="preguntas1" align="center">
+
+    </div>
+</div>
+
+ <div class="modal fade" id="modalquiz">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Subir Quiz</h4>
+      </div>
+      <div class="modal-body">
+          <ul class="nav nav-tabs">
+              <li class="active"><a href="#quiz1" data-toggle="tab">Quiz</a></li>
+              <li><a href="#info" data-toggle="tab">Info</a> </li>
+          </ul><br>
+
+          <div class="tab-content" style="width: 100%">
+              <div class="tab-pane fade in active" id="quiz1">
+                  <div class="form-group" align="center">
+                      <div id="preguntas"  style="align-items: center">
+
+                      </div>
+                  </div>
+              </div>
+
+              <div class="tab-pane fade" id="info">
+                  <div class="container-fluid">
+                      <form id="formadetailq" class="form-group" onsubmit="return false">
+                          <label for="displayquiz">Display Name</label>
+                          <input type="text" id="displayquiz" name="title" class="form-control">
+                          <label for="idquiz">ID</label>
+                          <input type="text" readonly="readonly" class="form-control" id="idquiz" name="_id">
+                          <label for="descriptionquiz">Description</label>
+                          <input type="text" class="form-control" id="descriptionquiz" name="description">
+                          <label for="rightsquiz">Rights</label>
+                          <input type="hidden" name="type" value="quiz">
+                          <input type="hidden" name="author" value="{{ user.email }}">
+                          <input type="text" class="form-control" id="rightsquiz" name="rights">
+                          <label for="externalquiz">External URL</label>
+                          <input type="text" class="form-control" id="externalquiz" name="external_url">
+                          <label for="publisherquiz">Publisher</label>
+                          <input type="text" class="form-control" id="publisherquiz" name="publisher">
+                          <label for="tagsquiz">Tags</label>
+                          <input type="text" class="form-control" id="tagsquiz" name="tags"><br>
+                          <label for="iconquiz">Icon</label>
+                          <select id="iconquiz" name="icon" >
+                              <option value="coffee">Coffee</option>
+                              <option value="file">File</option>
+                              <option value="youtube-play">Youtube</option>
+                              <option value="puzzle-piece">Puzzle</option>
+                          </select>
+                          <label for="levelquiz">Level</label>
+                          <select id="levelquiz" name="level">
+                              <option value="principiante">Principiante</option>
+                              <option value="intermedio">Intermedio</option>
+                              <option value="avanzado">Avanzado</option>
+                          </select><br>
+                  </div>
+                  </form>
+              </div>
+          </div>
+
+        <div class="modal-footer">
+            <div class="form-group" align="center">
+            <button type="button" class="btn btn-primary" id="submitquiz">Submit</button>
+            <button type="button" data-dismiss="modal" id="CancelQuiz" class="btn btn-default">Cancelar</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>tinymce.init({ selector:'tinytxt', height:"400", width: "500", entity_encoding:"raw" });</script>
+
+
+<script>
+$(document).ready(function(){
+    contenido = "Sintaxis: " +
+            ">> Pregunta <<" +
+            "Las preguntas se encierran en  >>  <<" +
+    "Opciones de Texto: " +
+    "= Opción Uno " +
+            "= Opción Dos" +
+            "Explicación:" +
+            "[[ Explicación  ]]" +
+            "Hint:" ;
+
+
+});
+
+$(function(){
+    $('#preview').click(function(){
+        var valor = tinyMCE.activeEditor.getContent();
+        var quiz = analize(valor);
+        var cont = 0;
+        $.each(quiz,function(index,value){
+            if (exp_question.test(value.question)){
+                value.question = value.question.replace(/[\[\]']+/g,'');
+                for (var i=0;i<value.options.length;i++)
+                {
+                    value.options[i] = value.options[i].replace(/=/g,'');
+                }
+                preview_quiz(value,cont,0);
+                cont++
+            }
+            else if (exp_radio.test(value.question)){
+                value.question = value.question.replace(/!/g,'');
+                for (var i=0;i<value.options.length;i++)
+                {
+                    value.options[i] = value.options[i].replace(/=/g,'');
+                }
+                preview_quiz(value,cont,1);
+                cont++
+            }
+            $('#modalquiz').modal();
+        });
+
+    });
+
+    $('#submitquiz').click(function(e){
+
+        get_value();
+        var verificar = verify_checkbox(e);
+        if (verificar == false){
+            alert("Seleccione una respuesta")
+        }
+        else{
+            if ($.trim($('#displayquiz').val()) == ''){
+                $('#displayquiz').css({
+                "border": "1px solid red",
+                "background": "#FFCECE"
+                    });
+                alert("Ingresar nombre de Actividad")
+            }
+            else {
+                $('#displayquiz').css({
+                "border": "",
+                "background": ""
+                    });
+                submit_quiz();
+            }
+            //alert("ok")
+        }
+
+    });
+
+    $(".modal").on("hidden.bs.modal", function(){
+            $('#preguntas').empty()
+        });
+
+    $("#displayquiz").on('change', function(){
+        var valor = this.value;
+        check(valor);
+        $('#idquiz').val('/test/' + valor.replace(/ /g, '_'))
+    });
+
+
+});
+
+function analize(valor){
+    //re = /= (.*)\=/;
+    exp_question = /\[(.+?)\]/;
+    exp_radio = /\!(.+?)\!/;
+    exp_answer = /\=(.+?)\=/;
+    //rec = /(?!\[(.+?)\])(\=(.+?)\=)/g; //agarra solo datos dentro de = answer =
+    //rec2 = /(\[(.+?)\])(?!\=(.+?)\=)/g; //agarra las preguntas [ questions ]
+    dic = [];
+
+    texto = valor.replace(/<\/?[^>]+(>|$)/g, "/\n/g");
+    texto = texto.split(/\n/g);
+    //texto = texto.join();
+    //texto = texto.split(',');
+
+    lista = [];
+    for (var i=0;i<texto.length;i++) {
+        if (exp_question.test(texto[i])) {
+            var match = texto[i].match(exp_question);
+            obj= {
+                question: match[0],
+                options: '',
+                answer: ''
+            };
+            dic.push(obj);
+            lista=[];
+        }
+        else if (exp_answer.test(texto[i])) {
+            var match = texto[i].match(exp_answer);
+            lista.push(match[0]);
+            obj['options'] = lista;
+        }
+        else if (exp_radio.test(texto[i])){
+            var match = texto[i].match(exp_radio);
+            obj= {
+                question: match[0],
+                options: '',
+                answer: ''
+            };
+            dic.push(obj);
+            lista=[];
+        }
+
+    }
+
+    $('#preguntas').empty();
+    return dic;
+
+
+}
+
+
+function preview_quiz(obj,cont,flag){
+
+    var container = $('#preguntas');
+    if (flag == 1){
+        $('<br>').appendTo(container);
+        $('<label /> ', {text: obj.question}).appendTo(container);
+        $('<br>').appendTo(container);
+        for (var i = 0; i < obj.options.length; i++) {
+            $('<input />', {
+                type: 'radio',
+                name: 'radios'+cont,
+                id: i,
+                value: obj.options[i]
+            }).appendTo(container);
+            $('<label />', {'for': 'cb' + i, text: obj.options[i]}).appendTo(container);
+            $('<br>').appendTo(container);
+        }
+        $('#preguntas input[type=radio]').css({ "margin-right": '10px', "vertical-align": "middle", "position": 'relative' });
+        $('#preguntas label').css({  "vertical-align": "middle", "display":"inline-block", "position": "relative" })
+
+    }
+    else if (flag == 0){
+        $('<br>').appendTo(container);
+        $('<label /> ', {text: obj.question}).appendTo(container);
+        $('<br>').appendTo(container);
+
+        for (var i = 0; i < obj.options.length; i++) {
+            $('<input />', {
+                type: 'checkbox',
+                name: 'checkboxes'+cont,
+                id: i,
+                value: obj.options[i]
+            }).appendTo(container);
+            $('<label />', {'for': 'cb' + i, text: obj.options[i]}).appendTo(container);
+            $('<br>').appendTo(container);
+        }
+        $('#preguntas input[type=checkbox]').css({ "margin-right": '10px', "vertical-align": "middle", "position": 'relative' });
+        $('#preguntas label').css({  "vertical-align": "middle", "display":"inline-block", "position": "relative"})
+    }
+
+}
+
+function verify_checkbox(){
+    var flag;
+    for (var i=0;i < dic.length;i++){
+
+        if (dic[i].answer.length == 0){
+            flag = false
+        }
+        else {
+            flag = true
+        }
+    }
+    return flag
+
+}
+
+function get_value(){
+
+    for (var i=0; i < (dic.length-1); i++){
+        var answers =$("#preguntas input[name=checkboxes" +i+ "]:checked").map(function(){
+            return this.value
+        }).get();
+        dic[i].answer = answers
+    }
+
+
+    $("#preguntas input[type=radio]:checked").map(function(n){
+        var id = this.name.replace("radios", '');
+        dic[id].answer = this.value;
+        console.log(dic[id]);
+    });
+}
+
+function submit_quiz(){
+    var detail = $('#formadetailq').serializeArray();
+    var questions = {
+        name: 'questions',
+        value: dic
+    };
+    detail.push(questions);
+    var data = indexdata(detail);
+    $.ajax({
+        type: 'post',
+        url: '/upload_activity',
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: function (data) {
+            if (data == 'Duplicate'){
+                alert("Error. Intente otro nombre para su actividad");
+            }
+            else{
+                alert("Actividad agregada");
+                $('#formadetailq')[0].reset();
+                $("#modalquiz").modal('hide');
+                window.location.href = "http://localhost:8000/build_quiz";
+            }
+        },
+        error: function(data) {
+
+            alert("Error. La actividad no se agrego")
+
+        }
+    });
+}
+
+</script>
+
+{% endblock %}

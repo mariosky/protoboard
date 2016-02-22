@@ -140,7 +140,6 @@ def upload_activity(request):
                     return HttpResponse("Duplicate")
             elif actividad['type'] == 'quiz':
                 try:
-                    actividad['_id'] = '/test/' + actividad['title'].replace(" ", '_')
                     activities_collection.insert(actividad)
                     return HttpResponse('Agregado')
                 except errors.DuplicateKeyError:
@@ -159,17 +158,6 @@ def upload_activity(request):
         return HttpResponse("Error")
 
 
-def addQuiz(request):
-    if request.method == 'POST':
-        return HttpResponse('Error')
-    #GET:
-    #Edit course
-    elif request.method == 'GET':
-        return render_to_response('activitytree/quiz_builder.html', context_instance=RequestContext(request))
-    else:
-        return HttpResponseNotFound('<h1>Course ID not Found</h1>')
-
-
 @login_required()
 def build_quiz(request):
     if request.method == 'POST':
@@ -177,7 +165,7 @@ def build_quiz(request):
     #GET:
     #Edit course
     elif request.method == 'GET':
-        return render_to_response('activitytree/quizbuilder.html', context_instance=RequestContext(request))
+        return render_to_response('activitytree/quiz_builder.html', context_instance=RequestContext(request))
     else:
         return HttpResponseNotFound('<h1>Course ID not Found</h1>')
 
