@@ -77,7 +77,7 @@
                           <label for="publisherquiz">Publisher</label>
                           <input type="text" class="form-control" id="publisherquiz" name="publisher">
                           <label for="tagsquiz">Tags</label>
-                          <input type="text" class="form-control" id="tagsquiz" name="tags"><br>
+                          <input class="form-control" id="tagsquiz" name="tags"><br>
                           <label for="iconquiz">Icon</label>
                           <select id="iconquiz" name="icon" >
                               <option value="coffee">Coffee</option>
@@ -163,7 +163,7 @@ $(function(){
         get_value();
         var verificar = verify_checkbox(e);
         if (verificar == false){
-            alert("Seleccione una respuesta")
+            alert("Seleccione respuestas correctas")
         }
         else{
             if ($.trim($('#displayquiz').val()) == ''){
@@ -319,7 +319,6 @@ function get_value(){
     $("#preguntas input[type=radio]:checked").map(function(n){
         var id = this.name.replace("radios", '');
         dic[id].answer = this.value;
-        console.log(dic[id]);
     });
 }
 

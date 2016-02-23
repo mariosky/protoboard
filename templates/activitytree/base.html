@@ -17,6 +17,9 @@
     <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/bootstrap-social.css" title="social stylesheet" />
     <link rel="stylesheet" type="text/css" href="//code.jquery.com/qunit/qunit-1.18.0.css">
     <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/jquery.raty.css"/>
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
+    <link href="https://59f98194dea4857a8142e998b76bddcb34d137dc.googledrive.com/host/0B4KIaVIuZK2JbVBkdTd3ak5WN2M/jquery.tagit.css" rel="stylesheet" type="text/css">
+
       <script src="{{ STATIC_URL }}app/scripts/modernizr.js"></script>
 
     <!-- Custom styles for this template -->
@@ -211,6 +214,8 @@
     <!-- build:js(.) scripts/plugins.js -->
 
     <script src="{{ STATIC_URL }}app/scripts/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://59f98194dea4857a8142e998b76bddcb34d137dc.googledrive.com/host/0B4KIaVIuZK2JbVBkdTd3ak5WN2M/tag-it.js" type="text/javascript" charset="utf-8"></script>
     <script src="{{ STATIC_URL }}app/scripts/bootstrap.min.js"></script>
     <script src="{{ STATIC_URL }}app/scripts/jquery-sortable-lists.min.js"></script>
     <script src="{{ STATIC_URL }}app/scripts/mustache.min.js"></script>
@@ -512,10 +517,15 @@ $('#rating-info').raty({
             $('#formadetail')[0].reset();
             $('#formaVideo')[0].reset();
             $('#formadetailv')[0].reset();
-            $('#ytVideo').empty()
+            $('#ytVideo').empty();
+            $("#tagshtml").tagit("removeAll");
+            $("#tagsvideo").tagit("removeAll");
         });
 
-        $('#url').on('change', loadVideo)
+        $('#url').on('change', loadVideo);
+
+
+
     });
 
     function inserthtml(){
@@ -591,6 +601,9 @@ $('#rating-info').raty({
   function indexdata(data){
       var indexed = {};
       $.map(data, function(n, i){
+          if (n['name']=='tags'){
+              n['value'] = n['value'].split(',')
+          }
           indexed[n['name']] = n['value'];
       });
 
@@ -669,6 +682,24 @@ $('#rating-info').raty({
 
     });
     })(jQuery);
+
+    $(document).ready(function() {
+        $("#tagshtml").tagit({
+            fieldName: "tags"
+        });
+
+        $("#tagsvideo").tagit({
+            fieldName: "tags"
+        });
+
+        $("#tagsprog").tagit({
+            fieldName: "tags"
+        });
+
+        $("#tagsquiz").tagit({
+            fieldName: "tags"
+        });
+    });
     </script>
 
 
@@ -763,8 +794,9 @@ $('#rating-info').raty({
                                         <input type="text" class="form-control" id="externalhtml" name="external_url">
                                         <label for="publisherhtml">Publisher</label>
                                         <input type="text" class="form-control" id="publisherhtml" name="publisher">
-                                        <label for="tagshtml">Tags</label>
-                                        <input type="text" class="form-control" id="tagshtml" name="tags"><br>
+                                        <label for="tagshtml">Tags:</label><br>
+                                        <input class="form-control" id="tagshtml" name="tags">
+                                        <br>
                                         <label for="iconhtml">Icon</label>
                                         <select id="iconhtml" name="icon" >
                                             <option value="coffee">Coffee</option>
@@ -845,7 +877,7 @@ $('#rating-info').raty({
                                         <label for="publishervideo">Publisher</label>
                                         <input type="text" class="form-control" id="publishervideo" name="publisher">
                                         <label for="tagsvideo">Tags</label>
-                                        <input type="text" class="form-control" id="tagsvideo" name="tags"><br>
+                                        <input class="form-control" id="tagsvideo" name="tags"><br>
                                         <label for="iconvideo">Icon</label>
                                         <select id="iconvideo" name="icon" >
                                             <option value="coffee">Coffee</option>

@@ -78,7 +78,10 @@
             <p>
               <span class="label label-info">[[type]]</span>
               <span class="label label-success">[[lang]]</span>
-              <span class="label label-default">[[level]]</span>
+              <span class="label label-default">[[level]]</span><br>
+              [[#tags]]
+              <span class="label label-info">[[.]]</span>
+              [[/tags]]
             </p>
 
             </div>
@@ -125,7 +128,8 @@ function loadactivities(){
                     description: value.description,
                     lang:value.lang,
                     level:value.level,
-                    type:value.type});
+                    type:value.type,
+                    tags:value.tags});
                 $("#actividades").append(rendered);
 
             });
