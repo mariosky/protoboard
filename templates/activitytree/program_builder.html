@@ -49,6 +49,9 @@
 
 <div class="container" style="width: 100%">
   <h3>Menu</h3>
+  {% if d %}
+       {{ title }}
+  {% endif %}
   <ul class="nav nav-tabs">
     <li class="active"><a href="#info" data-toggle="tab">Info</a> </li>
     <li><a href="#programa" data-toggle="tab">Programa</a></li>
@@ -181,8 +184,15 @@ Initial code;
 
     <script>
     $(document).ready(function(){
-        //unit_test = ace.edit("editor1");
-        //codigo = unit_test.getValue();
+        var url = getParameterByName('id');
+        if (url != null){
+            var type = 'prog';
+            $("#tagsprog").tagit("removeAll");
+            get_activity(url,type);
+        }
+        else {
+
+        }
     });
 
 
@@ -249,6 +259,66 @@ Initial code;
 
     });
 
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+
+    function get_activity(id,type){
+        $.ajax({
+            type: 'get',
+            url: '/get_id',
+            data: { _id: id,
+                    user: '{{ user.email }}',
+                    type: type},
+            success: function (data){
+                var obj = jQuery.parseJSON( data );
+                load_progdata(obj)
+            },
+            error: function(data){
+                console.log(data)
+            }
+    });
+}
+
+    function load_progdata(obj){
+        var editor = ace.edit("editor1");
+        var editor2 = ace.edit("editor2");
+        var editor3 = ace.edit("editor3");
+        $.each(obj[0], function(key, value){
+            $('#formaProg [name='+key+']').val(value);
+            if (key == 'unit_test'){
+                editor.setValue(value)
+            }
+            else if (key == "correct_code"){
+                editor3.setValue(value)
+            }
+            else if (key == "initial_code"){
+                editor2.setValue(value)
+            }
+            else if (key == 'tags'){
+                $('#tagsprog').val("");
+                for (var i=0; i < value.length ; i++){
+                    $("#tagsprog").tagit("createTag", value[i]);
+                }
+            }
+            else if (key == 'content'){
+                tinyMCE.get('html').setContent(value)
+            }
+            else if (key == 'instructions'){
+                $('#txtInstrucciones').val(value)
+            }
+            $('#formadetailp [name='+key+']').val(value);
+
+    });
+    }
+
     function check_ifempty(e){
         var isValid = true;
         if ($.trim($('#displayprog').val()) == ''){
@@ -280,6 +350,11 @@ Initial code;
         var detail = $('#formadetailp').serializeArray();
         var data = main.concat(detail);
         var obj = progData();
+        var html = {
+            name: "content",
+            value: tinyMCE.get('html').getContent()
+        };
+        data.push(html);
         data.push(obj.obj1,obj.obj2,obj.obj3);
         data=indexdata(data);
         $.ajax({
@@ -287,9 +362,24 @@ Initial code;
             url: '/upload_activity',
             contentType: "application/json",
             data: JSON.stringify(data),
-            success: function (data) {
-                if (data == 'Duplicate'){
-                     alert("Error. Intente otro nombre para su actividad");
+            success: function (info) {
+                if (info == 'Duplicate'){
+                     $.ajax({
+                        type: 'post',
+                        url: '/update_activity',
+                        contentType: "application/json",
+                        data: JSON.stringify(data),
+
+                        success: function(info){
+                            alert("Actividad modificada");
+                            $('#formaProg')[0].reset();
+                            $('#formadetailp')[0].reset();
+                            window.location.href = "http://localhost:8000/activitybuilder";
+                        },
+                        error: function(info){
+                            alert("Error")
+                        }
+                    });
                 }
                 else{
                     alert("Actividad agregada");
@@ -298,7 +388,7 @@ Initial code;
                     window.location.href = "http://localhost:8000/build_program";
                 }
             },
-            error: function(data) {
+            error: function(info) {
 
                 alert("Error. La actividad no se agrego")
 

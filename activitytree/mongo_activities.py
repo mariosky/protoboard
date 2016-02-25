@@ -34,3 +34,7 @@ class Activity:
     @staticmethod
     def del_activity(_id, user):
         return _activities_collection.remove({'_id': _id, 'author': user})
+
+    @staticmethod
+    def get_activity(_id, user):
+        return _activities_collection.find({'_id': _id, 'author': user}, { '_id':1, 'title':1,'url':1 , 'author':1 ,'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1, 'instructions':1 ,'unit_test':1, 'initial_code':1, 'correct_code':1 ,'external_url':1, 'rights':1, 'publisher':1, 'content':1})

@@ -116,22 +116,21 @@
 
 <script>
 $(document).ready(function(){
-    contenido = "Sintaxis: " +
-            ">> Pregunta <<" +
-            "Las preguntas se encierran en  >>  <<" +
-    "Opciones de Texto: " +
-    "= Opción Uno " +
-            "= Opción Dos" +
-            "Explicación:" +
-            "[[ Explicación  ]]" +
-            "Hint:" ;
+    var url = getParameterByName('id');
+    if (url != null){
+        var type = 'quiz';
+        $("#tagsquiz").tagit("removeAll");
+        get_activity(url,type);
+    }
+    else {
 
+    }
 
 });
 
 $(function(){
     $('#preview').click(function(){
-        var valor = tinyMCE.activeEditor.getContent();
+        valor = tinyMCE.activeEditor.getContent();
         var quiz = analize(valor);
         var cont = 0;
         $.each(quiz,function(index,value){
@@ -198,6 +197,52 @@ $(function(){
 
 });
 
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+
+function get_activity(id,type){
+    $.ajax({
+        type: 'get',
+        url: '/get_id',
+        data: { _id: id,
+            user: '{{ user.email }}',
+            type: type},
+        success: function (data){
+            var obj = jQuery.parseJSON( data );
+            load_quizdata(obj)
+        },
+        error: function(data){
+            console.log(data)
+        }
+    });
+}
+
+
+function load_quizdata(obj){
+    $.each(obj[0], function(key, value){
+        $('#formadetailq [name='+key+']').val(value);
+        if (key == 'content'){
+            tinyMCE.get('quiz').setContent(value)
+        }
+        else if (key == 'tags'){
+            $('#tagsquiz').val("");
+            for (var i=0; i < value.length ; i++){
+                $("#tagsquiz").tagit("createTag", value[i]);
+            }
+        }
+        $('#formadetailq [name='+key+']').val(value);
+    });
+    }
+
 function analize(valor){
     //re = /= (.*)\=/;
     exp_question = /\[(.+?)\]/;
@@ -209,8 +254,6 @@ function analize(valor){
 
     texto = valor.replace(/<\/?[^>]+(>|$)/g, "/\n/g");
     texto = texto.split(/\n/g);
-    //texto = texto.join();
-    //texto = texto.split(',');
 
     lista = [];
     for (var i=0;i<texto.length;i++) {
@@ -308,18 +351,18 @@ function verify_checkbox(){
 
 function get_value(){
 
-    for (var i=0; i < (dic.length-1); i++){
+    for (var i=0; i < (dic.length); i++){
         var answers =$("#preguntas input[name=checkboxes" +i+ "]:checked").map(function(){
             return this.value
         }).get();
-        dic[i].answer = answers
+        dic[i].answer = answers;
+
+        $("#preguntas input[type=radio]:checked").map(function(n){
+            var id = this.name.replace("radios", '');
+            dic[id].answer = this.value;
+        });
     }
 
-
-    $("#preguntas input[type=radio]:checked").map(function(n){
-        var id = this.name.replace("radios", '');
-        dic[id].answer = this.value;
-    });
 }
 
 function submit_quiz(){
@@ -329,24 +372,44 @@ function submit_quiz(){
         value: dic
     };
     detail.push(questions);
+    var content = {
+            name: 'content',
+            value: valor
+        };
+    detail.push(content);
     var data = indexdata(detail);
     $.ajax({
         type: 'post',
         url: '/upload_activity',
         contentType: "application/json",
         data: JSON.stringify(data),
-        success: function (data) {
-            if (data == 'Duplicate'){
-                alert("Error. Intente otro nombre para su actividad");
+        success: function (info) {
+            if (info == 'Duplicate'){
+                $.ajax({
+                    type: 'post',
+                    url: '/update_activity',
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
+
+                    success: function(info){
+                        alert("Actividad modificada");
+                        $('#formaQuiz')[0].reset();
+                        $('#formadetailq')[0].reset();
+                        window.location.href = "http://localhost:8000/activitybuilder";
+                    },
+                    error: function(info){
+                        alert("Error")
+                    }
+                });
             }
             else{
                 alert("Actividad agregada");
                 $('#formadetailq')[0].reset();
                 $("#modalquiz").modal('hide');
-                window.location.href = "http://localhost:8000/build_quiz";
+                window.location.href = "http://localhost:8000/activitybuilder";
             }
         },
-        error: function(data) {
+        error: function(info) {
 
             alert("Error. La actividad no se agrego")
 

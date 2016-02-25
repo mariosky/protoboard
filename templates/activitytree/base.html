@@ -223,7 +223,7 @@
     <script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.raty.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-    <script>tinymce.init({ selector:'tinytext', height:"220" });</script>
+    <script>tinymce.init({ selector:'tinytext', height:"220", automatic_uploads:true, plugins: "image link", toolbar:" undo redo| styleselect | bold italic | alignleft aligncenter alignright | link image" });</script>
 
 <!-- endbuild -->
 
@@ -540,9 +540,26 @@ $('#rating-info').raty({
             url: '/upload_activity',
             contentType: "application/json",
             data: JSON.stringify(data),
-            success: function (data){
-                if (data == 'Duplicate'){
-                    alert("Error. Intente otro nombre para su actividad");
+            success: function (info){
+                if (info == 'Duplicate'){
+                    $.ajax({
+                        type: 'post',
+                        url: '/update_activity',
+                        contentType: "application/json",
+                        data: JSON.stringify(data),
+
+                        success: function(info){
+                            alert("Actividad modificada");
+                            $("#modalhtml").modal('hide');
+                            if (current == '/activitybuilder'){
+                                location.reload()
+                             }
+
+                        },
+                        error: function(info){
+                            alert("Error")
+                        }
+                    });
                 }
                 else{
                     alert("Actividad agregada");
@@ -554,8 +571,8 @@ $('#rating-info').raty({
                     }
                 }
             },
-            error: function(data){
-                if (data){
+            error: function(info){
+                if (info){
                     if (data.name == 'errmsg' && data.code== 11000){
                         alert("Error. Intente otro nombre para su actividad");
                     }
@@ -573,14 +590,32 @@ $('#rating-info').raty({
         var data = main.concat(detail);
         data = indexdata(data);
         var current = window.location.pathname;
+        console.log(data);
         $.ajax({
             type: 'post',
             url: '/upload_activity',
             contentType: "application/json",
             data: JSON.stringify(data),
-            success: function (data) {
-                if (data == 'Duplicate'){
-                    alert("Error. Intente otro nombre para su actividad");
+            success: function (info) {
+                if (info == 'Duplicate'){
+                    $.ajax({
+                        type: 'post',
+                        url: '/update_activity',
+                        contentType: "application/json",
+                        data: JSON.stringify(data),
+
+                        success: function(info){
+                            alert("Actividad modificada");
+                            $("#modalvideo").modal('hide');
+                            if (current == '/activitybuilder'){
+                                location.reload()
+                            }
+
+                        },
+                        error: function(info){
+                            alert("Error")
+                        }
+                    });
                 }
                 else {
                     alert("Actividad agregada");
@@ -592,8 +627,8 @@ $('#rating-info').raty({
                     }
                 }
             },
-            error: function(data) {
-                   alert(data)
+            error: function(info) {
+                   alert(info)
             }
         });
     }
@@ -748,6 +783,25 @@ $('#rating-info').raty({
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+ <div id="confirm" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" align="center">
+                Confirm <i class="fa fa-upload"></i>
+            </div>
+            <div class="modal-body">
+                Activity already exists. Update?
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-primary" id="acceptEditBtn">Aceptar</button>
+                <button type="button" data-dismiss="modal" class="btn btn-default">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 <div class="modal fade" id="modalhtml">
