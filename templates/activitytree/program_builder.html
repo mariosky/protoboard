@@ -191,7 +191,7 @@ Initial code;
             get_activity(url,type);
         }
         else {
-
+            console.log(url)
         }
     });
 
@@ -199,9 +199,9 @@ Initial code;
     $(function(){
 
         $('#displayprog').on('change', function(){
-            var valor = this.value;
-            check(valor);
-            $('#idprog').val('/activity/' + valor.replace(/ /g, '_'))
+            var id = '/program/' + this.value.replace(/ /g, '_');
+            check(id);
+            $('#idprog').val(id);
         });
 
         var editor;
@@ -278,8 +278,15 @@ Initial code;
                     user: '{{ user.email }}',
                     type: type},
             success: function (data){
-                var obj = jQuery.parseJSON( data );
-                load_progdata(obj)
+                var obj = jQuery.parseJSON(data);
+                if (jQuery.isEmptyObject(obj)){
+                    alert("No puedes modificar esta actividad");
+                    window.location.href = "http://localhost:8000/activitybuilder";
+                }
+                else{
+                    load_progdata(obj)
+                }
+
             },
             error: function(data){
                 console.log(data)
@@ -371,10 +378,18 @@ Initial code;
                         data: JSON.stringify(data),
 
                         success: function(info){
-                            alert("Actividad modificada");
-                            $('#formaProg')[0].reset();
-                            $('#formadetailp')[0].reset();
-                            window.location.href = "http://localhost:8000/activitybuilder";
+                            var info = jQuery.parseJSON(info);
+                            if (info.updatedExisting == false){
+                                alert("No puedes modificar la actividad");
+                                window.location.href = "http://localhost:8000/activitybuilder";
+                            }
+                            else{
+                                alert("Actividad modificada");
+                                $('#formaProg')[0].reset();
+                                $('#formadetailp')[0].reset();
+                                window.location.href = "http://localhost:8000/activitybuilder";
+                            }
+
                         },
                         error: function(info){
                             alert("Error")

@@ -1250,13 +1250,12 @@ def update_activity(request):
             activities_collection = db.activities_collection
             #user = request.POST['user']
             try:
-                #if user != actividad['user']:
-                #    return HttpResponse("Error")
-                #else:
                 if actividad['type'] == 'video':
                     actividad['content'] = actividad['description']
-                activities_collection.update({'_id': actividad['_id']}, actividad)
-                return HttpResponse("Updated")
+                message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=False)
+                #return HttpResponse("Updated")
+                return HttpResponse(json.dumps(message))
+
             except Exception as e:
                 return HttpResponse(e)
 

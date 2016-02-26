@@ -501,15 +501,15 @@ $('#rating-info').raty({
         });
 
         $('#titleHtml').on('change', function(){
-            var valor = this.value;
-            check(valor);
-            $('#idhtml').val('/activity/' + valor.replace(/ /g, '_'))
+            var id = '/activity/' + this.value.replace(/ /g, '_');
+            check(id);
+            $('#idhtml').val(id)
         });
 
         $('#titleVideo').on('change', function(){
-            var valor = this.value;
-            check(valor);
-            $('#idvideo').val('/activity/video/' + valor.replace(/ /g, '_'))
+            var id = '/activity/video/' + this.value.replace(/ /g, '_');
+            check(id);
+            $('#idvideo').val(id);
         });
 
         $(".modal").on("hidden.bs.modal", function(){
@@ -549,12 +549,19 @@ $('#rating-info').raty({
                         data: JSON.stringify(data),
 
                         success: function(info){
-                            alert("Actividad modificada");
-                            $("#modalhtml").modal('hide');
-                            if (current == '/activitybuilder'){
+                            var info = jQuery.parseJSON(info);
+                            console.log(info);
+                            if (info.updatedExisting == false){
+                                alert("No puedes modificar la actividad");
                                 location.reload()
-                             }
-
+                            }
+                            else{
+                                alert("Actividad modificada");
+                                $("#modalhtml").modal('hide');
+                                if (current == '/activitybuilder'){
+                                    location.reload()
+                                }
+                            }
                         },
                         error: function(info){
                             alert("Error")
@@ -605,10 +612,18 @@ $('#rating-info').raty({
                         data: JSON.stringify(data),
 
                         success: function(info){
-                            alert("Actividad modificada");
-                            $("#modalvideo").modal('hide');
-                            if (current == '/activitybuilder'){
+                            var info = jQuery.parseJSON(info);
+                            console.log(info);
+                            if (info.updatedExisting == false){
+                                alert("No puedes modificar la actividad");
                                 location.reload()
+                            }
+                            else{
+                                alert("Actividad modificada");
+                                $("#modalhtml").modal('hide');
+                                if (current == '/activitybuilder'){
+                                    location.reload()
+                                }
                             }
 
                         },
@@ -653,7 +668,6 @@ $('#rating-info').raty({
            data: { valor: valor},
            success: function (data) {
                var obj =jQuery.parseJSON(data);
-               console.log(obj);
                if (jQuery.isEmptyObject(obj)){
                    console.log("No existe");
                }

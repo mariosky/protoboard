@@ -19,6 +19,7 @@ Ejemplo<br>
 []Mexico <br>
 [x]Argentina<br>
 
+{ { Hints entre llaves } }<br>
 
 Pregunta de solo una respuesta ()<br>
 
@@ -143,7 +144,7 @@ $(document).ready(function(){
         get_activity(url,type);
     }
     else {
-
+        console.log(url)
     }
 
 });
@@ -201,9 +202,9 @@ $(function(){
         });
 
     $("#displayquiz").on('change', function(){
-        var valor = this.value;
-        check(valor);
-        $('#idquiz').val('/test/' + valor.replace(/ /g, '_'))
+        var id = '/test/' + this.value.replace(/ /g, '_');
+        check(id);
+        $('#idquiz').val(id);
     });
 
 
@@ -230,7 +231,13 @@ function get_activity(id,type){
             type: type},
         success: function (data){
             var obj = jQuery.parseJSON( data );
-            load_quizdata(obj)
+            if (jQuery.isEmptyObject(obj)){
+                alert("No puedes modificar esta actividad");
+                window.location.href = "http://localhost:8000/activitybuilder";
+            }
+            else{
+                load_quizdata(obj)
+            }
         },
         error: function(data){
             console.log(data)
@@ -262,6 +269,7 @@ function analize(valor){
     exp_question = /\s*>>(.*?)<</;
     exp_correct = /^\s*\[x\]/;
     exp_radio_correct = /^\s*\(x\)/;
+    exp_hint = /{*{(.*?)}}/;
 
     dic = [];
 
@@ -271,6 +279,7 @@ function analize(valor){
     texto = texto.replace(/\/g/g, '');
     texto = texto.replace(/\//g, '');
     texto = texto.split(/\n/g);
+    texto = texto.filter(Boolean);
 
     lista = [];
     correct = [];
@@ -281,7 +290,8 @@ function analize(valor){
                 question: match[0],
                 options: '',
                 answer: '',
-                type:''
+                type:'',
+                hint:''
             };
             dic.push(obj);
             lista=[];
@@ -307,6 +317,10 @@ function analize(valor){
             lista.push(match);
             obj['options'] = lista;
             obj['type'] = "radio";
+        }
+        else if (exp_hint.test(texto[i])){
+            var match = texto[i].split(exp_hint)[1];
+            obj['hint'] = match;
         }
 
     }
@@ -445,10 +459,17 @@ function submit_quiz(){
                     data: JSON.stringify(data),
 
                     success: function(info){
-                        alert("Actividad modificada");
-                        $('#formaQuiz')[0].reset();
-                        $('#formadetailq')[0].reset();
-                        window.location.href = "http://localhost:8000/activitybuilder";
+                        var info = jQuery.parseJSON(info);
+                            if (info.updatedExisting == false){
+                                alert("No puedes modificar la actividad");
+                                window.location.href = "http://localhost:8000/activitybuilder";
+                            }
+                            else{
+                                alert("Actividad modificada");
+                                $('#formaQuiz')[0].reset();
+                                $('#formadetailq')[0].reset();
+                                window.location.href = "http://localhost:8000/activitybuilder";
+                            }
                     },
                     error: function(info){
                         alert("Error")
