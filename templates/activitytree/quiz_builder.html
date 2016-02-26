@@ -7,22 +7,42 @@
         <form id="formaQuiz" style="width: 100%;height: 100%;align-content: center" onsubmit="return false" >
         <div class="form-group" style="width: 80%; height: 100%">
             <label for="txtPregunta">Ingresar cuestionario: </label>
-            <tinytxt class="form-control" name="content" id="quiz">
-                Pregunta de opcion multiple encerrada entre [] con Enter entre respuestas<br>
-                Ejemplo<br>
-[ Pregunta 1. Equipos que han sido campeones del mundo ]<br>
-= Brasil =<br>
-= Mexico =<br>
-= Argentina =<br>
-                Pregunta de solo una respuesta encerrada entre !!<br>
-                Ejemplo<br>
-! Presidente actual de Mexico !<br>
-= Enrique pena Nieto =<br>
-= George Bush =<br>
-= Fidel Castro = <br>
+            <tiny class="form-control" name="content" id="quiz">
+            Pregunta de opcion multiple encerrada entre > < con Enter entre respuestas<br>
+
+Marcar respuesta correcta con (x)<br>
+Ejemplo<br>
 
 
-            </tinytxt>
+>> Equipos que han sido campeones del mundo <<<br>
+[x] Brasil <br>
+[]Mexico <br>
+[x]Argentina<br>
+
+
+Pregunta de solo una respuesta ()<br>
+
+>> Presidente actual de Mexico << <br>
+() Enrique pena Nieto <br>
+() George Bush <br>
+() Fidel Castro<br>
+
+>>Lenguajes de programacion <<<br>
+
+[]Python<br>
+
+[]Access <br>
+
+[]Java<br>
+
+>>Mejor consola<<<br>
+
+()PS4<br>
+
+()Xbox one<br>
+
+()Wii U <br>
+            </tiny>
         </div>
 
             <button type="button" id="preview" class="btn btn-primary">Preview</button>
@@ -111,7 +131,7 @@
 
 {% block scripts %}
 
-<script>tinymce.init({ selector:'tinytxt', height:"400", width: "500", entity_encoding:"raw" });</script>
+<script>tinymce.init({ selector:'tiny', height:"400", width: "500", entities: "", entity_encoding: "raw" });</script>
 
 
 <script>
@@ -134,21 +154,13 @@ $(function(){
         var quiz = analize(valor);
         var cont = 0;
         $.each(quiz,function(index,value){
-            if (exp_question.test(value.question)){
-                value.question = value.question.replace(/[\[\]']+/g,'');
-                for (var i=0;i<value.options.length;i++)
-                {
-                    value.options[i] = value.options[i].replace(/=/g,'');
-                }
+            if (value.type == "multi"){
+                value.question = value.question.replace(/[>\<]/g,'');
                 preview_quiz(value,cont,0);
                 cont++
             }
-            else if (exp_radio.test(value.question)){
-                value.question = value.question.replace(/!/g,'');
-                for (var i=0;i<value.options.length;i++)
-                {
-                    value.options[i] = value.options[i].replace(/=/g,'');
-                }
+            else if (value.type == "radio"){
+                value.question = value.question.replace(/[>\<]/g,'');
                 preview_quiz(value,cont,1);
                 cont++
             }
@@ -244,43 +256,57 @@ function load_quizdata(obj){
     }
 
 function analize(valor){
-    //re = /= (.*)\=/;
-    exp_question = /\[(.+?)\]/;
-    exp_radio = /\!(.+?)\!/;
-    exp_answer = /\=(.+?)\=/;
-    //rec = /(?!\[(.+?)\])(\=(.+?)\=)/g; //agarra solo datos dentro de = answer =
-    //rec2 = /(\[(.+?)\])(?!\=(.+?)\=)/g; //agarra las preguntas [ questions ]
+
+    exp_radio = /^\s*\(.?\)/;
+    exp_answer = /\[.?]/;
+    exp_question = /\s*>>(.*?)<</;
+    exp_correct = /^\s*\[x\]/;
+    exp_radio_correct = /^\s*\(x\)/;
+
     dic = [];
 
     texto = valor.replace(/<\/?[^>]+(>|$)/g, "/\n/g");
+    texto = texto.replace(/&gt;/g, '>');
+    texto = texto.replace(/&lt;/g, '<');
+    texto = texto.replace(/\/g/g, '');
+    texto = texto.replace(/\//g, '');
     texto = texto.split(/\n/g);
 
     lista = [];
+    correct = [];
     for (var i=0;i<texto.length;i++) {
         if (exp_question.test(texto[i])) {
             var match = texto[i].match(exp_question);
             obj= {
                 question: match[0],
                 options: '',
-                answer: ''
+                answer: '',
+                type:''
             };
             dic.push(obj);
             lista=[];
+            correct=[];
         }
         else if (exp_answer.test(texto[i])) {
-            var match = texto[i].match(exp_answer);
-            lista.push(match[0]);
+            if (texto[i].match(exp_correct)){
+                var match = texto[i].split(exp_answer)[1];
+                correct.push(match);
+                obj['answer'] = correct;
+            }
+            var match = texto[i].split(exp_answer)[1];
+            lista.push(match);
             obj['options'] = lista;
+            obj['type'] = "multi"
         }
         else if (exp_radio.test(texto[i])){
-            var match = texto[i].match(exp_radio);
-            obj= {
-                question: match[0],
-                options: '',
-                answer: ''
-            };
-            dic.push(obj);
-            lista=[];
+            if (texto[i].match(exp_radio_correct)){
+                var match = texto[i].split(exp_radio)[1];
+                obj['answer'] = match;
+            }
+            var match = texto[i].split(exp_radio)[1];
+            lista.push(match);
+            obj['options'] = lista;
+            obj['type'] = "radio";
         }
 
     }
@@ -300,12 +326,23 @@ function preview_quiz(obj,cont,flag){
         $('<label /> ', {text: obj.question}).appendTo(container);
         $('<br>').appendTo(container);
         for (var i = 0; i < obj.options.length; i++) {
+            if (obj.options[i] == obj.answer){
+                $('<input />', {
+                type: 'radio',
+                name: 'radios'+cont,
+                id: i,
+                value: obj.options[i],
+                checked: true
+            }).appendTo(container);
+            }
+            else{
             $('<input />', {
                 type: 'radio',
                 name: 'radios'+cont,
                 id: i,
                 value: obj.options[i]
             }).appendTo(container);
+            }
             $('<label />', {'for': 'cb' + i, text: obj.options[i]}).appendTo(container);
             $('<br>').appendTo(container);
         }
@@ -319,12 +356,29 @@ function preview_quiz(obj,cont,flag){
         $('<br>').appendTo(container);
 
         for (var i = 0; i < obj.options.length; i++) {
-            $('<input />', {
-                type: 'checkbox',
-                name: 'checkboxes'+cont,
-                id: i,
-                value: obj.options[i]
-            }).appendTo(container);
+            if (obj.answer.length > 0) {
+                for (var n = 0; n < obj.answer.length; n++) {
+                    if (obj.options[i] == obj.answer[n]) {
+                        $('<input />', {
+                            type: 'checkbox',
+                            name: 'checkboxes' + cont,
+                            id: i,
+                            value: obj.options[i],
+                            checked: true
+                        }).appendTo(container);
+                    }
+                }
+
+            }
+            else {
+                $('<input />', {
+                    type: 'checkbox',
+                    name: 'checkboxes' + cont,
+                    id: i,
+                    value: obj.options[i]
+                }).appendTo(container);
+            }
+
             $('<label />', {'for': 'cb' + i, text: obj.options[i]}).appendTo(container);
             $('<br>').appendTo(container);
         }
@@ -337,7 +391,6 @@ function preview_quiz(obj,cont,flag){
 function verify_checkbox(){
     var flag;
     for (var i=0;i < dic.length;i++){
-
         if (dic[i].answer.length == 0){
             flag = false
         }
