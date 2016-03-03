@@ -3,7 +3,7 @@ import redis
 import os
 
 HOST = os.environ['REDIS_HOST']
-PORT = 6379
+PORT = 6666
 
 r = redis.Redis(host=HOST, port=PORT)
 
