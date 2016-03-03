@@ -24,13 +24,17 @@ class Activity:
 
     @staticmethod
     def get_by_user(user):
-        return _activities_collection.find({'author': user}, { '_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1}).sort("$natural", pymongo.DESCENDING)
+        return _activities_collection.find({'author': user}, { '_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1}).sort("$natural", pymongo.DESCENDING)
 
 
     @staticmethod
     def get_title(title):
-        return _activities_collection.find({'title': title}, { '_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1})
+        return _activities_collection.find({'_id': title}, { '_id':1, 'author':1})
 
     @staticmethod
     def del_activity(_id, user):
         return _activities_collection.remove({'_id': _id, 'author': user})
+
+    @staticmethod
+    def get_activity(_id, user):
+        return _activities_collection.find({'_id': _id, 'author': user}, { '_id':1, 'title':1,'url':1 , 'author':1 ,'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1, 'instructions':1 ,'unit_test':1, 'initial_code':1, 'correct_code':1 ,'external_url':1, 'rights':1, 'publisher':1, 'content':1})

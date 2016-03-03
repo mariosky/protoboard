@@ -17,6 +17,9 @@
     <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/bootstrap-social.css" title="social stylesheet" />
     <link rel="stylesheet" type="text/css" href="//code.jquery.com/qunit/qunit-1.18.0.css">
     <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/jquery.raty.css"/>
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
+    <link href="https://59f98194dea4857a8142e998b76bddcb34d137dc.googledrive.com/host/0B4KIaVIuZK2JbVBkdTd3ak5WN2M/jquery.tagit.css" rel="stylesheet" type="text/css">
+
       <script src="{{ STATIC_URL }}app/scripts/modernizr.js"></script>
 
     <!-- Custom styles for this template -->
@@ -211,6 +214,8 @@
     <!-- build:js(.) scripts/plugins.js -->
 
     <script src="{{ STATIC_URL }}app/scripts/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://59f98194dea4857a8142e998b76bddcb34d137dc.googledrive.com/host/0B4KIaVIuZK2JbVBkdTd3ak5WN2M/tag-it.js" type="text/javascript" charset="utf-8"></script>
     <script src="{{ STATIC_URL }}app/scripts/bootstrap.min.js"></script>
     <script src="{{ STATIC_URL }}app/scripts/jquery-sortable-lists.min.js"></script>
     <script src="{{ STATIC_URL }}app/scripts/mustache.min.js"></script>
@@ -218,7 +223,7 @@
     <script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.raty.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-    <script>tinymce.init({ selector:'tinytext', height:"220" });</script>
+    <script>tinymce.init({ selector:'tinytext', height:"220", automatic_uploads:true, plugins: "image link", toolbar:" undo redo| styleselect | bold italic | alignleft aligncenter alignright | link image" });</script>
 
 <!-- endbuild -->
 
@@ -496,15 +501,15 @@ $('#rating-info').raty({
         });
 
         $('#titleHtml').on('change', function(){
-            var valor = this.value;
-            check(valor);
-            $('#idhtml').val('/activity/' + valor.replace(/ /g, '_'))
+            var id = '/activity/' + this.value.replace(/ /g, '_');
+            check(id);
+            $('#idhtml').val(id)
         });
 
         $('#titleVideo').on('change', function(){
-            var valor = this.value;
-            check(valor);
-            $('#idvideo').val('/activity/video/' + valor.replace(/ /g, '_'))
+            var id = '/activity/video/' + this.value.replace(/ /g, '_');
+            check(id);
+            $('#idvideo').val(id);
         });
 
         $(".modal").on("hidden.bs.modal", function(){
@@ -512,10 +517,15 @@ $('#rating-info').raty({
             $('#formadetail')[0].reset();
             $('#formaVideo')[0].reset();
             $('#formadetailv')[0].reset();
-            $('#ytVideo').empty()
+            $('#ytVideo').empty();
+            $("#tagshtml").tagit("removeAll");
+            $("#tagsvideo").tagit("removeAll");
         });
 
-        $('#url').on('change', loadVideo)
+        $('#url').on('change', loadVideo);
+
+
+
     });
 
     function inserthtml(){
@@ -530,9 +540,33 @@ $('#rating-info').raty({
             url: '/upload_activity',
             contentType: "application/json",
             data: JSON.stringify(data),
-            success: function (data){
-                if (data == 'Duplicate'){
-                    alert("Error. Intente otro nombre para su actividad");
+            success: function (info){
+                if (info == 'Duplicate'){
+                    $.ajax({
+                        type: 'post',
+                        url: '/update_activity',
+                        contentType: "application/json",
+                        data: JSON.stringify(data),
+
+                        success: function(info){
+                            var info = jQuery.parseJSON(info);
+                            console.log(info);
+                            if (info.updatedExisting == false){
+                                alert("No puedes modificar la actividad");
+                                location.reload()
+                            }
+                            else{
+                                alert("Actividad modificada");
+                                $("#modalhtml").modal('hide');
+                                if (current == '/activitybuilder'){
+                                    location.reload()
+                                }
+                            }
+                        },
+                        error: function(info){
+                            alert("Error")
+                        }
+                    });
                 }
                 else{
                     alert("Actividad agregada");
@@ -544,8 +578,8 @@ $('#rating-info').raty({
                     }
                 }
             },
-            error: function(data){
-                if (data){
+            error: function(info){
+                if (info){
                     if (data.name == 'errmsg' && data.code== 11000){
                         alert("Error. Intente otro nombre para su actividad");
                     }
@@ -563,14 +597,40 @@ $('#rating-info').raty({
         var data = main.concat(detail);
         data = indexdata(data);
         var current = window.location.pathname;
+        console.log(data);
         $.ajax({
             type: 'post',
             url: '/upload_activity',
             contentType: "application/json",
             data: JSON.stringify(data),
-            success: function (data) {
-                if (data == 'Duplicate'){
-                    alert("Error. Intente otro nombre para su actividad");
+            success: function (info) {
+                if (info == 'Duplicate'){
+                    $.ajax({
+                        type: 'post',
+                        url: '/update_activity',
+                        contentType: "application/json",
+                        data: JSON.stringify(data),
+
+                        success: function(info){
+                            var info = jQuery.parseJSON(info);
+                            console.log(info);
+                            if (info.updatedExisting == false){
+                                alert("No puedes modificar la actividad");
+                                location.reload()
+                            }
+                            else{
+                                alert("Actividad modificada");
+                                $("#modalhtml").modal('hide');
+                                if (current == '/activitybuilder'){
+                                    location.reload()
+                                }
+                            }
+
+                        },
+                        error: function(info){
+                            alert("Error")
+                        }
+                    });
                 }
                 else {
                     alert("Actividad agregada");
@@ -582,8 +642,8 @@ $('#rating-info').raty({
                     }
                 }
             },
-            error: function(data) {
-                   alert(data)
+            error: function(info) {
+                   alert(info)
             }
         });
     }
@@ -591,6 +651,9 @@ $('#rating-info').raty({
   function indexdata(data){
       var indexed = {};
       $.map(data, function(n, i){
+          if (n['name']=='tags'){
+              n['value'] = n['value'].split(',')
+          }
           indexed[n['name']] = n['value'];
       });
 
@@ -605,7 +668,6 @@ $('#rating-info').raty({
            data: { valor: valor},
            success: function (data) {
                var obj =jQuery.parseJSON(data);
-               console.log(obj);
                if (jQuery.isEmptyObject(obj)){
                    console.log("No existe");
                }
@@ -669,6 +731,24 @@ $('#rating-info').raty({
 
     });
     })(jQuery);
+
+    $(document).ready(function() {
+        $("#tagshtml").tagit({
+            fieldName: "tags"
+        });
+
+        $("#tagsvideo").tagit({
+            fieldName: "tags"
+        });
+
+        $("#tagsprog").tagit({
+            fieldName: "tags"
+        });
+
+        $("#tagsquiz").tagit({
+            fieldName: "tags"
+        });
+    });
     </script>
 
 
@@ -718,6 +798,25 @@ $('#rating-info').raty({
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+ <div id="confirm" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" align="center">
+                Confirm <i class="fa fa-upload"></i>
+            </div>
+            <div class="modal-body">
+                Activity already exists. Update?
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-primary" id="acceptEditBtn">Aceptar</button>
+                <button type="button" data-dismiss="modal" class="btn btn-default">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 <div class="modal fade" id="modalhtml">
     <div class="modal-dialog modal-lg">
@@ -763,8 +862,9 @@ $('#rating-info').raty({
                                         <input type="text" class="form-control" id="externalhtml" name="external_url">
                                         <label for="publisherhtml">Publisher</label>
                                         <input type="text" class="form-control" id="publisherhtml" name="publisher">
-                                        <label for="tagshtml">Tags</label>
-                                        <input type="text" class="form-control" id="tagshtml" name="tags"><br>
+                                        <label for="tagshtml">Tags:</label><br>
+                                        <input class="form-control" id="tagshtml" name="tags">
+                                        <br>
                                         <label for="iconhtml">Icon</label>
                                         <select id="iconhtml" name="icon" >
                                             <option value="coffee">Coffee</option>
@@ -845,7 +945,7 @@ $('#rating-info').raty({
                                         <label for="publishervideo">Publisher</label>
                                         <input type="text" class="form-control" id="publishervideo" name="publisher">
                                         <label for="tagsvideo">Tags</label>
-                                        <input type="text" class="form-control" id="tagsvideo" name="tags"><br>
+                                        <input class="form-control" id="tagsvideo" name="tags"><br>
                                         <label for="iconvideo">Icon</label>
                                         <select id="iconvideo" name="icon" >
                                             <option value="coffee">Coffee</option>

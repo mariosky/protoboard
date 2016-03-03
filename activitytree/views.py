@@ -170,14 +170,19 @@ def build_quiz(request):
         return HttpResponseNotFound('<h1>Course ID not Found</h1>')
 
 
-def build_program(request):
-    if request.method == 'POST':
-        return HttpResponse('')
-    elif request.method == 'GET':
-        return render_to_response('activitytree/program_builder.html', context_instance=RequestContext(request))
-    else:
-        return HttpResponseNotFound('Not Found')
 
+
+def build_program(request):
+    if request.is_ajax():
+        if request.method == 'POST':
+            return HttpResponseRedirect('/build_program')
+        elif request.method == 'GET':
+            return render_to_response('activitytree/program_builder.html', context_instance=RequestContext(request))
+    else:
+        if request.method == 'POST':
+            return HttpResponseRedirect('/build_program')
+        elif request.method == 'GET':
+            return render_to_response('activitytree/program_builder.html', context_instance=RequestContext(request))
 
 @login_required()
 def activity_builder(request):
@@ -405,6 +410,34 @@ def path_activity(request,path_id, uri):
 
     else:
         return HttpResponseRedirect('/login/?next=%s' % request.path)
+
+
+
+def edit_program(request, _id, user):
+    if request.method == 'GET':
+        #activity = Activity.get_activity(_id, user)
+        #d = json.dumps(activity)
+        #data = {'d':d}
+        return HttpResponse(data, content_type='application/json')
+    elif request.method == 'POST':
+        #activity = Activity.get_activity(_id, user)
+        #d = json.dumps(activity)
+        #data = {'d':d}
+        return HttpResponse(data, content_type='application/json')
+        #return render_to_response('activity/program_builder.html', data, context_instance=RequestContext(request))
+
+
+def edit_quiz(request, _id, user):
+    if request.method == 'GET':
+        #activity = Activity.get_activity(_id, user)
+        #d = json.dumps(activity)
+        #data = {'d':d}
+        return HttpResponse(data, content_type='application/json')
+    elif request.method == 'POST':
+        #activity = Activity.get_activity(_id, user)
+        #d = json.dumps(activity)
+        #data = {'d':d}
+        return HttpResponse(data, content_type='application/json')
 
 
 
@@ -1188,6 +1221,44 @@ def delActivity(request):
             return HttpResponse(message)
         except Exception as e:
             return HttpResponse(e)
+
+
+@login_required
+def get_activity(request):
+    if request.method == 'GET':
+        _id = request.GET['_id']
+        user = request.GET['user']
+        type = request.GET['type']
+        try:
+            message = Activity.get_activity(_id, user)
+            json_docs = [doc for doc in message]
+            #if type == 'prog':
+            #    return HttpResponseRedirect('/build_program', {'data': json.dumps(json_docs)})
+
+            return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+        except Exception as e:
+            return HttpResponse(e)
+
+
+@login_required
+def update_activity(request):
+    if request.is_ajax():
+        if request.method == 'POST':
+            actividad = json.loads(request.body)
+            client = MongoClient(settings.MONGO_DB)
+            db = client.protoboard_database
+            activities_collection = db.activities_collection
+            #user = request.POST['user']
+            try:
+                if actividad['type'] == 'video':
+                    actividad['content'] = actividad['description']
+                message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=False)
+                #return HttpResponse("Updated")
+                return HttpResponse(json.dumps(message))
+
+            except Exception as e:
+                return HttpResponse(e)
+
 
 
 @login_required
