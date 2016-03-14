@@ -291,6 +291,7 @@ function analize(valor){
                 options: '',
                 answer: '',
                 type:'',
+                interaction:'',
                 hint:''
             };
             dic.push(obj);
@@ -306,7 +307,8 @@ function analize(valor){
             var match = texto[i].split(exp_answer)[1];
             lista.push(match);
             obj['options'] = lista;
-            obj['type'] = "multi"
+            obj['type'] = "multi";
+            obj['interaction']="choiceInteraction"
         }
         else if (exp_radio.test(texto[i])){
             if (texto[i].match(exp_radio_correct)){
@@ -317,6 +319,7 @@ function analize(valor){
             lista.push(match);
             obj['options'] = lista;
             obj['type'] = "radio";
+            obj['interaction'] = "simpleChoice"
         }
         else if (exp_hint.test(texto[i])){
             var match = texto[i].split(exp_hint)[1];

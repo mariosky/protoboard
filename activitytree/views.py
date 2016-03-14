@@ -254,6 +254,7 @@ def course_view(request):
         result= {"result":"added" , "error": "Error", "id": 1}
         return HttpResponse(json.dumps(result), content_type='application/javascript')
 
+
 def path_activity(request,path_id, uri):
     learning_activity = None
     try:
@@ -636,6 +637,28 @@ def program(request, uri):
     else:
 
         return HttpResponseNotFound('<h1>Activity not found</h1>')
+
+
+@transaction.atomic
+def test(request, uri):
+
+    quiz = Activity.get(request.path)
+    if quiz:
+
+        template = 'activitytree/test.html'
+        return render_to_response(template, {
+                                                        'content': quiz,
+                                                        'activity_uri':request.path,
+                                                        'breadcrumbs':None,
+                                                        'root':None,
+                                                        'XML_NAV':None
+                                                        },
+                          context_instance=RequestContext(request))
+
+    else:
+
+        return HttpResponseNotFound('<h1>Activity not found</h1>')
+
 
 @csrf_protect
 def execute_queue(request):
