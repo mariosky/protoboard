@@ -867,6 +867,7 @@ def _check_quiz(post_dict, quiz):
 
     return checked
 
+
 def _check_survey(post_dict, quiz):
     answerDict = dict(post_dict.iterlists())
     checked = {}

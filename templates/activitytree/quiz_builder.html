@@ -98,7 +98,9 @@ Pregunta de solo una respuesta ()<br>
                           <label for="publisherquiz">Publisher</label>
                           <input type="text" class="form-control" id="publisherquiz" name="publisher">
                           <label for="tagsquiz">Tags</label>
-                          <input class="form-control" id="tagsquiz" name="tags"><br>
+                          <input class="form-control" id="tagsquiz" name="tags">
+                          <label for="satisfy">Satisfy at least</label>
+                          <input type="text" class="form-control" id="satisfy" name="satisfied_at_least"><br>
                           <label for="iconquiz">Icon</label>
                           <select id="iconquiz" name="icon" >
                               <option value="coffee">Coffee</option>
@@ -247,6 +249,7 @@ function get_activity(id,type){
 
 
 function load_quizdata(obj){
+    console.log(obj);
     $.each(obj[0], function(key, value){
         $('#formadetailq [name='+key+']').val(value);
         if (key == 'content'){
@@ -283,6 +286,8 @@ function analize(valor){
 
     lista = [];
     correct = [];
+    answers = [];
+    n = 0;
     for (var i=0;i<texto.length;i++) {
         if (exp_question.test(texto[i])) {
             var match = texto[i].match(exp_question);
@@ -292,34 +297,58 @@ function analize(valor){
                 answer: '',
                 type:'',
                 interaction:'',
-                hint:''
+                hint:'',
+                id:'',
+                answer_text:''
             };
             dic.push(obj);
             lista=[];
+            answers=[];
             correct=[];
+            n=0;
         }
         else if (exp_answer.test(texto[i])) {
             if (texto[i].match(exp_correct)){
                 var match = texto[i].split(exp_answer)[1];
+                lista.push(match);
                 correct.push(match);
-                obj['answer'] = correct;
+                answers[n] = 1;
+                obj['answer_text'] = correct;
+                n = n+1;
             }
-            var match = texto[i].split(exp_answer)[1];
-            lista.push(match);
-            obj['options'] = lista;
-            obj['type'] = "multi";
-            obj['interaction']="choiceInteraction"
+            else {
+                n=n+1;
+                var match = texto[i].split(exp_answer)[1];
+                lista.push(match);
+                obj['options'] = lista;
+                obj['type'] = "multi";
+                obj['interaction']="choiceInteraction";
+                obj['id']= i;
+                answers.push(0);
+                obj['answer'] = answers
+            }
+
         }
         else if (exp_radio.test(texto[i])){
             if (texto[i].match(exp_radio_correct)){
                 var match = texto[i].split(exp_radio)[1];
-                obj['answer'] = match;
+                lista.push(match);
+                obj['answer_text'] = match;
+                answers[n] = 1;
+                n = n + 1
             }
-            var match = texto[i].split(exp_radio)[1];
-            lista.push(match);
-            obj['options'] = lista;
-            obj['type'] = "radio";
-            obj['interaction'] = "simpleChoice"
+            else{
+                n=n+1;
+                var match = texto[i].split(exp_radio)[1];
+                lista.push(match);
+                obj['options'] = lista;
+                obj['type'] = "radio";
+                obj['interaction'] = "simpleChoice";
+                obj['id']= i;
+                answers.push(0);
+                obj['answer'] = answers
+            }
+
         }
         else if (exp_hint.test(texto[i])){
             var match = texto[i].split(exp_hint)[1];
@@ -343,7 +372,7 @@ function preview_quiz(obj,cont,flag){
         $('<label /> ', {text: obj.question}).appendTo(container);
         $('<br>').appendTo(container);
         for (var i = 0; i < obj.options.length; i++) {
-            if (obj.options[i] == obj.answer){
+            if (obj.options[i] == obj.answer_text){
                 $('<input />', {
                 type: 'radio',
                 name: 'radios'+cont,
@@ -375,7 +404,7 @@ function preview_quiz(obj,cont,flag){
         for (var i = 0; i < obj.options.length; i++) {
             if (obj.answer.length > 0) {
                 for (var n = 0; n < obj.answer.length; n++) {
-                    if (obj.options[i] == obj.answer[n]) {
+                    if (obj.options[i] == obj.answer_text[n]) {
                         $('<input />', {
                             type: 'checkbox',
                             name: 'checkboxes' + cont,
@@ -425,11 +454,11 @@ function get_value(){
         var answers =$("#preguntas input[name=checkboxes" +i+ "]:checked").map(function(){
             return this.value
         }).get();
-        dic[i].answer = answers;
+        dic[i].answer_text = answers;
 
         $("#preguntas input[type=radio]:checked").map(function(n){
             var id = this.name.replace("radios", '');
-            dic[id].answer = this.value;
+            dic[id].answer_text = this.value;
         });
     }
 
