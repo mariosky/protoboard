@@ -170,6 +170,11 @@ def build_quiz(request):
         return HttpResponseNotFound('<h1>Course ID not Found</h1>')
 
 
+def search(request):
+    if request.method == 'GET':
+        return render_to_response('activitytree/search.html', context_instance=RequestContext(request))
+    else:
+        return HttpResponseNotFound('not found')
 
 
 def build_program(request):
@@ -183,6 +188,7 @@ def build_program(request):
             return HttpResponseRedirect('/build_program')
         elif request.method == 'GET':
             return render_to_response('activitytree/program_builder.html', context_instance=RequestContext(request))
+
 
 @login_required()
 def activity_builder(request):
@@ -1227,6 +1233,26 @@ def my_activities(request):
     activities = Activity.get_by_user(user)
     json_docs = [doc for doc in activities]
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+
+
+def search_activity(request):
+    client = MongoClient(settings.MONGO_DB)
+    db = client.protoboard_database
+    activities_collection = db.activities_collection
+    actividad = json.loads(request.body)
+    tipo = actividad['type']
+    if actividad['name'] != "" and len(actividad['type']) == 0:
+        activities = activities_collection.find({'title': {'$regex': actividad['name']}}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1})
+        json_docs = [doc for doc in activities]
+        return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+    elif actividad['name'] != "" and len(actividad['type']) != 0:
+        activities = activities_collection.find({'$and': [{'type': {'$in': tipo}}, {'title': {'$regex': actividad['name']}}]}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1})
+        json_docs = [doc for doc in activities]
+        return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+    else:
+        activities = activities_collection.find({'type': {'$in': tipo}}, { '_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1})
+        json_docs = [doc for doc in activities]
+        return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 
 
 def check_activity(request):

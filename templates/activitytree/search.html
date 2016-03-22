@@ -1,0 +1,133 @@
+{% extends "activitytree/base.html" %}
+
+{% block content %}
+
+    <div class="container-fluid" style="width: 100%">
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" style="float:left; width: 30%">
+            <ul class="nav">
+                <li><h4>Filter by</h4></li>
+                <li></li>
+                <li> <input type="checkbox" id="html" value="text">   <label for="html">HTML</label> </li>
+                <li> <input type="checkbox" id="video" value="video">   <label for="video">Video</label> </li>
+                <li> <input type="checkbox" id="quiz" value="quiz">   <label for="quiz">Quiz</label> </li>
+                <li> <input type="checkbox" id="prog" value="prog">   <label for="prog">Program</label> </li>
+            </ul><br>
+            <ul class="nav">
+                <li><label for="txtname">Keywords</label><input type="text" class="form-control" style="width: 50%" id="txtname"></li>
+            </ul>
+            <br>
+            <ul class="nav">
+                <li><label for="txttags">Tags</label> <input type="text"  class="form-control" style="width: 50%" id="txttags"></li>
+            </ul>
+            <br>
+            <ul class="nav">
+                <li><label for="txtuser">User</label> <input type="text" class="form-control" style="width: 50%" id="txtuser"></li>
+            </ul>
+        </div>
+        <h2>Actividades</h2>
+        <div class="container-fluid" id="actividades"  style="float:left; width: 45%">
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+
+
+<script id="activities_template" type="x-tmpl-mustache">
+         <div class="panel panel-default container-fluid" style="width:500px">
+            <div class="panel-heading row">
+                <p style='line-height: 10px'>
+                <a href="#" onclick='javascript:window.open("[[id]]", "_blank", "scrollbars=1,resizable=1,height=600,width=650");' class=""><i class="fa fa-[[icon]] fa-lg" style='vertical-align:middle'> [[title]] </i></a>
+            </div>
+             <div class="panel-body">
+
+               [[#description]]
+                    <b>Descripcion: [[description]]
+               [[ /description ]]
+               [[^description]]
+                    <b>Sin descripcion</b>
+               [[/description]]
+
+            <p>
+              <span class="label label-info">[[type]]</span>
+              <span class="label label-success">[[lang]]</span>
+              <span class="label label-default">[[level]]</span><br>
+              [[#tags]]
+              <span class="label label-info">[[.]]</span>
+              [[/tags]]
+            </p>
+
+            </div>
+        </div>
+
+</script>
+
+    <script>
+    $(function(){
+        var param = [];
+        obj = {
+            type: param,
+            name:'',
+            tags: '',
+            author: ''
+        };
+        $("#sidebar input[type='checkbox']").change(function(){
+            if(this.checked){
+                $("#actividades").empty();
+                param.push(this.value);
+                buscar(obj);
+            }
+            else
+            {
+                $("#actividades").empty();
+                param.splice($.inArray(this.value,param), 1);
+                buscar(obj)
+            }
+        });
+
+        $("#txtname").on('change', function(){
+            $("#actividades").empty();
+            obj['name'] = ($("#txtname").val());
+            buscar(obj)
+        })
+    });
+
+    function buscar(tipo){
+        $.ajax({
+        type: 'POST',
+        url: '/search_activity',
+        data: JSON.stringify(tipo),
+        success: function (data) {
+            Mustache.tags = ['[[', ']]'];
+            var activities_template = $('#activities_template').html();
+            Mustache.parse(activities_template);
+            var obj = jQuery.parseJSON( data );
+            $.each(obj, function( index, value ) {
+                rendered = Mustache.render(activities_template, {
+                    title: value.title,
+                    id: value._id,
+                    icon:value.icon,
+                    description: value.description,
+                    lang:value.lang,
+                    level:value.level,
+                    type:value.type,
+                    tags:value.tags});
+                $("#actividades").append(rendered);
+
+            });
+
+            $('#actividades').val(data);
+        },
+        error: function(data) {
+            console.log("Error");
+        }
+    });
+    }
+    </script>
+
+
+
+{% endblock %}
