@@ -1241,18 +1241,45 @@ def search_activity(request):
     activities_collection = db.activities_collection
     actividad = json.loads(request.body)
     tipo = actividad['type']
-    if actividad['name'] != "" and len(actividad['type']) == 0:
-        activities = activities_collection.find({'title': {'$regex': actividad['name']}}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1})
+    if len(actividad['type']) != 0 and len(actividad['tags']) != 0 and actividad['name'] != "" and actividad['author'] != "":
+        activities = activities_collection.find({'$and': [{'type': {'$in': tipo}}, {'tags': {'$all': actividad['tags']}}, {'author':actividad['author']} ,{'title': {'$regex': actividad['name']}}]}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1})
         json_docs = [doc for doc in activities]
         return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
-    elif actividad['name'] != "" and len(actividad['type']) != 0:
+    elif len(actividad['type']) != 0 and len(actividad['tags']) != 0 and actividad['name'] != "":
+        activities = activities_collection.find({'$and': [{'type': {'$in': tipo}}, {'tags': {'$all': actividad['tags']}}, {'title': {'$regex': actividad['name']}}]}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1})
+        json_docs = [doc for doc in activities]
+        return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+    elif len(actividad['type']) != 0 and len(actividad['tags']) != 0:
+        activities = activities_collection.find({'$and': [{'type': {'$in': tipo}}, {'tags': {'$all': actividad['tags']}}]}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1})
+        json_docs = [doc for doc in activities]
+        return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+    elif len(actividad['type']) != 0 and actividad['name'] != "":
         activities = activities_collection.find({'$and': [{'type': {'$in': tipo}}, {'title': {'$regex': actividad['name']}}]}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1})
         json_docs = [doc for doc in activities]
         return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
-    else:
+    elif len(actividad['tags']) != 0 and actividad['name'] != "":
+        activities = activities_collection.find({'$and': [{'tags': {'$all': actividad['tags']}}, {'title': {'$regex': actividad['name']}}]}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1})
+        json_docs = [doc for doc in activities]
+        return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+    elif actividad['name'] != "":
+        activities = activities_collection.find({'title': {'$regex': actividad['name']}}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1})
+        json_docs = [doc for doc in activities]
+        return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+    elif actividad['author'] != "":
+        activities = activities_collection.find({'author': actividad['author']}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1})
+        json_docs = [doc for doc in activities]
+        return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+    elif len(actividad['type']) != 0:
         activities = activities_collection.find({'type': {'$in': tipo}}, { '_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1})
         json_docs = [doc for doc in activities]
         return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+    elif len(actividad['tags']) != 0:
+        activities = activities_collection.find({'tags': {'$all': actividad['tags']}}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1})
+        json_docs = [doc for doc in activities]
+        return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+    else:
+        message = "null"
+        return HttpResponse(json.dumps(message), content_type='application/javascript')
 
 
 def check_activity(request):

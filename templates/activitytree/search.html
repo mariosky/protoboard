@@ -3,7 +3,7 @@
 {% block content %}
 
     <div class="container-fluid" style="width: 100%">
-        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" style="float:left; width: 30%">
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" style="float:left; width: 20%">
             <ul class="nav">
                 <li><h4>Filter by</h4></li>
                 <li></li>
@@ -12,17 +12,26 @@
                 <li> <input type="checkbox" id="quiz" value="quiz">   <label for="quiz">Quiz</label> </li>
                 <li> <input type="checkbox" id="prog" value="prog">   <label for="prog">Program</label> </li>
             </ul><br>
-            <ul class="nav">
-                <li><label for="txtname">Keywords</label><input type="text" class="form-control" style="width: 50%" id="txtname"></li>
-            </ul>
+            <div id="showkey"><h4><i class="fa fa-font"></i>  By Keyword <b class="caret"></b></h4></div>
+            <div class="keywords" style="display: none;">
+                <ul class="nav">
+                    <li><label for="txtname">Keywords</label><input type="text" class="form-control"  id="txtname"></li>
+                </ul>
+            </div>
             <br>
+            <div id="showtags"><h4><i class="fa fa-tags"></i>  By Tags <b class="caret"></b></h4></div>
+            <div class="tags" style="display: none;">
             <ul class="nav">
-                <li><label for="txttags">Tags</label> <input type="text"  class="form-control" style="width: 50%" id="txttags"></li>
+                <li><label for="txttags">Tags</label> <input type="text"  class="form-control"  id="txttags"></li>
             </ul>
+            </div>
             <br>
+            <div id="showusers"><h4><i class="fa fa-users"></i>  By User <b class="caret"></b></h4></div>
+            <div class="users" style="display: none;">
             <ul class="nav">
-                <li><label for="txtuser">User</label> <input type="text" class="form-control" style="width: 50%" id="txtuser"></li>
+                <li><label for="txtuser">User</label> <input type="text" class="form-control"  id="txtuser"></li>
             </ul>
+            </div>
         </div>
         <h2>Actividades</h2>
         <div class="container-fluid" id="actividades"  style="float:left; width: 45%">
@@ -68,10 +77,11 @@
     <script>
     $(function(){
         var param = [];
+        var tags = [];
         obj = {
             type: param,
             name:'',
-            tags: '',
+            tags: tags,
             author: ''
         };
         $("#sidebar input[type='checkbox']").change(function(){
@@ -92,7 +102,34 @@
             $("#actividades").empty();
             obj['name'] = ($("#txtname").val());
             buscar(obj)
+        });
+
+        $("#txttags").on('change', function(){
+            if ($("#txttags").val() == "")
+            {
+                $("#actividades").empty();
+                obj['tags'] = [];
+                buscar(obj)
+            }
+            else{
+                $("#actividades").empty();
+                obj['tags'] = $("#txttags").val().split(',');
+                buscar(obj)
+            }
+        });
+
+        $('#showkey').click(function() {
+                $('.keywords').slideToggle("fast");
+        });
+
+        $('#showtags').click(function() {
+                $('.tags').slideToggle("fast");
+        });
+
+        $('#showusers').click(function() {
+                $('.users').slideToggle("fast");
         })
+
     });
 
     function buscar(tipo){
@@ -101,11 +138,16 @@
         url: '/search_activity',
         data: JSON.stringify(tipo),
         success: function (data) {
-            Mustache.tags = ['[[', ']]'];
-            var activities_template = $('#activities_template').html();
-            Mustache.parse(activities_template);
             var obj = jQuery.parseJSON( data );
-            $.each(obj, function( index, value ) {
+            console.log(obj);
+            if (obj == "null" || obj.length == 0){
+                alert("No se encontro actividad con esas caracteristicas")
+            }
+            else{
+                Mustache.tags = ['[[', ']]'];
+                var activities_template = $('#activities_template').html();
+                Mustache.parse(activities_template);
+                $.each(obj, function( index, value ) {
                 rendered = Mustache.render(activities_template, {
                     title: value.title,
                     id: value._id,
@@ -120,6 +162,8 @@
             });
 
             $('#actividades').val(data);
+            }
+
         },
         error: function(data) {
             console.log("Error");
