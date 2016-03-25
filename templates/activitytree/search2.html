@@ -32,6 +32,20 @@
                 <li><label for="txtuser">User</label> <input type="text" class="form-control"  id="txtuser"></li>
             </ul>
             </div>
+            <br>
+            <div id="showdifficulty"><h4><i class="fa fa-flag"></i>  By Difficulty <b class="caret"></b></h4></div>
+            <div class="difficulty" style="display: none;">
+            <ul class="nav">
+                <li><label for="txtdifficulty">Level</label>
+                <select id="txtdifficulty" class="form-control">
+                    <option value=""></option>
+                    <option value="principiante">Principiante</option>
+                    <option value="intermedio">Intermedio</option>
+                    <option value="avanzado">Avanzado</option>
+                </select>
+                </li>
+            </ul>
+            </div>
         </div>
         <h2>Actividades</h2>
         <div class="container-fluid" id="actividades"  style="float:left; width: 45%">
@@ -48,6 +62,9 @@
 <script id="activities_template" type="x-tmpl-mustache">
          <div class="panel panel-default container-fluid" style="width:500px">
             <div class="panel-heading row">
+            <div class="col-xs-15 text-right">
+                    <button type="button" value="[[id]]" onclick='copyToClipboard("[[id]]")' data-toggle="" data-target="#"  data-href="[[id]]" class="btn btn-default clickable   editBtn"><i class="fa fa-clipboard clickable clipBtn"></i> </button>
+            </div>
                 <p style='line-height: 10px'>
                 <a href="#" onclick='javascript:window.open("[[id]]", "_blank", "scrollbars=1,resizable=1,height=600,width=650");' class=""><i class="fa fa-[[icon]] fa-lg" style='vertical-align:middle'> [[title]] </i></a>
             </div>
@@ -76,57 +93,54 @@
 
     <script>
     $(function(){
-        var param = [];
+        param = [];
         var tags = [];
-        obj = {
-            type: param,
-            name:'',
-            tags: tags,
-            author: ''
-        };
+        query = {};
         $("#sidebar input[type='checkbox']").change(function(){
             if(this.checked){
                 $("#actividades").empty();
                 param.push(this.value);
-                string = [];
-                string.push(" {'$and': [{'type': {'$in': '"+param+"'}},");
-                obj2 = {
-                    string: string
-                };
-                buscar(obj);
+                query_builder("type")
             }
             else
             {
                 $("#actividades").empty();
                 param.splice($.inArray(this.value,param), 1);
-                buscar(obj)
+                if (param.length == 0 && $("#txtname").val() != ""){
+                    query_builder("type")
+                }
+                else{
+                    query_builder("type")
+                }
+
             }
         });
 
         $("#txtname").on('change', function(){
             $("#actividades").empty();
-            obj['name'] = ($("#txtname").val());
-            buscar(obj)
+            query_builder("name");
         });
 
         $("#txttags").on('change', function(){
             if ($("#txttags").val() == "")
             {
                 $("#actividades").empty();
-                obj['tags'] = [];
-                buscar(obj)
+                query_builder("tags")
             }
             else{
                 $("#actividades").empty();
-                obj['tags'] = $("#txttags").val().split(',');
-                buscar(obj)
+                query_builder("tags")
             }
         });
 
         $("#txtuser").on('change', function(){
             $("#actividades").empty();
-            obj['author'] = ($("#txtuser").val());
-            buscar(obj)
+            query_builder("user")
+        });
+
+        $("#txtdifficulty").on('change', function(){
+            $("#actividades").empty();
+            query_builder("level")
         });
 
         $('#showkey').click(function() {
@@ -139,18 +153,80 @@
 
         $('#showusers').click(function() {
                 $('.users').slideToggle("fast");
-        })
+        });
+
+        $('#showdifficulty').click(function() {
+                $('.difficulty').slideToggle("fast");
+        });
 
     });
+
+    function query_builder(flag)
+    {
+        if (flag == "type"){
+            if (param.length==0){
+                delete query["type"];
+                console.log(query);
+                buscar(query)
+            }
+            else{
+                query['type'] = {'type': {'$in':param}};
+                buscar(query)
+            }
+        }
+        else if (flag == "name"){
+            if ($("#txtname").val() == ""){
+                delete query["title"];
+                buscar(query)
+            }
+            else{
+                query['title'] = {'title': {'$regex': $("#txtname").val()}};
+                buscar(query)
+            }
+        }
+        else if (flag == "tags"){
+            if ($("#txttags").val() == ""){
+                delete query["tags"];
+                buscar(query)
+            }
+            else{
+                query['tags'] = {'tags': {'$all': $("#txttags").val().split(',')}};
+                buscar(query)
+            }
+        }
+        else if (flag == "user"){
+            if ($("#txtuser").val() == ""){
+                delete query["author"];
+                buscar(query)
+            }
+            else{
+                query['author'] = {'author': $("#txtuser").val()};
+                buscar(query)
+            }
+        }
+        else if (flag == "level"){
+            if ($("#txtdifficulty").val() == ""){
+                delete query["level"];
+                buscar(query)
+            }
+            else{
+                query['level'] = {'level': $("#txtdifficulty").val()};
+                buscar(query)
+            }
+        }
+    }
+
+    function copyToClipboard(text) {
+        window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+        }
 
     function buscar(tipo){
         $.ajax({
         type: 'POST',
-        url: '/search_activity',
+        url: '/search_activity2',
         data: JSON.stringify(tipo),
         success: function (data) {
             var obj = jQuery.parseJSON( data );
-            console.log(obj);
             if (obj == "null" || obj.length == 0){
                 alert("No se encontro actividad con esas caracteristicas")
             }

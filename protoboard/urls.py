@@ -44,6 +44,8 @@ urlpatterns = patterns('',
 
       (r'^search$','activitytree.views.search'),
       (r'^search_activity$','activitytree.views.search_activity'),
+      (r'^search2$','activitytree.views.search2'),
+      (r'^search_activity2$','activitytree.views.search_activity2'),
       (r'^activitybuilder$','activitytree.views.activity_builder'),
       (r'^my_activities$','activitytree.views.my_activities'),
       (r'^delete_activity$','activitytree.views.delActivity'),
