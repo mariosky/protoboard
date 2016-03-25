@@ -43,6 +43,7 @@ urlpatterns = patterns('',
       url(r'^course-builder/?$','activitytree.views.course',name="course"),
 
       (r'^search$','activitytree.views.search'),
+      (r'^search/?$','activitytree.views.search'),
       (r'^search_activity$','activitytree.views.search_activity'),
       (r'^search2$','activitytree.views.search2'),
       (r'^search_activity2$','activitytree.views.search_activity2'),
