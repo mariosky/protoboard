@@ -97,11 +97,19 @@
                [[/description]]
 
             <p>
-              <span class="label label-info"><a href="/search/?type=[[type]]">[[type]]</a></span>
-              <span class="label label-success">[[lang]]</span>
-              <span class="label label-success"><a href="/search/?level=[[level]]">[[level]]</a></span><br>
+              <span class="label label-info"><a href="/search/?type=[[type]]" style="color:#FFFFFF">[[type]]</a></span>
+              [[#lang]]
+              <span class="label label-success"><a href="/search/?lang=[[lang]]" style="color:#FFFFFF">[[lang]]</a></span>
+              [[/lang]]
+              [[^lang]]
+              [[/lang]]
+              <span class="label label-default"><a href="/search/?level=[[level]]" style="color:#FFFFFF">[[level]]</a></span><br>
               [[#tags]]
-              <span class="label label-info"><a href="/search/?tag=[[.]]">[[.]]</a></span>
+              [[#.]]
+              <span class="label label-info"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">[[.]]</a></span>
+              [[/.]]
+              [[^.]]
+              [[/.]]
               [[/tags]]
             </p>
 
@@ -115,6 +123,7 @@
         var tech = getUrlParameter('type');
         var tag = getUrlParameter('tag');
         var level = getUrlParameter('level');
+        var lang = getUrlParameter('lang');
         var param = [];
         var tags = [];
         var query = {};
@@ -126,6 +135,9 @@
         }
         else if (typeof level != 'undefined'){
             loadIfUrl(level, "level")
+        }
+        else if (typeof lang != 'undefined'){
+            loadIfUrl(lang, "lang")
         }
         else{
             console.log("null")
@@ -247,6 +259,11 @@
                 $("#actividades").empty();
                 $("#txtdifficulty").val(type);
                 query_builder("level",param,query)
+            }
+            else if (category == "lang"){
+                $("#actividades").empty();
+                $("#txtlang").val(type);
+                query_builder("lang",param,query)
             }
         }
 

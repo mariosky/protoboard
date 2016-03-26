@@ -78,11 +78,19 @@
                [[/description]]
 
             <p>
-              <span class="label label-info">[[type]]</span>
-              <span class="label label-success">[[lang]]</span>
-              <span class="label label-default">[[level]]</span><br>
+              <span class="label label-info"><a href="/search/?type=[[type]]" style="color:#FFFFFF">[[type]]</a></span>
+              [[#lang]]
+              <span class="label label-success"><a href="/search/?lang=[[lang]]" style="color:#FFFFFF">[[lang]]</a></span>
+              [[/lang]]
+              [[^lang]]
+              [[/lang]]
+              <span class="label label-default"><a href="/search/?level=[[level]]" style="color:#FFFFFF">[[level]]</a></span><br>
               [[#tags]]
-              <span class="label label-info">[[.]]</span>
+              [[#.]]
+              <span class="label label-info"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">[[.]]</a></span>
+              [[/.]]
+              [[^.]]
+              [[/.]]
               [[/tags]]
             </p>
 
