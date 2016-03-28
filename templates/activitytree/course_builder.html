@@ -51,6 +51,45 @@
 
 {% block scripts %}
 
+<script id="activities_template" type="x-tmpl-mustache">
+         <div class="panel panel-default container-fluid" style="width:500px">
+            <div class="panel-heading row">
+            <div class="col-xs-15 text-right">
+                    <button type="button" value="[[id]]" onclick='copyUri("[[id]]","[[title]]")' data-toggle="" data-target="#"  data-href="[[id]]" class="btn btn-default clickable   editBtn"><i class="fa fa-plus clickable clipBtn"></i> </button>
+            </div>
+                <p style='line-height: 10px'>
+                <a href="#" onclick='javascript:window.open("[[id]]", "_blank", "scrollbars=1,resizable=1,height=600,width=650");' class=""><i class="fa fa-[[icon]] fa-lg" style='vertical-align:middle'> [[title]] </i></a>
+            </div>
+             <div class="panel-body">
+
+               [[#description]]
+                    <b>Descripcion: [[description]]
+               [[ /description ]]
+               [[^description]]
+                    <b>Sin descripcion</b>
+               [[/description]]
+
+            <p>
+              <span class="label label-info"><a href="/search/?type=[[type]]" style="color:#FFFFFF">[[type]]</a></span>
+              [[#lang]]
+              <span class="label label-success"><a href="/search/?lang=[[lang]]" style="color:#FFFFFF">[[lang]]</a></span>
+              [[/lang]]
+              [[^lang]]
+              [[/lang]]
+              <span class="label label-default"><a href="/search/?level=[[level]]" style="color:#FFFFFF">[[level]]</a></span><br>
+              [[#tags]]
+              [[#.]]
+              <span class="label label-info"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">[[.]]</a></span>
+              [[/.]]
+              [[^.]]
+              [[/.]]
+              [[/tags]]
+            </p>
+            </div>
+            </div>
+</script>
+
+
 
 <script id="container_template" type="x-tmpl-mustache">
 
@@ -102,6 +141,7 @@
           </div>
 
           <div class="btn-group navbar-right" role="group" aria-label="..." >
+            <button type="button" class="btn btn-default clickable   containerSearch"><i class="fa fa-search  clickable  containerSearch"></i></button>
             <button type="button" class="btn btn-default clickable   containerEditBtn"><i class="fa fa-cog clickable containerEditBtn"></i> </button>
             <button type="button" class="btn btn-default clickable   containerFromUntil"><i class="fa fa-calendar  clickable  containerFromUnti"></i></button>
           </div>
@@ -839,6 +879,76 @@ function get_course() {
 
   });
 
+  $('body').on('click', ".containerSearch", function(){
+      container_id  = $( this).parentsUntil('li').parent().attr("id");
+      $("#modalSearch").modal()
+  });
+
+  $("body").on('change', "#txtname", function(){
+      $("#data").empty();
+      var query = {};
+      if (this.value == ""){
+          $("#data").empty();
+      }
+      else{
+          query['title'] = {'title': {'$regex': $("#txtname").val(), '$options': 'i'}};
+          buscar(query)
+      }
+
+  });
+
+  $("body").on("hidden.bs.modal", '#modalSearch' ,function(){
+            $("#txtname").val('');
+            $("#data").empty()
+        });
+
+  function buscar(tipo){
+        $.ajax({
+        type: 'POST',
+        url: '/search_activity2',
+        data: JSON.stringify(tipo),
+        success: function (data) {
+            var obj = jQuery.parseJSON( data );
+            if (obj == "null" || obj.length == 0){
+                alert("No se encontro actividad con esas caracteristicas")
+            }
+            else{
+                Mustache.tags = ['[[', ']]'];
+                var activities_template = $('#activities_template').html();
+                Mustache.parse(activities_template);
+                $.each(obj, function( index, value ) {
+                rendered = Mustache.render(activities_template, {
+                    title: value.title,
+                    id: value._id,
+                    icon:value.icon,
+                    description: value.description,
+                    lang:value.lang,
+                    level:value.level,
+                    type:value.type,
+                    tags:value.tags});
+                $("#data").append(rendered);
+
+            });
+
+            $('#data').val(data);
+            }
+
+        },
+        error: function(data) {
+            console.log("Error");
+        }
+    });
+    }
+
+    function copyUri(id,title){
+        learning_activities[container_id].name = title;
+        learning_activities[container_id].uri = id;
+        containerEdit(container_id);
+        $("#modalSearch").modal('hide')
+
+    }
+
+
 
 </script>
 
@@ -1107,6 +1217,27 @@ function get_course() {
 </div><!-- /.modal -->
 
 
+<div class="modal fade" id="modalSearch">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search Activity</h4>
+      </div>
+       <div class="container" style="width: 60%">
+           <br>
+           <form id="formSearch" onsubmit="return false">
+           <label for="txtname">Keyword to search</label>
+           <input type="text" id="txtname" class="form-control">
+           </form>
+           <br>
+       </div>
+        <div id="data">
+
+        </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
 
 
 {% endblock scripts %}

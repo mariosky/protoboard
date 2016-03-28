@@ -178,6 +178,13 @@ def search(request):
         return HttpResponseNotFound('not found')
 
 
+def search2(request):
+    if request.method == 'GET':
+        return render_to_response('activitytree/search2.html', context_instance=RequestContext(request))
+    else:
+        return HttpResponseNotFound('not found')
+
+
 def build_program(request):
     if request.is_ajax():
         if request.method == 'POST':
@@ -1236,6 +1243,27 @@ def my_activities(request):
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 
 
+def search_prueba(request):
+    client = MongoClient(settings.MONGO_DB)
+    db = client.protoboard_database
+    activities_collection = db.activities_collection
+    actividad = json.loads(request.body)
+    query = []
+    page = 0
+    for k, v in actividad.items():
+        if k == 'page':
+            page = v
+        else:
+            query.append(v)
+    if len(query) == 0:
+        message = "null"
+        return HttpResponse(json.dumps(message), content_type='application/javascript')
+    else:
+        activities = activities_collection.find({'$and': query}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1}).sort("$natural", pymongo.DESCENDING).limit(5).skip(page)
+        json_docs = [doc for doc in activities]
+        return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+
+
 def search_activity2(request):
     client = MongoClient(settings.MONGO_DB)
     db = client.protoboard_database
@@ -1334,6 +1362,7 @@ def users(request,user_id=None,course_id=None,):
         #Escape for javascript
         XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
         return render_to_response ('activitytree/dashboard.html',{'user':user, 'XML_NAV':XML} ,context_instance=RequestContext(request))
+
 
 @login_required
 def me(request):

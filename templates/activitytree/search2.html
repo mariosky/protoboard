@@ -3,11 +3,11 @@
 {% block content %}
 
     <div class="container-fluid" style="width: 100%">
-        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" style="float:left; width: 20%">
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" style="float:left; width: 30%">
             <ul class="nav">
                 <li><h4><i class="fa fa-search"></i>  Filter by</h4></li>
                 <li></li>
-                <li> <input type="checkbox" id="html" value="text">   <label for="html">HTML</label> </li>
+                <li> <input type="checkbox" id="text" value="text">   <label for="text">HTML</label> </li>
                 <li> <input type="checkbox" id="video" value="video">   <label for="video">Video</label> </li>
                 <li> <input type="checkbox" id="quiz" value="quiz">   <label for="quiz">Quiz</label> </li>
                 <li> <input type="checkbox" id="prog" value="prog">   <label for="prog">Program</label> </li>
@@ -32,8 +32,42 @@
                 <li><label for="txtuser">User</label> <input type="text" class="form-control"  id="txtuser"></li>
             </ul>
             </div>
+            <br>
+            <div id="showdifficulty"><h4><i class="fa fa-flag"></i>  By Difficulty <b class="caret"></b></h4></div>
+            <div class="difficulty" style="display: none;">
+            <ul class="nav">
+                <li><label for="txtdifficulty">Level</label>
+                <select id="txtdifficulty" class="form-control">
+                    <option value=""></option>
+                    <option value="principiante">Principiante</option>
+                    <option value="intermedio">Intermedio</option>
+                    <option value="avanzado">Avanzado</option>
+                </select>
+                </li>
+            </ul>
+            </div>
+            <br>
+            <div id="showlang"><h4><i class="fa fa-code"></i>  By Language <b class="caret"></b></h4></div>
+            <div class="lang" style="display: none;">
+            <ul class="nav">
+                <li><label for="txtlang">Language</label>
+                <select id="txtlang" class="form-control">
+                    <option value=""></option>
+                    <option value="javascript">Javascript</option>
+                    <option value="csharp">Csharp</option>
+                    <option value="python">Python</option>
+                    <option value="java">Java</option>
+                </select>
+                </li>
+            </ul>
+            </div>
+            <br>
+            <ul class="nav">
+                <li> <a id="clear">Clear all</a> </li>
+            </ul>
         </div>
         <h2>Actividades</h2>
+        <ul id="pagination-demo" class="pagination-sm"></ul>
         <div class="container-fluid" id="actividades"  style="float:left; width: 45%">
 
         </div>
@@ -44,10 +78,14 @@
 
 {% block scripts %}
 
+<script type="text/javascript" src="https://a917ab69b4b9bfb362e806f0f0de0977c4619f82.googledrive.com/host/0B4KIaVIuZK2JOW5zcTlPOWd6YlE/jquery.twbsPagination.js"></script>
 
 <script id="activities_template" type="x-tmpl-mustache">
          <div class="panel panel-default container-fluid" style="width:500px">
             <div class="panel-heading row">
+            <div class="col-xs-15 text-right">
+                    <button type="button" value="[[id]]" onclick='copyToClipboard("[[id]]")' data-toggle="" data-target="#"  data-href="[[id]]" class="btn btn-default clickable   editBtn"><i class="fa fa-clipboard clickable clipBtn"></i> </button>
+            </div>
                 <p style='line-height: 10px'>
                 <a href="#" onclick='javascript:window.open("[[id]]", "_blank", "scrollbars=1,resizable=1,height=600,width=650");' class=""><i class="fa fa-[[icon]] fa-lg" style='vertical-align:middle'> [[title]] </i></a>
             </div>
@@ -61,11 +99,19 @@
                [[/description]]
 
             <p>
-              <span class="label label-info">[[type]]</span>
-              <span class="label label-success">[[lang]]</span>
-              <span class="label label-default">[[level]]</span><br>
+              <span class="label label-info"><a href="/search/?type=[[type]]" style="color:#FFFFFF">[[type]]</a></span>
+              [[#lang]]
+              <span class="label label-success"><a href="/search/?lang=[[lang]]" style="color:#FFFFFF">[[lang]]</a></span>
+              [[/lang]]
+              [[^lang]]
+              [[/lang]]
+              <span class="label label-default"><a href="/search/?level=[[level]]" style="color:#FFFFFF">[[level]]</a></span><br>
               [[#tags]]
-              <span class="label label-info">[[.]]</span>
+              [[#.]]
+              <span class="label label-info"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">[[.]]</a></span>
+              [[/.]]
+              [[^.]]
+              [[/.]]
               [[/tags]]
             </p>
 
@@ -76,57 +122,94 @@
 
     <script>
     $(function(){
+        var tech = getUrlParameter('type');
+        var tag = getUrlParameter('tag');
+        var level = getUrlParameter('level');
+        var lang = getUrlParameter('lang');
         var param = [];
         var tags = [];
-        obj = {
-            type: param,
-            name:'',
-            tags: tags,
-            author: ''
-        };
+         query = {};
+        query['page'] = 0;
+        if (typeof tech != 'undefined'){
+            loadIfUrl(tech, "type")
+        }
+        else if (typeof tag != 'undefined'){
+            loadIfUrl(tag, "tags")
+        }
+        else if (typeof level != 'undefined'){
+            loadIfUrl(level, "level")
+        }
+        else if (typeof lang != 'undefined'){
+            loadIfUrl(lang, "lang")
+        }
+        else{
+            console.log("null")
+        }
+
+
         $("#sidebar input[type='checkbox']").change(function(){
             if(this.checked){
                 $("#actividades").empty();
                 param.push(this.value);
-                string = [];
-                string.push(" {'$and': [{'type': {'$in': '"+param+"'}},");
-                obj2 = {
-                    string: string
-                };
-                buscar(obj);
+                query_builder("type",param,query)
             }
             else
             {
                 $("#actividades").empty();
                 param.splice($.inArray(this.value,param), 1);
-                buscar(obj)
+                if (param.length == 0 && $("#txtname").val() != ""){
+                    query_builder("type",param,query)
+                }
+                else{
+                    query_builder("type",param,query)
+                }
+
             }
         });
 
         $("#txtname").on('change', function(){
             $("#actividades").empty();
-            obj['name'] = ($("#txtname").val());
-            buscar(obj)
+            query_builder("name",param,query);
         });
 
         $("#txttags").on('change', function(){
             if ($("#txttags").val() == "")
             {
                 $("#actividades").empty();
-                obj['tags'] = [];
-                buscar(obj)
+                query_builder("tags",param,query)
             }
             else{
                 $("#actividades").empty();
-                obj['tags'] = $("#txttags").val().split(',');
-                buscar(obj)
+                query_builder("tags",param,query)
             }
         });
 
         $("#txtuser").on('change', function(){
             $("#actividades").empty();
-            obj['author'] = ($("#txtuser").val());
-            buscar(obj)
+            query_builder("user",param,query)
+        });
+
+        $("#txtdifficulty").on('change', function(){
+            $("#actividades").empty();
+            query_builder("level",param,query)
+        });
+
+        $("#txtlang").on('change', function(){
+            $("#actividades").empty();
+            query_builder("lang",param,query)
+        });
+
+
+        $("#clear").click(function(){
+            query = {};
+            param = [];
+            $("#actividades").empty();
+            $("#txtname").val('');
+            $("#txttags").tagit("removeAll");
+            $("#txtuser").val('');
+            $("#txtdifficulty").val('');
+            $("#txtlang").val('');
+            $("#sidebar input[type='checkbox']").prop('checked', false);
         });
 
         $('#showkey').click(function() {
@@ -139,18 +222,143 @@
 
         $('#showusers').click(function() {
                 $('.users').slideToggle("fast");
-        })
+        });
+
+        $('#showdifficulty').click(function() {
+                $('.difficulty').slideToggle("fast");
+        });
+
+        $('#showlang').click(function() {
+                $('.lang').slideToggle("fast");
+        });
+
+        $('#pagination-demo').twbsPagination({
+            totalPages: 15,
+            visiblePages: 7,
+
+            onPageClick: function (event, page) {
+                query['page'] = (5) * (page - 1) ;
+                buscar(query);
+                $('#actividades').text('Results ' + 5*(page-1) + "-" +(page*5));
+            }
+        });
+
+
+        function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                    sURLVariables = sPageURL.split('&'),
+                    sParameterName,
+                    i;
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+}
+
+        function loadIfUrl(type, category){
+
+            if (category == "type"){
+                $("#actividades").empty();
+                $("input[id=" + type +"]").prop('checked', true);
+                param.push(type);
+                query_builder("type",param,query)
+            }
+            else if (category == "tags"){
+                $("#actividades").empty();
+                $("#txttags").tagit('createTag', type);
+                query_builder("tags",param,query)
+            }
+            else if (category == "level"){
+                $("#actividades").empty();
+                $("#txtdifficulty").val(type);
+                query_builder("level",param,query)
+            }
+            else if (category == "lang"){
+                $("#actividades").empty();
+                $("#txtlang").val(type);
+                query_builder("lang",param,query)
+            }
+        }
 
     });
+
+    function query_builder(flag,param,query)
+    {
+        if (flag == "type"){
+            if (param.length==0){
+                delete query["type"];
+                buscar(query)
+            }
+            else{
+                query['type'] = {'type': {'$in':param}};
+                buscar(query)
+            }
+        }
+        else if (flag == "name"){
+            if ($("#txtname").val() == ""){
+                delete query["title"];
+                buscar(query)
+            }
+            else{
+                query['title'] = {'title': {'$regex': $("#txtname").val()}};
+                buscar(query)
+            }
+        }
+        else if (flag == "tags"){
+            if ($("#txttags").val() == ""){
+                delete query["tags"];
+                buscar(query)
+            }
+            else{
+                query['tags'] = {'tags': {'$all': $("#txttags").val().split(',')}};
+                buscar(query)
+            }
+        }
+        else if (flag == "user"){
+            if ($("#txtuser").val() == ""){
+                delete query["author"];
+                buscar(query)
+            }
+            else{
+                query['author'] = {'author': $("#txtuser").val()};
+                buscar(query)
+            }
+        }
+        else if (flag == "level"){
+            if ($("#txtdifficulty").val() == ""){
+                delete query["level"];
+                buscar(query)
+            }
+            else{
+                query['level'] = {'level': $("#txtdifficulty").val()};
+                buscar(query)
+            }
+        }
+        else if (flag == "lang"){
+            if ($("#txtlang").val() == ""){
+                delete query["lang"];
+                buscar(query)
+            }
+            else{
+                query['lang'] = {'lang': $("#txtlang").val()};
+                buscar(query)
+            }
+        }
+    }
+
+    function copyToClipboard(text) {
+        window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+        }
 
     function buscar(tipo){
         $.ajax({
         type: 'POST',
-        url: '/search_activity',
+        url: '/search_prueba',
         data: JSON.stringify(tipo),
         success: function (data) {
             var obj = jQuery.parseJSON( data );
-            console.log(obj);
             if (obj == "null" || obj.length == 0){
                 alert("No se encontro actividad con esas caracteristicas")
             }
