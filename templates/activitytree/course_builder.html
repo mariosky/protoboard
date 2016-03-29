@@ -905,7 +905,7 @@ function get_course() {
   function buscar(tipo){
         $.ajax({
         type: 'POST',
-        url: '/search_activity2',
+        url: '/search_prueba',
         data: JSON.stringify(tipo),
         success: function (data) {
             var obj = jQuery.parseJSON( data );
@@ -917,16 +917,21 @@ function get_course() {
                 var activities_template = $('#activities_template').html();
                 Mustache.parse(activities_template);
                 $.each(obj, function( index, value ) {
-                rendered = Mustache.render(activities_template, {
-                    title: value.title,
-                    id: value._id,
-                    icon:value.icon,
-                    description: value.description,
-                    lang:value.lang,
-                    level:value.level,
-                    type:value.type,
-                    tags:value.tags});
-                $("#data").append(rendered);
+                if (value.count){
+                        var count = value.count
+                    }
+                    else{
+                        rendered = Mustache.render(activities_template, {
+                            title: value.title,
+                            id: value._id,
+                            icon:value.icon,
+                            description: value.description,
+                            lang:value.lang,
+                            level:value.level,
+                            type:value.type,
+                            tags:value.tags});
+                        $("#data").append(rendered);
+                    }
 
             });
 

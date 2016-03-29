@@ -67,6 +67,7 @@
             </ul>
         </div>
         <h2>Actividades</h2>
+        <div id="paginator"></div>
         <div class="container-fluid" id="actividades"  style="float:left; width: 45%">
 
         </div>
@@ -76,6 +77,8 @@
 {% endblock %}
 
 {% block scripts %}
+
+<script type="text/javascript" src="https://70023e2a50a4aa4a1f1759c8ec88a0ec7a694dbe.googledrive.com/host/0B4KIaVIuZK2JTTU5OW45M3hRb28/jquery.bootpag.min.js"></script>
 
 
 <script id="activities_template" type="x-tmpl-mustache">
@@ -200,6 +203,9 @@
         $("#clear").click(function(){
             query = {};
             param = [];
+            count = 0;
+            $("#paginator").hide();
+            $("#paginator").bootpag({page:1});
             $("#actividades").empty();
             $("#txtname").val('');
             $("#txttags").tagit("removeAll");
@@ -227,6 +233,18 @@
 
         $('#showlang').click(function() {
                 $('.lang').slideToggle("fast");
+        });
+
+        $("#paginator").hide();
+
+        $('#paginator').bootpag({
+            total: 1,
+            page: 1
+        }).on("page", function(event, num){
+            $("#actividades").empty();
+            query['page'] = (5) * (num - 1) ;
+            buscar(query);
+            $(this).bootpag({total: Math.floor((count + 5 -1)/5), maxVisible: 10});
         });
 
         function getUrlParameter(sParam) {
@@ -274,11 +292,12 @@
         if (flag == "type"){
             if (param.length==0){
                 delete query["type"];
-                buscar(query)
+                buscar(query);
             }
             else{
                 query['type'] = {'type': {'$in':param}};
-                buscar(query)
+                buscar(query);
+
             }
         }
         else if (flag == "name"){
@@ -340,32 +359,40 @@
     function buscar(tipo){
         $.ajax({
         type: 'POST',
-        url: '/search_activity2',
+        url: '/search_prueba',
         data: JSON.stringify(tipo),
         success: function (data) {
             var obj = jQuery.parseJSON( data );
             if (obj == "null" || obj.length == 0){
-                alert("No se encontro actividad con esas caracteristicas")
+                $("#paginator").hide();
+                alert("No se encontro actividad con esas caracteristicas");
+                count = 0
             }
             else{
                 Mustache.tags = ['[[', ']]'];
                 var activities_template = $('#activities_template').html();
                 Mustache.parse(activities_template);
                 $.each(obj, function( index, value ) {
-                rendered = Mustache.render(activities_template, {
-                    title: value.title,
-                    id: value._id,
-                    icon:value.icon,
-                    description: value.description,
-                    lang:value.lang,
-                    level:value.level,
-                    type:value.type,
-                    tags:value.tags});
-                $("#actividades").append(rendered);
+                    if (value.count){
+                        count = value.count
+                    }
+                    else{
+                        rendered = Mustache.render(activities_template, {
+                            title: value.title,
+                            id: value._id,
+                            icon:value.icon,
+                            description: value.description,
+                            lang:value.lang,
+                            level:value.level,
+                            type:value.type,
+                            tags:value.tags});
+                        $("#actividades").append(rendered);
+                    }
 
             });
-
-            $('#actividades').val(data);
+                $("#paginator").show();
+                $("#paginator").bootpag({total: Math.floor((count + 5 -1)/5), maxVisible: 10});
+                $('#actividades').val(data);
             }
 
         },
