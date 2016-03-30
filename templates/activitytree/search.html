@@ -306,7 +306,7 @@
                 buscar(query)
             }
             else{
-                query['title'] = {'title': {'$regex': $("#txtname").val()}};
+                query['title'] = {'title': {'$regex': $("#txtname").val(), '$options': 'i'}};
                 buscar(query)
             }
         }
