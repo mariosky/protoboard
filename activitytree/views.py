@@ -14,6 +14,7 @@ from django.core.urlresolvers import reverse
 from pymongo import errors
 import logging
 import pymongo
+from django.db.models import F
 import xml.etree.ElementTree as ET
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -74,6 +75,18 @@ def my_courses(request):
         return HttpResponseRedirect('/login/?next=%s' % request.path)
 
 
+def my_active_courses(request):
+    if request.user.is_authenticated() and request.user != 'AnonymousUser' :
+        courses = UserLearningActivity.objects.filter(user__username=request.user, progress_status='incomplete').values('learning_activity_id')
+        courses = LearningActivity.objects.filter(id__in=courses).values('root_id')
+        courses = LearningActivity.objects.filter(id__in=courses)
+
+
+        return render_to_response('activitytree/active_courses.html',
+                                  {'courses': courses},
+                                  context_instance=RequestContext(request))
+    else:
+        return HttpResponseRedirect('/login/?next=%s' % request.path)
 
 
 def course(request,course_id= None):
