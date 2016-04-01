@@ -404,8 +404,7 @@ function preview_quiz(obj,cont,flag){
             $('<label />', {'for': 'cb' + i, text: obj.answer_text[i]}).appendTo(container);
             $('<br>').appendTo(container);
         }
-        $('#preguntas input[type=radio]').css({ "margin-right": '10px', "vertical-align": "middle", "position": 'relative' });
-        $('#preguntas label').css({  "vertical-align": "middle", "display":"inline-block", "position": "relative" })
+
 
     }
     else if (flag == 0){
@@ -419,8 +418,7 @@ function preview_quiz(obj,cont,flag){
             $('<br>').appendTo(container);
 
         }
-        $('#preguntas input[type=checkbox]').css({ "margin-right": '10px', "vertical-align": "middle", "position": 'relative' });
-        $('#preguntas label').css({  "vertical-align": "middle", "display":"inline-block", "position": "relative"})
+
     }
 }
 
