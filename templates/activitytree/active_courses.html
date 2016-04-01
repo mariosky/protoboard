@@ -1,31 +1,28 @@
 {% extends "activitytree/base.html" %}
 
 {% block content %}
-<div class="container">
+<div class="container" align="center">
 
         <h4>Active courses</h4>
 
         <div id="message" style="display: none" >
-                    <h4>No courses available</h4>
-                </div>
+            <h4>No courses available</h4>
+        </div>
 
 
      {% for c in courses %}
-      <div class="row">
-
-
-
-            <div class="col-md-8">
-
-                <a href="/{{c.id}}{{c.uri }}" class="page-header"> <h4>{{c.name}}</h4></a>
-                <p> {{ c.course.short_description|safe }} </p>
-            </div>
-
-            <div class="col-md-4">
-                <p>
-                    <span class="label label-info">mini-curso</span>
-                </p>
-            </div>
+      <div class="row" align="center">
+          <div class="" style="width: 40%">
+              <div class="thumbnail">
+                  <div class="caption">
+                      <h4 class="pull-right"><span class="label label-info">mini-curso</span></h4>
+                      <h4><a href="/{{c.id}}{{c.uri }}"><i class="fa fa-book"></i>  {{c.name}}</a></h4>
+                      <p> {{ c.description }} </p>
+                  </div>
+                  <div class="ratings">
+                  </div>
+              </div>
+          </div>
       </div>
   {% endfor %}
 

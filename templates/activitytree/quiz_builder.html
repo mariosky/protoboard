@@ -24,28 +24,29 @@ Ejemplo<br>
 Pregunta de solo una respuesta ()<br>
 
 >> Presidente actual de Mexico << <br>
-() Enrique pena Nieto <br>
+(x) Enrique pena Nieto <br>
 () George Bush <br>
 () Fidel Castro<br>
 
 >>Lenguajes de programacion <<<br>
 
-[]Python<br>
+[x]Python<br>
 
 []Access <br>
 
-[]Java<br>
+[x]Java<br>
 
 >>Mejor consola<<<br>
 
-()PS4<br>
+(x)PS4<br>
 
 ()Xbox one<br>
 
 ()Wii U <br>
+                >>Text entries, encerrar respuesta entre signos = =<< <br>
+                = Ejemplo respuesta =
             </tiny>
         </div>
-
             <button type="button" id="preview" class="btn btn-primary">Preview</button>
         </form><br>
 
@@ -155,6 +156,7 @@ $(function(){
     $('#preview').click(function(){
         valor = tinyMCE.activeEditor.getContent();
         var quiz = analize(valor);
+        console.log(quiz);
         var cont = 0;
         $.each(quiz,function(index,value){
             if (value.type == "multi"){
@@ -167,6 +169,11 @@ $(function(){
                 preview_quiz(value,cont,1);
                 cont++
             }
+            else if (value.type == "str"){
+                value.question = value.question.replace(/[>\<]/g,'');
+                preview_quiz(value,cont,1);
+                cont++
+            }
             $('#modalquiz').modal();
         });
 
@@ -174,7 +181,7 @@ $(function(){
 
     $('#submitquiz').click(function(e){
 
-        get_value();
+        //get_value();
         var verificar = verify_checkbox(e);
         if (verificar == false){
             alert("Seleccione respuestas correctas")
@@ -273,6 +280,7 @@ function analize(valor){
     exp_correct = /^\s*\[x\]/;
     exp_radio_correct = /^\s*\(x\)/;
     exp_hint = /{*{(.*?)}}/;
+    exp_text = /\=.*?=/;
 
     dic = [];
 
@@ -313,7 +321,12 @@ function analize(valor){
                 lista.push(match);
                 correct.push(match);
                 answers[n] = 1;
+                obj['options'] = lista;
+                obj['type'] = "multi";
+                obj['interaction']="choiceInteraction";
+                obj['id']= i;
                 obj['answer_text'] = correct;
+                obj['answer'] = answers;
                 n = n+1;
             }
             else {
@@ -333,9 +346,15 @@ function analize(valor){
             if (texto[i].match(exp_radio_correct)){
                 var match = texto[i].split(exp_radio)[1];
                 lista.push(match);
-                obj['answer_text'] = match;
+                correct[0]=match;
+                obj['answer_text'] = correct;
+                obj['options'] = lista;
+                obj['type'] = "radio";
+                obj['interaction'] = "simpleChoice";
+                obj['id']= i;
                 answers[n] = 1;
-                n = n + 1
+                n = n + 1;
+                obj['answer'] = answers
             }
             else{
                 n=n+1;
@@ -348,12 +367,21 @@ function analize(valor){
                 answers.push(0);
                 obj['answer'] = answers
             }
-
+        }
+        else if (exp_text.test(texto[i])){
+            var match = texto[i].split("=")[1];
+            correct[0] = match;
+            obj['answer'] = match;
+            obj['answer_text'] = correct;
+            obj['type'] = "str";
+            obj['interaction'] = "textEntryInteraction";
+            obj['id'] = i;
         }
         else if (exp_hint.test(texto[i])){
             var match = texto[i].split(exp_hint)[1];
             obj['hint'] = match;
         }
+
 
     }
 
@@ -371,25 +399,9 @@ function preview_quiz(obj,cont,flag){
         $('<br>').appendTo(container);
         $('<label /> ', {text: obj.question}).appendTo(container);
         $('<br>').appendTo(container);
-        for (var i = 0; i < obj.options.length; i++) {
-            if (obj.options[i] == obj.answer_text){
-                $('<input />', {
-                type: 'radio',
-                name: 'radios'+cont,
-                id: i,
-                value: obj.options[i],
-                checked: true
-            }).appendTo(container);
-            }
-            else{
-            $('<input />', {
-                type: 'radio',
-                name: 'radios'+cont,
-                id: i,
-                value: obj.options[i]
-            }).appendTo(container);
-            }
-            $('<label />', {'for': 'cb' + i, text: obj.options[i]}).appendTo(container);
+        for (var i = 0; i < obj.answer_text.length ; i++) {
+            $('<i class="fa fa-check-circle"></i>').appendTo(container);
+            $('<label />', {'for': 'cb' + i, text: obj.answer_text[i]}).appendTo(container);
             $('<br>').appendTo(container);
         }
         $('#preguntas input[type=radio]').css({ "margin-right": '10px', "vertical-align": "middle", "position": 'relative' });
@@ -401,68 +413,28 @@ function preview_quiz(obj,cont,flag){
         $('<label /> ', {text: obj.question}).appendTo(container);
         $('<br>').appendTo(container);
 
-        for (var i = 0; i < obj.options.length; i++) {
-            if (obj.answer.length > 0) {
-                for (var n = 0; n < obj.answer.length; n++) {
-                    if (obj.options[i] == obj.answer_text[n]) {
-                        $('<input />', {
-                            type: 'checkbox',
-                            name: 'checkboxes' + cont,
-                            id: i,
-                            value: obj.options[i],
-                            checked: true
-                        }).appendTo(container);
-                    }
-                }
-
-            }
-            else {
-                $('<input />', {
-                    type: 'checkbox',
-                    name: 'checkboxes' + cont,
-                    id: i,
-                    value: obj.options[i]
-                }).appendTo(container);
-            }
-
-            $('<label />', {'for': 'cb' + i, text: obj.options[i]}).appendTo(container);
+        for (var i = 0; i < obj.answer_text.length ; i++) {
+            $('<i class="fa fa-check-square-o"></i>').appendTo(container);
+            $('<label />', {'for': 'cb' + i, text: obj.answer_text[i]}).appendTo(container);
             $('<br>').appendTo(container);
+
         }
         $('#preguntas input[type=checkbox]').css({ "margin-right": '10px', "vertical-align": "middle", "position": 'relative' });
         $('#preguntas label').css({  "vertical-align": "middle", "display":"inline-block", "position": "relative"})
     }
-
 }
 
 function verify_checkbox(){
-    var flag;
+    var flag = true;
     for (var i=0;i < dic.length;i++){
-        if (dic[i].answer.length == 0){
+        if (dic[i].answer_text.length == 0){
             flag = false
-        }
-        else {
-            flag = true
         }
     }
     return flag
 
 }
 
-function get_value(){
-
-    for (var i=0; i < (dic.length); i++){
-        var answers =$("#preguntas input[name=checkboxes" +i+ "]:checked").map(function(){
-            return this.value
-        }).get();
-        dic[i].answer_text = answers;
-
-        $("#preguntas input[type=radio]:checked").map(function(n){
-            var id = this.name.replace("radios", '');
-            dic[id].answer_text = this.value;
-        });
-    }
-
-}
 
 function submit_quiz(){
     var detail = $('#formadetailq').serializeArray();
