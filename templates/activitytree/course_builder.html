@@ -1,6 +1,37 @@
 {% extends "activitytree/base.html" %}
 
 
+{% block style %}
+
+/*
+ * Editor
+ */
+
+    #editor1 {
+
+        height: 340px;
+        width: 200;
+
+    }
+
+ p.test_error, p.test_failure {
+    color:#d9534f;
+    }
+
+ p.test_success{
+    color:#5cb85c;
+    }
+
+  .alert{
+    margin:10px;
+    margin-bottom:0px;
+    }
+
+
+{% endblock style %}
+
+
+
 
 {% block content %}
 
@@ -50,6 +81,10 @@
 {% endblock content %}
 
 {% block scripts %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js " type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/javascript.js" type="text/javascript" charset="utf-8"></script>
 
 <script id="activities_template" type="x-tmpl-mustache">
          <div class="panel panel-default container-fluid" style="width:500px">
@@ -175,6 +210,12 @@
 <script type="text/javascript">
   $(function()
   {
+      var editor;
+
+      editor = ace.edit("editor1");
+      editor.setTheme("ace/theme/chrome");
+      editor.getSession().setMode('ace/mode/javascript');
+
     var options = {
       placeholderCss: {'background-color': '#ff8'},
       hintCss: {'background-color':'#bbf'},
@@ -338,7 +379,7 @@
              "order": 0,
              "children":tree,
              "learning_activity":course_root
-            }]
+            }];
 
           console.log(JSON.stringify(course));
           return JSON.stringify(course);
@@ -737,8 +778,6 @@ function get_course() {
 
 
 
-
-
   $('body').on('click', '.containerFromUntil', function(){
 
 
@@ -790,8 +829,15 @@ function get_course() {
 
     var container_id  = $( this).parentsUntil('li').parent().attr("id");
     var learning_activity = learning_activities[container_id];
-    $('#containerPrecondition').val(learning_activity.pre_condition_rule );
+    //$('#containerPrecondition').val(learning_activity.pre_condition_rule );
     $('#PreconditionURI').val(container_id);
+    var editor = ace.edit("editor1");
+    if (learning_activity.pre_condition_rule == null){
+        editor.setValue("");
+    }
+    else{
+        editor.setValue(learning_activity.pre_condition_rule);
+    }
 
 
     if (learning_activity.is_container == true)
@@ -810,10 +856,11 @@ function get_course() {
 
 
   $('body').on('click','#savePreconditionBtn',function (e) {
-    var container_id  = $('#PreconditionURI').val();
-    learning_activities[container_id].pre_condition_rule = $('#containerPrecondition').val();
-
-    $('#modalPrecondition').modal('hide');
+      var container_id  = $('#PreconditionURI').val();
+      var editor = ace.edit("editor1");
+      learning_activities[container_id].pre_condition_rule = editor.getValue();
+      console.log(learning_activities[container_id]);
+      $('#modalPrecondition').modal('hide');
 
 
   });
@@ -954,7 +1001,6 @@ function get_course() {
     }
 
 
-
 </script>
 
 
@@ -1036,8 +1082,10 @@ function get_course() {
         </div>
 
         <div class="form-group">
-          <label for="containerPrecondition">Precondition Rule</label>
-          <textarea class="form-control" id="containerPrecondition" rows="3"></textarea>
+            <label for="editor1">Precondition Rule</label>
+            <div class="myeditor" id="editor1">
+
+            </div>
         </div>
 
 
