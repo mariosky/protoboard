@@ -1252,9 +1252,16 @@ def get_activities(request):
 
 @login_required
 def my_activities(request):
+    client = MongoClient(settings.MONGO_DB)
+    db = client.protoboard_database
+    activities_collection = db.activities_collection
     user = request.GET['user']
-    activities = Activity.get_by_user(user)
+    page = int(request.GET['page'])
+    activities = Activity.get_by_user(user, page)
+    count = activities_collection.find({'author': user}, { '_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1}).sort("$natural", pymongo.DESCENDING).count()
+    count = {'count': count}
     json_docs = [doc for doc in activities]
+    json_docs.append(count)
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 
 

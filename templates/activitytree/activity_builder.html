@@ -31,6 +31,8 @@
       </div><!-- /.container-fluid -->
     </nav>
     <div class="container-fluid center" align="center">
+
+    <div id="paginator"></div>
     <div class="" id="actividades" style="width: 70%" >
         <h2>Mis Actividades</h2>
     </div>
@@ -57,6 +59,8 @@
 
 {% block scripts %}
 
+<script type="text/javascript" src="https://70023e2a50a4aa4a1f1759c8ec88a0ec7a694dbe.googledrive.com/host/0B4KIaVIuZK2JTTU5OW45M3hRb28/jquery.bootpag.min.js"></script>
+
 
 <script id="activities_template" type="x-tmpl-mustache">
          <div class="panel panel-default container-fluid">
@@ -66,7 +70,7 @@
                     <button type="button" value="[[id]]" data-toggle="modal" data-target="#confirm-delete"  data-href="[[id]]" class="btn btn-default clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i></button>
                 </div>
                 <p style='line-height: 10px'>
-                <a href="[[id]]" class=""><i class="fa fa-[[icon]] fa-lg" style='vertical-align:middle'> [[title]] </i></a>
+                <a href="#" onclick='javascript:window.open("[[id]]", "_blank", "scrollbars=1,resizable=1,height=600,width=650");'><i class="fa fa-[[icon]] fa-lg" style='vertical-align:middle'> [[title]] </i></a>
             </div>
              <div class="panel-body">
 
@@ -150,30 +154,38 @@ function wtv(id,type){
 }
 
 
-function loadactivities(){
+function loadactivities(page){
     $.ajax({
         type: 'get',
         url: '/my_activities',
-        data: { user: '{{ user.email }}'},
+        data: { user: '{{ user.email }}',
+        page: page},
+
         success: function (data) {
             Mustache.tags = ['[[', ']]'];
             var activities_template = $('#activities_template').html();
             Mustache.parse(activities_template);
             var obj = jQuery.parseJSON( data );
             $.each(obj, function( index, value ) {
-                rendered = Mustache.render(activities_template, {
-                    title: value.title,
-                    id: value._id,
-                    icon:value.icon,
-                    description: value.description,
-                    lang:value.lang,
-                    level:value.level,
-                    type:value.type,
-                    tags:value.tags});
-                $("#actividades").append(rendered);
-
+                if (value.count){
+                        count = value.count
+                    }
+                    else {
+                    rendered = Mustache.render(activities_template, {
+                        title: value.title,
+                        id: value._id,
+                        icon: value.icon,
+                        description: value.description,
+                        lang: value.lang,
+                        level: value.level,
+                        type: value.type,
+                        tags: value.tags
+                    });
+                    $("#actividades").append(rendered);
+                }
             });
-
+            $("#paginator").show();
+            $("#paginator").bootpag({total: Math.floor((count + 5 -1)/5), maxVisible: 10});
             $('#actividades').val(data);
         },
         error: function(data) {
@@ -183,7 +195,17 @@ function loadactivities(){
 }
 
 $(function(){
-    loadactivities();
+    page = 0;
+    $('#paginator').bootpag({
+            total: 1,
+            page: 1
+        }).on("page", function(event, num){
+            $("#actividades").empty();
+            page = (5) * (num - 1) ;
+            loadactivities(page);
+            $(this).bootpag({total: Math.floor((count + 5 -1)/5), maxVisible: 10});
+        });
+    loadactivities(page);
 });
 
 function delActivity(activity){
