@@ -32,6 +32,7 @@ from mongo_activities import Activity
 from django.db import IntegrityError
 import urllib
 import urlparse
+from itertools import chain
 
 from eval_code.RedisCola import Cola, Task
 import json
@@ -79,7 +80,8 @@ def my_active_courses(request):
     if request.user.is_authenticated() and request.user != 'AnonymousUser' :
         courses = UserLearningActivity.objects.filter(user__username=request.user, progress_status='incomplete').values('learning_activity_id')
         courses = LearningActivity.objects.filter(id__in=courses).values('root_id')
-        courses = LearningActivity.objects.filter(id__in=courses)
+
+        courses = Course.objects.filter(root_id__in=courses)
 
 
         return render_to_response('activitytree/active_courses.html',

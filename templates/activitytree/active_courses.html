@@ -13,17 +13,20 @@
      {% for c in courses %}
       <div class="row" align="center">
           <div class="" style="width: 40%">
-              <div class="thumbnail">
-                  <div class="caption">
-                      <h4 class="pull-right"><span class="label label-info">mini-curso</span></h4>
-                      <h4><a href="/{{c.id}}{{c.uri }}"><i class="fa fa-book"></i>  {{c.name}}</a></h4>
-                      <p> {{ c.description }} </p>
-                  </div>
-                  <div class="ratings">
-                  </div>
-              </div>
-          </div>
+             <div class="panel panel-default">
+                 <div class="panel-heading">
+                     <h4 class="pull-right"><span class="label label-info">mini-curso</span></h4>
+                     <h4><a href="/{{c.root.id}}{{c.root.uri }}" style="color: #0f0f0f" ><i class="fa fa-book"></i>  {{c.root.name}}</a></h4>
+                 </div>
+                 <div class="panel-body">
+                      <p> {{ c.short_description }} </p>
+                      <p style="color: darkgray">Started on: {{ c.start_date }}</p>
+                     <a href="/{{c.root.id}}{{c.root.uri }}" class="btn btn-default">Go</a>
+                 </div>
+             </div>
+         </div>
       </div>
+
   {% endfor %}
 
       <hr>
