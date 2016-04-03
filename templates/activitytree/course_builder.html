@@ -214,7 +214,7 @@
 
       editor = ace.edit("editor1");
       editor.setTheme("ace/theme/chrome");
-      editor.getSession().setMode('ace/mode/javascript');
+      editor.getSession().setMode('ace/mode/python');
 
     var options = {
       placeholderCss: {'background-color': '#ff8'},
@@ -836,7 +836,7 @@ function get_course() {
         editor.setValue("");
     }
     else{
-        editor.setValue(learning_activity.pre_condition_rule);
+        editor.setValue(learning_activity.pre_condition_rule, 1);
     }
 
 
