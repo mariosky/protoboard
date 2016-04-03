@@ -42,14 +42,16 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" align="center" style="font-size: large">
-                Alerta <i class="fa fa-exclamation-circle"></i>
+                Alert <i class="fa fa-exclamation-circle"></i>
             </div>
             <div class="modal-body" align="center">
-               <h5> Mensaje <p class="debug-url"></p> </h5>
+               <h5> Message <p class="debug-url"></p> </h5>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" >
+                <div class="form-group" align="center">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <a class="btn btn-danger btn-ok">Delete</a>
+                </div>
             </div>
         </div>
     </div>
@@ -112,7 +114,7 @@
             console.log(e);
             var value = ($(e.relatedTarget).data('href'));
             console.log(value);
-            $('.debug-url').html('Confirmar. Quieres borrar la actividad: <strong>' + value + '? </strong>');
+            $('.debug-url').html('Delete activity: <strong>' + value + '? </strong>');
 
             $('.btn-ok').click(function(){
                 delActivity(value);
