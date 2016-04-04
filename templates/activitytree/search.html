@@ -363,7 +363,7 @@
         data: JSON.stringify(tipo),
         success: function (data) {
             var obj = jQuery.parseJSON( data );
-            if (obj == "null" || obj.length == 0){
+            if (obj == "null" || obj[0].count == 0){
                 $("#paginator").hide();
                 alert("No se encontro actividad con esas caracteristicas");
                 count = 0

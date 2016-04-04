@@ -193,12 +193,6 @@ def search(request):
         return HttpResponseNotFound('not found')
 
 
-def search2(request):
-    if request.method == 'GET':
-        return render_to_response('activitytree/search2.html', context_instance=RequestContext(request))
-    else:
-        return HttpResponseNotFound('not found')
-
 
 def build_program(request):
     if request.is_ajax():
@@ -768,6 +762,7 @@ def javascript_result(request):
 
         return HttpResponse(json.dumps({}), content_type='application/javascript')
 
+
 @csrf_protect
 def get_result(request):
     if request.method == 'POST':
@@ -813,6 +808,7 @@ def get_result(request):
         else:
             return HttpResponse(json.dumps({'outcome':-1}) , content_type='application/javascript')
 
+
 def _get_learning_activity(uri):
     try:
         la = LearningActivity.objects.get(uri=uri)
@@ -840,6 +836,7 @@ def _get_ula(request, uri):
         #register the user to it
         return None
     return requested_activity
+
 
 def _set_current(request,requested_activity, root, s, progress_status=None):
     # Sets the requested  Learning Activity as current
@@ -936,6 +933,7 @@ def _check_survey(post_dict, quiz):
 
     return checked
 
+
 def login_view(request,template_name='registration/login.html',  redirect_field_name=REDIRECT_FIELD_NAME):
     context = {}
 
@@ -1008,6 +1006,7 @@ def facebook_get_login(request):
                 )
     #We redirect to facebook
     return HttpResponseRedirect(url)
+
 
 def facebook_login(request):
     #We recieve the answer
@@ -1123,6 +1122,7 @@ def unlink_facebook(request):
 
     return HttpResponseRedirect('/me')
 
+
 @login_required
 def unlink_google(request):
     try:
@@ -1195,6 +1195,7 @@ def google_callback(request):
     else:
         return HttpResponse(json.dumps({"success":False, "error": "ProfileNotFound", "after_login":"/"}), content_type='application/javascript')
 
+
 @login_required
 def google_link(request):
     #We recieve the answer
@@ -1243,7 +1244,6 @@ def google_link(request):
     return HttpResponse(json.dumps({"success":True , "error": None} ), content_type='application/javascript')
 
 
-
 def get_activities(request):
     activities = Activity.get_all()
     json_docs = [doc for doc in activities]
@@ -1287,24 +1287,6 @@ def search_prueba(request):
         json_docs = [doc for doc in activities]
         json_docs.append(count)
         return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
-
-
-def search_activity2(request):
-    client = MongoClient(settings.MONGO_DB)
-    db = client.protoboard_database
-    activities_collection = db.activities_collection
-    actividad = json.loads(request.body)
-    query = []
-    for k, v in actividad.items():
-        query.append(v)
-    if len(query) == 0:
-        message = "null"
-        return HttpResponse(json.dumps(message), content_type='application/javascript')
-    else:
-        activities = activities_collection.find({'$and': query}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1}).sort("$natural", pymongo.DESCENDING)
-        json_docs = [doc for doc in activities]
-        return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
-
 
 
 def check_activity(request):

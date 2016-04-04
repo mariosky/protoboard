@@ -12,6 +12,7 @@
         height: 340px;
         width: 200;
 
+
     }
 
  p.test_error, p.test_failure {
@@ -215,6 +216,7 @@
       editor = ace.edit("editor1");
       editor.setTheme("ace/theme/chrome");
       editor.getSession().setMode('ace/mode/python');
+      editor.session.setNewLineMode("windows");
 
     var options = {
       placeholderCss: {'background-color': '#ff8'},
@@ -832,11 +834,11 @@ function get_course() {
     //$('#containerPrecondition').val(learning_activity.pre_condition_rule );
     $('#PreconditionURI').val(container_id);
     var editor = ace.edit("editor1");
-    if (learning_activity.pre_condition_rule == null){
+    if (learning_activity.pre_condition_rule == null || learning_activity.pre_condition_rule == ""){
         editor.setValue("");
     }
     else{
-        editor.setValue(learning_activity.pre_condition_rule, 1);
+        editor.setValue(jQuery.parseJSON(learning_activity.pre_condition_rule), 1);
     }
 
 
@@ -858,7 +860,8 @@ function get_course() {
   $('body').on('click','#savePreconditionBtn',function (e) {
       var container_id  = $('#PreconditionURI').val();
       var editor = ace.edit("editor1");
-      learning_activities[container_id].pre_condition_rule = editor.getValue();
+      var value = editor.getValue();
+      learning_activities[container_id].pre_condition_rule = JSON.stringify(value.replace( "\r\n", "\n"));
       console.log(learning_activities[container_id]);
       $('#modalPrecondition').modal('hide');
 
