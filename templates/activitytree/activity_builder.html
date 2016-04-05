@@ -109,7 +109,7 @@
 <script>
 
     $(function(){
-
+        //if user deletes activity, modal shows
         $('#confirm-delete').on('show.bs.modal', function(e) {
             console.log(e);
             var value = ($(e.relatedTarget).data('href'));
@@ -131,32 +131,8 @@
 
 <script type="text/javascript">
 
-function wtv(id,type){
-    if (type == "text"){
-        console.log(type);
-        console.log(id + " actividad html");
-        get_activity(id,type);
 
-    }
-    else if (type == "video"){
-        get_activity(id,type);
-        console.log(id + " actividad video")
-    }
-    else if (type == "quiz"){
-        console.log(id + " actividad quiz")
-    }
-    else if (type == "prog"){
-        get_activity(id,type);
-        console.log(id + " actividad programa")
-    }
-    else
-    {
-        console.log("Nada")
-    }
-
-}
-
-
+//ajax call that loads all user activities and count of docs
 function loadactivities(page){
     $.ajax({
         type: 'get',
@@ -197,6 +173,7 @@ function loadactivities(page){
     });
 }
 
+//paginator plugin initialize
 $(function(){
     page = 0;
     $('#paginator').bootpag({
@@ -211,6 +188,7 @@ $(function(){
     loadactivities(page);
 });
 
+//function used when user deletes activity
 function delActivity(activity){
     $.ajax({
         type: 'post',
@@ -232,6 +210,7 @@ function delActivity(activity){
     });
 }
 
+//function that gets activity info for updating activity
 function get_activity(id,type){
     $.ajax({
         type: 'get',
@@ -261,6 +240,7 @@ function get_activity(id,type){
     });
 }
 
+//loads activity data in html modal for updating
 function load_dataHtml(obj){
     $('#modalhtml').modal();
     $.each(obj[0], function(key, value){
@@ -278,6 +258,7 @@ function load_dataHtml(obj){
     });
 }
 
+//loads activity data in video modal for updating
 function load_dataVideo(obj){
     $('#modalvideo').modal();
     $.each(obj[0], function(key, value){
@@ -293,10 +274,12 @@ function load_dataVideo(obj){
     loadVideo();
 }
 
+//sends user to program update page
 function load_dataProgram(obj){
     window.location = '/build_program?id=' + obj[0]._id ;
 }
 
+//sends user to quiz update page
 function load_dataQuiz(obj){
     window.location = '/build_quiz?id=' + obj[0]._id ;
 }

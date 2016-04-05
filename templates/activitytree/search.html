@@ -123,6 +123,7 @@
 
     <script>
     $(function(){
+        //if parameter on url, loads activity data
         var tech = getUrlParameter('type');
         var tag = getUrlParameter('tag');
         var level = getUrlParameter('level');
@@ -146,7 +147,7 @@
             console.log("null")
         }
 
-
+        //detects changes in sidebar, and searchs using user input
         $("#sidebar input[type='checkbox']").change(function(){
             if(this.checked){
                 $("#actividades").empty();
@@ -199,7 +200,7 @@
             query_builder("lang",param,query)
         });
 
-
+        //clears all input given by user
         $("#clear").click(function(){
             query = {};
             param = [];
@@ -215,6 +216,7 @@
             $("#sidebar input[type='checkbox']").prop('checked', false);
         });
 
+        //animations for menu
         $('#showkey').click(function() {
                 $('.keywords').slideToggle("fast");
         });
@@ -235,8 +237,8 @@
                 $('.lang').slideToggle("fast");
         });
 
+        //paginator plugin initialize, and performs ajax call with click event
         $("#paginator").hide();
-
         $('#paginator').bootpag({
             total: 1,
             page: 1
@@ -247,6 +249,7 @@
             $(this).bootpag({total: Math.floor((count + 5 -1)/5), maxVisible: 10});
         });
 
+        //gets parameter from url if exists
         function getUrlParameter(sParam) {
             var sPageURL = decodeURIComponent(window.location.search.substring(1)),
                     sURLVariables = sPageURL.split('&'),
@@ -259,7 +262,7 @@
                 }
             }
 }
-
+        //loads activities if a parameter exists on url
         function loadIfUrl(type, category){
 
             if (category == "type"){
@@ -287,6 +290,7 @@
 
     });
 
+    //builds query using user input from sidebar
     function query_builder(flag,param,query)
     {
         if (flag == "type"){
@@ -356,6 +360,7 @@
         window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
         }
 
+    //ajax method performs search in mongodb using built query, returns results and count of documents
     function buscar(tipo){
         $.ajax({
         type: 'POST',

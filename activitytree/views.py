@@ -76,7 +76,7 @@ def my_courses(request):
         return HttpResponseRedirect('/login/?next=%s' % request.path)
 
 
-def my_active_courses(request):
+def my_active_courses(request): #view that determines if user has unfinished courses, and returns the courses
     if request.user.is_authenticated() and request.user != 'AnonymousUser' :
         courses = UserLearningActivity.objects.filter(user__username=request.user, progress_status='incomplete').values('learning_activity_id')
         courses = LearningActivity.objects.filter(id__in=courses).values('root_id')
@@ -132,7 +132,7 @@ def course(request,course_id= None):
 
 
 @login_required()
-def upload_activity(request):
+def upload_activity(request): #view that receives activity data and saves it to database
     if request.is_ajax():
         if request.method == 'POST':
             actividad = json.loads(request.body)
@@ -1251,7 +1251,7 @@ def get_activities(request):
 
 
 @login_required
-def my_activities(request):
+def my_activities(request): #view used by activity_builder, returns all activities by user
     client = MongoClient(settings.MONGO_DB)
     db = client.protoboard_database
     activities_collection = db.activities_collection
@@ -1265,7 +1265,7 @@ def my_activities(request):
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 
 
-def search_prueba(request):
+def search_prueba(request): #view used by search, receives page and query and returns count of docs and activities
     client = MongoClient(settings.MONGO_DB)
     db = client.protoboard_database
     activities_collection = db.activities_collection
@@ -1289,14 +1289,14 @@ def search_prueba(request):
         return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 
 
-def check_activity(request):
+def check_activity(request): #view that checks if activity id already exists
     actividad = Activity.get_title(request.GET['valor'])
     json_docs = [doc for doc in actividad]
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 
 
 @login_required
-def delActivity(request):
+def delActivity(request): #view that receives user and id of activity to be deleted
     if request.method == 'POST':
         user = request.POST['user']
         _id = request.POST['_id']
@@ -1325,7 +1325,7 @@ def get_activity(request):
 
 
 @login_required
-def update_activity(request):
+def update_activity(request): #view used for updating activities
     if request.is_ajax():
         if request.method == 'POST':
             actividad = json.loads(request.body)
