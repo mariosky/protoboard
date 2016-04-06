@@ -38,7 +38,7 @@ from eval_code.RedisCola import Cola, Task
 import json
 from django.conf import settings
 from courses import get_activity_tree, update_course_from_json, create_empty_course
-
+from django.views.decorators.csrf import csrf_exempt
 import redis
 
 ip_couch = "http://127.0.0.1:5984"
@@ -131,6 +131,9 @@ def course(request,course_id= None):
             return HttpResponseNotFound('<h1>Course ID not Found</h1>')
 
 
+
+
+#@csrf_exempt
 @login_required()
 def upload_activity(request): #view that receives activity data and saves it to database
     if request.is_ajax():
@@ -1306,7 +1309,7 @@ def delActivity(request): #view that receives user and id of activity to be dele
         except Exception as e:
             return HttpResponse(e)
 
-
+#@csrf_exempt
 @login_required
 def get_activity(request):
     if request.method == 'GET':
@@ -1319,6 +1322,17 @@ def get_activity(request):
             #if type == 'prog':
             #    return HttpResponseRedirect('/build_program', {'data': json.dumps(json_docs)})
 
+            return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+        except Exception as e:
+            return HttpResponse(e)
+    else:
+        actividad = json.loads(request.body)
+        _id = actividad['_id']
+        user = actividad['author']
+        type = actividad['type']
+        try:
+            message = Activity.get_activity(_id, user)
+            json_docs = [doc for doc in message]
             return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
         except Exception as e:
             return HttpResponse(e)

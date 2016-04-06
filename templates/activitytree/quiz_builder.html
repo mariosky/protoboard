@@ -1,55 +1,76 @@
 {% extends 'activitytree/base.html' %}
 
+{% block style %}
+
+    #editor1 {
+
+        height: 500px;
+        width: ;
+
+    }
+
+ p.test_error, p.test_failure {
+    color:#d9534f;
+    }
+
+ p.test_success{
+    color:#5cb85c;
+    }
+
+  .alert{
+    margin:10px;
+    margin-bottom:0px;
+    }
+
+{% endblock %}
+
 {% block content %}
 
 <div class="container-fluid" align="center">
     <div class="container-fluid">
         <form id="formaQuiz" style="width: 100%;height: 100%;align-content: center" onsubmit="return false" >
-        <div class="form-group" style="width: 80%; height: 100%">
-            <label for="txtPregunta">Add Quiz: </label>
-            <tiny class="form-control" name="content" id="quiz">
-            Pregunta de opcion multiple encerrada entre > < con Enter entre respuestas<br>
+        <div class="form-group" style="width: 100%; height: 100%">
+            <!-- <tiny class="form-control" name="content" id="quiz"> </tiny> -->
+            <div class="" style="width: 23%;float: left">
+             <div class="panel panel-default">
+                 <div class="panel-heading">
+                     <h4> Instrucciones </h4>
+                 </div>
+                 <div class="panel-body" align="left">
+                      <p>1.- Preguntas de opcion multiple, empezar respuestas con [ ]
+                      Marcar respuestas correctas [x]</p>
+                      <p>2.- Preguntas de opcion unica, empezar respuestas con ()
+                      Marcar respuesta correcta (x)</p>
+                     <p>3.- Preguntas directas, encerrar respuestas en signos = =</p>
+                     <p>4.- Se puede incluir una pista en cada pregunta.
+                     La pista se encierra entre doble {  }</p>
+                 </div>
+             </div>
+            </div>
 
-Marcar respuesta correcta con (x)<br>
-Ejemplo<br>
-
-
->> Equipos que han sido campeones del mundo <<<br>
-[x] Brasil <br>
-[]Mexico <br>
-[x]Argentina<br>
-
-{ { Hints entre llaves } }<br>
-
-Pregunta de solo una respuesta ()<br>
-
->> Presidente actual de Mexico << <br>
-(x) Enrique pena Nieto <br>
-() George Bush <br>
-() Fidel Castro<br>
-
->>Lenguajes de programacion <<<br>
-
-[x]Python<br>
-
-[]Access <br>
-
-[x]Java<br>
-
->>Mejor consola<<<br>
-
-(x)PS4<br>
-
-()Xbox one<br>
-
-()Wii U <br>
-                >>Text entries, encerrar respuesta entre signos = =<< <br>
-                = Ejemplo respuesta =
-            </tiny>
+            <div class="myeditor" id="editor1" align="left" style="width: 75%;">
+Pregunta de opcion multiple encerrada entre > < con Enter entre respuestas
+Marcar respuesta correcta con (x)
+Ejemplo
+>> Equipos que han sido campeones del mundo <<
+[x] Brasil
+[]Mexico
+[x]Argentina
+{ { Hints entre llaves } }
+Pregunta de solo una respuesta ()
+>> Presidente actual de Mexico <<
+(x) Enrique pena Nieto
+() George Bush
+() Fidel Castro
+Pregunta de texto directa
+>>Pais de Norte America<<
+=USA=
+=usa=
+=Estados Unidos de Norteamerica=
+            </div>
         </div>
             <button type="button" id="preview" class="btn btn-primary">Preview</button>
         </form><br>
-
     </div>
 </div>
 
@@ -153,8 +174,16 @@ $(document).ready(function(){
 });
 
 $(function(){
+
+    var editor = ace.edit('editor1');
+    editor.setTheme("ace/theme/dawn");
+    editor.getSession().setMode('ace/mode/text');
+    editor.renderer.setShowGutter(false);
+    editor.setShowPrintMargin(false);
+
     $('#preview').click(function(){
-        valor = tinyMCE.activeEditor.getContent();
+        //valor = tinyMCE.activeEditor.getContent();
+        valor = editor.getValue();
         var quiz = analize(valor);
         console.log(quiz);
         var cont = 0;
@@ -178,6 +207,7 @@ $(function(){
         });
 
     });
+
 
     $('#submitquiz').click(function(e){
 
@@ -260,7 +290,9 @@ function load_quizdata(obj){
     $.each(obj[0], function(key, value){
         $('#formadetailq [name='+key+']').val(value);
         if (key == 'content'){
-            tinyMCE.get('quiz').setContent(value)
+            //tinyMCE.get('quiz').setContent(value);
+            var editor = ace.edit('editor1');
+            editor.setValue(value,1)
         }
         else if (key == 'tags'){
             $('#tagsquiz').val("");
@@ -284,12 +316,14 @@ function analize(valor){
 
     dic = [];
 
-    texto = valor.replace(/<\/?[^>]+(>|$)/g, "/\n/g");
-    texto = texto.replace(/&gt;/g, '>');
-    texto = texto.replace(/&lt;/g, '<');
-    texto = texto.replace(/\/g/g, '');
-    texto = texto.replace(/\//g, '');
-    texto = texto.split(/\n/g);
+    //texto = valor.replace(/<\/?[^>]+(>|$)/g, "/\n/g");
+    //texto = texto.replace(/&gt;/g, '>');
+    //texto = texto.replace(/&lt;/g, '<');
+    //texto = texto.replace(/\/g/g, '');
+    //texto = texto.replace(/\//g, '');
+    //texto = texto.split(/\n/g);
+    //texto = texto.filter(Boolean);
+    texto = valor.split(/\n/g);
     texto = texto.filter(Boolean);
 
     lista = [];
@@ -370,9 +404,11 @@ function analize(valor){
         }
         else if (exp_text.test(texto[i])){
             var match = texto[i].split("=")[1];
-            correct[0] = match;
-            obj['answer'] = match;
+            correct.push(match);
+            //answers.push(match);
+            obj['answer'] = correct;
             obj['answer_text'] = correct;
+            //obj['options'] = correct;
             obj['type'] = "str";
             obj['interaction'] = "textEntryInteraction";
             obj['id'] = i;
@@ -494,5 +530,9 @@ function submit_quiz(){
 }
 
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js " type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/javascript.js" type="text/javascript" charset="utf-8"></script>
 
 {% endblock %}
