@@ -2,73 +2,86 @@
 
 {% block content %}
 
-    <div class="container-fluid" style="width: 100%">
-        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" style="float:left; width: 30%">
-            <ul class="nav">
-                <li><h4><i class="fa fa-search"></i>  Filter by</h4></li>
-                <li></li>
-                <li> <input type="checkbox" id="text" value="text">   <label for="text">HTML</label> </li>
-                <li> <input type="checkbox" id="video" value="video">   <label for="video">Video</label> </li>
-                <li> <input type="checkbox" id="quiz" value="quiz">   <label for="quiz">Quiz</label> </li>
-                <li> <input type="checkbox" id="prog" value="prog">   <label for="prog">Program</label> </li>
-            </ul><br>
-            <div id="showkey"><h4><i class="fa fa-font"></i>  By Keyword <b class="caret"></b></h4></div>
-            <div class="keywords" style="display: none;">
-                <ul class="nav">
-                    <li><label for="txtname">Keywords</label><input type="text" class="form-control"  id="txtname"></li>
-                </ul>
-            </div>
-            <br>
-            <div id="showtags"><h4><i class="fa fa-tags"></i>  By Tags <b class="caret"></b></h4></div>
-            <div class="tags" style="display: none;">
-            <ul class="nav">
-                <li><label for="txttags">Tags</label> <input type="text"  class="form-control"  id="txttags"></li>
-            </ul>
-            </div>
-            <br>
-            <div id="showusers"><h4><i class="fa fa-users"></i>  By User <b class="caret"></b></h4></div>
-            <div class="users" style="display: none;">
-            <ul class="nav">
-                <li><label for="txtuser">User</label> <input type="text" class="form-control"  id="txtuser"></li>
-            </ul>
-            </div>
-            <br>
-            <div id="showdifficulty"><h4><i class="fa fa-flag"></i>  By Difficulty <b class="caret"></b></h4></div>
-            <div class="difficulty" style="display: none;">
-            <ul class="nav">
-                <li><label for="txtdifficulty">Level</label>
-                <select id="txtdifficulty" class="form-control">
-                    <option value=""></option>
-                    <option value="principiante">Principiante</option>
-                    <option value="intermedio">Intermedio</option>
-                    <option value="avanzado">Avanzado</option>
-                </select>
-                </li>
-            </ul>
-            </div>
-            <br>
-            <div id="showlang"><h4><i class="fa fa-code"></i>  By Language <b class="caret"></b></h4></div>
-            <div class="lang" style="display: none;">
-            <ul class="nav">
-                <li><label for="txtlang">Language</label>
-                <select id="txtlang" class="form-control">
-                    <option value=""></option>
-                    <option value="javascript">Javascript</option>
-                    <option value="csharp">Csharp</option>
-                    <option value="python">Python</option>
-                    <option value="java">Java</option>
-                </select>
-                </li>
-            </ul>
-            </div>
-            <br>
-            <ul class="nav">
-                <li> <a id="clear">Clear all</a> </li>
-            </ul>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+          </button>
         </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="#navbar" >
+            <div class="col-lg-8 col-lg-offset-2" >
+                <form class="navbar-form" role="search" onsubmit="return false">
+                    <div class="input-group"  style="width: 90%">
+                        <input type="text" class="form-control" placeholder="Search" name="srch-term" id="txtname">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="fa fa-search" style="color: darkblue"></i></button>
+                        </div>
+
+                    </div>
+                    <a class="navbar-btn" style="float:right;width: 10%"  id="tools">Options</a>
+                </form>
+            </div>
+
+            <div class="row" id="row" style="display:none" >
+                <div class="col-lg-9 col-lg-offset-1 col-md-11 ">
+                    <div class="collapse navbar-collapse" id="mainNav">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-search"></i> Filter By<span class="caret"></span></a>
+                                <ul class="dropdown-menu" id="sidebar">
+                                    <li> <a class="small" data-value="option1" tabIndex="-1"><input type="checkbox" id="text" value="text"/>&nbsp;HTML</a></li>
+                                    <li> <a class="small" data-value="option2" tabIndex="-1"><input type="checkbox" id="video" value="video"/>&nbsp;Video</a> </li>
+                                    <li> <a class="small" data-value="option3" tabIndex="-1"><input type="checkbox" id="quiz" value="quiz"/>&nbsp;Quiz</a></li>
+                                    <li> <a class="small" data-value="option4" tabIndex="-1"><input type="checkbox" id="prog" value="prog"/>&nbsp;Program</a> </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-flag"></i> By Difficulty<span class="caret"></span></a>
+                                <ul class="dropdown-menu" id="difficulty">
+                                    <li> <a class="small" id="dif1" data-value="principiante">Principiante</a></li>
+                                    <li> <a class="small" id="dif2" data-value="intermedio">Intermedio</a></li>
+                                    <li> <a class="small" id="dif3" data-value="avanzado">Avanzado</a></li>
+
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-code"></i> By Language<span class="caret"></span></a>
+                                <ul class="dropdown-menu" id="lang">
+                                    <li> <a class="small" id="dif4" data-value="javascript">Javascript</a></li>
+                                    <li> <a class="small" id="dif5" data-value="python">Python</a></li>
+                                    <li> <a class="small" id="dif6" data-value="csharp">Csharp</a></li>
+                                    <li> <a class="small" id="dif7" data-value="java">Java</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-tags"></i> By Tags<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li> <a class="small" data-value="option1" tabIndex="-1"><input type="text" id="txttags"/></a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-users"></i> By User<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li> <a class="small" data-value="option1" tabIndex="-1"><input type="text" id="txtuser"/></a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown"> <a id="clear">Clear all</a> </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid" style="width: 100%" align="center">
         <h2>Actividades</h2>
         <div id="paginator"></div>
-        <div class="container-fluid" id="actividades"  style="float:left; width: 45%">
+        <div class="container-fluid" id="actividades"  style="width: 60%">
 
         </div>
     </div>
@@ -128,7 +141,7 @@
         var lang = getUrlParameter('lang');
         var param = [];
         var tags = [];
-        var query = {};
+        query = {};
         query['page'] = 0;
         if (typeof tech != 'undefined'){
             loadIfUrl(tech, "type")
@@ -143,9 +156,25 @@
             loadIfUrl(lang, "lang")
         }
         else{
-            console.log("null")
+            var initialize = ['text','video','quiz','prog'];
+            query_builder('type', initialize,query)
         }
 
+        $("#tools").on('click',function(){
+            $("#row").toggle()
+        });
+
+        $("#difficulty a[class='small']").on('click',function(){
+            var param = this.getAttribute('data-value');
+            $("#actividades").empty();
+            query_builder("level",param,query)
+        });
+
+        $("#lang a[class='small']").on('click',function(){
+            var param = this.getAttribute('data-value');
+            $("#actividades").empty();
+            query_builder("lang",param,query)
+        });
 
         $("#sidebar input[type='checkbox']").change(function(){
             if(this.checked){
@@ -157,8 +186,9 @@
             {
                 $("#actividades").empty();
                 param.splice($.inArray(this.value,param), 1);
-                if (param.length == 0 && $("#txtname").val() != ""){
-                    query_builder("type",param,query)
+                if (param.length == 0){
+                    var initialize = ['text','video','quiz','prog'];
+                    query_builder("type",initialize,query)
                 }
                 else{
                     query_builder("type",param,query)
@@ -169,6 +199,7 @@
 
         $("#txtname").on('change', function(){
             $("#actividades").empty();
+            $("#row").show();
             query_builder("name",param,query);
         });
 
@@ -202,14 +233,14 @@
 
         $("#clear").click(function(){
             query = {};
-            param = [];
+            param =[];
+            initialize = ['text','video','quiz','prog'];
             $("#actividades").empty();
             $("#txtname").val('');
             $("#txttags").tagit("removeAll");
             $("#txtuser").val('');
-            $("#txtdifficulty").val('');
-            $("#txtlang").val('');
             $("#sidebar input[type='checkbox']").prop('checked', false);
+            query_builder("type",initialize,query);
         });
 
         $('#showkey').click(function() {
@@ -232,7 +263,7 @@
                 $('.lang').slideToggle("fast");
         });
 
-        $("#paginator").hide();
+        //$("#paginator").hide();
 
         $('#paginator').bootpag({
             total: 1,
@@ -274,12 +305,12 @@
             }
             else if (category == "level"){
                 $("#actividades").empty();
-                $("#txtdifficulty").val(type);
+                //$("#txtdifficulty").val(type);
                 query_builder("level",param,query)
             }
             else if (category == "lang"){
                 $("#actividades").empty();
-                $("#txtlang").val(type);
+                //$("#txtlang").val(type);
                 query_builder("lang",param,query)
             }
         }
@@ -304,7 +335,7 @@
                 buscar(query)
             }
             else{
-                query['title'] = {'title': {'$regex': $("#txtname").val()}};
+                query['title'] = {'title': {'$regex': $("#txtname").val(), '$options': 'i'}};
                 buscar(query)
             }
         }
@@ -329,22 +360,23 @@
             }
         }
         else if (flag == "level"){
-            if ($("#txtdifficulty").val() == ""){
+            if (param == ""){
                 delete query["level"];
                 buscar(query)
             }
             else{
-                query['level'] = {'level': $("#txtdifficulty").val()};
+                //query['level'] = {'level': $("#txtdifficulty").val()};
+                query['level'] = {'level': param};
                 buscar(query)
             }
         }
         else if (flag == "lang"){
-            if ($("#txtlang").val() == ""){
+            if (param == ""){
                 delete query["lang"];
                 buscar(query)
             }
             else{
-                query['lang'] = {'lang': $("#txtlang").val()};
+                query['lang'] = {'lang': param};
                 buscar(query)
             }
         }

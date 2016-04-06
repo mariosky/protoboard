@@ -196,6 +196,12 @@ def search(request):
         return HttpResponseNotFound('not found')
 
 
+def search2(request):
+    if request.method == 'GET':
+        return render_to_response('activitytree/search2.html', context_instance=RequestContext(request))
+    else:
+        return HttpResponseNotFound('not found')
+
 
 def build_program(request):
     if request.is_ajax():
