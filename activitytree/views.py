@@ -216,6 +216,19 @@ def build_program(request):
             return render_to_response('activitytree/program_builder.html', context_instance=RequestContext(request))
 
 
+def build_program2(request):
+    if request.is_ajax():
+        if request.method == 'POST':
+            return HttpResponseRedirect('/build_program')
+        elif request.method == 'GET':
+            return render_to_response('activitytree/program_builder2.html', context_instance=RequestContext(request))
+    else:
+        if request.method == 'POST':
+            return HttpResponseRedirect('/build_program')
+        elif request.method == 'GET':
+            return render_to_response('activitytree/program_builder2.html', context_instance=RequestContext(request))
+
+
 @login_required()
 def activity_builder(request):
     if request.method == 'POST':

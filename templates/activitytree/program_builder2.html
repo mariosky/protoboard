@@ -10,25 +10,20 @@
 
     #editor1 {
 
-        height: 400px;
+        height: 340px;
         width: 200;
 
     }
 
     #editor2{
 
-        height: 400px;
+        height: 340px;
         width: 200;
 
     }
 
     #editor3{
-        height: 400px;
-        width: 200;
-    }
-
-    #editorhtml{
-        height: 400px;
+        height: 340px;
         width: 200;
     }
 
@@ -53,15 +48,13 @@
 {% block content %}
 
 <div class="container" style="width: 100%">
+  <h3>Menu</h3>
   {% if d %}
        {{ title }}
   {% endif %}
   <ul class="nav nav-tabs">
-      <li class="active"><a href="#info" data-toggle="tab">Detail</a> </li>
-      <li><a href="#correct" data-toggle="tab">Correct Code</a></li>
-      <li><a href="#initial" data-toggle="tab">Initial Code</a></li>
-      <li><a href="#test" data-toggle="tab">Unit Test</a></li>
-      <li id="htmlli" class="disabled"><a href="#htmltab" id="htmla" data-toggle="">HTML</a></li>
+    <li class="active"><a href="#info" data-toggle="tab">Detail</a> </li>
+    <li><a href="#programa" data-toggle="tab">Program</a></li>
   </ul>
   <br>
 
@@ -109,104 +102,58 @@
         </div>
 
 
-        <div class="tab-pane fade" id="htmltab">
-            <div style="width: 100%" >
-            <label for="editorhtml">HTML Code</label>
-            <div class="myeditor" id="editorhtml" style="border:3px solid lightgrey">
-HTML Content
-            </div>
-            </div><br>
-            <div class=" col-lg-10 col-lg-offset-3"  style="width:50%;margin-left: 25%">
-                <div class="panel panel-info">
-                    <div class="panel-heading" align="center">
-                        <h4> Info </h4>
-                    </div>
-                    <div class="panel-body" align="left">
-                      <p>Escribir codigo HTML para lenguajes como Jquery
-                          y Javascript.</p>
 
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="tab-pane fade" id="programa" >
 
-        <div class="tab-pane fade" id="test" >
-            <div style="width: 100%" >
+            <div style="float: left;width: 33.3%">
             <label for="editor1">Unit Test</label>
-            <div class="myeditor" id="editor1" style="border:3px solid lightgrey">
+            <div class="myeditor" id="editor1">
 function foo(items) {
 Unit test;
 return x;}
             </div>
-            </div><br>
-            <div class=" col-lg-10 col-lg-offset-3"  style="width:50%;margin-left: 25%">
-                <div class="panel panel-info">
-                    <div class="panel-heading" align="center">
-                        <h4> Info </h4>
-                    </div>
-                    <div class="panel-body" align="left">
-                      <p>Una prueba unitaria es una forma de comprobar el correcto
-                          funcionamiento de un módulo de código.</p>
+            </div>
 
-                    </div>
+            <div style="float: right; width: 33.3%">
+            <label for="editor2">Correct Code</label>
+                <div class="myeditor" id="editor2">
+function foo(items) {
+Correct code;
+return x;}
                 </div>
             </div>
-        </div>
 
-        <div class="tab-pane fade" id="initial" >
-            <div style="width: 100%">
+                <div style="float: left; width: 33.3%">
                     <label for="editor3">Initial Code</label>
-                    <div class="myeditor" id="editor3" style="border:3px solid lightgrey">
+                    <div class="myeditor" id="editor3">
 function foo(items){
 Initial code;
 }
                     </div>
-                </div><br>
-
-            <div class=" col-lg-10 col-lg-offset-3"  style="width:50%;margin-left: 25%">
-                <div class="panel panel-info">
-                    <div class="panel-heading" align="center">
-                        <h4> Info </h4>
-                    </div>
-                    <div class="panel-body" align="left">
-                      <p>Este es el codigo que el usuario tendra
-                      que corregir o completar en el curso.</p>
-
-                    </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="tab-pane fade" id="correct" >
-            <div style="width: 100%">
-            <label for="editor2">Correct Code</label>
-                <div class="myeditor" id="editor2" style="border:3px solid lightgrey">
-function foo(items) {
-Correct code;
-return x;}
-                </div><br>
 
-                <div class="container">
-                    <div style="float:left;width: 35%">
-                        <form id="formadetailp" onsubmit="return false">
-                            <label for="txtLang">Choose programming language:</label>
-                            <select id="txtLang" name="lang" class="form-control">
-                                <option value="python">Python</option>
-                                <option value="javascript">Javascript</option>
-                                <option value="csharp">Csharp</option>
-                                <option value="java">Java</option>
-                                <option value="jquery">Jquery</option>
-                            </select>
-                            <input type="button" id="probarProg" class="btn btn-primary" value="Test">
-                    </div>
-                    <div style="margin-left: 40%; width: 50%">
-                        <label for="txtInstrucciones">Instructions: </label>
-                        <textarea class="form-control" id="txtInstrucciones" name="instructions" rows="3" ></textarea>
-                    </div>
-                    </form>
+            <div class="container">
+                <div style="float:left;width: 35%">
+                <form id="formadetailp" onsubmit="return false">
+                <label for="txtLang">Choose programming language:</label>
+                <select id="txtLang" name="lang" class="form-control">
+                    <option value="javascript">Javascript</option>
+                    <option value="csharp">Csharp</option>
+                    <option value="python">Python</option>
+                    <option value="java">Java</option>
+                </select>
+                <input type="button" id="probarProg" class="btn btn-primary" value="Test">
                 </div>
+
+                <div style="margin-left: 40%; width: 50%">
+                    <label for="txtInstrucciones">Instructions: </label>
+                    <textarea class="form-control" id="txtInstrucciones" name="instructions" rows="3" ></textarea>
+                </div>
+                </form>
+                </div>
+
             </div>
-        </div>
 
         </div>
     </div>
@@ -260,9 +207,8 @@ return x;}
         var editor;
         $('.myeditor').each(function(){
             editor = ace.edit(this.id);
-            editor.setTheme("ace/theme/dawn");
-            editor.getSession().setMode('ace/mode/python');
-            editor.setShowPrintMargin(false);
+            editor.setTheme("ace/theme/chrome");
+            editor.getSession().setMode('ace/mode/javascript');
         });
 
         $('#submitProg').click(function(e){
@@ -290,26 +236,17 @@ return x;}
 
         $('#txtLang').on('change', function(){
             var lang = this.value;
-            $('body .myeditor').each(function(){
+            $('.myeditor').each(function(){
                 editor = ace.edit(this.id);
                 editor.setTheme("ace/theme/chrome");
                 editor.getSession().setMode('ace/mode/'+ lang);
             });
-            if (lang == 'jquery' || lang == 'javascript'){
-                $('body li[id=htmlli]').removeClass('disabled');
-                $('body li[id=htmlli]').addClass('enabled');
-                $('body a[id=htmla]').attr('data-toggle','tab')
-            }
-            else{
-                $('body li[id=htmlli]').removeClass('enabled');
-                $('body li[id=htmlli]').addClass('disabled');
-                $('body a[id=htmla]').attr('data-toggle','')
-            }
         });
 
         $('#probarProg').click(function(){
             var editor = ace.edit("editor1");
             var codigo = editor.getValue();
+            //var change = editor.session.getUndoManager().isClean();
             console.log(codigo)
         });
 
@@ -361,20 +298,16 @@ return x;}
         var editor = ace.edit("editor1");
         var editor2 = ace.edit("editor2");
         var editor3 = ace.edit("editor3");
-        var editorhtml = ace.edit("editorhtml");
         $.each(obj[0], function(key, value){
             $('#formaProg [name='+key+']').val(value);
             if (key == 'unit_test'){
-                editor.setValue(value,1)
+                editor.setValue(value)
             }
             else if (key == "correct_code"){
-                editor2.setValue(value,1)
+                editor3.setValue(value)
             }
             else if (key == "initial_code"){
-                editor3.setValue(value,1)
-            }
-            else if (key == "html_code"){
-                editorhtml.setValue(value,1)
+                editor2.setValue(value)
             }
             else if (key == 'tags'){
                 $('#tagsprog').val("");
@@ -389,11 +322,6 @@ return x;}
                 $('#txtInstrucciones').val(value)
             }
             $('#formadetailp [name='+key+']').val(value);
-            if (key == 'lang' && (value=='jquery' || value=='javascript')){
-                $('body li[id=htmlli]').removeClass('disabled');
-                $('body li[id=htmlli]').addClass('enabled');
-                $('body a[id=htmla]').attr('data-toggle','tab')
-            }
 
     });
     }
@@ -434,9 +362,8 @@ return x;}
             value: tinyMCE.get('html').getContent()
         };
         data.push(html);
-        data.push(obj.obj1,obj.obj2,obj.obj3,obj.obj4);
+        data.push(obj.obj1,obj.obj2,obj.obj3);
         data=indexdata(data);
-        console.log(data);
         $.ajax({
             type: 'post',
             url: '/upload_activity',
@@ -489,7 +416,6 @@ return x;}
         var editor = ace.edit("editor1");
         var editor2 = ace.edit("editor2");
         var editor3 = ace.edit("editor3");
-        var editorhtml = ace.edit("editorhtml");
         var obj1={
             'name': 'correct_code',
             'value': editor2.getValue()
@@ -502,12 +428,8 @@ return x;}
             'name': 'unit_test',
             'value': editor.getValue()
         };
-        var obj4={
-            'name': 'html_code',
-            'value': editorhtml.getValue()
-        };
 
-        return {obj1:obj1,obj2:obj2,obj3:obj3,obj4:obj4}
+        return {obj1:obj1,obj2:obj2,obj3:obj3}
 
     }
     </script>
