@@ -60,10 +60,10 @@
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-users"></i> By User<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li> <a class="small" data-value="option1" tabIndex="-1"><input class="form-control" type="text" id="txtuser"/></a></li>
+                                    <li> <a class="small" data-value="option1" tabIndex="-1"><input class="form-control" placeholder="Username" type="text" id="txtuser"/></a></li>
                                 </ul>
                             </li>
-                            <li class="dropdown"> <a id="clear">Clear all</a> </li>
+                            <li class="dropdown"> <a id="clear" style="color:red">Clear all</a> </li>
                         </ul>
 
                     </div>
@@ -130,10 +130,7 @@
 
     <script>
     $(function(){
-        var tech = getUrlParameter('type');
-        var tag = getUrlParameter('tag');
-        var level = getUrlParameter('level');
-        var lang = getUrlParameter('lang');
+        var urltype = geturltype();
         var param = [];
         var tags = [];
         var query = {};
@@ -141,17 +138,19 @@
         var initialize = ['text','video','quiz','prog'];
         query['type'] = {'type': {'$in':initialize}};
 
-        if (typeof tech != 'undefined'){
-            loadIfUrl(tech, "type")
-        }
-        else if (typeof tag != 'undefined'){
-            loadIfUrl(tag, "tags")
-        }
-        else if (typeof level != 'undefined'){
-            loadIfUrl(level, "level")
-        }
-        else if (typeof lang != 'undefined'){
-            loadIfUrl(lang, "lang")
+        if (typeof urltype != 'undefined') {
+            if (urltype[0] == 'tag'){
+                loadIfUrl(urltype[1], 'tags')
+            }
+            else if (urltype[0] == 'type') {
+                loadIfUrl(urltype[1], 'type')
+            }
+            else if (urltype[0] == 'level') {
+                loadIfUrl(urltype[1], 'level')
+            }
+            else if (urltype[0] == 'lang') {
+                loadIfUrl(urltype[1], 'lang')
+            }
         }
         else{
             query_builder('type', initialize,query)
@@ -256,19 +255,20 @@
             $(this).bootpag({total: Math.floor((count + 5 -1)/5), maxVisible: 10});
         });
 
-
-        function getUrlParameter(sParam) {
-            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-                    sURLVariables = sPageURL.split('&'),
-                    sParameterName,
-                    i;
-            for (i = 0; i < sURLVariables.length; i++) {
-                sParameterName = sURLVariables[i].split('=');
-                if (sParameterName[0] === sParam) {
-                    return sParameterName[1] === undefined ? true : sParameterName[1];
+        function geturltype(){
+            var parameters = window.location.href.split("?");
+            if (parameters.length > 1){
+                parameters.splice(0,1);
+                for (var i=0;i<parameters.length;i++){
+                    var vars = parameters[i].split("=");
+                    return vars
                 }
             }
-}
+            else{
+                return undefined
+            }
+        }
+
 
         function loadIfUrl(type, category){
 
