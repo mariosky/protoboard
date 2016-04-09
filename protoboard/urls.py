@@ -44,6 +44,7 @@ urlpatterns = patterns('',
 
       (r'^search2$','activitytree.views.search2'),
       (r'^build_program2$','activitytree.views.build_program2'),
+      (r'^android$','activitytree.views.android_test'),
 
       (r'^search_prueba$','activitytree.views.search_prueba'),
       (r'^active_courses$','activitytree.views.my_active_courses'),

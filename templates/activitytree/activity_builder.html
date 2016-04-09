@@ -4,31 +4,75 @@
 
     <nav class="navbar navbar-default">
       <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
           </button>
         </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="#navbar">
 
-          <ul class="nav navbar-nav">
-              <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Actividades<span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                      <li><a href="#" id="htmlBtn">Actividad HTML</a></li>
-                      <li><a href="#" id="videoBtn">Actividad Video</a></li>
-                      <li><a href="/build_quiz">Actividad Quiz</a></li>
-                      <li><a href="/build_program">Actividad Programa</a></li>
-                  </ul>
-              </li>
-           </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
+        <div class="" id="#navbar" >
+            <div class="col-lg-8 col-lg-offset-2" >
+                <form class="navbar-form" role="search" onsubmit="return false">
+                    <div class="input-group"  style="width: 100%">
+                        <input type="text" class="form-control" placeholder="Search by Title or #Tag" name="srch-term" id="txtname">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit" style="background-color: #4285F4"><i class="fa fa-search" style="color: white"></i></button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="row" id="row" >
+                <div class="col-lg-8 col-lg-offset-2 col-md-11 ">
+                    <div class="collapse navbar-collapse" id="mainNav">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-plus"></i> Create<span class="caret"></span></a>
+                                <ul class="dropdown-menu" id="sidebar">
+                                    <li><a href="#" id="htmlBtn">HTML</a></li>
+	                                <li><a href="#" id="videoBtn">Video</a></li>
+	                                <li><a href="/build_quiz">Quiz</a></li>
+	                                <li><a href="/build_program">Program</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-search"></i> Filter By<span class="caret"></span></a>
+                                <ul class="dropdown-menu" id="sidebar">
+                                    <li> <a class="small" data-value="option1" tabIndex="-1"><input type="checkbox" id="text" value="text"/>&nbsp;HTML</a></li>
+                                    <li> <a class="small" data-value="option2" tabIndex="-1"><input type="checkbox" id="video" value="video"/>&nbsp;Video</a> </li>
+                                    <li> <a class="small" data-value="option3" tabIndex="-1"><input type="checkbox" id="quiz" value="quiz"/>&nbsp;Quiz</a></li>
+                                    <li> <a class="small" data-value="option4" tabIndex="-1"><input type="checkbox" id="prog" value="prog"/>&nbsp;Program</a> </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-flag"></i> By Difficulty<span class="caret"></span></a>
+                                <ul class="dropdown-menu" id="difficulty">
+                                    <li id="anylevel" class="active"> <a class="small" id="dif0" data-value="any">Any</a></li>
+                                    <li id="principiante"> <a class="small" id="dif1" data-value="principiante">Principiante</a></li>
+                                    <li id="intermedio"> <a class="small" id="dif2" data-value="intermedio">Intermedio</a></li>
+                                    <li id="avanzado"> <a class="small" id="dif3" data-value="avanzado">Avanzado</a></li>
+
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-code"></i> By Language<span class="caret"></span></a>
+                                <ul class="dropdown-menu" id="lang">
+                                    <li id="anylang" class="active"> <a class="small" id="dif4" data-value="any">Any</a></li>
+                                    <li id="javascript"> <a class="small" id="dif5" data-value="javascript">Javascript</a></li>
+                                    <li id="python"> <a class="small" id="dif6" data-value="python">Python</a></li>
+                                    <li id="csharp"> <a class="small" id="dif7" data-value="csharp">Csharp</a></li>
+                                    <li id="java"> <a class="small" id="dif8" data-value="java">Java</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown"> <a id="clear" style="color:red">Clear all</a> </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
     </nav>
     <div class="container-fluid center" align="center">
 
@@ -130,48 +174,13 @@
 
 
 <script type="text/javascript">
-
-
-//ajax call that loads all user activities and count of docs
-function loadactivities(page){
-    $.ajax({
-        type: 'get',
-        url: '/my_activities',
-        data: { user: '{{ user.email }}',
-        page: page},
-
-        success: function (data) {
-            Mustache.tags = ['[[', ']]'];
-            var activities_template = $('#activities_template').html();
-            Mustache.parse(activities_template);
-            var obj = jQuery.parseJSON( data );
-            $.each(obj, function( index, value ) {
-                if (value.count){
-                        count = value.count
-                    }
-                    else {
-                    rendered = Mustache.render(activities_template, {
-                        title: value.title,
-                        id: value._id,
-                        icon: value.icon,
-                        description: value.description,
-                        lang: value.lang,
-                        level: value.level,
-                        type: value.type,
-                        tags: value.tags
-                    });
-                    $("#actividades").append(rendered);
-                }
-            });
-            $("#paginator").show();
-            $("#paginator").bootpag({total: Math.floor((count + 5 -1)/5), maxVisible: 10});
-            $('#actividades').val(data);
-        },
-        error: function(data) {
-            console.log("Error");
-        }
-    });
-}
+var param = [];
+var tags = [];
+var query = {};
+query['page'] = 0;
+var initialize = ['text','video','quiz','prog'];
+query['type'] = {'type': {'$in':initialize}};
+query['author'] = {'author': '{{user.email}}'};
 
 //paginator plugin initialize
 $(function(){
@@ -181,11 +190,11 @@ $(function(){
             page: 1
         }).on("page", function(event, num){
             $("#actividades").empty();
-            page = (5) * (num - 1) ;
-            loadactivities(page);
+            query['page'] = (5) * (num - 1) ;
+            buscar(query);
             $(this).bootpag({total: Math.floor((count + 5 -1)/5), maxVisible: 10});
         });
-    loadactivities(page);
+    buscar(query)
 });
 
 //function used when user deletes activity
@@ -283,6 +292,214 @@ function load_dataProgram(obj){
 function load_dataQuiz(obj){
     window.location = '/build_quiz?id=' + obj[0]._id ;
 }
+
+        $('#difficulty li').click(function () {
+            $('#difficulty li').not(this).removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $('#lang li').click(function () {
+            $('#lang li').not(this).removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $("#difficulty a[class='small']").on('click',function(){
+            var param = this.getAttribute('data-value');
+            $("#actividades").empty();
+            if (param == 'any'){
+                param = "";
+            }
+            query_builder("level",param,query)
+        });
+
+        $("#lang a[class='small']").on('click',function(){
+            var param = this.getAttribute('data-value');
+            $("#actividades").empty();
+            if (param == 'any'){
+                param = "";
+            }
+            query_builder("lang",param,query)
+        });
+
+        $("#sidebar input[type='checkbox']").change(function(){
+            if(this.checked){
+                $("#actividades").empty();
+                param.push(this.value);
+                query_builder("type",param,query)
+            }
+            else
+            {
+                $("#actividades").empty();
+                param.splice($.inArray(this.value,param), 1);
+                if (param.length == 0){
+                    var initialize = ['text','video','quiz','prog'];
+                    query_builder("type",initialize,query)
+                }
+                else{
+                    query_builder("type",param,query)
+                }
+
+            }
+        });
+
+        $("#txtname").on('change', function(){
+            $("#actividades").empty();
+            $("#row").show();
+            query_builder("name",param,query);
+        });
+
+        $("#txtdifficulty").on('change', function(){
+            $("#actividades").empty();
+            query_builder("level",param,query)
+        });
+
+        $("#txtlang").on('change', function(){
+            $("#actividades").empty();
+            query_builder("lang",param,query)
+        });
+
+
+        $("#clear").click(function(){
+            query = {};
+            param =[];
+            initialize = ['text','video','quiz','prog'];
+            query['author'] = {'author': '{{user.email}}'};
+            $("#actividades").empty();
+            $("#txtname").val('');
+            $("#txtuser").val('');
+            $("#sidebar input[type='checkbox']").prop('checked', false);
+            query_builder("type",initialize,query);
+        });
+
+function query_builder(flag,param,query)
+    {
+        if (flag == "type"){
+            if (param.length==0){
+                delete query["type"];
+                buscar(query)
+            }
+            else{
+                query['type'] = {'type': {'$in':param}};
+                buscar(query)
+            }
+        }
+        else if (flag == "name"){
+            if ($("#txtname").val() == ""){
+                delete query["title"];
+                delete query["tags"];
+                buscar(query)
+            }
+            else{
+                var name = $("#txtname").val();
+                var exp_tags = /S*#(?:\[[^\]]+\]|\S+)/;
+                if (exp_tags.test(name)){
+                    var texto = name.split(/\s+/g);
+                    tags = [];
+                    title = [];
+                    for(var i=0;i<texto.length;i++){
+                        if(texto[i].match(exp_tags)){
+                            tags.push(texto[i].replace('#',''))
+                        }
+                        else{
+                            title.push(texto[i])
+                        }
+                    }
+                    title = title.join(" ");
+                    if (title != "" && tags.length != 0){
+                        query['title'] = {'title': {'$regex': title, '$options': 'i'}};
+                        query['tags'] = {'tags': {'$all': tags}};
+                    }
+                    else if (tags.length != 0 && title == ""){
+                        query['tags'] = {'tags': {'$all': tags}};
+                        delete query['title']
+                    }
+                    else if (tags.length == 0 && title != ""){
+                        query['title'] = {'title': {'$regex': title, '$options': 'i'}};
+                        delete query['tags']
+                    }
+                    else{
+                        delete query['title'];
+                        delete query['tags']
+                    }
+                    buscar(query)
+                }
+                else{
+                    query['title'] = {'title': {'$regex': $("#txtname").val(), '$options': 'i'}};
+                    delete query['tags'];
+                    buscar(query)
+                }
+
+            }
+        }
+        else if (flag == "level"){
+            if (param == ""){
+                delete query["level"];
+                buscar(query)
+            }
+            else{
+                query['level'] = {'level': param};
+                buscar(query)
+            }
+        }
+        else if (flag == "lang"){
+            if (param == ""){
+                delete query["lang"];
+                buscar(query)
+            }
+            else{
+                query['lang'] = {'lang': param};
+                buscar(query)
+            }
+        }
+    }
+
+function buscar(tipo){
+        $.ajax({
+        type: 'POST',
+        url: '/search_prueba',
+        data: JSON.stringify(tipo),
+        success: function (data) {
+            var obj = jQuery.parseJSON( data );
+            if (obj == "null" || obj[0].count == 0){
+                $("#paginator").hide();
+                $("#actividades").append('<h3 style="color:lightgray">No hay actividades</h3>');
+                alert("No se encontro actividad con esas caracteristicas");
+                count = 0
+            }
+            else{
+                Mustache.tags = ['[[', ']]'];
+                var activities_template = $('#activities_template').html();
+                Mustache.parse(activities_template);
+                $.each(obj, function( index, value ) {
+                    if (value.count){
+                        count = value.count
+                    }
+                    else{
+                        rendered = Mustache.render(activities_template, {
+                            title: value.title,
+                            id: value._id,
+                            icon:value.icon,
+                            description: value.description,
+                            lang:value.lang,
+                            level:value.level,
+                            type:value.type,
+                            tags:value.tags});
+                        $("#actividades").append(rendered);
+                    }
+                });
+                $("#paginator").show();
+                $("#paginator").bootpag({total: Math.floor((count + 5 -1)/5), maxVisible: 10});
+                $('#actividades').val(data);
+
+            }
+        },
+        error: function(data) {
+            console.log("Error");
+        }
+    });
+    }
+
+
 </script>
 
 {% endblock %}

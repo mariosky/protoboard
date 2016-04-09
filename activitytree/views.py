@@ -1357,6 +1357,20 @@ def get_activity(request):
             return HttpResponse(e)
 
 
+@csrf_exempt
+def android_test(request):
+    #actividad = json.loads(request.body)
+    #_id = actividad['_id']
+    #user = actividad['author']
+    #type = actividad['type']
+    try:
+        message = Activity.get_all()
+        json_docs = [doc for doc in message]
+        return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+    except Exception as e:
+        return HttpResponse(e)
+
+
 @login_required
 def update_activity(request): #view used for updating activities
     if request.is_ajax():
