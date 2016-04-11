@@ -489,37 +489,25 @@ function submit_quiz(){
         contentType: "application/json",
         data: JSON.stringify(data),
         success: function (info) {
-            if (info == 'Duplicate'){
-                $.ajax({
-                    type: 'post',
-                    url: '/update_activity',
-                    contentType: "application/json",
-                    data: JSON.stringify(data),
-
-                    success: function(info){
-                        var info = jQuery.parseJSON(info);
-                            if (info.updatedExisting == false){
-                                alert("No puedes modificar la actividad");
-                                window.location.href = "http://localhost:8000/activitybuilder";
-                            }
-                            else{
-                                alert("Actividad modificada");
-                                $('#formaQuiz')[0].reset();
-                                $('#formadetailq')[0].reset();
-                                window.location.href = "http://localhost:8000/activitybuilder";
-                            }
-                    },
-                    error: function(info){
-                        alert("Error")
-                    }
-                });
+            info = jQuery.parseJSON(info);
+            if (info.updatedExisting == true){
+                alert("Actividad modificada");
+                $('#formadetailq')[0].reset();
+                $("#modalquiz").modal('hide');
+                window.location.href = "http://localhost:8000/activitybuilder";
             }
-            else{
+            else if (info.updatedExisting == false){
                 alert("Actividad agregada");
                 $('#formadetailq')[0].reset();
                 $("#modalquiz").modal('hide');
                 window.location.href = "http://localhost:8000/activitybuilder";
             }
+            else if (info.message == "Duplicated"){
+                    alert("Duplicated Entry");
+                    $('#formadetailq')[0].reset();
+                    $("#modalquiz").modal('hide');
+                    window.location.href = "http://localhost:8000/activitybuilder";
+                }
         },
         error: function(info) {
 

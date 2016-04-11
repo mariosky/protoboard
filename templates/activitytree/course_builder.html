@@ -934,6 +934,7 @@ function get_course() {
       $("#modalSearch").modal()
   });
 
+  //change action for search textbox, determines if the input is a tag or just a title search
   $("body").on('change', "#txtname", function(){
       $("#data").empty();
       var query = {};
@@ -983,6 +984,7 @@ function get_course() {
             $("#data").empty()
         });
 
+  //ajax function that sends query to server and display results to user
   function buscar(tipo){
         $.ajax({
         type: 'POST',

@@ -543,35 +543,27 @@ $('#rating-info').raty({
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (info){
-                if (info == 'Duplicate'){
-                    $.ajax({
-                        type: 'post',
-                        url: '/update_activity',
-                        contentType: "application/json",
-                        data: JSON.stringify(data),
-
-                        success: function(info){
-                            var info = jQuery.parseJSON(info);
-                            console.log(info);
-                            if (info.updatedExisting == false){
-                                alert("No puedes modificar la actividad");
-                                location.reload()
-                            }
-                            else{
-                                alert("Actividad modificada");
-                                $("#modalhtml").modal('hide');
-                                if (current == '/activitybuilder'){
-                                    location.reload()
-                                }
-                            }
-                        },
-                        error: function(info){
-                            alert("Error")
-                        }
-                    });
+                info = jQuery.parseJSON(info);
+                if (info.updatedExisting == true){
+                    alert("Actividad modificada");
+                    $('#formahtml')[0].reset();
+                    $('#formadetail')[0].reset();
+                    $("#modalhtml").modal('hide');
+                    if (current == '/activitybuilder'){
+                        location.reload()
+                    }
                 }
-                else{
+                else if (info.updatedExisting == false){
                     alert("Actividad agregada");
+                    $('#formahtml')[0].reset();
+                    $('#formadetail')[0].reset();
+                    $("#modalhtml").modal('hide');
+                    if (current == '/activitybuilder'){
+                        location.reload()
+                    }
+                }
+                else if (info.message == "Duplicated"){
+                    alert("Duplicated Entry");
                     $('#formahtml')[0].reset();
                     $('#formadetail')[0].reset();
                     $("#modalhtml").modal('hide');
@@ -606,36 +598,27 @@ $('#rating-info').raty({
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (info) {
-                if (info == 'Duplicate'){
-                    $.ajax({
-                        type: 'post',
-                        url: '/update_activity',
-                        contentType: "application/json",
-                        data: JSON.stringify(data),
-
-                        success: function(info){
-                            var info = jQuery.parseJSON(info);
-                            console.log(info);
-                            if (info.updatedExisting == false){
-                                alert("No puedes modificar la actividad");
-                                location.reload()
-                            }
-                            else{
-                                alert("Actividad modificada");
-                                $("#modalhtml").modal('hide');
-                                if (current == '/activitybuilder'){
-                                    location.reload()
-                                }
-                            }
-
-                        },
-                        error: function(info){
-                            alert("Error")
-                        }
-                    });
+                info = jQuery.parseJSON(info);
+                if (info.updatedExisting == true){
+                    alert("Actividad modificada");
+                    $('#formaVideo')[0].reset();
+                    $("#modalvideo").modal('hide');
+                    $("#ytVideo").empty();
+                    if (current == '/activitybuilder'){
+                        location.reload()
+                    }
                 }
-                else {
+                else if (info.updatedExisting == false){
                     alert("Actividad agregada");
+                    $('#formaVideo')[0].reset();
+                    $("#modalvideo").modal('hide');
+                    $("#ytVideo").empty();
+                    if (current == '/activitybuilder'){
+                        location.reload()
+                    }
+                }
+                else if (info.message == "Duplicated"){
+                    alert("Duplicated Entry");
                     $('#formaVideo')[0].reset();
                     $("#modalvideo").modal('hide');
                     $("#ytVideo").empty();

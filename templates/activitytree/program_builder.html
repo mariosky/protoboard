@@ -334,7 +334,7 @@ return x;}
         return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-
+//load activity to be updated or modified
     function get_activity(id,type){
         $.ajax({
             type: 'get',
@@ -359,6 +359,7 @@ return x;}
     });
 }
 
+    //if activity is going to be updated, loads data to controls
     function load_progdata(obj){
         var editor = ace.edit("editor1");
         var editor2 = ace.edit("editor2");
@@ -400,6 +401,7 @@ return x;}
     });
     }
 
+    //validates that title control isn't empty
     function check_ifempty(e){
         var isValid = true;
         if ($.trim($('#displayprog').val()) == ''){
@@ -425,6 +427,7 @@ return x;}
         }
     }
 
+//gets data from all forms and send it to server
     function submitProg(){
         tinyMCE.triggerSave();
         var main= $('#formaProg').serializeArray();
@@ -445,34 +448,21 @@ return x;}
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (info) {
-                if (info == 'Duplicate'){
-                     $.ajax({
-                        type: 'post',
-                        url: '/update_activity',
-                        contentType: "application/json",
-                        data: JSON.stringify(data),
-
-                        success: function(info){
-                            var info = jQuery.parseJSON(info);
-                            if (info.updatedExisting == false){
-                                alert("No puedes modificar la actividad");
-                                window.location.href = "http://localhost:8000/activitybuilder";
-                            }
-                            else{
-                                alert("Actividad modificada");
-                                $('#formaProg')[0].reset();
-                                $('#formadetailp')[0].reset();
-                                window.location.href = "http://localhost:8000/activitybuilder";
-                            }
-
-                        },
-                        error: function(info){
-                            alert("Error")
-                        }
-                    });
+                info = jQuery.parseJSON(info);
+                if (info.updatedExisting == true){
+                    alert("Actividad modificada");
+                    $('#formaProg')[0].reset();
+                    $('#formadetailp')[0].reset();
+                    window.location.href = "http://localhost:8000/build_program";
                 }
-                else{
+                else if (info.updatedExisting == false){
                     alert("Actividad agregada");
+                    $('#formaProg')[0].reset();
+                    $('#formadetailp')[0].reset();
+                    window.location.href = "http://localhost:8000/build_program";
+                }
+                else if (info.message == "Duplicated"){
+                    alert("Duplicated Entry");
                     $('#formaProg')[0].reset();
                     $('#formadetailp')[0].reset();
                     window.location.href = "http://localhost:8000/build_program";
@@ -487,6 +477,7 @@ return x;}
 
     }
 
+    //gets data from ace editors and stores it in objects for json conversion
     function progData(){
         var editor = ace.edit("editor1");
         var editor2 = ace.edit("editor2");

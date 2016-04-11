@@ -146,30 +146,40 @@ def upload_activity(request): #view that receives activity data and saves it to 
                 try:
                     actividad['_id'] = '/activity/video/' + actividad['title'].replace(" ", "_")
                     actividad['content'] = actividad['description']
-                    activities_collection.insert(actividad)
-                    return HttpResponse("Agregado")
-                except errors.DuplicateKeyError:
-                    return HttpResponse("Duplicate")
+                    #activities_collection.insert(actividad)
+                    message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=True)
+                    #return HttpResponse("Agregado")
+                    return HttpResponse(json.dumps(message))
+                except pymongo.errors.DuplicateKeyError, e:
+                    if e.code == 11000:
+                        return HttpResponse(json.dumps({'message':'Duplicated'}))
             elif actividad['type'] == 'text':
                 try:
                     actividad['_id'] = '/activity/' + actividad['title'].replace(" ", '_')
-                    activities_collection.insert(actividad)
-                    return HttpResponse("Agregado")
-                except errors.DuplicateKeyError:
-                    return HttpResponse("Duplicate")
+                    message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=True)
+                    return HttpResponse(json.dumps(message))
+                except pymongo.errors.DuplicateKeyError, e:
+                    if e.code == 11000:
+                        return HttpResponse(json.dumps({'message':'Duplicated'}))
             elif actividad['type'] == 'quiz':
                 try:
-                    activities_collection.insert(actividad)
-                    return HttpResponse('Agregado')
-                except errors.DuplicateKeyError:
-                    return HttpResponse("Duplicate")
+                    #activities_collection.insert(actividad)
+                    message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=True)
+                    #return HttpResponse('Agregado')
+                    return HttpResponse(json.dumps(message))
+                except pymongo.errors.DuplicateKeyError, e:
+                    if e.code == 11000:
+                        return HttpResponse(json.dumps({'message':'Duplicated'}))
             elif actividad['type'] == 'prog':
                 try:
                     actividad['_id'] = '/program/' + actividad['title'].replace(" ", '_')
-                    activities_collection.insert(actividad)
-                    return HttpResponse('Agregado')
-                except errors.DuplicateKeyError:
-                    return HttpResponse("Duplicate")
+                    #activities_collection.insert(actividad)
+                    message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=True)
+                    #return HttpResponse('Agregado')
+                    return HttpResponse(json.dumps(message))
+                except pymongo.errors.DuplicateKeyError, e:
+                    if e.code == 11000:
+                        return HttpResponse(json.dumps({'message':'Duplicated'}))
             else:
                 "Tipo de actividad no existe"
         elif request.method == 'GET':
@@ -1328,7 +1338,7 @@ def delActivity(request): #view that receives user and id of activity to be dele
         except Exception as e:
             return HttpResponse(e)
 
-#@csrf_exempt
+
 @login_required
 def get_activity(request):
     if request.method == 'GET':
@@ -1359,10 +1369,6 @@ def get_activity(request):
 
 @csrf_exempt
 def android_test(request):
-    #actividad = json.loads(request.body)
-    #_id = actividad['_id']
-    #user = actividad['author']
-    #type = actividad['type']
     try:
         message = Activity.get_all()
         json_docs = [doc for doc in message]

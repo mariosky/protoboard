@@ -371,6 +371,7 @@ function load_dataQuiz(obj){
             query_builder("type",initialize,query);
         });
 
+//function that builds a query depending on input of user
 function query_builder(flag,param,query)
     {
         if (flag == "type"){
@@ -453,6 +454,7 @@ function query_builder(flag,param,query)
         }
     }
 
+//ajax function that sends query to server and displays results
 function buscar(tipo){
         $.ajax({
         type: 'POST',
