@@ -146,9 +146,7 @@ def upload_activity(request): #view that receives activity data and saves it to 
                 try:
                     actividad['_id'] = '/activity/video/' + actividad['title'].replace(" ", "_")
                     actividad['content'] = actividad['description']
-                    #activities_collection.insert(actividad)
                     message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=True)
-                    #return HttpResponse("Agregado")
                     return HttpResponse(json.dumps(message))
                 except pymongo.errors.DuplicateKeyError, e:
                     if e.code == 11000:
@@ -163,9 +161,7 @@ def upload_activity(request): #view that receives activity data and saves it to 
                         return HttpResponse(json.dumps({'message':'Duplicated'}))
             elif actividad['type'] == 'quiz':
                 try:
-                    #activities_collection.insert(actividad)
                     message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=True)
-                    #return HttpResponse('Agregado')
                     return HttpResponse(json.dumps(message))
                 except pymongo.errors.DuplicateKeyError, e:
                     if e.code == 11000:
@@ -173,9 +169,7 @@ def upload_activity(request): #view that receives activity data and saves it to 
             elif actividad['type'] == 'prog':
                 try:
                     actividad['_id'] = '/program/' + actividad['title'].replace(" ", '_')
-                    #activities_collection.insert(actividad)
                     message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=True)
-                    #return HttpResponse('Agregado')
                     return HttpResponse(json.dumps(message))
                 except pymongo.errors.DuplicateKeyError, e:
                     if e.code == 11000:

@@ -503,10 +503,10 @@ function submit_quiz(){
                 window.location.href = "http://localhost:8000/activitybuilder";
             }
             else if (info.message == "Duplicated"){
-                    alert("Duplicated Entry");
-                    $('#formadetailq')[0].reset();
-                    $("#modalquiz").modal('hide');
-                    window.location.href = "http://localhost:8000/activitybuilder";
+                alert("Duplicated Entry");
+                $('#formadetailq')[0].reset();
+                $("#modalquiz").modal('hide');
+                window.location.href = "http://localhost:8000/activitybuilder";
                 }
         },
         error: function(info) {
