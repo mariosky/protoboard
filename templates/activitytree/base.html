@@ -399,8 +399,6 @@ $('#rating-info').raty({
     });
 
 
-
-
   $('body').on('click', '.create-course', function(){
 
     $('#modalCreateCourse').modal();
@@ -437,7 +435,7 @@ $('#rating-info').raty({
         {% endif %}
 
     $(function(){
-
+//when user submits html form, this validates that some key values are provided, such as title and content of activity
         $('#_htmlActivity').click(function(e){
             var isValid = true;
             $('#formahtml input[type="text"]').each(function () {
@@ -474,6 +472,7 @@ $('#rating-info').raty({
             }
         });
 
+        //when user submits video activity form, this validates that key values are provided
         $('#_videoActivity').click(function(e){
             var isValid = true;
             $('#formaVideo input[type="text"]').each(function () {
@@ -501,19 +500,20 @@ $('#rating-info').raty({
                 return false
             }
         });
-
+        //generates id(uri) of html activity using title provided by user
         $('#titleHtml').on('change', function(){
             var id = '/activity/' + this.value.replace(/ /g, '_');
             check(id);
             $('#idhtml').val(id)
         });
-
+        //generates id(uri) of video activity using title provided by user
         $('#titleVideo').on('change', function(){
             var id = '/activity/video/' + this.value.replace(/ /g, '_');
             check(id);
             $('#idvideo').val(id);
         });
 
+        //resets forms such as html and video when modal closes
         $(".modal").on("hidden.bs.modal", function(){
             $('#formahtml')[0].reset();
             $('#formadetail')[0].reset();
@@ -524,12 +524,14 @@ $('#rating-info').raty({
             $("#tagsvideo").tagit("removeAll");
         });
 
+        //loads loadVideo function when url of video is provided by user
         $('#url').on('change', loadVideo);
 
 
 
     });
 
+    //function that gets all data from html forms and send it to server, if activity exists, it updates it
     function inserthtml(){
         tinyMCE.triggerSave();
         var main= $('#formahtml').serializeArray();
@@ -585,6 +587,7 @@ $('#rating-info').raty({
 
     }
 
+    //function that gets all data from video forms and sends it to the server for insertion, if id exists, it will update activity
     function insertvideo(){
         var main= $('#formaVideo').serializeArray();
         var detail = $('#formadetailv').serializeArray();
@@ -633,6 +636,7 @@ $('#rating-info').raty({
         });
     }
 
+    //function that receives data from all types of insert activities, and returns data stored in a dictionary with key and value for easy convertion to json
   function indexdata(data){
       var indexed = {};
       $.map(data, function(n, i){
@@ -645,8 +649,8 @@ $('#rating-info').raty({
       return indexed
   }
 
+    //function used to check if title of activities already exist in db, if it exists, user is prompted with a warning message
    function check(valor){
-
        $.ajax({
            type: 'get',
            url: '/get_activity',
@@ -667,6 +671,7 @@ $('#rating-info').raty({
 
    }
 
+    //function used when user inputs a youtube url, load video in iframe
     function loadVideo() {
         var url = $('#url').val();
         var p = /^(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?(?=.*v=((\w|-){11}))(?:\S+)?$/;
@@ -690,7 +695,7 @@ $('#rating-info').raty({
 
     }
 
-
+//loads dropdown menu from another dropdown menu (Crear menu)
     (function ($) {
     $(document).ready(function () {
         $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
@@ -717,6 +722,7 @@ $('#rating-info').raty({
     });
     })(jQuery);
 
+    //initializes tagit plugin for tag input
     $(document).ready(function() {
         $("#tagshtml").tagit({
             fieldName: "tags"

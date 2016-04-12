@@ -130,6 +130,7 @@
 
     <script>
     $(function(){
+        //if parameter is submitted on url, gets the value and send it to loadifurl function, if not, loads all activities in db
         var urltype = geturltype();
         var param = [];
         var tags = [];
@@ -156,20 +157,24 @@
             query_builder('type', initialize,query)
         }
 
+        //shows toolbar when tools option is clicked
         $("#tools").on('click',function(){
             $("#row").toggle()
         });
 
+        //changes active class depending of selected difficulty in toolbar
         $('#difficulty li').click(function () {
             $('#difficulty li').not(this).removeClass('active');
             $(this).addClass('active');
         });
 
+        //changes active class depending of selected language in toolbar
         $('#lang li').click(function () {
             $('#lang li').not(this).removeClass('active');
             $(this).addClass('active');
         });
 
+        //gets the selected value from difficulty dropdown and sends it to query_builder for search
         $("#difficulty a[class='small']").on('click',function(){
             var param = this.getAttribute('data-value');
             $("#actividades").empty();
@@ -179,6 +184,7 @@
             query_builder("level",param,query)
         });
 
+        //gets selected value from language dropdown and sends it to query_builder for search
         $("#lang a[class='small']").on('click',function(){
             var param = this.getAttribute('data-value');
             $("#actividades").empty();
@@ -188,6 +194,7 @@
             query_builder("lang",param,query)
         });
 
+        //when checkbox are selected or deselected from dropdown, get the value and sends it to query_builder for search
         $("#sidebar input[type='checkbox']").change(function(){
             if(this.checked){
                 $("#actividades").empty();
@@ -209,29 +216,21 @@
             }
         });
 
+        //gets value from txtname textbox on change event and sent to query_builder
         $("#txtname").on('change', function(){
             $("#actividades").empty();
             $("#row").show();
             query_builder("name",param,query);
         });
 
-
+        //gets value from txtuser textbox on change event and sent to query_builder
         $("#txtuser").on('change', function(){
             $("#actividades").empty();
             query_builder("user",param,query)
         });
 
-        $("#txtdifficulty").on('change', function(){
-            $("#actividades").empty();
-            query_builder("level",param,query)
-        });
 
-        $("#txtlang").on('change', function(){
-            $("#actividades").empty();
-            query_builder("lang",param,query)
-        });
-
-
+        //when Clear option is clicked, this resets controls and reinitializes query
         $("#clear").click(function(){
             query = {};
             param =[];
@@ -245,6 +244,7 @@
 
         //$("#paginator").hide();
 
+        //initializes paginator plugin
         $('#paginator').bootpag({
             total: 1,
             page: 1
@@ -255,6 +255,7 @@
             $(this).bootpag({total: Math.floor((count + 5 -1)/5), maxVisible: 10});
         });
 
+        //gets parameter from url and returns values
         function geturltype(){
             var parameters = window.location.href.split("?");
             if (parameters.length > 1){
@@ -270,6 +271,7 @@
         }
 
 
+        //function that categorizes data received (from url) and sends it to query_builder with correct parameters
         function loadIfUrl(type, category){
 
             if (category == "type"){
@@ -299,6 +301,7 @@
 
     });
 
+    //function that builds query for mongodb depending on parameters received
     function query_builder(flag,param,query)
     {
         if (flag == "type"){
@@ -391,10 +394,12 @@
         }
     }
 
+    //when copytoclipboard button is clicked, a message is displayed to user
     function copyToClipboard(text) {
         window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
         }
 
+    //function that receives query thats going to be sent to server, and get back results of search of activities
     function buscar(tipo){
         $.ajax({
         type: 'POST',

@@ -160,6 +160,7 @@ Pregunta de texto directa
 
 
 <script>
+//checks if url has parameters to load activity
 $(document).ready(function(){
     var url = getParameterByName('id');
     if (url != null){
@@ -174,13 +175,14 @@ $(document).ready(function(){
 });
 
 $(function(){
-
+//loads ace editor for input of quiz by user
     var editor = ace.edit('editor1');
     editor.setTheme("ace/theme/dawn");
     editor.getSession().setMode('ace/mode/text');
     editor.renderer.setShowGutter(false);
     editor.setShowPrintMargin(false);
 
+    //when Preview button is clicked, text is sent to be analized, then determine what type of object is going to be displayed
     $('#preview').click(function(){
         //valor = tinyMCE.activeEditor.getContent();
         valor = editor.getValue();
@@ -208,7 +210,7 @@ $(function(){
 
     });
 
-
+//when submit is clicked, validates if key values were input by user
     $('#submitquiz').click(function(e){
 
         //get_value();
@@ -236,10 +238,12 @@ $(function(){
 
     });
 
+    //resets values in modal when modal is closed
     $(".modal").on("hidden.bs.modal", function(){
             $('#preguntas').empty()
         });
 
+    //generates id when user inputs title
     $("#displayquiz").on('change', function(){
         var id = '/test/' + this.value.replace(/ /g, '_');
         check(id);
@@ -260,7 +264,7 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-
+//loads activity when user is updating an existing quiz activity in db
 function get_activity(id,type){
     $.ajax({
         type: 'get',
@@ -284,7 +288,7 @@ function get_activity(id,type){
     });
 }
 
-
+//loads the data of activity in forms for user to update
 function load_quizdata(obj){
     console.log(obj);
     $.each(obj[0], function(key, value){
@@ -304,6 +308,7 @@ function load_quizdata(obj){
     });
     }
 
+//function that analizes input from user and store info of questions and answer in a object for each one, using regular expressions
 function analize(valor){
 
     exp_radio = /^\s*\(.?\)/;
@@ -427,7 +432,7 @@ function analize(valor){
 
 }
 
-
+//an object and a flag is received, depending on flag, elements are appended to a div to be displayed to the user
 function preview_quiz(obj,cont,flag){
 
     var container = $('#preguntas');
@@ -469,7 +474,7 @@ function verify_checkbox(){
 
 }
 
-
+//function that gets all data from forms and send it to server for insertion, updates activity if it already exists
 function submit_quiz(){
     var detail = $('#formadetailq').serializeArray();
     var questions = {

@@ -238,6 +238,7 @@ return x;}
 {% block scripts %}
 
     <script>
+    //if updating an existing program activity, loads parameter from url and sends it to get_activity function
     $(document).ready(function(){
         var url = getParameterByName('id');
         if (url != null){
@@ -252,13 +253,14 @@ return x;}
 
 
     $(function(){
-
+        //when user inputs title for activity, a id is generated and then checks if id already exists on db
         $('#displayprog').on('change', function(){
             var id = '/program/' + this.value.replace(/ /g, '_');
             check(id);
             $('#idprog').val(id);
         });
 
+        //initializes all ace editors on page
         var editor;
         $('.myeditor').each(function(){
             editor = ace.edit(this.id);
@@ -267,8 +269,8 @@ return x;}
             editor.setShowPrintMargin(false);
         });
 
+        //if submit button is clicked, checks if certain key values where input, if true, confirmation message is displayed
         $('#submitProg').click(function(e){
-
             var val = check_ifempty(e);
             if (val == true){
                 $("#confirmProg").modal();
@@ -278,10 +280,12 @@ return x;}
             }
         });
 
+        //if user confirms submission of activity, submitProg function is loaded
         $('#acceptBtn').click(function(e){
             submitProg()
         });
 
+        //if user cancels submission of activity, forms are reset
         $('#cancelProg').click(function(){
             $('#formaProg')[0].reset();
             $('#formadetailp')[0].reset();
@@ -290,6 +294,7 @@ return x;}
 
         });
 
+        //when txtLang is changed, this changes the session of every editor and html tab is enabled or disabled depending on value
         $('#txtLang').on('change', function(){
             var lang = this.value;
             $('body .myeditor').each(function(){
@@ -315,6 +320,7 @@ return x;}
             console.log(codigo)
         });
 
+        //goes back to first value of editor if clicked
         $('#borrarProg').click(function(){
             var editor = ace.edit("editor1");
             editor.setValue(codigo);
@@ -324,6 +330,7 @@ return x;}
 
     });
 
+    //loads parameter from url if user is updating an existing program activity
     function getParameterByName(name, url) {
         if (!url) url = window.location.href;
         name = name.replace(/[\[\]]/g, "\\$&");
