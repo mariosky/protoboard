@@ -42,8 +42,6 @@ urlpatterns = patterns('',
       url(r'^course-builder/(?P<course_id>([\w+](\/*)(-*))+)$','activitytree.views.course',name="course"),
       url(r'^course-builder/?$','activitytree.views.course',name="course"),
 
-      (r'^search2$','activitytree.views.search2'),
-      (r'^build_program2$','activitytree.views.build_program2'),
       (r'^android$','activitytree.views.android_test'),
 
       (r'^search_prueba$','activitytree.views.search_prueba'),
@@ -60,7 +58,7 @@ urlpatterns = patterns('',
       (r'^build_quiz/(?P<id>\w+)/(?P<user>\w+)$','activitytree.views.edit_quiz'),
       (r'^build_program$','activitytree.views.build_program'),
       (r'^build_program/(?P<id>\w+)/(?P<user>\w+)$','activitytree.views.edit_program'),
-      (r'^update_activity$','activitytree.views.update_activity'),
+      #(r'^update_activity$','activitytree.views.update_activity'),
 
 
       (r'^unlink_facebook/?$', 'activitytree.views.unlink_facebook'),

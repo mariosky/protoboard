@@ -200,13 +200,6 @@ def search(request):
         return HttpResponseNotFound('not found')
 
 
-def search2(request):
-    if request.method == 'GET':
-        return render_to_response('activitytree/search2.html', context_instance=RequestContext(request))
-    else:
-        return HttpResponseNotFound('not found')
-
-
 def build_program(request):
     if request.is_ajax():
         if request.method == 'POST':
@@ -220,19 +213,6 @@ def build_program(request):
             return render_to_response('activitytree/program_builder.html', context_instance=RequestContext(request))
 
 
-def build_program2(request):
-    if request.is_ajax():
-        if request.method == 'POST':
-            return HttpResponseRedirect('/build_program')
-        elif request.method == 'GET':
-            return render_to_response('activitytree/program_builder2.html', context_instance=RequestContext(request))
-    else:
-        if request.method == 'POST':
-            return HttpResponseRedirect('/build_program')
-        elif request.method == 'GET':
-            return render_to_response('activitytree/program_builder2.html', context_instance=RequestContext(request))
-
-
 @login_required()
 def activity_builder(request):
     if request.method == 'POST':
@@ -243,8 +223,6 @@ def activity_builder(request):
         return render_to_response('activitytree/activity_builder.html', context_instance=RequestContext(request))
     else:
         return HttpResponseNotFound('<h1>Course ID not Found</h1>')
-
-
 
 
 def dashboard(request,path_id):
@@ -462,7 +440,6 @@ def path_activity(request,path_id, uri):
         return HttpResponseRedirect('/login/?next=%s' % request.path)
 
 
-
 def edit_program(request, _id, user):
     if request.method == 'GET':
         #activity = Activity.get_activity(_id, user)
@@ -488,7 +465,6 @@ def edit_quiz(request, _id, user):
         #d = json.dumps(activity)
         #data = {'d':d}
         return HttpResponse(data, content_type='application/json')
-
 
 
 def activity(request, uri=None):
@@ -615,7 +591,6 @@ def path_test(request,path_id, uri):
         # Do something for anonymous users.
 
 
-
 def path_program(request,path_id, uri):
     if request.user.is_authenticated():
         s = SimpleSequencing()
@@ -663,6 +638,7 @@ def path_program(request,path_id, uri):
 
     else:
         return HttpResponseRedirect('/login/?next=%s' % request.path)
+
 
 @transaction.atomic
 def program(request, uri):
@@ -752,12 +728,6 @@ def execute_queue(request):
         return HttpResponse(json.dumps(result), content_type='application/javascript')
 
 
-
-
-
-
-
-
 @csrf_protect
 def javascript_result(request):
     if request.method == 'POST':
@@ -843,8 +813,6 @@ def _get_learning_activity(uri):
     return la
 
 
-
-
 def _get_ula(request, uri):
     try:
         la = _get_learning_activity(uri)
@@ -876,8 +844,6 @@ def _set_current(request,requested_activity, root, s, progress_status=None):
             progress_status='completed'
         s.exit( atree.current_activity, progress_status=progress_status)
     s.set_current(requested_activity)
-
-
 
 
 def _check_quiz(post_dict, quiz):
@@ -1000,7 +966,6 @@ def login_view(request,template_name='registration/login.html',  redirect_field_
         return TemplateResponse(request, template_name,context ,current_app=None)
 
 
-
 def ajax_vote(request, type, uri):
     activity_uri = request.path[len('/ajax_vote'):]
     if request.user.is_authenticated():
@@ -1015,7 +980,6 @@ def ajax_vote(request, type, uri):
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         return HttpResponse(content="Ya voto?")
-
 
 
 def facebook_get_login(request):
@@ -1369,27 +1333,6 @@ def android_test(request):
         return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
     except Exception as e:
         return HttpResponse(e)
-
-
-@login_required
-def update_activity(request): #view used for updating activities
-    if request.is_ajax():
-        if request.method == 'POST':
-            actividad = json.loads(request.body)
-            client = MongoClient(settings.MONGO_DB)
-            db = client.protoboard_database
-            activities_collection = db.activities_collection
-            #user = request.POST['user']
-            try:
-                if actividad['type'] == 'video':
-                    actividad['content'] = actividad['description']
-                message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=False)
-                #return HttpResponse("Updated")
-                return HttpResponse(json.dumps(message))
-
-            except Exception as e:
-                return HttpResponse(e)
-
 
 
 @login_required
