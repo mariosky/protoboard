@@ -208,6 +208,8 @@ def build_program(request):
             return render_to_response('activitytree/program_builder.html', context_instance=RequestContext(request))
     else:
         if request.method == 'POST':
+            if request.POST.get('id'):
+                return HttpResponse('id')
             return HttpResponseRedirect('/build_program')
         elif request.method == 'GET':
             return render_to_response('activitytree/program_builder.html', context_instance=RequestContext(request))
@@ -440,13 +442,14 @@ def path_activity(request,path_id, uri):
         return HttpResponseRedirect('/login/?next=%s' % request.path)
 
 
-def edit_program(request, _id, user):
+def edit_program(request, id, user):
     if request.method == 'GET':
         #activity = Activity.get_activity(_id, user)
         #d = json.dumps(activity)
         #data = {'d':d}
-        return HttpResponse(data, content_type='application/json')
+        return HttpResponse(id)
     elif request.method == 'POST':
+        id = request.GET.get('id')
         #activity = Activity.get_activity(_id, user)
         #d = json.dumps(activity)
         #data = {'d':d}
@@ -456,11 +459,15 @@ def edit_program(request, _id, user):
 
 def edit_quiz(request, _id, user):
     if request.method == 'GET':
+        id = request.GET.get('id')
+        user = request.GET.get('user')
         #activity = Activity.get_activity(_id, user)
         #d = json.dumps(activity)
         #data = {'d':d}
         return HttpResponse(data, content_type='application/json')
     elif request.method == 'POST':
+        id = request.GET.get('id')
+        user = request.GET.get('user')
         #activity = Activity.get_activity(_id, user)
         #d = json.dumps(activity)
         #data = {'d':d}

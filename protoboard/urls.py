@@ -57,7 +57,7 @@ urlpatterns = patterns('',
       (r'^build_quiz$','activitytree.views.build_quiz'),
       (r'^build_quiz/(?P<id>\w+)/(?P<user>\w+)$','activitytree.views.edit_quiz'),
       (r'^build_program$','activitytree.views.build_program'),
-      (r'^build_program/(?P<id>\w+)/(?P<user>\w+)$','activitytree.views.edit_program'),
+      (r'^build_program/(?P<id>\w+)/(?P<user>[\w.@+-]+)$','activitytree.views.edit_program'),
       #(r'^update_activity$','activitytree.views.update_activity'),
 
 

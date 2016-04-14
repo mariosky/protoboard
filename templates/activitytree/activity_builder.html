@@ -221,32 +221,36 @@ function delActivity(activity){
 
 //function that gets activity info for updating activity
 function get_activity(id,type){
-    $.ajax({
-        type: 'get',
-        url: '/get_id',
-        data: { _id: id,
+
+    if (type == "prog"){
+        load_dataProgram(id)
+    }
+    else if (type == "quiz"){
+        load_dataQuiz(id)
+    }
+    else{
+        $.ajax({
+            type: 'get',
+            url: '/get_id',
+            data: { _id: id,
                 user: '{{ user.email }}',
                 type: type},
-        success: function (data){
-            var obj = jQuery.parseJSON( data );
-            if (obj[0].type == "text"){
-                load_dataHtml(obj)
-            }
-            else if (obj[0].type == "video"){
-                load_dataVideo(obj)
-            }
-            else if (type == "prog"){
-                load_dataProgram(obj)
-            }
-            else if (type == "quiz"){
-                load_dataQuiz(obj)
-            }
+            success: function (data){
+                var obj = jQuery.parseJSON( data );
+                if (obj[0].type == "text"){
+                    load_dataHtml(obj)
+                }
+                else if (obj[0].type == "video"){
+                    load_dataVideo(obj)
+                }
 
         },
         error: function(data){
             console.log(data)
         }
     });
+    }
+
 }
 
 //loads activity data in html modal for updating
@@ -284,13 +288,13 @@ function load_dataVideo(obj){
 }
 
 //sends user to program update page
-function load_dataProgram(obj){
-    window.location = '/build_program?id=' + obj[0]._id ;
+function load_dataProgram(id){
+    window.location = '/build_program?id=' + id ;
 }
 
 //sends user to quiz update page
-function load_dataQuiz(obj){
-    window.location = '/build_quiz?id=' + obj[0]._id ;
+function load_dataQuiz(id){
+    window.location = '/build_quiz?id=' + id ;
 }
 
         $('#difficulty li').click(function () {
