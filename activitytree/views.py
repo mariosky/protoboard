@@ -693,6 +693,26 @@ def test(request, uri):
 
 
 @csrf_protect
+def test_program(request):
+    if request.is_ajax():
+        if request.method == 'POST':
+            import os
+            data = json.loads(request.body)
+            logger.error("REDIS:"+os.environ['REDIS_HOST'])
+            unit_test = data['unit_test']
+            correct_code = data['correct_code']
+            server = Cola(data['lang'])
+            task = {"id": None, "method": "exec", "params": {"code": correct_code, "test": unit_test}}
+            logger.error(task)
+            task_id = server.enqueue(**task)
+            logger.error(task_id)
+            result= {"result": "added", "error": None, "id": task_id}
+            return HttpResponse(json.dumps(result), content_type='application/javascript')
+    else:
+        return HttpResponse("Error")
+
+
+@csrf_protect
 def execute_queue(request):
     #logger.error("VIEW execute_queue")
     if request.method == 'POST':
