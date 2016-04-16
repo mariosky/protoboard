@@ -542,7 +542,7 @@ return x;}
             contentType: "application/json",
             data: JSON.stringify({"jsonrpc": "2.0", "method": "_execute", "id": task_id }),
             success: function(data){
-                data = jQuery.parseJSON(data);
+                //data = jQuery.parseJSON(data);
                 console.log(data);
                 if (data.outcome != -1)
                 {
