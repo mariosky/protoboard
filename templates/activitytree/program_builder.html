@@ -526,8 +526,8 @@ return x;}
             success: function (data) {
                 info = jQuery.parseJSON(data);
                 console.log(data);
-                task_id = data.id;
-                //poll()
+                task_id = info.id;
+                poll()
             },
             error: function(data) {
                 alert("Error. La actividad no se agrego")
