@@ -525,9 +525,8 @@ return x;}
             data: JSON.stringify(data),
             success: function (info) {
                 info = jQuery.parseJSON();
-                task_id =info.id;
                 console.log(info);
-                alert("task id" + task_id);
+                alert("task id");
                 poll()
             },
             error: function(info) {
