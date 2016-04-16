@@ -241,6 +241,7 @@ return x;}
     //if updating an existing program activity, loads parameter from url and sends it to get_activity function
     $(document).ready(function(){
         var url = getParameterByName('id');
+        number_of_tries = 0;
         if (url != null){
             var type = 'prog';
             $("#tagsprog").tagit("removeAll");
