@@ -316,6 +316,7 @@ return x;}
         });
 
         $('#probarProg').click(function(){
+            $(this).button('loading');
             test_prog()
         });
 
@@ -552,15 +553,18 @@ return x;}
                     if (result.result == "Failure")
                     {
                         console.log("No pasó las pruebas");
+                        $("#probarProg").button('reset');
                     }
                     else if (result.result == "ProcessError")
                     {
                         console.log("Error al procesar las pruebas");
+                        $("#probarProg").button('reset');
                     }
 
                     else if (result.result == "Success")
                     {
                         console.log("Pruebas exitosas");
+                        $("#probarProg").button('reset');
                     }
                 }
                 else
@@ -583,16 +587,18 @@ return x;}
 
                    else
                    {
-
+                        $("#probarProg").button('reset');
                    }
                }
             },
             timeout: 5000,
             error: function(jqXHR, textStatus, errorThrown) {
                 alert ("Lo sentimos, hubo un error al recibir el resultado de la ejecución. El error fué (en lenguaje informático): " +errorThrown);
+                $("#probarProg").button('reset');
             },
             fail: function(xhr, textStatus, errorThrown) {
                 alert ("Lo sentimos, hubo un error al recibir el resultado de la ejecución. El error fué (en lenguaje informático): " +errorThrown);
+                $("#probarProg").button('reset');
             }
 
         });
