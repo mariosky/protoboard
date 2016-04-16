@@ -499,19 +499,19 @@ function submit_quiz(){
                 alert("Actividad modificada");
                 $('#formadetailq')[0].reset();
                 $("#modalquiz").modal('hide');
-                window.location.href = "http://localhost:8000/activitybuilder";
+                window.location.href = "/activitybuilder";
             }
             else if (info.updatedExisting == false){
                 alert("Actividad agregada");
                 $('#formadetailq')[0].reset();
                 $("#modalquiz").modal('hide');
-                window.location.href = "http://localhost:8000/activitybuilder";
+                window.location.href = "/activitybuilder";
             }
             else if (info.message == "Duplicated"){
                 alert("Duplicated Entry");
                 $('#formadetailq')[0].reset();
                 $("#modalquiz").modal('hide');
-                window.location.href = "http://localhost:8000/activitybuilder";
+                window.location.href = "/quiz_builder";
                 }
         },
         error: function(info) {

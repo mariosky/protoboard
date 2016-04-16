@@ -457,19 +457,19 @@ return x;}
                     alert("Actividad modificada");
                     $('#formaProg')[0].reset();
                     $('#formadetailp')[0].reset();
-                    window.location.href = "http://localhost:8000/build_program";
+                    window.location.href = "/activitybuilder";
                 }
                 else if (info.updatedExisting == false){
                     alert("Actividad agregada");
                     $('#formaProg')[0].reset();
                     $('#formadetailp')[0].reset();
-                    window.location.href = "http://localhost:8000/build_program";
+                    window.location.href = "/activitybuilder";
                 }
                 else if (info.message == "Duplicated"){
                     alert("Duplicated Entry");
                     $('#formaProg')[0].reset();
                     $('#formadetailp')[0].reset();
-                    window.location.href = "http://localhost:8000/build_program";
+                    window.location.href = "/build_program";
                 }
             },
             error: function(info) {
