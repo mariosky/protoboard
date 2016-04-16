@@ -525,6 +525,7 @@ return x;}
             data: JSON.stringify(data),
             success: function (info) {
                 task_id =info.id;
+                poll()
             },
             error: function(info) {
                 alert("Error. La actividad no se agrego")
