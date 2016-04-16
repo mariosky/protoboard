@@ -706,8 +706,8 @@ def test_program(request):
             logger.error(task)
             task_id = server.enqueue(**task)
             logger.error(task_id)
-            result = {"result": "added", "id": task_id}
-            return HttpResponse(json.dumps(result), content_type='application/javascript')
+            result = [{"result": "added", "id": task_id}]
+            return HttpResponse(json.dumps(result))
     else:
         return HttpResponse("Error")
 
