@@ -20,7 +20,7 @@ class Activity:
 
     @staticmethod
     def get_all():
-        return _activities_collection.find( {'type': { '$ne':'quiz' } }, { '_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1})
+        return _activities_collection.find( {'type': { '$ne':'quiz' } }, { '_id':1, 'title':1, 'tags':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1})
 
     @staticmethod
     def get_by_user(user, page):
