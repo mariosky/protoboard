@@ -543,6 +543,7 @@ return x;}
             data: JSON.stringify({"jsonrpc": "2.0", "method": "_execute", "id": task_id }),
             success: function(data){
                 //data = jQuery.parseJSON(data);
+                number_of_tries++;
                 console.log(data);
                 if (data.outcome != -1)
                 {
@@ -576,7 +577,7 @@ return x;}
                {
                    if (number_of_tries < 150)
                    {
-
+                        poll()
                    }
 
                    else
