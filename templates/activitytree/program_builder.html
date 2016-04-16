@@ -525,6 +525,7 @@ return x;}
             data: JSON.stringify(data),
             success: function (info) {
                 task_id =info.id;
+                alert("task id" + task_id);
                 poll()
             },
             error: function(info) {
@@ -534,6 +535,7 @@ return x;}
     }
 
     function poll(){
+        console.log(task_id);
         $.ajax({ url: '/get_result',
             type: "POST",
             contentType: "application/json",
