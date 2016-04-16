@@ -525,9 +525,8 @@ return x;}
             data: JSON.stringify(data),
             success: function (info) {
                 info = jQuery.parseJSON(info);
-                console.log(info);
-                alert("task id");
-                //poll()
+                task_id = info.id;
+                poll()
             },
             error: function(info) {
                 alert("Error. La actividad no se agrego")
@@ -542,7 +541,8 @@ return x;}
             contentType: "application/json",
             data: JSON.stringify({"jsonrpc": "2.0", "method": "_execute", "id": task_id }),
             success: function(data){
-
+                data = jQuery.parseJSON(data);
+                console.log(data);
                 if (data.outcome != -1)
                 {
                     var result = data.result;
