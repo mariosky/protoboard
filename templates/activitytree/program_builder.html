@@ -525,7 +525,7 @@ return x;}
             data: JSON.stringify(data),
             success: function (info) {
                 console.log(info);
-                task_id =data.id;
+                task_id =info.id;
             },
             error: function(info) {
                 alert("Error. La actividad no se agrego")
