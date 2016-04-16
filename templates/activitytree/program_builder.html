@@ -524,8 +524,8 @@ return x;}
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (info) {
-                info = jQuery.parseJSON(info);
-                task_id = info.id;
+                var info = jQuery.parseJSON(info);
+                task_id = info[0].id;
                 poll()
             },
             error: function(info) {
