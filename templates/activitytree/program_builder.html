@@ -523,12 +523,13 @@ return x;}
             url: '/test_program',
             contentType: "application/json",
             data: JSON.stringify(data),
-            success: function (info) {
-                var info = jQuery.parseJSON(info);
-                task_id = info[0].id;
-                poll()
+            success: function (data) {
+                info = jQuery.parseJSON(data);
+                console.log(data);
+                task_id = data.id;
+                //poll()
             },
-            error: function(info) {
+            error: function(data) {
                 alert("Error. La actividad no se agrego")
             }
         });
