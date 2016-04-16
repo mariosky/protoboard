@@ -524,10 +524,10 @@ return x;}
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (info) {
-                info = jQuery.parseJSON();
+                info = jQuery.parseJSON(info);
                 console.log(info);
                 alert("task id");
-                poll()
+                //poll()
             },
             error: function(info) {
                 alert("Error. La actividad no se agrego")
