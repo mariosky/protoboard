@@ -13,42 +13,71 @@
 
     <div class="container">
       <!-- Example row of columns -->
+
+
+
       <div class="row">
 
 
-        <div class="col-md-6">
-        <h4>Cursos <small>Secuencia de actividades, se registra tú avance. <code>Te debes registrar</code>. </small></h4>
+        <div class="col-md-7 col-sm-7">
+            <ul class="nav nav-tabs course-listing-nav">
+          <li role="presentation" class="active"><a href="#"> Nuevos Cursos</a></li>
+          <li role="presentation"><a href="/courses"> Ver todos </a></li>
+          <li role="presentation"><a href="#">Crear un curso</a></li>
+        </ul>
+
+
             {% for c in courses %}
-        <div class="media">
-            <div class="media-left">
+        <div class="course-listing">
+            <div class="row">
+
+            <div class="col-md-3 col-xs-6">
+
                 <a href="#">
-                     <i class="fa fa-graduation-cap fa-lg"></i>
+                    <img class="img-rounded img-responsive" src="{{ c.root.image }}" alt="...">
+
+
                 </a>
 
             </div>
-             <div class="media-body">
-             {% if user.is_authenticated %}
-               <a class="media-heading" href="/{{c.root.id }}{{c.root.uri }}?nav=continue" role="button"> <h4>{{c.root.name}} &raquo;</h4></a>
-             {% else %}
-                <a class="media-heading" href="/{{c.root.id }}{{c.root.uri }}" role="button"> <h4>{{c.root.name}} &raquo;</h4></a>
-             {% endif %}
+            <div class="clearfix visible-xs-block"></div>
+            <div class="col-md-9">
+
+                <h4> {{c.root.name}} </h4>
+
+                {{ c.short_description|safe }}
+
+<ul class="course-listing-bar">
+  <li> <i class="fa fa-pencil"></i>   <a href="#"> {{ c.root.authorlearningactivity_set.all.0.user.get_full_name }} </a></li>
+  <li><i class="fa fa-university"></i> Principiante </li>
+  <li> <i class="fa fa-clock-o"></i> 4 horas </li>
+
+</ul>
+
+{% if user.is_authenticated %}
+                       <a class="btn btn-default btn-sm pull-right" href="/{{c.root.id }}{{c.root.uri }}?nav=continue" role="button"> Ir al curso &raquo;</a>
+                     {% else %}
+                        <a class="btn btn-default btn-sm pull-right" href="/{{c.root.id }}{{c.root.uri }}" role="button">Regístrate &raquo;</a>
+                {% endif %}
 
 
-            <p><span class="label label-info">mini-curso</span> <span class="label label-default">python</span> <span class="label label-default">principiantes</span></p>
-                 {{ c.short_description|safe }}
+
+
+            </div>
 
             </div>
         </div>
          {% endfor %}
         </div>
 
-      <div id='activities' class="col-md-6">
-       <h4>Bits <small> Son actividades independientes, tú decides que ver. No requiere registro.</small></h4>
 
 
-
-
-
+      <div id='activities' class="col-md-5 col-sm-5">
+       <ul class="nav nav-tabs">
+          <li role="presentation" class="active"><a href="#">Small Bits</a></li>
+          <li role="presentation"><a href="/courses"> Ver todos </a></li>
+          <li role="presentation"><a href="#">Crear un Bit</a></li>
+        </ul>
 
       </div>
 
@@ -117,24 +146,23 @@
 
 <script id="activities_template" type="x-tmpl-mustache">
          <div class="media">
-            <div class="media-left">
-                <a href="[[uri]]">
-                    <i class="fa fa-[[icon]] fa-lg"></i>
-                </a>
-
-            </div>
              <div class="media-body">
 
-               <a class="media-heading" href="[[uri]]" role="button"> <h4>[[title]] &raquo;</h4></a>
+               <a class="media-heading" href="[[uri]]" role="button"><i class="fa fa-[[icon]]"></i> [[title]] &raquo;</a>
+               <p>
 
+                      [[description]]
+
+               </p>
 
             <p>
+            {% comment %}
               [[#type]]
               <span class="label label-info"><a href="/search/?type=[[type]]" style="color:#FFFFFF">[[type]]</a></span>
               [[/type]]
               [[^type]]
               [[/type]]
-
+            {% endcomment %}
               [[#lang]]
               <span class="label label-success"><a href="/search/?lang=[[lang]]" style="color:#FFFFFF">[[lang]]</a></span>
               [[/lang]]
