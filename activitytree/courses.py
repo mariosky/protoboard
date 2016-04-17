@@ -51,10 +51,24 @@ def _traverse_update(activity, parent=None, root=None, user=None):
     learning_activity = None
     #If root is None then this is the root activity,
     #it must be created in advance, so we get the activity.
-    print 'state' in activity['learning_activity'] and  activity['learning_activity']['state']=="Deleted" or "No state"
-    print 'order:',('order_in_container' in activity['learning_activity'] and activity['learning_activity']['order_in_container']) or "Non Order"
     if root is None:
         root = LearningActivity.objects.get(pk=activity['id'])
+
+        if 'state' not in activity['learning_activity']:
+            print "Root:SAVE"
+
+            root.name = activity['learning_activity']['name']
+            root.uri = activity['learning_activity']['uri']
+            root.lom = activity['learning_activity']['lom'] or ""
+            root.attempt_limit=activity['learning_activity']['attempt_limit']
+            root.available_until=activity['learning_activity']['available_until']
+            root.available_from =activity['learning_activity']['available_from']
+            root.description =activity['learning_activity']['description']
+            root.image = activity['learning_activity']['image']
+            root.pre_condition_rule =activity['learning_activity']['pre_condition_rule'] or ""
+            root.rollup_rule  = ('rollup_rule' in activity['learning_activity'] and  activity['learning_activity']['rollup_rule']) or ""
+            root.save()
+
         learning_activity = root
     
     elif 'state' in activity['learning_activity'] and  activity['learning_activity']['state']=='Added':
@@ -91,7 +105,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
 
         learning_activity = LearningActivity.objects.get(pk=activity['learning_activity']['id'])
         learning_activity.delete()
-        print "DELETED"
+
 
     else:
 

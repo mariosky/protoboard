@@ -380,7 +380,7 @@
              "id": '{{ course_id }}',
              "order": 0,
              "children":tree,
-             "learning_activity":course_root
+             "learning_activity":learning_activities['{{ course_id }}']
             }];
 
           console.log(JSON.stringify(course));
@@ -499,7 +499,7 @@ function get_course() {
                           }
 
                   );
-                   console.log("After:");
+                  console.log("After:");
                   console.log(jsonObj.children);
                   traverse(jsonObj.children,jsonObj.id);
 
