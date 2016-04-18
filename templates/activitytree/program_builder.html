@@ -231,11 +231,80 @@ return x;}
 </div>
 </div>
 
+    <div id="testprog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" align="center">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4>Test program</h4>
+                </div>
+                <div id="test_info" class="modal-body">
+
+                </div>
+                <div class="modal-footer" align="center">
+                    <div class="form-group" align="center">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<h3 style="color:red"></h3>
 
 {% endblock %}
 
 
 {% block scripts %}
+
+    <script id="test_aviso" type="x-tmpl-mustache">
+         <div class="panel panel-default container-fluid">
+            <div class="panel-heading row">
+                <div class="col-xs-15 text-center">
+                <h4>Test Result: [[result]]</h4>
+                </div>
+            </div>
+             <div class="panel-body">
+
+             <h3 style="color:green">Successes</h3>
+              [[#successes]]
+
+                    [[#.]]
+                        <b>[[.]]</b><br>
+                    [[/.]]
+              [[/successes]]
+              [[^successes]]
+              <b>No successes</b><br>
+
+              [[/successes]]
+
+               <h3 style="color:red">Errors</h3>
+
+               [[#errors]]
+                    [[#.]]
+                        <b>[[.]]</b><br>
+                    [[/.]]
+               [[ /errors]]
+               [[^errors]]
+                    <b>No errors</b>
+               [[/errors]]
+
+            <p>
+              <h3 style="color:gray">Failures</h3>
+              [[#failures]]
+              <b>Failure:</b>
+                    [[#.]]
+                        <b>[[.]]</b><br>
+                    [[/.]]
+              [[/failures]]
+              [[^failures]]
+              <b>No Failures</b><br>
+
+              [[/failures]]
+
+            </p>
+            </div>
+       </div>
+        </script>
 
     <script>
     //if updating an existing program activity, loads parameter from url and sends it to get_activity function
@@ -527,7 +596,6 @@ return x;}
             data: JSON.stringify(data),
             success: function (data) {
                 info = jQuery.parseJSON(data);
-                console.log(data);
                 task_id = info.id;
                 poll()
             },
@@ -538,32 +606,47 @@ return x;}
     }
 
     function poll(){
-        console.log(task_id);
         $.ajax({ url: '/get_result',
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({"jsonrpc": "2.0", "method": "_execute", "id": task_id }),
             success: function(data){
-                //data = jQuery.parseJSON(data);
                 number_of_tries++;
-                console.log(data);
+                $("body #test_info").empty();
+                Mustache.tags = ['[[', ']]'];
+                var activities_template = $('#test_aviso').html();
+                Mustache.parse(activities_template);
                 if (data.outcome != -1)
                 {
-                    var result = data.result;
+                    result = data.result;
+                    rendered = Mustache.render(activities_template, {
+                            result: result.result,
+                            errors: result.errors,
+                            failures:result.failures,
+                            successes: result.successes});
                     if (result.result == "Failure")
                     {
-                        console.log("No pasó las pruebas");
+                        $("#testprog").modal();
+
+                        $("body #test_info").append(rendered);
+                        //console.log("No pasó las pruebas");
                         $("#probarProg").button('reset');
                     }
                     else if (result.result == "ProcessError")
                     {
-                        console.log("Error al procesar las pruebas");
+                        $("#testprog").modal();
+
+                        $("body #test_info").append(rendered);
+                        //console.log("Error al procesar las pruebas");
                         $("#probarProg").button('reset');
                     }
 
                     else if (result.result == "Success")
                     {
-                        console.log("Pruebas exitosas");
+                        $("#testprog").modal();
+
+                        $("body #test_info").append(rendered);
+                        //console.log("Pruebas exitosas");
                         $("#probarProg").button('reset');
                     }
                 }
@@ -571,13 +654,13 @@ return x;}
                 {
 
                 }
-            console.log(data.outcome);
+            //console.log(data.outcome);
             }, dataType: "json",
 
             complete: function (jqXHR,textStatus ){
                var data = $.parseJSON(jqXHR.responseText);
-               console.log(data.outcome);
-               console.log(data);
+               //console.log(data.outcome);
+               //console.log(data);
                if (data.outcome == -1)
                {
                    if (number_of_tries < 150)
