@@ -446,6 +446,7 @@ return x;}
 
     //if activity is going to be updated, loads data to controls
     function load_progdata(obj){
+        console.log(obj);
         var editor = ace.edit("editor1");
         var editor2 = ace.edit("editor2");
         var editor3 = ace.edit("editor3");
@@ -461,7 +462,7 @@ return x;}
             else if (key == "initial_code"){
                 editor3.setValue(value,1)
             }
-            else if (key == "html_code"){
+            else if (key == "HTML_code"){
                 editorhtml.setValue(value,1);
                 $("#jquery-body").append(value);
             }
@@ -527,6 +528,7 @@ return x;}
         data.push(html);
         data.push(obj.obj1,obj.obj2,obj.obj3,obj.obj4);
         data=indexdata(data);
+        console.log(data);
         $.ajax({
             type: 'post',
             url: '/upload_activity',
