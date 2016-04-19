@@ -93,7 +93,7 @@ def my_active_courses(request): #view that determines if user has unfinished cou
 
 def course(request,course_id= None):
     #course_id is the root activty of the course
-
+    print request.user
 
     # Must have credentials
     if request.user.is_authenticated() and request.user != 'AnonymousUser' :
@@ -133,6 +133,11 @@ def course(request,course_id= None):
                         context_instance=RequestContext(request))
             else:
                 return HttpResponseNotFound('<h1>Course ID not Found</h1>')
+    else:
+        #please log in
+        return HttpResponseRedirect('/login/?next=%s' % request.path)
+
+
 
 
 
