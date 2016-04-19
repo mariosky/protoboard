@@ -14,7 +14,6 @@ from django.core.urlresolvers import reverse
 from pymongo import errors
 import logging
 import pymongo
-from django.db.models import F
 import xml.etree.ElementTree as ET
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -32,7 +31,8 @@ from mongo_activities import Activity
 from django.db import IntegrityError
 import urllib
 import urlparse
-from itertools import chain
+
+from django.shortcuts import get_object_or_404
 
 from eval_code.RedisCola import Cola, Task
 import json
@@ -92,43 +92,59 @@ def my_active_courses(request): #view that determines if user has unfinished cou
 
 
 def course(request,course_id= None):
-
-    #POST:
-    #   Add New Course
+    #course_id is the root activty of the course
+    print request.user
 
     # Must have credentials
-    print "Method",request.method
+    if request.user.is_authenticated() and request.user != 'AnonymousUser' :
+        #POST:
+        # Add or Delete a New Course
+        if request.method == 'POST':
+            # IF course_id then a DELETE
+            if course_id:
 
-    if request.method == 'POST':
-        # IF course_id is a DELETE
-        if course_id:
-            LearningActivity.objects.filter(root=course_id).delete()
-            LearningActivity.objects.get(id=course_id).delete()
+                #Get course and delete only if the user or staff
+                mycourse = None
+                if not request.user.is_superuser:
+                    mycourse = get_object_or_404(LearningActivity, pk=course_id,  authorlearningactivity__user = request.user )
 
-            return HttpResponseRedirect(reverse('my_courses'))
+                if (mycourse or request.user.is_superuser):
+                    LearningActivity.objects.filter(root=course_id).delete()
+                    LearningActivity.objects.get(id=course_id).delete()
+
+                return HttpResponseRedirect(reverse('my_courses'))
+
+            # IF course_uri IS a CREATE
+            if 'course_uri' in request.POST:
+
+                course_id, course_uri = create_empty_course(request.POST['course_uri'], request.user,request.POST['course_name'],
+                                               request.POST['course_short_description'])
+
+                return HttpResponseRedirect(reverse('course', args=[course_id]))
+            else:
+                return HttpResponseNotFound('<h1>Course ID not Found in request</h1>')
+        #GET:
+        #Edit course
+
+        elif request.method == 'GET':
+            if course_id :
+                #Is yours or you are staff?
+                mycourse = None
+                if not request.user.is_superuser:
+                    mycourse = get_object_or_404(LearningActivity, pk=course_id,  authorlearningactivity__user = request.user )
+
+                if (mycourse or request.user.is_superuser):
+                    return render_to_response('activitytree/course_builder.html',
+                    { 'course_id':course_id, 'course':mycourse
+                    },
+                        context_instance=RequestContext(request))
+            else:
+                return HttpResponseNotFound('<h1>Course ID not Found</h1>')
+    else:
+        #please log in
+        return HttpResponseRedirect('/login/?next=%s' % request.path)
 
 
-        if 'course_uri' in request.POST:
-
-            course_id, course_uri = create_empty_course(request.POST['course_uri'], request.user,request.POST['course_name'],
-                                           request.POST['course_short_description'])
-
-            #return render_to_response('activitytree/course_builder.html',
-            #    {'user_name':None,'course_uri': course_uri,'course_id': course_id, 'action':'create','course_name':request.POST['course_name']
-            #    },context_instance=RequestContext(request))
-            return HttpResponseRedirect(reverse('course', args=[course_id]))
-        else:
-            return HttpResponseNotFound('<h1>Course ID not Found in request</h1>')
-    #GET:
-    #Edit course
-    elif request.method == 'GET':
-        if course_id :
-            return render_to_response('activitytree/course_builder.html',
-                {'user_name':None, 'course_id':course_id
-                },
-                    context_instance=RequestContext(request))
-        else:
-            return HttpResponseNotFound('<h1>Course ID not Found</h1>')
 
 
 

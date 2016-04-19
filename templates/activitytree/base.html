@@ -917,7 +917,12 @@ $('#rating-info').raty({
                             <form id="formaVideo" >{% csrf_token %}
                                 <div class="form-group">
                                     <label for="title">Display Name</label>
-                                    <input type="text" class="form-control" id="titleVideo" name="title" placeholder="Display Name" required="true"><br>
+                                    <input type="text" class="form-control" id="titleVideo" name="title"  required="true"><br>
+                                    <label for="descriptionvideo">Description</label>
+                                    <textarea class="form-control" id="descriptionvideo" name="description" rows="3">
+                                    </textarea>
+                                    <label for="tagsvideo">Tags</label>
+                                    <input class="form-control" id="tagsvideo" name="tags"  placeholder="Separate tags with tab"><br>
                                     <input type="hidden" id="type" name="type" value="video">
                                     <input type="hidden" id="author" name="author" value="{{ user.email }}">
                                     <input type="hidden" id="youtube_id" name="youtube_id">
@@ -948,21 +953,19 @@ $('#rating-info').raty({
                                     <div class="form-group" >
                                         <label for="idvideo">ID</label>
                                         <input type="text" readonly="readonly" class="form-control" id="idvideo" name="_id">
-                                        <label for="descriptionvideo">Description</label>
-                                        <input type="text" class="form-control" id="descriptionvideo" name="description">
+
                                         <label for="rightsvideo">Rights</label>
                                         <input type="text" class="form-control" id="rightsvideo" name="rights">
                                         <label for="externalvideo">External URL</label>
                                         <input type="text" class="form-control" id="externalvideo" name="external_url">
                                         <label for="publishervideo">Publisher</label>
                                         <input type="text" class="form-control" id="publishervideo" name="publisher">
-                                        <label for="tagsvideo">Tags</label>
-                                        <input class="form-control" id="tagsvideo" name="tags"><br>
+
                                         <label for="iconvideo">Icon</label>
                                         <select id="iconvideo" name="icon" >
                                             <option value="coffee">Coffee</option>
                                             <option value="file">File</option>
-                                            <option value="youtube-play">Youtube</option>
+                                            <option value="youtube-play" selected>Youtube</option>
                                             <option value="puzzle-piece">Puzzle</option>
                                         </select>
                                         <label for="levelvideo">Level</label>

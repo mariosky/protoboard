@@ -5,7 +5,11 @@ import pymongo
 from pymongo import MongoClient
 from django.conf import settings
 
+
+
 _client = MongoClient(settings.MONGO_DB)
+
+
 _db = _client.protoboard_database
 _activities_collection = _db.activities_collection
 
