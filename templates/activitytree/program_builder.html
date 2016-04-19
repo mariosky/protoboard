@@ -56,11 +56,11 @@
   {% if d %}
        {{ title }}
   {% endif %}
-  <ul class="nav nav-tabs">
-      <li class="active"><a href="#info" data-toggle="tab">Detail</a> </li>
-      <li><a href="#correct" data-toggle="tab">Correct Code</a></li>
-      <li><a href="#initial" data-toggle="tab">Initial Code</a></li>
-      <li><a href="#test" data-toggle="tab">Unit Test</a></li>
+  <ul class="nav nav-tabs" id="tab-menu">
+      <li class="active"><a id="infoid" href="#info" data-toggle="tab">Detail</a> </li>
+      <li><a href="#correct" id="correctid" data-toggle="tab">Correct Code</a></li>
+      <li><a href="#initial" id="initialid" data-toggle="tab">Initial Code</a></li>
+      <li><a href="#test" id="testid" data-toggle="tab">Unit Test</a></li>
       <li id="htmlli" class="disabled"><a href="#htmltab" id="htmla" data-toggle="">HTML</a></li>
   </ul>
   <br>
@@ -141,18 +141,6 @@ Unit test;
 return x;}
             </div>
             </div><br>
-            <div class=" col-lg-10 col-lg-offset-3"  style="width:50%;margin-left: 25%">
-                <div class="panel panel-info">
-                    <div class="panel-heading" align="center">
-                        <h4> Info </h4>
-                    </div>
-                    <div class="panel-body" align="left">
-                      <p>Una prueba unitaria es una forma de comprobar el correcto
-                          funcionamiento de un módulo de código.</p>
-
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="tab-pane fade" id="initial" >
@@ -165,18 +153,6 @@ Initial code;
                     </div>
                 </div><br>
 
-            <div class=" col-lg-10 col-lg-offset-3"  style="width:50%;margin-left: 25%">
-                <div class="panel panel-info">
-                    <div class="panel-heading" align="center">
-                        <h4> Info </h4>
-                    </div>
-                    <div class="panel-body" align="left">
-                      <p>Este es el codigo que el usuario tendra
-                      que corregir o completar en el curso.</p>
-
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="tab-pane fade" id="correct" >
@@ -188,31 +164,33 @@ Correct code;
 return x;}
                 </div><br>
 
-                <div class="container">
-                    <div style="float:left;width: 35%">
-                        <form id="formadetailp" onsubmit="return false">
-                            <label for="txtLang">Choose programming language:</label>
-                            <select id="txtLang" name="lang" class="form-control">
-                                <option value="python">Python</option>
-                                <option value="javascript">Javascript</option>
-                                <option value="csharp">Csharp</option>
-                                <option value="java">Java</option>
-                                <option value="jquery">Jquery</option>
-                            </select>
-                            <input type="button" id="probarProg" class="btn btn-primary" value="Test">
-                    </div>
-                    <div style="margin-left: 40%; width: 50%">
-                        <label for="txtInstrucciones">Instructions: </label>
-                        <textarea class="form-control" id="txtInstrucciones" name="instructions" rows="3" ></textarea>
-                    </div>
-                    </form>
-                </div>
+
             </div>
         </div>
 
         </div>
     </div>
 </div>
+
+    <div class="container" id="formadetaildiv" style="display: none" align="center">
+        <div style="float:left;width: 40%">
+            <form id="formadetailp" onsubmit="return false">
+                <label for="txtLang">Choose programming language:</label>
+                <select id="txtLang" name="lang" class="form-control">
+                    <option value="python">Python</option>
+                    <option value="javascript">Javascript</option>
+                    <option value="csharp">Csharp</option>
+                    <option value="java">Java</option>
+                    <option value="jquery">Jquery</option>
+                </select>
+                <input type="button" id="probarProg" class="btn btn-primary" value="Test">
+        </div>
+        <div style="margin-left: 40%; width: 50%">
+            <label for="txtInstrucciones">Instructions: </label>
+            <textarea class="form-control" id="txtInstrucciones" name="instructions" rows="3" ></textarea>
+        </div>
+        </form>
+    </div>
 
 <div id="confirmProg" class="modal fade">
 <div class="modal-dialog">
@@ -265,39 +243,38 @@ return x;}
             </div>
              <div class="panel-body">
 
-             <h3 style="color:green">Successes</h3>
-              [[#successes]]
 
+              [[#successes]]
+                <h5 style="color:green">Success</h5>
                     [[#.]]
                         <b>[[.]]</b><br>
                     [[/.]]
               [[/successes]]
               [[^successes]]
-              <b>No successes</b><br>
+              <br>
 
               [[/successes]]
 
-               <h3 style="color:red">Errors</h3>
-
                [[#errors]]
+               <h5 style="color:red">Error</h5>
                     [[#.]]
                         <b>[[.]]</b><br>
                     [[/.]]
                [[ /errors]]
                [[^errors]]
-                    <b>No errors</b>
+                    <br>
                [[/errors]]
 
             <p>
-              <h3 style="color:gray">Failures</h3>
+
               [[#failures]]
-              <b>Failure:</b>
+              <h5 style="color:gray">Failure</h5>
                     [[#.]]
                         <b>[[.]]</b><br>
                     [[/.]]
               [[/failures]]
               [[^failures]]
-              <b>No Failures</b><br>
+              <br>
 
               [[/failures]]
 
@@ -320,6 +297,16 @@ return x;}
             console.log(url)
         }
     });
+
+    $("#tab-menu a[data-toggle='tab']").click(function(){
+        if ($(this).attr("id") != 'infoid'){
+            $("#formadetaildiv").show()
+        }
+        else{
+            $("#formadetaildiv").hide()
+        }
+    });
+
 
 
     $(function(){
@@ -621,7 +608,7 @@ return x;}
                     result = data.result;
                     rendered = Mustache.render(activities_template, {
                             result: result.result,
-                            errors: result.errors,
+                            errors: result.errors.filter(Boolean),
                             failures:result.failures,
                             successes: result.successes});
                     if (result.result == "Failure")
