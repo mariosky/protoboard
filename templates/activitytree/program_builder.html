@@ -235,13 +235,22 @@ return x;}
 {% block scripts %}
 
     <script id="test_aviso" type="x-tmpl-mustache">
-         <div class="panel panel-default container-fluid">
+         <div class="panel panel-success container-fluid">
             <div class="panel-heading row">
                 <div class="col-xs-15 text-center">
                 <h4>Test Result: [[result]]</h4>
                 </div>
             </div>
              <div class="panel-body">
+
+             [[#totals]]
+                <h5 style="color:green">Message</h5>
+                [[totals]]
+              [[/totals]]
+              [[^totals]]
+              <br>
+
+              [[/totals]]
 
 
               [[#successes]]
@@ -373,7 +382,13 @@ return x;}
 
         $('#probarProg').click(function(){
             $(this).button('loading');
-            test_prog()
+            var lang = $("#txtLang").val();
+            if (lang == "javascript" || lang == "jquery"){
+                test_js()
+            }
+            else{
+                test_prog()
+            }
         });
 
         //goes back to first value of editor if clicked
@@ -673,8 +688,85 @@ return x;}
 
         });
     }
-    </script>
 
+    function test_js(){
+
+        var obj = progData();
+
+        var result =
+         {
+            result:"ProcessError",
+            errors: [],
+            failures: [],
+            successes:[]
+         };
+
+        var s = document.createElement("script");
+        s.id ="test_script";
+        s.type = "text/javascript";
+        s.innerHTML = obj.obj1['value'];
+
+        var t = document.createElement("script");
+        t.id ="unit_test";
+        t.type = "text/javascript";
+        t.innerHTML = obj.obj3['value'];
+        //console.log(obj.obj1['value']);
+        try{
+            $("head").append(s,t);
+        }
+        catch (err)
+        {   $("#probarProg").button('reset');
+            console.log(err);
+            result.errors.push(err.message);
+                //poner mensajes de error
+
+        }
+        QUnit.config.testTimeout = 2000;
+
+        QUnit.log(function( details ) {
+            if (details.result ){
+                result.successes.push(details.message);
+            }else{
+                result.failures.push(details.message);
+            }
+        });
+
+        QUnit.testDone(function( details ) {
+            if (details.failed > 0)
+            {
+                result.result = "Failure";
+            }
+            else if(details.passed == details.total)
+            {  result.result = "Success";
+                }
+            result.totals = "Total de pruebas: " + details.total +"\nFallidas: "+  details.failed + "\nExitosas: " +  details.passed;
+            //$("#test_script").innerHTML="";
+        });
+
+        try{
+            eval(obj.obj3['value']);
+        }
+        catch (err){
+
+        }
+
+        $("#probarProg").button('reset');
+
+        $("body #test_info").empty();
+        Mustache.tags = ['[[', ']]'];
+        var activities_template = $('#test_aviso').html();
+        Mustache.parse(activities_template);
+        rendered = Mustache.render(activities_template, {
+            result: result.result,
+            errors: result.errors.filter(Boolean),
+            failures:result.failures,
+            totals: result.totals});
+        $("#testprog").modal();
+        $("body #test_info").append(rendered);
+
+    }
+    </script>
+    <script src="http://code.jquery.com/qunit/qunit-1.18.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js " type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/javascript.js" type="text/javascript" charset="utf-8"></script>
