@@ -476,21 +476,26 @@ $('#rating-info').raty({
         //when user submits video activity form, this validates that key values are provided
         $('#_videoActivity').click(function(e){
             var isValid = true;
-            $('#formaVideo input[type="text"]').each(function () {
-                if ($.trim($(this).val()) == '') {
-                    isValid = false;
-                    $(this).css({
+            var startsec = parseInt($('#formaVideo input[name="startSeconds"]').val());
+            var end = parseInt($('#formaVideo input[name="endSeconds"]').val());
+            if (($('#formaVideo input[name="title"]').val() == '')){
+                isValid = false;
+                    $('#formaVideo input[name="title"]').css({
                         "border": "1px solid red",
                         "background": "#FFCECE"
                     });
                 }
-                else {
-                    $(this).css({
-                        "border": "",
-                        "background": ""
-                    });
-                }
-            });
+            else {
+                $('#formaVideo input[name="title"]').css({
+                    "border": "",
+                    "background": ""
+                });
+            }
+
+            if (startsec >= end){
+                isValid = false;
+                alert("El tiempo de inicio debe ser menor al de terminacion.")
+            }
 
             if (isValid == false){
                 e.preventDefault();

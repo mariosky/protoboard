@@ -573,7 +573,7 @@ return x;}
             'value': editor.getValue()
         };
         var obj4={
-            'name': 'html_code',
+            'name': 'HTML_code',
             'value': editorhtml.getValue()
         };
 
@@ -703,16 +703,11 @@ return x;}
 
         var s = document.createElement("script");
         s.id ="test_script";
-        s.type = "text/javascript";
+        s.type = "";
         s.innerHTML = obj.obj1['value'];
 
-        var t = document.createElement("script");
-        t.id ="unit_test";
-        t.type = "text/javascript";
-        t.innerHTML = obj.obj3['value'];
-        //console.log(obj.obj1['value']);
         try{
-            $("head").append(s,t);
+            $("head").append(s);
         }
         catch (err)
         {   $("#probarProg").button('reset');
@@ -740,7 +735,7 @@ return x;}
             {  result.result = "Success";
                 }
             result.totals = "Total de pruebas: " + details.total +"\nFallidas: "+  details.failed + "\nExitosas: " +  details.passed;
-            //$("#test_script").innerHTML="";
+            $("#test_script").innerHTML="";
         });
 
         try{
