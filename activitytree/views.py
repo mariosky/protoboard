@@ -102,10 +102,13 @@ def course(request,course_id= None):
         if request.method == 'POST':
             # IF course_id then a DELETE
             if course_id:
-                #Get course and delete only if the user is an author
-                mycourse = get_object_or_404(LearningActivity, pk=course_id,  authorlearningactivity__user = request.user )
 
-                if (mycourse):
+                #Get course and delete only if the user or staff
+                mycourse = None
+                if not request.user.is_superuser:
+                    mycourse = get_object_or_404(LearningActivity, pk=course_id,  authorlearningactivity__user = request.user )
+
+                if (mycourse or request.user.is_superuser):
                     LearningActivity.objects.filter(root=course_id).delete()
                     LearningActivity.objects.get(id=course_id).delete()
 
@@ -125,9 +128,13 @@ def course(request,course_id= None):
 
         elif request.method == 'GET':
             if course_id :
-                #Is yours?
-                mycourse = get_object_or_404(LearningActivity, pk=course_id,  authorlearningactivity__user = request.user )
-                return render_to_response('activitytree/course_builder.html',
+                #Is yours or you are staff?
+                mycourse = None
+                if not request.user.is_superuser:
+                    mycourse = get_object_or_404(LearningActivity, pk=course_id,  authorlearningactivity__user = request.user )
+
+                if (mycourse or request.user.is_superuser):
+                    return render_to_response('activitytree/course_builder.html',
                     { 'course_id':course_id, 'course':mycourse
                     },
                         context_instance=RequestContext(request))
