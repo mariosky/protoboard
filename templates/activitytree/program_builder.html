@@ -113,23 +113,22 @@
 
         <div class="tab-pane fade" id="htmltab">
             <div style="width: 100%" >
+                <div id="jquery-content"  style="text-align: center">
+                    <div class="panel panel-info" style="width:60%;display: inline-block">
+                        <div class="panel-heading">
+                        <h5 class="panel-title"> HTML Renderizado </h5>
+                        </div>
+                        <div id="jquery-body" class="panel-body">
+
+                        </div>
+                    </div>
+                </div>
             <label for="editorhtml">HTML Code</label>
             <div class="myeditor" id="editorhtml" style="border:3px solid lightgrey">
 HTML Content
             </div>
             </div><br>
-            <div class=" col-lg-10 col-lg-offset-3"  style="width:50%;margin-left: 25%">
-                <div class="panel panel-info">
-                    <div class="panel-heading" align="center">
-                        <h4> Info </h4>
-                    </div>
-                    <div class="panel-body" align="left">
-                      <p>Escribir codigo HTML para lenguajes como Jquery
-                          y Javascript.</p>
 
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="tab-pane fade" id="test" >
@@ -184,6 +183,7 @@ return x;}
                     <option value="jquery">Jquery</option>
                 </select>
                 <input type="button" id="probarProg" class="btn btn-primary" value="Test">
+                <input type="button" id="refreshHtml" class="btn btn-default" value="Refresh HTML">
         </div>
         <div style="margin-left: 40%; width: 50%">
             <label for="txtInstrucciones">Instructions: </label>
@@ -351,6 +351,13 @@ return x;}
             submitProg()
         });
 
+        $("#refreshHtml").click(function(e){
+            $("#jquery-body").empty();
+            var editorhtml = ace.edit("editorhtml");
+            var html = editorhtml.getValue();
+            $("#jquery-body").append(html);
+        });
+
         //if user cancels submission of activity, forms are reset
         $('#cancelProg').click(function(){
             $('#formaProg')[0].reset();
@@ -455,7 +462,8 @@ return x;}
                 editor3.setValue(value,1)
             }
             else if (key == "html_code"){
-                editorhtml.setValue(value,1)
+                editorhtml.setValue(value,1);
+                $("#jquery-body").append(value);
             }
             else if (key == 'tags'){
                 $('#tagsprog').val("");
