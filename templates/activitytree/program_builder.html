@@ -56,11 +56,11 @@
   {% if d %}
        {{ title }}
   {% endif %}
-  <ul class="nav nav-tabs">
-      <li class="active"><a href="#info" data-toggle="tab">Detail</a> </li>
-      <li><a href="#correct" data-toggle="tab">Correct Code</a></li>
-      <li><a href="#initial" data-toggle="tab">Initial Code</a></li>
-      <li><a href="#test" data-toggle="tab">Unit Test</a></li>
+  <ul class="nav nav-tabs" id="tab-menu">
+      <li class="active"><a id="infoid" href="#info" data-toggle="tab">Detail</a> </li>
+      <li><a href="#correct" id="correctid" data-toggle="tab">Correct Code</a></li>
+      <li><a href="#initial" id="initialid" data-toggle="tab">Initial Code</a></li>
+      <li><a href="#test" id="testid" data-toggle="tab">Unit Test</a></li>
       <li id="htmlli" class="disabled"><a href="#htmltab" id="htmla" data-toggle="">HTML</a></li>
   </ul>
   <br>
@@ -113,23 +113,22 @@
 
         <div class="tab-pane fade" id="htmltab">
             <div style="width: 100%" >
+                <div id="jquery-content"  style="text-align: center">
+                    <div class="panel panel-info" style="width:60%;display: inline-block">
+                        <div class="panel-heading">
+                        <h5 class="panel-title"> HTML Renderizado </h5>
+                        </div>
+                        <div id="jquery-body" class="panel-body">
+
+                        </div>
+                    </div>
+                </div>
             <label for="editorhtml">HTML Code</label>
             <div class="myeditor" id="editorhtml" style="border:3px solid lightgrey">
 HTML Content
             </div>
             </div><br>
-            <div class=" col-lg-10 col-lg-offset-3"  style="width:50%;margin-left: 25%">
-                <div class="panel panel-info">
-                    <div class="panel-heading" align="center">
-                        <h4> Info </h4>
-                    </div>
-                    <div class="panel-body" align="left">
-                      <p>Escribir codigo HTML para lenguajes como Jquery
-                          y Javascript.</p>
 
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="tab-pane fade" id="test" >
@@ -141,18 +140,6 @@ Unit test;
 return x;}
             </div>
             </div><br>
-            <div class=" col-lg-10 col-lg-offset-3"  style="width:50%;margin-left: 25%">
-                <div class="panel panel-info">
-                    <div class="panel-heading" align="center">
-                        <h4> Info </h4>
-                    </div>
-                    <div class="panel-body" align="left">
-                      <p>Una prueba unitaria es una forma de comprobar el correcto
-                          funcionamiento de un módulo de código.</p>
-
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="tab-pane fade" id="initial" >
@@ -165,18 +152,6 @@ Initial code;
                     </div>
                 </div><br>
 
-            <div class=" col-lg-10 col-lg-offset-3"  style="width:50%;margin-left: 25%">
-                <div class="panel panel-info">
-                    <div class="panel-heading" align="center">
-                        <h4> Info </h4>
-                    </div>
-                    <div class="panel-body" align="left">
-                      <p>Este es el codigo que el usuario tendra
-                      que corregir o completar en el curso.</p>
-
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="tab-pane fade" id="correct" >
@@ -188,31 +163,34 @@ Correct code;
 return x;}
                 </div><br>
 
-                <div class="container">
-                    <div style="float:left;width: 35%">
-                        <form id="formadetailp" onsubmit="return false">
-                            <label for="txtLang">Choose programming language:</label>
-                            <select id="txtLang" name="lang" class="form-control">
-                                <option value="python">Python</option>
-                                <option value="javascript">Javascript</option>
-                                <option value="csharp">Csharp</option>
-                                <option value="java">Java</option>
-                                <option value="jquery">Jquery</option>
-                            </select>
-                            <input type="button" id="probarProg" class="btn btn-primary" value="Test">
-                    </div>
-                    <div style="margin-left: 40%; width: 50%">
-                        <label for="txtInstrucciones">Instructions: </label>
-                        <textarea class="form-control" id="txtInstrucciones" name="instructions" rows="3" ></textarea>
-                    </div>
-                    </form>
-                </div>
+
             </div>
         </div>
 
         </div>
     </div>
 </div>
+
+    <div class="container" id="formadetaildiv" style="display: none" align="center">
+        <div style="float:left;width: 40%">
+            <form id="formadetailp" onsubmit="return false">
+                <label for="txtLang">Choose programming language:</label>
+                <select id="txtLang" name="lang" class="form-control">
+                    <option value="python">Python</option>
+                    <option value="javascript">Javascript</option>
+                    <option value="csharp">Csharp</option>
+                    <option value="java">Java</option>
+                    <option value="jquery">Jquery</option>
+                </select>
+                <input type="button" id="probarProg" class="btn btn-primary" value="Test">
+                <input type="button" id="refreshHtml" class="btn btn-default" value="Refresh HTML">
+        </div>
+        <div style="margin-left: 40%; width: 50%">
+            <label for="txtInstrucciones">Instructions: </label>
+            <textarea class="form-control" id="txtInstrucciones" name="instructions" rows="3" ></textarea>
+        </div>
+        </form>
+    </div>
 
 <div id="confirmProg" class="modal fade">
 <div class="modal-dialog">
@@ -257,7 +235,7 @@ return x;}
 {% block scripts %}
 
     <script id="test_aviso" type="x-tmpl-mustache">
-         <div class="panel panel-default container-fluid">
+         <div class="panel panel-success container-fluid">
             <div class="panel-heading row">
                 <div class="col-xs-15 text-center">
                 <h4>Test Result: [[result]]</h4>
@@ -265,39 +243,47 @@ return x;}
             </div>
              <div class="panel-body">
 
-             <h3 style="color:green">Successes</h3>
-              [[#successes]]
+             [[#totals]]
+                <h5 style="color:green">Message</h5>
+                [[totals]]
+              [[/totals]]
+              [[^totals]]
+              <br>
 
+              [[/totals]]
+
+
+              [[#successes]]
+                <h5 style="color:green">Success</h5>
                     [[#.]]
                         <b>[[.]]</b><br>
                     [[/.]]
               [[/successes]]
               [[^successes]]
-              <b>No successes</b><br>
+              <br>
 
               [[/successes]]
 
-               <h3 style="color:red">Errors</h3>
-
                [[#errors]]
+               <h5 style="color:red">Error</h5>
                     [[#.]]
                         <b>[[.]]</b><br>
                     [[/.]]
                [[ /errors]]
                [[^errors]]
-                    <b>No errors</b>
+                    <br>
                [[/errors]]
 
             <p>
-              <h3 style="color:gray">Failures</h3>
+
               [[#failures]]
-              <b>Failure:</b>
+              <h5 style="color:gray">Failure</h5>
                     [[#.]]
                         <b>[[.]]</b><br>
                     [[/.]]
               [[/failures]]
               [[^failures]]
-              <b>No Failures</b><br>
+              <br>
 
               [[/failures]]
 
@@ -320,6 +306,16 @@ return x;}
             console.log(url)
         }
     });
+
+    $("#tab-menu a").click(function(){
+        if ($(this).attr("id") != 'infoid'){
+            $("#formadetaildiv").show()
+        }
+        else{
+            $("#formadetaildiv").hide()
+        }
+    });
+
 
 
     $(function(){
@@ -355,6 +351,13 @@ return x;}
             submitProg()
         });
 
+        $("#refreshHtml").click(function(e){
+            $("#jquery-body").empty();
+            var editorhtml = ace.edit("editorhtml");
+            var html = editorhtml.getValue();
+            $("#jquery-body").append(html);
+        });
+
         //if user cancels submission of activity, forms are reset
         $('#cancelProg').click(function(){
             $('#formaProg')[0].reset();
@@ -386,7 +389,13 @@ return x;}
 
         $('#probarProg').click(function(){
             $(this).button('loading');
-            test_prog()
+            var lang = $("#txtLang").val();
+            if (lang == "javascript" || lang == "jquery"){
+                test_js()
+            }
+            else{
+                test_prog()
+            }
         });
 
         //goes back to first value of editor if clicked
@@ -437,6 +446,7 @@ return x;}
 
     //if activity is going to be updated, loads data to controls
     function load_progdata(obj){
+        console.log(obj);
         var editor = ace.edit("editor1");
         var editor2 = ace.edit("editor2");
         var editor3 = ace.edit("editor3");
@@ -452,8 +462,9 @@ return x;}
             else if (key == "initial_code"){
                 editor3.setValue(value,1)
             }
-            else if (key == "html_code"){
-                editorhtml.setValue(value,1)
+            else if (key == "HTML_code"){
+                editorhtml.setValue(value,1);
+                $("#jquery-body").append(value);
             }
             else if (key == 'tags'){
                 $('#tagsprog').val("");
@@ -517,6 +528,7 @@ return x;}
         data.push(html);
         data.push(obj.obj1,obj.obj2,obj.obj3,obj.obj4);
         data=indexdata(data);
+        console.log(data);
         $.ajax({
             type: 'post',
             url: '/upload_activity',
@@ -571,7 +583,7 @@ return x;}
             'value': editor.getValue()
         };
         var obj4={
-            'name': 'html_code',
+            'name': 'HTML_code',
             'value': editorhtml.getValue()
         };
 
@@ -621,7 +633,7 @@ return x;}
                     result = data.result;
                     rendered = Mustache.render(activities_template, {
                             result: result.result,
-                            errors: result.errors,
+                            errors: result.errors.filter(Boolean),
                             failures:result.failures,
                             successes: result.successes});
                     if (result.result == "Failure")
@@ -686,8 +698,80 @@ return x;}
 
         });
     }
-    </script>
 
+    function test_js(){
+
+        var obj = progData();
+
+        var result =
+         {
+            result:"ProcessError",
+            errors: [],
+            failures: [],
+            successes:[]
+         };
+
+        var s = document.createElement("script");
+        s.id ="test_script";
+        s.type = "";
+        s.innerHTML = obj.obj1['value'];
+
+        try{
+            $("head").append(s);
+        }
+        catch (err)
+        {   $("#probarProg").button('reset');
+            console.log(err);
+            result.errors.push(err.message);
+                //poner mensajes de error
+
+        }
+        QUnit.config.testTimeout = 2000;
+
+        QUnit.log(function( details ) {
+            if (details.result ){
+                result.successes.push(details.message);
+            }else{
+                result.failures.push(details.message);
+            }
+        });
+
+        QUnit.testDone(function( details ) {
+            if (details.failed > 0)
+            {
+                result.result = "Failure";
+            }
+            else if(details.passed == details.total)
+            {  result.result = "Success";
+                }
+            result.totals = "Total de pruebas: " + details.total +"\nFallidas: "+  details.failed + "\nExitosas: " +  details.passed;
+            $("#test_script").innerHTML="";
+        });
+
+        try{
+            eval(obj.obj3['value']);
+        }
+        catch (err){
+
+        }
+
+        $("#probarProg").button('reset');
+
+        $("body #test_info").empty();
+        Mustache.tags = ['[[', ']]'];
+        var activities_template = $('#test_aviso').html();
+        Mustache.parse(activities_template);
+        rendered = Mustache.render(activities_template, {
+            result: result.result,
+            errors: result.errors.filter(Boolean),
+            failures:result.failures,
+            totals: result.totals});
+        $("#testprog").modal();
+        $("body #test_info").append(rendered);
+
+    }
+    </script>
+    <script src="http://code.jquery.com/qunit/qunit-1.18.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js " type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/javascript.js" type="text/javascript" charset="utf-8"></script>

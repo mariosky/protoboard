@@ -351,18 +351,14 @@ $(document).ready(function() {
          $("#result_panel_heading").html("Esperando resultados...");
 
         QUnit.config.testTimeout = 2000;
+
         QUnit.log(function( details ) {
                 if (details.result ){
-
-
                     result.successes.push(details);
 
                 }else{
-
                     result.failures.push(details);
                 }
-
-
             });
 
         QUnit.testDone(function( details ) {
