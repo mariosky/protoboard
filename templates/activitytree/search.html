@@ -246,6 +246,8 @@
             query = {};
             param =[];
             initialize = ['text','video','quiz','prog'];
+            $('#lang li').not($("#lang li[id='anylang']")).removeClass('active');
+            $('#difficulty li').not($("#lang li[id='anylevel']")).removeClass('active');
             $("#actividades").empty();
             $("#txtname").val('');
             $("#txtuser").val('');
