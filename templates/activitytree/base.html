@@ -439,21 +439,15 @@ $('#rating-info').raty({
 //when user submits html form, this validates that some key values are provided, such as title and content of activity
         $('#_htmlActivity').click(function(e){
             var isValid = true;
-            $('#formahtml input[type="text"]').each(function () {
-                if ($.trim($(this).val()) == '') {
-                    isValid = false;
-                    $(this).css({
-                        "border": "1px solid red",
-                        "background": "#FFCECE"
-                    });
-                }
-                else {
-                    $(this).css({
-                        "border": "",
-                        "background": ""
-                    });
-                }
-            });
+            var title = $("#titleHtml").val();
+            if (title == ''){
+                isValid = false;
+                $("#titleHtml").css("background-color", "#FFCECE");
+            }
+            else{
+                $("#titleHtml").css("background-color", "");
+            }
+            //
             var content = tinymce.get('content').getContent();
             if (content==''){
                 isValid=false;
@@ -520,13 +514,13 @@ $('#rating-info').raty({
 
         //resets forms such as html and video when modal closes
         $(".modal").on("hidden.bs.modal", function(){
+            $("#tagshtml").tagit("removeAll");
+            $("#tagsvideo").tagit("removeAll");
             $('#formahtml')[0].reset();
             $('#formadetail')[0].reset();
             $('#formaVideo')[0].reset();
             $('#formadetailv')[0].reset();
             $('#ytVideo').empty();
-            $("#tagshtml").tagit("removeAll");
-            $("#tagsvideo").tagit("removeAll");
         });
 
         //loads loadVideo function when url of video is provided by user
@@ -543,6 +537,7 @@ $('#rating-info').raty({
         var detail = $('#formadetail').serializeArray();
         var data = main.concat(detail);
         data = indexdata(data);
+        console.log(data);
         var current = window.location.pathname;
         $.ajax({
             type: 'post',
@@ -554,6 +549,7 @@ $('#rating-info').raty({
                 if (info.updatedExisting == true){
                     alert("Actividad modificada");
                     $('#formahtml')[0].reset();
+                    $("#tagshtml").tagit("removeAll");
                     $('#formadetail')[0].reset();
                     $("#modalhtml").modal('hide');
                     if (current == '/activitybuilder'){
@@ -563,6 +559,7 @@ $('#rating-info').raty({
                 else if (info.updatedExisting == false){
                     alert("Actividad agregada");
                     $('#formahtml')[0].reset();
+                    $("#tagshtml").tagit("removeAll");
                     $('#formadetail')[0].reset();
                     $("#modalhtml").modal('hide');
                     if (current == '/activitybuilder'){
@@ -572,6 +569,7 @@ $('#rating-info').raty({
                 else if (info.message == "Duplicated"){
                     alert("Duplicated Entry");
                     $('#formahtml')[0].reset();
+                    $("#tagshtml").tagit("removeAll");
                     $('#formadetail')[0].reset();
                     $("#modalhtml").modal('hide');
                     if (current == '/activitybuilder'){
@@ -610,6 +608,7 @@ $('#rating-info').raty({
                 if (info.updatedExisting == true){
                     alert("Actividad modificada");
                     $('#formaVideo')[0].reset();
+                    $("#tagsvideo").tagit("removeAll");
                     $("#modalvideo").modal('hide');
                     $("#ytVideo").empty();
                     if (current == '/activitybuilder'){
@@ -619,6 +618,7 @@ $('#rating-info').raty({
                 else if (info.updatedExisting == false){
                     alert("Actividad agregada");
                     $('#formaVideo')[0].reset();
+                    $("#tagsvideo").tagit("removeAll");
                     $("#modalvideo").modal('hide');
                     $("#ytVideo").empty();
                     if (current == '/activitybuilder'){
@@ -628,6 +628,7 @@ $('#rating-info').raty({
                 else if (info.message == "Duplicated"){
                     alert("Duplicated Entry");
                     $('#formaVideo')[0].reset();
+                    $("#tagsvideo").tagit("removeAll");
                     $("#modalvideo").modal('hide');
                     $("#ytVideo").empty();
                     if (current == '/activitybuilder'){
@@ -924,7 +925,7 @@ $('#rating-info').raty({
                                     <textarea class="form-control" id="descriptionvideo" name="description" rows="3">
                                     </textarea>
                                     <label for="tagsvideo">Tags</label>
-                                    <input class="form-control" id="tagsvideo" name="tags"  placeholder="Create tags with tab"><br>
+                                    <input class="form-control input-optional" id="tagsvideo" name="tags"><br>
                                     <input type="hidden" id="type" name="type" value="video">
                                     <input type="hidden" id="author" name="author" value="{{ user.email }}">
                                     <input type="hidden" id="youtube_id" name="youtube_id">

@@ -268,15 +268,16 @@ function get_activity(id,type){
 function load_dataHtml(obj){
     $('#modalhtml').modal();
     $.each(obj[0], function(key, value){
-        $('#formahtml [name='+key+']').val(value);
         if (key == 'content'){
             tinyMCE.get('content').setContent(value);
         }
         else if (key == 'tags'){
+            $("#tagshtml").tagit("removeAll");
             for (var i=0; i < value.length ; i++){
                 $("#tagshtml").tagit("createTag", value[i]);
             }
         }
+        $('#formahtml [name='+key+']').val(value);
         $('#formadetail [name='+key+']').val(value);
 
     });
@@ -286,12 +287,13 @@ function load_dataHtml(obj){
 function load_dataVideo(obj){
     $('#modalvideo').modal();
     $.each(obj[0], function(key, value){
-        $('#formaVideo [name='+key+']').val(value);
         if (key == 'tags'){
+            $("#tagsvideo").tagit("removeAll");
             for (var i=0; i < value.length ; i++){
                 $("#tagsvideo").tagit("createTag", value[i]);
             }
         }
+        $('#formaVideo [name='+key+']').val(value);
         $('#formadetailv [name='+key+']').val(value);
 
     });
