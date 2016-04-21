@@ -470,6 +470,8 @@ $('#rating-info').raty({
         //when user submits video activity form, this validates that key values are provided
         $('#_videoActivity').click(function(e){
             var isValid = true;
+            var startS = parseInt($("#startSeconds").val());
+            var endS = parseInt($("#endSeconds").val());
             $('#formaVideo')
                     .find('input[type="text"]')
                     .filter(":not(.ui-widget-content)")
@@ -489,6 +491,11 @@ $('#rating-info').raty({
                             });
                         }
                     });
+
+            if (startS >= endS){
+                isValid = false;
+                alert("Tiempo de inicio debe ser menor al tiempo de fin del video.")
+            }
 
             if (isValid == false){
                 e.preventDefault();
