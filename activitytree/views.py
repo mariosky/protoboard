@@ -25,7 +25,7 @@ from activitytree.models import Course,ActivityTree,UserLearningActivity, Learni
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.interaction_handler import get_nav
 
-from activitytree.activities import activities, multi_device_activities
+from activitytree.activities import multi_device_activities
 from activitytree.models import FacebookSession, GoogleSession,UserProfile
 from mongo_activities import Activity
 from django.db import IntegrityError
