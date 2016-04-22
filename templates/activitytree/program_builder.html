@@ -245,10 +245,12 @@ return x;}
                 </div>
             </div>
              <div class="panel-body">
-
+             <h5 style="color:green">Message</h5>
              [[#totals]]
-                <h5 style="color:green">Message</h5>
-                [[totals]]
+
+                [[#.]]
+                    [[.]]<br>
+                [[/.]]
               [[/totals]]
               [[^totals]]
               <br>
@@ -712,7 +714,8 @@ return x;}
             result:"ProcessError",
             errors: [],
             failures: [],
-            successes:[]
+            successes:[],
+             totals:[]
          };
 
         var s = document.createElement("script");
@@ -748,7 +751,10 @@ return x;}
             else if(details.passed == details.total)
             {  result.result = "Success";
                 }
-            result.totals = "Total de pruebas: " + details.total +"\nFallidas: "+  details.failed + "\nExitosas: " +  details.passed;
+            //result.totals = "Total de pruebas: " + details.total +"\nFallidas: "+  details.failed + "\nExitosas: " +  details.passed;
+            result.totals.push("Total de pruebas: " + details.total);
+            result.totals.push("Fallidas: "+  details.failed);
+            result.totals.push("Exitosas: " +  details.passed);
             $("#test_script").innerHTML="";
         });
 
