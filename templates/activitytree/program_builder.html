@@ -57,16 +57,18 @@
        {{ title }}
   {% endif %}
   <ul class="nav nav-tabs" id="tab-menu">
-      <li class="active"><a id="infoid" href="#info" data-toggle="tab">Detail</a> </li>
+
+
+      <li class="active"><a href="#test" id="testid" data-toggle="tab">Unit Test</a></li>
       <li><a href="#correct" id="correctid" data-toggle="tab">Correct Code</a></li>
       <li><a href="#initial" id="initialid" data-toggle="tab">Initial Code</a></li>
-      <li><a href="#test" id="testid" data-toggle="tab">Unit Test</a></li>
       <li id="htmlli" class="disabled"><a href="#htmltab" id="htmla" data-toggle="">HTML</a></li>
+      <li ><a id="infoid" href="#info" data-toggle="tab">Detail</a> </li>
   </ul>
   <br>
 
     <div class="tab-content" style="width: 100%">
-        <div class="tab-pane fade in active" id="info">
+        <div class="tab-pane fade" id="info">
             <div class="container-fluid" style="float: left; width: 45%">
             <form id="formaProg" class="form-group" onsubmit="return false">
                 <label for="displayprog">Display Name</label>
@@ -102,12 +104,13 @@
                     <input type="submit" class="btn btn-primary" id="submitProg" value="Save">
                     <input type="button" class="btn btn-default" id="cancelProg" value="Cancel">
                 </div>
-            </div>
+
             <div class="" style="margin-left: 50%; height: 50%">
                 <label for="editor1">Advanced Help</label>
                 <tinytext name="content" id="html"></tinytext>
             </div>
             </form>
+                </div>
         </div>
 
 
@@ -131,7 +134,7 @@ HTML Content
 
         </div>
 
-        <div class="tab-pane fade" id="test" >
+        <div class="tab-pane fade in active" id="test" >
             <div style="width: 100%" >
             <label for="editor1">Unit Test</label>
             <div class="myeditor" id="editor1" style="border:3px solid lightgrey">
@@ -184,12 +187,13 @@ return x;}
                 </select>
                 <input type="button" id="probarProg" class="btn btn-primary" value="Test">
                 <input type="button" id="refreshHtml" class="btn btn-default" value="Refresh HTML">
-        </div>
+
         <div style="margin-left: 40%; width: 50%">
             <label for="txtInstrucciones">Instructions: </label>
             <textarea class="form-control" id="txtInstrucciones" name="instructions" rows="3" ></textarea>
         </div>
         </form>
+    </div>
     </div>
 
 <div id="confirmProg" class="modal fade">
@@ -308,7 +312,7 @@ return x;}
     });
 
     $("#tab-menu a").click(function(){
-        if ($(this).attr("id") != 'infoid'){
+        if ($(this).attr("id") != 'test'){
             $("#formadetaildiv").show()
         }
         else{
