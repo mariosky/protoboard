@@ -104,13 +104,12 @@
                     <input type="submit" class="btn btn-primary" id="submitProg" value="Save">
                     <input type="button" class="btn btn-default" id="cancelProg" value="Cancel">
                 </div>
-
+            </div>
             <div class="" style="margin-left: 50%; height: 50%">
                 <label for="editor1">Advanced Help</label>
                 <tinytext name="content" id="html"></tinytext>
             </div>
             </form>
-                </div>
         </div>
 
 
@@ -174,8 +173,8 @@ return x;}
     </div>
 </div>
 
-    <div class="container" id="formadetaildiv" style="display: none" align="center">
-        <div style="float:left;width: 40%">
+    <div class="container" id="formadetaildiv">
+        <div style="float:left;width: 40%;" align="center">
             <form id="formadetailp" onsubmit="return false">
                 <label for="txtLang">Choose programming language:</label>
                 <select id="txtLang" name="lang" class="form-control">
@@ -187,14 +186,14 @@ return x;}
                 </select>
                 <input type="button" id="probarProg" class="btn btn-primary" value="Test">
                 <input type="button" id="refreshHtml" class="btn btn-default" value="Refresh HTML">
-
-        <div style="margin-left: 40%; width: 50%">
+        </div>
+        <div style="margin-left: 45%; width: 50%">
             <label for="txtInstrucciones">Instructions: </label>
             <textarea class="form-control" id="txtInstrucciones" name="instructions" rows="3" ></textarea>
         </div>
         </form>
     </div>
-    </div>
+
 
 <div id="confirmProg" class="modal fade">
 <div class="modal-dialog">
@@ -311,8 +310,9 @@ return x;}
         }
     });
 
+    //hides lang form when in detail tab
     $("#tab-menu a").click(function(){
-        if ($(this).attr("id") != 'test'){
+        if ($(this).attr("id") != 'infoid'){
             $("#formadetaildiv").show()
         }
         else{

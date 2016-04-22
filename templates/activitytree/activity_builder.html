@@ -381,6 +381,8 @@ function load_dataQuiz(id){
             param =[];
             initialize = ['text','video','quiz','prog'];
             query['author'] = {'author': '{{user.email}}'};
+            $('#lang li').not($("#lang li[id='anylang']")).removeClass('active');
+            $('#difficulty li').not($("#lang li[id='anylevel']")).removeClass('active');
             $("#actividades").empty();
             $("#txtname").val('');
             $("#txtuser").val('');
