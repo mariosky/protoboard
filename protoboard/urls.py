@@ -42,7 +42,7 @@ urlpatterns = patterns('',
       url(r'^course-builder/(?P<course_id>([\w+](\/*)(-*))+)$','activitytree.views.course',name="course"),
       url(r'^course-builder/?$','activitytree.views.course',name="course"),
 
-      (r'^android$','activitytree.views.android_test'),
+
       (r'^test_program$','activitytree.views.test_program'),
       (r'^search_prueba$','activitytree.views.search_prueba'),
       (r'^active_courses$','activitytree.views.my_active_courses'),

@@ -597,7 +597,7 @@ return x;}
 
     }
 
-
+//sends unit test and correct code to server and process is queued
     function test_prog(){
         var data=[];
         var obj = progData();
@@ -623,6 +623,7 @@ return x;}
         });
     }
 
+    //checks server for results, if there is a result, it displays it
     function poll(){
         $.ajax({ url: '/get_result',
             type: "POST",
@@ -705,6 +706,7 @@ return x;}
         });
     }
 
+    //function used to test javascript and jquery scripts
     function test_js(){
 
         var obj = progData();
