@@ -235,8 +235,6 @@ def build_program(request):
 def activity_builder(request):
     if request.method == 'POST':
         return HttpResponse('Error')
-    #GET:
-    #Edit course
     elif request.method == 'GET':
         return render_to_response('activitytree/activity_builder.html', context_instance=RequestContext(request))
     else:
@@ -456,38 +454,6 @@ def path_activity(request,path_id, uri):
 
     else:
         return HttpResponseRedirect('/login/?next=%s' % request.path)
-
-
-def edit_program(request, id, user):
-    if request.method == 'GET':
-        #activity = Activity.get_activity(_id, user)
-        #d = json.dumps(activity)
-        #data = {'d':d}
-        return HttpResponse(id)
-    elif request.method == 'POST':
-        id = request.GET.get('id')
-        #activity = Activity.get_activity(_id, user)
-        #d = json.dumps(activity)
-        #data = {'d':d}
-        return HttpResponse(data, content_type='application/json')
-        #return render_to_response('activity/program_builder.html', data, context_instance=RequestContext(request))
-
-
-def edit_quiz(request, _id, user):
-    if request.method == 'GET':
-        id = request.GET.get('id')
-        user = request.GET.get('user')
-        #activity = Activity.get_activity(_id, user)
-        #d = json.dumps(activity)
-        #data = {'d':d}
-        return HttpResponse(data, content_type='application/json')
-    elif request.method == 'POST':
-        id = request.GET.get('id')
-        user = request.GET.get('user')
-        #activity = Activity.get_activity(_id, user)
-        #d = json.dumps(activity)
-        #data = {'d':d}
-        return HttpResponse(data, content_type='application/json')
 
 
 def activity(request, uri=None):
@@ -1367,15 +1333,6 @@ def get_activity(request):
         except Exception as e:
             return HttpResponse(e)
 
-
-@csrf_exempt
-def android_test(request):
-    try:
-        message = Activity.get_all()
-        json_docs = [doc for doc in message]
-        return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
-    except Exception as e:
-        return HttpResponse(e)
 
 
 @login_required
