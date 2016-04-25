@@ -680,16 +680,19 @@ def test_program(request):
         if request.method == 'POST':
             import os
             data = json.loads(request.body)
-            logger.error("REDIS:"+os.environ['REDIS_HOST'])
             unit_test = data['unit_test']
             correct_code = data['correct_code']
-            server = Cola(data['lang'])
-            task = {"id": None, "method": "exec", "params": {"code": correct_code, "test": unit_test}}
-            logger.error(task)
-            task_id = server.enqueue(**task)
-            logger.error(task_id)
-            result = [{"result": "added", "id": task_id}]
-            return HttpResponse(json.dumps({"id": task_id}))
+            try:
+                logger.error("REDIS:"+os.environ['REDIS_HOST'])
+                server = Cola(data['lang'])
+                task = {"id": None, "method": "exec", "params": {"code": correct_code, "test": unit_test}}
+                logger.error(task)
+                task_id = server.enqueue(**task)
+                logger.error(task_id)
+                result = [{"result": "added", "id": task_id}]
+                return HttpResponse(json.dumps({"id": task_id}))
+            except redis.ConnectionError:
+                return HttpResponse("Error")
     else:
         return HttpResponse("Error")
 

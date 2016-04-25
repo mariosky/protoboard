@@ -100,10 +100,7 @@
                     <option value="intermedio">Intermedio</option>
                     <option value="avanzado">Avanzado</option>
                 </select><br>
-                <div class="form-group" align="center">
-                    <input type="submit" class="btn btn-primary" id="submitProg" value="Save">
-                    <input type="button" class="btn btn-default" id="cancelProg" value="Cancel">
-                </div>
+
             </div>
             <div class="" style="margin-left: 50%; height: 50%">
                 <label for="editor1">Advanced Help</label>
@@ -184,14 +181,20 @@ return x;}
                     <option value="java">Java</option>
                     <option value="jquery">Jquery</option>
                 </select>
-                <input type="button" id="probarProg" class="btn btn-primary" value="Test">
-                <input type="button" id="refreshHtml" class="btn btn-default" value="Refresh HTML">
+                <div class="form-group" id="test-buttons">
+                    <input type="button" id="probarProg" class="btn btn-primary" value="Test">
+                    <input type="button" id="refreshHtml" class="btn btn-default" value="Refresh HTML">
+                </div>
         </div>
         <div style="margin-left: 45%; width: 50%">
             <label for="txtInstrucciones">Instructions: </label>
             <textarea class="form-control" id="txtInstrucciones" name="instructions" rows="3" ></textarea>
-        </div>
+        </div><br>
         </form>
+        <div class="form-group" align="center">
+            <input type="submit" class="btn btn-warning" id="submitProg" value="Save Activity">
+            <input type="button" class="btn btn-danger" id="cancelProg" value="Cancel">
+        </div>
     </div>
 
 
@@ -315,10 +318,10 @@ return x;}
     //hides lang form when in detail tab
     $("#tab-menu a").click(function(){
         if ($(this).attr("id") != 'infoid'){
-            $("#formadetaildiv").show()
+            $("#test-buttons").show()
         }
         else{
-            $("#formadetaildiv").hide()
+            $("#test-buttons").hide()
         }
     });
 
@@ -614,8 +617,13 @@ return x;}
             data: JSON.stringify(data),
             success: function (data) {
                 info = jQuery.parseJSON(data);
-                task_id = info.id;
-                poll()
+                if (info != "Error"){
+                    task_id = info.id;
+                    poll()
+                }
+                else{
+                    alert("Connection Error")
+                }
             },
             error: function(data) {
                 alert("Error. La actividad no se agrego")
