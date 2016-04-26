@@ -71,12 +71,8 @@
         <div class="tab-pane fade" id="info">
             <div class="container-fluid" style="float: left; width: 45%">
             <form id="formaProg" class="form-group" onsubmit="return false">
-                <label for="displayprog">Display Name</label>
-                <input type="text" id="displayprog" name="title" class="form-control">
                 <label for="idprog">ID</label>
                 <input type="text" readonly="readonly" class="form-control" id="idprog" name="_id">
-                <label for="descriptionprog">Description</label>
-                <input type="text" class="form-control" id="descriptionprog" name="description">
                 <label for="rightsprog">Rights</label>
                 <input type="hidden" name="type" value="prog">
                 <input type="hidden" name="author" value="{{ user.email }}">
@@ -84,9 +80,7 @@
                 <label for="externalprog">External URL</label>
                 <input type="text" class="form-control" id="externalprog" name="external_url">
                 <label for="publisherprog">Publisher</label>
-                <input type="text" class="form-control" id="publisherprog" name="publisher">
-                <label for="tagsprog">Tags</label>
-                <input class="form-control" id="tagsprog" name="tags"><br>
+                <input type="text" class="form-control" id="publisherprog" name="publisher"><br>
                 <label for="iconprog">Icon</label>
                 <select id="iconprog" name="icon" >
                     <option value="coffee">Coffee</option>
@@ -104,7 +98,7 @@
             </div>
             <div class="" style="margin-left: 50%; height: 50%">
                 <label for="editor1">Advanced Help</label>
-                <tinytext name="content" id="html"></tinytext>
+                <tinytext name="content" id="html"></tinytext><br>
             </div>
             </form>
         </div>
@@ -170,10 +164,14 @@ return x;}
     </div>
 </div>
 
-    <div class="container" id="formadetaildiv">
-        <div style="float:left;width: 40%;" align="center">
+    <div class="container-fluid" id="formadetaildiv">
+        <div style="float:left;margin-left: 3%;width: 41%;">
             <form id="formadetailp" onsubmit="return false">
-                <label for="txtLang">Choose programming language:</label>
+                <label for="displayprog">Display Name</label>
+                <input type="text" id="displayprog" name="title" class="form-control">
+                <label for="tagsprog">Tags</label>
+                <input class="form-control" id="tagsprog" name="tags">
+                <label for="txtLang">Choose programming language</label>
                 <select id="txtLang" name="lang" class="form-control">
                     <option value="python">Python</option>
                     <option value="javascript">Javascript</option>
@@ -181,20 +179,22 @@ return x;}
                     <option value="java">Java</option>
                     <option value="jquery">Jquery</option>
                 </select>
-                <div class="form-group" id="test-buttons">
+                <div class="form-group" id="test-buttons" align="center">
                     <input type="button" id="probarProg" class="btn btn-primary" value="Test">
                     <input type="button" id="refreshHtml" class="btn btn-default" value="Refresh HTML">
                 </div>
         </div>
-        <div style="margin-left: 45%; width: 50%">
-            <label for="txtInstrucciones">Instructions: </label>
+        <div style="margin-left: 50%; width: 50%">
+            <label for="descriptionprog">Description </label>
+            <textarea class="form-control" id="descriptionprog" name="description" rows="3" ></textarea>
+            <label for="txtInstrucciones">Instructions </label>
             <textarea class="form-control" id="txtInstrucciones" name="instructions" rows="3" ></textarea>
         </div><br>
-        </form>
-        <div class="form-group" align="center">
-            <input type="submit" class="btn btn-warning" id="submitProg" value="Save Activity">
-            <input type="button" class="btn btn-danger" id="cancelProg" value="Cancel">
-        </div>
+        </form><br>
+    </div>
+    <div class="form-group" align="center">
+        <input type="submit" class="btn btn-warning" id="submitProg" value="Save Activity">
+        <input type="button" class="btn btn-danger" id="cancelProg" value="Cancel">
     </div>
 
 
@@ -461,6 +461,7 @@ return x;}
         var editorhtml = ace.edit("editorhtml");
         $.each(obj[0], function(key, value){
             $('#formaProg [name='+key+']').val(value);
+            $('#formadetailp [name='+key+']').val(value);
             if (key == 'unit_test'){
                 editor.setValue(value,1)
             }
@@ -486,7 +487,10 @@ return x;}
             else if (key == 'instructions'){
                 $('#txtInstrucciones').val(value)
             }
-            $('#formadetailp [name='+key+']').val(value);
+            else if (key == 'description'){
+                $("#descriptionprog").val(value)
+            }
+
             if (key == 'lang' && (value=='jquery' || value=='javascript')){
                 $('body li[id=htmlli]').removeClass('disabled');
                 $('body li[id=htmlli]').addClass('enabled');
