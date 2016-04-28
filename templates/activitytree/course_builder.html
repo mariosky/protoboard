@@ -838,7 +838,10 @@ function get_course() {
         editor.setValue("");
     }
     else{
-        editor.setValue(jQuery.parseJSON(learning_activity.pre_condition_rule), 1);
+
+        console.log(learning_activity.pre_condition_rule);
+
+        editor.setValue(learning_activity.pre_condition_rule);
     }
 
 
