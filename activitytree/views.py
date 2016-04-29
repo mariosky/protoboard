@@ -526,7 +526,7 @@ def path_test(request,path_id, uri):
                     feedback = _check_quiz(request.POST, quiz)
                     # Updates the current Learning Activity
                     objective_measure = float(feedback['total_correct'])/len(quiz['questions'])*100
-                    if feedback['total_correct'] >= quiz['satisfied_at_least']:
+                    if feedback['total_correct'] >= int(quiz['satisfied_at_least']):
                         progress_status='completed'
                     else:
                         progress_status='incomplete'
