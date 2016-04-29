@@ -604,16 +604,18 @@ def path_program(request,path_id, uri):
 
         breadcrumbs = s.get_current_path(requested_activity)
         program_quiz = Activity.get(requested_activity.learning_activity.uri)
+
         rating_totals = LearningActivityRating.objects.filter(learning_activity__uri=requested_activity.learning_activity.uri).aggregate(Count('rating'), Avg('rating'))
 
+        ## TO DO:
+        ## The activity was not found
 
-
-        if program_quiz['lang'] == 'javascript':
+        if program_quiz and program_quiz['lang'] == 'javascript':
             template = 'activitytree/programjs.html'
         else:
             template = 'activitytree/program.html'
 
-        return render_to_response(template, {'program_quiz':Activity.get(requested_activity.learning_activity.uri),
+        return render_to_response(template, {'program_quiz':program_quiz,
                                                                     'activity_uri':requested_activity.learning_activity.uri,
                                                                     'uri_id':'%s'% requested_activity.learning_activity.id,
                                                                     'uri':requested_activity.learning_activity.uri,

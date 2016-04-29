@@ -834,6 +834,7 @@ function get_course() {
     //$('#containerPrecondition').val(learning_activity.pre_condition_rule );
     $('#PreconditionURI').val(container_id);
     var editor = ace.edit("editor1");
+
     if (learning_activity.pre_condition_rule == null || learning_activity.pre_condition_rule == ""){
         editor.setValue("");
     }
