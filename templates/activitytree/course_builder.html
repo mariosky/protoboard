@@ -863,8 +863,8 @@ function get_course() {
   $('body').on('click','#savePreconditionBtn',function (e) {
       var container_id  = $('#PreconditionURI').val();
       var editor = ace.edit("editor1");
-      var value = editor.getValue();
-      learning_activities[container_id].pre_condition_rule = JSON.stringify(value.replace( "\r\n", "\n"));
+
+      learning_activities[container_id].pre_condition_rule = editor.getValue();
       console.log(learning_activities[container_id]);
       $('#modalPrecondition').modal('hide');
 

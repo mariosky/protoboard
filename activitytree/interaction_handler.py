@@ -329,6 +329,7 @@ ORDER BY path ASC;"""
 
 
 def _get_nav(id,xml_tree=None):
+    #If is the root add the id attribute
     if RECORDS[id]["parent_id"] is None:
         xml_tree = ET.Element("item")
         xml_tree.attrib = xml_row(RECORDS[id])
@@ -337,20 +338,31 @@ def _get_nav(id,xml_tree=None):
     children.sort(key=lambda x: x['order_in_container'])
     if children:
         for activity in children:
+            print activity['pre_condition']
             exec(activity['pre_condition_rule'])
+            activity['pre_condition_rule']=""
+            print activity['pre_condition_rule']
+
+            #Add the activities to the xml_tree with the new precondition
+
+            #If stopForwardTraversal stop recursion and return the xml_tree
+            #up to this point
             if activity['pre_condition'] == 'stopForwardTraversal':
                 ET.SubElement(xml_tree,'item',xml_row(activity))
                 return xml_tree
+
+            #If skip dont include this activity
+            #and dont recurse to this activity
+            #children activities
             elif activity['pre_condition']  == 'skip':
-                pass
-            #elif activity['forward_only'] == 'True' and int(activity['num_attempts']) > 0:
-            #    activity['pre_condition'] = 'disabled'
+                continue
 
             elif activity['num_attempts'] >=  int(activity['attempt_limit']) and int(activity['attempt_limit']) < 100:
                 activity['pre_condition'] = 'disabled'
 
 
-
+            # Recursevly call get nav attaching the current activity to the
+            # xml_tree we are constructing
             _get_nav(activity['id'],ET.SubElement(xml_tree,'item',xml_row(activity)))
     else:
         pass
