@@ -521,7 +521,6 @@ def path_test(request,path_id, uri):
         elif request.method == 'POST':
             if 'check' in request.POST and attempts_left :
 
-                    #quiz = activities[requested_activity.learning_activity.uri]
                     quiz = Activity.get(requested_activity.learning_activity.uri)
 
                     feedback = _check_quiz(request.POST, quiz)
@@ -532,7 +531,7 @@ def path_test(request,path_id, uri):
                     else:
                         progress_status='incomplete'
 
-                    s.update(requested_activity, progress_status = progress_status, attempt=True)
+                    s.update(requested_activity, progress_status = progress_status, attempt=True, objective_measure=objective_measure)
                     attempts_left-=1
 
 
