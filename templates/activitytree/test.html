@@ -42,6 +42,7 @@
                             {{ o.0 }}
                         </label>
                     </div>
+
                  {% elif q.interaction == 'simpleChoice' %}
                     <div class="radio{{ q.inline|yesno:"-inline,," }}">
                      <label>
@@ -51,14 +52,38 @@
                      </div>
                  {% endif %}
                 {% endfor %}
+                {% if q.feedback.correct %}
+
+                {% else %}
+                    {% if q.hints|length != 0 %}
+                    <a class="hint-btn" id="tools-{{ q.id }}" style="font-size: large"><i class="fa fa-comments" aria-hidden="true"></i> Hint Available</a><br>
+                    <div class="alert alert-info" id="div-{{ q.id }}" style="display:none;font-size: large;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif">
+                        <em>
+                        {% for hint in q.hints %}
+                            {{ hint }}<br>
+                        {% endfor %}
+                        </em>
+                    </div>
+                    {% endif %}
+                {% endif %}
+
             {% elif q.interaction == 'textEntryInteraction' %}
                     <input type="text" class="form-control" placeholder="Escribe tu respuesta" name="{{q.id}}" value="{{ q.feedback.user_answer }}">
-
-
-
+                    {% if q.feedback.correct %}
+                    {% else %}
+                        {% if q.hints|length != 0 %}
+                            <a class="hint-btn" id="tools-{{ q.id }}" style="font-size: large"><i class="fa fa-comments" aria-hidden="true"></i> Hint Available</a><br>
+                            <div class="alert alert-info" id="div-{{ q.id }}" style="display:none;font-size: large;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif">
+                            <em>
+                            {% for hint in q.hints %}
+                                {{ hint }}<br>
+                            {% endfor %}
+                            </em>
+                            </div>
+                        {% endif %}
+                    {% endif %}
             {% endif %}
         {% endfor %}
-
 
     {% else %}
 
@@ -117,3 +142,15 @@
 
 
 {% endblock content %}
+
+{% block scripts %}
+    <script>
+    $(".hint-btn").click(function(){
+        var id = this.getAttribute('id');
+        id = id.split('-')[1];
+        $("#div-"+id).toggle();
+    })
+
+    </script>
+
+{% endblock %}
