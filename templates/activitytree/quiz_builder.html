@@ -28,27 +28,33 @@
 
 <div class="container-fluid" align="center">
     <div class="container-fluid">
-        <form id="formaQuiz" style="width: 100%;height: 100%;align-content: center" onsubmit="return false" >
-        <div class="form-group" style="width: 100%; height: 100%">
-            <!-- <tiny class="form-control" name="content" id="quiz"> </tiny> -->
-            <div class="" style="width: 23%;float: left">
-             <div class="panel panel-info">
-                 <div class="panel-heading">
-                     <h4> Instrucciones </h4>
-                 </div>
-                 <div class="panel-body" align="left">
-                      <p>1.- Preguntas de opcion multiple, empezar respuestas con [ ]
-                      Marcar respuestas correctas [x]</p>
-                      <p>2.- Preguntas de opcion unica, empezar respuestas con ()
-                      Marcar respuesta correcta (x)</p>
-                     <p>3.- Preguntas directas, encerrar respuestas en signos = =</p>
-                     <p>4.- Se puede incluir una pista en cada pregunta.
-                     La pista se encierra entre doble {  }</p>
-                 </div>
-             </div>
-            </div>
+        <ul class="nav nav-tabs">
+              <li class="active"><a href="#preview-tab" data-toggle="tab">Quiz</a></li>
+              <li><a href="#info-tab" data-toggle="tab">Detail</a> </li>
+          </ul><br>
 
-            <div class="myeditor" id="editor1" align="left" style="width: 75%;border:3px solid lightgrey">
+          <div class="tab-content" style="width: 100%">
+              <div class="tab-pane fade in active" id="preview-tab">
+                  <form id="formaQuiz" style="width: 100%;height: 100%;align-content: center" onsubmit="return false" >
+                      <div class="form-group" style="width: 100%; height: 100%">
+            <!-- <tiny class="form-control" name="content" id="quiz"> </tiny> -->
+                          <div class="" style="width: 23%;float: left">
+                              <div class="panel panel-info">
+                                  <div class="panel-heading">
+                                      <h4> Instrucciones </h4>
+                                  </div>
+                                  <div class="panel-body" align="left">
+                                      <p>1.- Preguntas de opcion multiple, empezar respuestas con [ ]
+                                          Marcar respuestas correctas [x]</p>
+                                      <p>2.- Preguntas de opcion unica, empezar respuestas con ()
+                                          Marcar respuesta correcta (x)</p>
+                                      <p>3.- Preguntas directas, encerrar respuestas en signos = =</p>
+                                      <p>4.- Se puede incluir una pista en cada pregunta.
+                                          La pista se encierra entre doble {  }</p>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="myeditor" id="editor1" align="left" style="width: 75%;border:3px solid lightgrey">
 Pregunta de opcion multiple encerrada entre > < con Enter entre respuestas
 Marcar respuesta correcta con (x)
 Ejemplo
@@ -67,10 +73,63 @@ Pregunta de texto directa
 =USA=
 =usa=
 =Estados Unidos de Norteamerica=
+                          </div>
+                      </div>
+                  </form>
+              </div>
+
+              <div class="tab-pane fade" id="info-tab">
+                  <div class="container-fluid" style="width:50%">
+                      <form id="formadetailq" class="form-group" onsubmit="return false">
+                          <label for="idquiz">ID</label>
+                          <input type="text" readonly="readonly" class="form-control" id="idquiz" name="_id">
+                          <label for="rightsquiz">Rights</label>
+                          <input type="hidden" name="type" value="quiz">
+                          <input type="hidden" name="author" value="{{ user.email }}">
+                          <input type="text" class="form-control" id="rightsquiz" name="rights">
+                          <label for="externalquiz">External URL</label>
+                          <input type="text" class="form-control" id="externalquiz" name="external_url">
+                          <label for="publisherquiz">Publisher</label>
+                          <input type="text" class="form-control" id="publisherquiz" name="publisher"><br>
+                          <label for="iconquiz">Icon</label>
+                          <select id="iconquiz" name="icon" >
+                              <option value="coffee">Coffee</option>
+                              <option value="file">File</option>
+                              <option value="youtube-play">Youtube</option>
+                              <option value="puzzle-piece">Puzzle</option>
+                          </select>
+                          <label for="levelquiz">Level</label>
+                          <select id="levelquiz" name="level">
+                              <option value="principiante">Principiante</option>
+                              <option value="intermedio">Intermedio</option>
+                              <option value="avanzado">Avanzado</option>
+                          </select><br>
+                  </div>
+                  </form>
+              </div>
+          </div>
+        <br>
+        <div class="container-fluid" id="formadetaildiv" style="margin-left: 3%">
+            <form id="formadetailtab" onsubmit="return false">
+            <div style="float:left;width: 45%;">
+                <label for="displayquiz">Display Name</label>
+                <input type="text" id="displayquiz" name="title" class="form-control">
+                <label for="tagsquiz">Tags</label>
+                <input class="form-control" id="tagsquiz" name="tags">
             </div>
+            <div style="margin-left: 50%; width: 50%">
+                <label for="satisfy">Satisfy at least</label>
+                <input type="text" class="form-control" id="satisfy" name="satisfied_at_least">
+                <label for="descriptionquiz">Description</label>
+                <textarea class="form-control" id="descriptionquiz" name="description" rows="3" ></textarea>
+                </form>
+            </div><br>
+            <br>
         </div>
-            <button type="button" id="preview" class="btn btn-primary">Preview</button>
-        </form><br>
+        <div class="form-group" align="center">
+            <input type="button" class="btn btn-primary" id="preview" value="Preview Quiz">
+            <input type="button" class="btn btn-danger" id="CancelQuiz" value="Cancel">
+        </div>
     </div>
 </div>
 
@@ -88,10 +147,6 @@ Pregunta de texto directa
         <h4 class="modal-title">Add Quiz</h4>
       </div>
       <div class="modal-body">
-          <ul class="nav nav-tabs">
-              <li class="active"><a href="#quiz1" data-toggle="tab">Quiz</a></li>
-              <li><a href="#info" data-toggle="tab">Detail</a> </li>
-          </ul><br>
 
           <div class="tab-content" style="width: 100%">
               <div class="tab-pane fade in active" id="quiz1">
@@ -100,44 +155,6 @@ Pregunta de texto directa
 
                       </div>
                   </div>
-              </div>
-
-              <div class="tab-pane fade" id="info">
-                  <div class="container-fluid">
-                      <form id="formadetailq" class="form-group" onsubmit="return false">
-                          <label for="displayquiz">Display Name</label>
-                          <input type="text" id="displayquiz" name="title" class="form-control">
-                          <label for="idquiz">ID</label>
-                          <input type="text" readonly="readonly" class="form-control" id="idquiz" name="_id">
-                          <label for="descriptionquiz">Description</label>
-                          <input type="text" class="form-control" id="descriptionquiz" name="description">
-                          <label for="rightsquiz">Rights</label>
-                          <input type="hidden" name="type" value="quiz">
-                          <input type="hidden" name="author" value="{{ user.email }}">
-                          <input type="text" class="form-control" id="rightsquiz" name="rights">
-                          <label for="externalquiz">External URL</label>
-                          <input type="text" class="form-control" id="externalquiz" name="external_url">
-                          <label for="publisherquiz">Publisher</label>
-                          <input type="text" class="form-control" id="publisherquiz" name="publisher">
-                          <label for="tagsquiz">Tags</label>
-                          <input class="form-control" id="tagsquiz" name="tags">
-                          <label for="satisfy">Satisfy at least</label>
-                          <input type="text" class="form-control" id="satisfy" name="satisfied_at_least"><br>
-                          <label for="iconquiz">Icon</label>
-                          <select id="iconquiz" name="icon" >
-                              <option value="coffee">Coffee</option>
-                              <option value="file">File</option>
-                              <option value="youtube-play">Youtube</option>
-                              <option value="puzzle-piece">Puzzle</option>
-                          </select>
-                          <label for="levelquiz">Level</label>
-                          <select id="levelquiz" name="level">
-                              <option value="principiante">Principiante</option>
-                              <option value="intermedio">Intermedio</option>
-                              <option value="avanzado">Avanzado</option>
-                          </select><br>
-                  </div>
-                  </form>
               </div>
           </div>
 
@@ -208,6 +225,10 @@ $(function(){
             $('#modalquiz').modal();
         });
 
+    });
+
+    $("#CancelQuiz").click(function(){
+        window.location.href = "/build_quiz";
     });
 
 //when submit is clicked, validates if key values were input by user
@@ -290,11 +311,10 @@ function get_activity(id,type){
 
 //loads the data of activity in forms for user to update
 function load_quizdata(obj){
-    console.log(obj);
     $.each(obj[0], function(key, value){
+        $('#formadetailtab [name='+key+']').val(value);
         $('#formadetailq [name='+key+']').val(value);
         if (key == 'content'){
-            //tinyMCE.get('quiz').setContent(value);
             var editor = ace.edit('editor1');
             editor.setValue(value,1)
         }
@@ -304,7 +324,10 @@ function load_quizdata(obj){
                 $("#tagsquiz").tagit("createTag", value[i]);
             }
         }
-        $('#formadetailq [name='+key+']').val(value);
+        else if (key == 'description'){
+            $("#descriptionquiz").val(value);
+        }
+
     });
     }
 
@@ -477,6 +500,8 @@ function verify_checkbox(){
 //function that gets all data from forms and send it to server for insertion, updates activity if it already exists
 function submit_quiz(){
     var detail = $('#formadetailq').serializeArray();
+    var detailtab = $("#formadetailtab").serializeArray();
+    detail = detail.concat(detailtab);
     var questions = {
         name: 'questions',
         value: dic
@@ -488,6 +513,7 @@ function submit_quiz(){
         };
     detail.push(content);
     var data = indexdata(detail);
+    console.log(data);
     $.ajax({
         type: 'post',
         url: '/upload_activity',
