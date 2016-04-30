@@ -38,12 +38,12 @@
                   <form id="formaQuiz" style="width: 100%;height: 100%;align-content: center" onsubmit="return false" >
                       <div class="form-group" style="width: 100%; height: 100%">
             <!-- <tiny class="form-control" name="content" id="quiz"> </tiny> -->
-                          <div class="" style="width: 23%;float: left">
-                              <div class="panel panel-info">
+                          <div class="" style="width: 28%;float: left">
+                              <div class="panel panel-info" style="height:400px;max-height:450px;overflow: auto">
                                   <div class="panel-heading">
                                       <h4> Instrucciones </h4>
                                   </div>
-                                  <div class="panel-body" align="left">
+                                  <div class="panel-body" align="left" style="font-size: small;overflow:hidden">
                                       <p>1.- Preguntas de opcion multiple, empezar respuestas con [ ]
                                           Marcar respuestas correctas [x]</p>
                                       <p>2.- Preguntas de opcion unica, empezar respuestas con ()
@@ -54,7 +54,7 @@
                                   </div>
                               </div>
                           </div>
-                          <div class="myeditor" id="editor1" align="left" style="width: 75%;border:3px solid lightgrey">
+                          <div class="myeditor" id="editor1" align="left" style="width: 70%;border:3px solid lightgrey">
 Pregunta de opcion multiple encerrada entre > < con Enter entre respuestas
 Marcar respuesta correcta con (x)
 Ejemplo
@@ -367,7 +367,7 @@ function analize(valor){
                 answer: '',
                 type:'',
                 interaction:'',
-                hint:'',
+                hints:'',
                 id:'',
                 answer_text:''
             };
@@ -375,6 +375,7 @@ function analize(valor){
             lista=[];
             answers=[];
             correct=[];
+            hintlist=[];
             n=0;
         }
         else if (exp_answer.test(texto[i])) {
@@ -443,7 +444,8 @@ function analize(valor){
         }
         else if (exp_hint.test(texto[i])){
             var match = texto[i].split(exp_hint)[1];
-            obj['hint'] = match;
+            hintlist.push(match);
+            obj['hints'] = hintlist;
         }
 
 
