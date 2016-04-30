@@ -204,7 +204,7 @@ $(function(){
         //valor = tinyMCE.activeEditor.getContent();
         valor = editor.getValue();
         var quiz = analize(valor);
-        console.log(quiz);
+
         var cont = 0;
         $.each(quiz,function(index,value){
             if (value.type == "multi"){
@@ -499,6 +499,9 @@ function verify_checkbox(){
 
 //function that gets all data from forms and send it to server for insertion, updates activity if it already exists
 function submit_quiz(){
+    if ($("#satisfy").val() == ""){
+        $("#satisfy").val(dic.length);
+    }
     var detail = $('#formadetailq').serializeArray();
     var detailtab = $("#formadetailtab").serializeArray();
     detail = detail.concat(detailtab);
