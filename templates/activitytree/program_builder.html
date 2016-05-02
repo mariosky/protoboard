@@ -64,7 +64,9 @@
       <li><a href="#initial" id="initialid" data-toggle="tab">Initial Code</a></li>
       <li id="htmlli" class="disabled"><a href="#htmltab" id="htmla" data-toggle="">HTML</a></li>
       <li ><a id="infoid" href="#info" data-toggle="tab">Detail</a> </li>
+      <li style="float:right"><button value="Help" class="btn btn-warning" id="helpbtn">Help</button></li>
   </ul>
+
   <br>
 
     <div class="tab-content" style="width: 100%">
@@ -157,6 +159,7 @@ return x;}
                 </div><br>
 
 
+
             </div>
         </div>
 
@@ -224,6 +227,84 @@ return x;}
                 </div>
                 <div id="test_info" class="modal-body">
 
+                </div>
+                <div class="modal-footer" align="center">
+                    <div class="form-group" align="center">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="help-modal" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" align="center">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4>Help</h4>
+                </div>
+                <div id="help_info" class="modal-body">
+                   <div id="example-vertical">
+                       <h3>Unit Test</h3>
+                       <section>
+                           <p>En programación, una prueba unitaria es una forma de comprobar el correcto funcionamiento de un módulo de código.
+                               Esto sirve para asegurar que cada uno de los módulos funcione correctamente por separado.</p>
+                           <p>En <a href="https://codigo.uno">codigo.uno</a>, utilizamos <a href="https://qunitjs.com/">QUnit </a>para realizar la evaluación con pruebas unitarias. </p>
+                           <p>En los ejercicios de programación, las pruebas unitarias son las que se encargarán de verificar que el código que el usuario programó haya realizado
+                           lo que se requirió en el ejercicio.</p>
+                           <p>Por ejemplo:</p>
+                           <p>1.- Escribe una función llamada <code>suma</code> la cual tome dos argumentos <code>a</code> y <code>b</code> y regrese la
+                                        suma de ambos.</p>
+                           <p><code>QUnit.test("JQuery", function( assert ){<br>
+                        assert.equal(suma(2,3), 5, "Debe sumar positivos");<br>
+                        assert.equal(suma(2,-3), -1, "Debe sumar negativos");<br>
+                        });</code></p>
+                           <p>Esta prueba unitaria se encargará de evaluar la función <code>suma</code> que el usuario haya creado, y la probará para los dos casos especificados(suma de positivos y negativos).</p>
+                           <p>QUnit cuenta con mas funciones para realizar pruebas. <a href="http://api.qunitjs.com/category/assert/">Ver.</a></p>
+                           <p>La función <code>suma</code> se debera crear en la siguiente sección, <b>Correct Code.</b></p>
+                       </section>
+                       <h3>Correct Code</h3>
+                       <section>
+                           <p><b>Correct Code</b> es donde se escribirá  el código o función que cumpla con los requerimientos del ejercicio.</p>
+                           <p>En el ejemplo que se puso en el paso anterior, se pidio crear una función llamada <code>suma</code>, la cual reciba
+                           dos numeros enteros, y regrese la suma de ambos; en este caso, el código correcto seria:</p>
+                           <p><code>function suma(a, b){<br>
+                                    c = a + b;<br>
+                                    return c;<br>
+                            }</code></p>
+                           <p>Al probar este código, la <b>unit test</b> probará con los dos casos que se especificarón (positivos y negativos), y en este caso
+                           nos dara un mensaje de que las dos pruebas fueron exitosas.</p>
+
+                       </section>
+                       <h3>Initial Code</h3>
+                       <section>
+                           <p><b>Initial code</b> es donde se escribirá  una version incorrecta del código <b>Correct Code</b> que el usuario
+                           tendra que corregir para poder pasar la prueba.</p>
+                           <p><b>Initial code</b> no es mandatoria, pero es útil si el ejercicio es muy largo o complicado.</p>
+                           <p>Un ejemplo de <b>Initial code</b> para el ejercicio de ejemplo (<code>suma</code>) podria ser el siguiente:</p>
+                           <p><code>function suma(a, b){<br>
+                                    return;<br>
+                           }</code></p>
+
+                       </section>
+                       <h3>HTML Code</h3>
+                       <section>
+                           <p>Si el ejercicio de programación que se escribirá es de lenguaje Jquery o Javascript, y se evaluaran controles como cajas de texto
+                           o botones, en esta sección crearemos dichos controles.</p>
+                           <p>Por ejemplo, se busca que el usuario cree una función que al dar click en un botón llamado <code>Accion</code>,
+                           aparezca una label con nombre <code>Mensaje</code> desplegando el texto <em>"Hola"</em></p>
+                           <p>Para este caso, necesitaremos crear los controles HTML de la siguiente manera:<br></p>
+                           <p><code>
+                               &lt;div id='contenido'&gt;<br>
+                                   &lt;label id=&quot;Mensaje&quot;&gt;&lt;/label&gt;<br>
+                                   &lt;input type=&quot;button&quot; id=&quot;Accion&quot; value=&quot;Click&quot;&gt;<br>
+                               &lt;/div&gt;
+                           </code></p>
+                           <p>Estos controles seran evaluados junto con <b>Correct Code</b> por las <b>Unit Test</b> para verificar si el usuario cumplió con lo
+                           especificado por el ejercicio.</p>
+                       </section>
+                   </div>
                 </div>
                 <div class="modal-footer" align="center">
                     <div class="form-group" align="center">
@@ -354,6 +435,25 @@ return x;}
 
             }
         });
+
+        //
+        $("#helpbtn").click(function(){
+            $("#help-modal").modal()
+        });
+
+        $("#example-vertical").steps({
+            headerTag: "h3",
+            bodyTag: "section",
+            transitionEffect: "slideLeft",
+            stepsOrientation: "horizontal",
+            enableAllSteps: true
+        });
+
+        $("#wizard_embedded").steps({
+            enableAllSteps: true,
+            stepsOrientation: "vertical"
+        });
+        //
 
         //if user confirms submission of activity, submitProg function is loaded
         $('#acceptBtn').click(function(e){
@@ -794,7 +894,9 @@ return x;}
 
     }
     </script>
+    <link rel="stylesheet" type="text/css" href="https://996335ed525284d53512e1eb1aaa0f534628fbff.googledrive.com/host/0B4KIaVIuZK2JcUhzbl9mQzBNazQ/jquery-steps.css">
     <script src="http://code.jquery.com/qunit/qunit-1.18.0.js"></script>
+    <script src="//www.jquery-steps.com/Scripts/jquery.steps.min.js" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js " type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/javascript.js" type="text/javascript" charset="utf-8"></script>
