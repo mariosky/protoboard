@@ -187,6 +187,15 @@
 </script>
 
 
+<script id="rules_template" type="x-tmpl-mustache">
+
+            <div class="inline" id="[[rule_id]]">
+                <h5><span id="hola">IF <em>[[rule_name]]</em> [[rule_options]] <b>[[rule_operator]]</b> [[rule_value]]
+                <button type="button" class="btn btn-danger deleteRuleBtn" style="float:right">Remove</button></h5></span>
+                <br>
+            </div>
+
+</script>
 
 
 <!-- endbuild -->
@@ -610,14 +619,7 @@ function get_course() {
             learning_activities[activity_to_delete].state ="Deleted";
             $( this).parentsUntil('li').parent().addClass("hidden");
 
-
-
-
         }
-
-
-
-
     });
 
 
@@ -938,6 +940,63 @@ function get_course() {
       $("#modalSearch").modal()
   });
 
+//rule builder modal options
+  $(document).ready(function(){
+      $(window).load(function() {
+          if (learning_activities.length != 0) {
+              $.each(learning_activities, function (index, value) {
+                  if (typeof value === 'undefined' || value.root_id == null) return;
+                  $("#activity-select").append($("<option></option>")
+                          .attr("value", value.name)
+                          .text(value.name));
+              })
+          }
+      });
+  });
+
+  $("body").on('click','#usertab', function(){
+      $("#userdiv").slideToggle('fast',function(){
+      })
+  });
+
+  $("body").on('click','#activitytab', function(){
+      $("#activitydiv").slideToggle('fast',function(){
+      })
+  });
+
+  $("body").on('click','#contexttab', function(){
+      $("#contextdiv").slideToggle('fast',function(){
+      })
+  });
+
+  contador=0;
+  $("body").on('click', '#activity-submit' ,function(){
+      var id = ($('#activity-select').val()).replace(/\s/g, "_");
+      var option = $('#activity-options').val();
+      var operator = $("#activity-operators").val();
+      var value = $("#activity-txt").val();
+      Mustache.tags = ['[[', ']]'];
+      var rules_template = $('#rules_template').html();
+      Mustache.parse(rules_template);
+      rendered = Mustache.render(rules_template, {
+          rule_id: id+contador,
+          rule_name: id,
+          rule_options:option,
+          rule_operator: operator,
+          rule_value:value
+          });
+      $("#rules-body").append(rendered);
+      contador=contador+1;
+  });
+
+  $('body').on('click', '.deleteRuleBtn', function(){
+      var activity_to_delete = $(this).parentsUntil('div').parent().attr("id");
+      $("#"+activity_to_delete).remove();
+      console.log(activity_to_delete);
+      //alert("Delete:" + activity_to_delete + learning_activities[activity_to_delete] );
+      //$( this).parentsUntil('li').parent().addClass("hidden");
+    });
+//
   //change action for search textbox, determines if the input is a tag or just a title search
   $("body").on('change', "#txtname", function(){
       $("#data").empty();
@@ -1336,6 +1395,102 @@ function get_course() {
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
+
+
+    <div class="modal fade" id="modal-rulebuilder">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Rule Builder</h4>
+                </div>
+                <div id="rulebuilder" align="center">
+                        <div class="well well-sm" style="border: hidden">
+                            <a class="panel-title" id="activitytab">Activity<span class="caret"></span></a>
+                            <div id="activitydiv"><br>
+                                <label for="activity-select">Activity</label>
+                                <select id="activity-select" class="form-control" style="width:20%">
+
+                                </select><br>
+                                <div class="form-inline">
+                                    <select class="form-control" id="activity-options" style="width:20%">
+                                        <option value="attempts">Attempts</option>
+                                        <option value="progress">Progress</option>
+                                        <option value="objective">Objective Measure</option>
+                                    </select>
+
+                                    <select class="form-control" id="activity-operators" style="width:20%">
+                                        <option value="equals">Equals</option>
+                                        <option value="more">More than</option>
+                                        <option value="less">Less than</option>
+                                        <option value="not">Not Equal than</option>
+                                    </select>
+
+                                    <input type="text" class="form-control" id="activity-txt" placeholder="Value" style="width:20%">
+
+                                    <input type="button" id="activity-submit" class="form-control btn-primary" value="Add Rule">
+                                </div>
+                            </div><br>
+                        </div>
+                    <div class="well well-sm">
+                            <a class="panel-title" id="usertab">User<span class="caret"></span></a>
+                            <div id="userdiv" style="display:none"><br>
+                                <div class="form-inline">
+                                    <select class="form-control" id="user-options" style="width:20%">
+                                        <option value="level">Level</option>
+                                        <option value="points">Points</option>
+                                        <option value="experience">Experience</option>
+                                        <option value="tag">Tag</option>
+                                    </select>
+
+                                    <select class="form-control" id="user-operators" style="width:20%">
+                                        <option value="equals">Equals</option>
+                                        <option value="more">More than</option>
+                                        <option value="less">Less than</option>
+                                        <option value="not">Not Equal than</option>
+                                    </select>
+
+                                    <input type="text" class="form-control" id="user-txt" placeholder="Value" style="width:20%">
+
+                                    <input type="button" id="user-submit" class="form-control btn-primary" value="Add Rule">
+                                </div>
+                            </div><br>
+                    </div>
+
+                    <div class="well well-sm" style="border: hidden">
+                            <a class="panel-title" id="contexttab">Context<span class="caret"></span></a>
+                            <div id="contextdiv" style="display:none"><br>
+                                <div class="form-inline">
+                                    <select class="form-control" id="context-options" style="width:20%">
+                                        <option value="device">Device</option>
+                                        <option value="place">Place</option>
+                                        <option value="time">Time</option>
+                                        <option value="dayof">Day of Week</option>
+                                    </select>
+
+                                    <select class="form-control" id="context-operators" style="width:20%">
+                                        <option value="equals">Equals</option>
+                                        <option value="more">More than</option>
+                                        <option value="less">Less than</option>
+                                        <option value="not">Not Equal than</option>
+                                    </select>
+
+                                    <input type="text" class="form-control" id="context-txt" placeholder="Value" style="width:20%">
+
+                                    <input type="button" id="user-submit" class="form-control btn-primary" value="Add Rule">
+                                </div>
+                            </div><br>
+                    </div>
+                    <div id="rules-display" class="panel panel-default" style="width:90%">
+                        <div class="panel-heading">IF</div>
+                        <div id="rules-body" class="panel-body">
+
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
 
 
 {% endblock scripts %}
