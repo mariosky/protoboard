@@ -943,12 +943,15 @@ function get_course() {
 //rule builder modal options
   $(document).ready(function(){
       $(window).load(function() {
+          rules_activities = [];
           if (learning_activities.length != 0) {
               $.each(learning_activities, function (index, value) {
                   if (typeof value === 'undefined' || value.root_id == null) return;
                   $("#activity-select").append($("<option></option>")
-                          .attr("value", value.name)
+                          .attr("value", value.id)
                           .text(value.name));
+                  //var rules={'name':value.name,'id': value.id};
+                  //rules_activities.push(rules);
               })
           }
       });
@@ -971,16 +974,21 @@ function get_course() {
 
   contador=0;
   $("body").on('click', '#activity-submit' ,function(){
-      var id = ($('#activity-select').val()).replace(/\s/g, "_");
+      var name = ($('#activity-select option:selected').html()).replace(/\s/g, "_");
+      var activity_id=$("#activity-select").val();
       var option = $('#activity-options').val();
       var operator = $("#activity-operators").val();
       var value = $("#activity-txt").val();
+      //var rule = "if get_attr('"+name+"','"+option+"') == '"+value+"':";
+      var rules={'name':name, 'id': activity_id, 'rule': '', 'option': option, 'operator':operator, 'value':value};
+
+      rules_activities.push(rules);
       Mustache.tags = ['[[', ']]'];
       var rules_template = $('#rules_template').html();
       Mustache.parse(rules_template);
       rendered = Mustache.render(rules_template, {
-          rule_id: id+contador,
-          rule_name: id,
+          rule_id: name+contador,
+          rule_name: name,
           rule_options:option,
           rule_operator: operator,
           rule_value:value
@@ -992,6 +1000,9 @@ function get_course() {
   $('body').on('click', '.deleteRuleBtn', function(){
       var activity_to_delete = $(this).parentsUntil('div').parent().attr("id");
       $("#"+activity_to_delete).remove();
+      rules_activities = $.grep(rules_activities,
+                   function(o,i) { return o.id === activity_to_delete.split('+')[1]; },
+                   true);
       console.log(activity_to_delete);
       //alert("Delete:" + activity_to_delete + learning_activities[activity_to_delete] );
       //$( this).parentsUntil('li').parent().addClass("hidden");
@@ -1414,8 +1425,8 @@ function get_course() {
                                 </select><br>
                                 <div class="form-inline">
                                     <select class="form-control" id="activity-options" style="width:20%">
-                                        <option value="attempts">Attempts</option>
-                                        <option value="progress">Progress</option>
+                                        <option value="number_of_attempts">Attempts</option>
+                                        <option value="progress_status">Progress</option>
                                         <option value="objective">Objective Measure</option>
                                     </select>
 
