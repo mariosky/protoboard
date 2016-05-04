@@ -191,9 +191,21 @@
 
             <div class="inline" id="[[rule_id]]">
                 <h5><span id="hola">IF <em>[[rule_name]]</em> [[rule_options]] <b>[[rule_operator]]</b> [[rule_value]]
-                <button type="button" class="btn btn-danger deleteRuleBtn" style="float:right">Remove</button></h5></span>
+                <button type="button" class="btn btn-danger deleteRuleBtn" style="float:right;margin-left:5px">Remove</button>
+                <button type="button" class="btn btn-warning thenRuleBtn" style="float:right">Then</button></h5></span>
                 <br>
-            </div>
+                <div id="then[[rule_id]]" class="hide">
+                    <div>
+                        <label for="precondition">Pre-Condition:</label>
+                        <select id="precondition" class="form-control">
+                            <option value=''></option>
+                            <option value="skip">Skip</option>
+                            <option value="stopForwardTraversal">Stop Forward Traversal</option>
+                            <option value="disabled">Disabled</option>
+                            <option value="enabled">Enabled</option>
+                        </select>
+                    </div>
+                </div>
 
 </script>
 
@@ -949,6 +961,7 @@ function get_course() {
                   if (typeof value === 'undefined' || value.root_id == null) return;
                   $("#activity-select").append($("<option></option>")
                           .attr("value", value.id)
+                          .attr("uri", value.uri)
                           .text(value.name));
                   //var rules={'name':value.name,'id': value.id};
                   //rules_activities.push(rules);
@@ -975,12 +988,13 @@ function get_course() {
   contador=0;
   $("body").on('click', '#activity-submit' ,function(){
       var name = ($('#activity-select option:selected').html()).replace(/\s/g, "_");
+      var uri = ($('#activity-select option:selected').attr('uri'));
       var activity_id=$("#activity-select").val();
       var option = $('#activity-options').val();
       var operator = $("#activity-operators").val();
       var value = $("#activity-txt").val();
       //var rule = "if get_attr('"+name+"','"+option+"') == '"+value+"':";
-      var rules={'name':name, 'id': activity_id, 'rule': '', 'option': option, 'operator':operator, 'value':value};
+      var rules={'name':name+contador,'uri':uri, 'id': activity_id, 'rule': '', 'option': option, 'operator':operator, 'value':value};
 
       rules_activities.push(rules);
       Mustache.tags = ['[[', ']]'];
@@ -1001,11 +1015,18 @@ function get_course() {
       var activity_to_delete = $(this).parentsUntil('div').parent().attr("id");
       $("#"+activity_to_delete).remove();
       rules_activities = $.grep(rules_activities,
-                   function(o,i) { return o.id === activity_to_delete.split('+')[1]; },
+                   function(o,i) { return o.name === activity_to_delete; },
                    true);
-      console.log(activity_to_delete);
-      //alert("Delete:" + activity_to_delete + learning_activities[activity_to_delete] );
-      //$( this).parentsUntil('li').parent().addClass("hidden");
+    });
+
+  $('body').on('click', '.thenRuleBtn', function(){
+      var activity_to_delete = $(this).parentsUntil('div').parent().attr("id");
+      $(this).popover({
+        placement: 'left',
+        title: 'Pre-Condition',
+        html:true,
+        content:  $('#then'+activity_to_delete).html()
+        })
     });
 //
   //change action for search textbox, determines if the input is a tag or just a title search
