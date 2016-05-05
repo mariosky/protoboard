@@ -190,7 +190,7 @@
 <script id="rules_template" type="x-tmpl-mustache">
 
             <div class="inline" id="[[rule_id]]">
-                <h5><span id="">[[#conditions]]IF <em>[[rule_name]]</em> [[option]] <b>[[operator]]</b> [[value]] [[/conditions]]</span><span id="span-[[rule_id]]"></span>
+                <h5><span id="">[[#conditions]]IF <em>[[#user]] User [[/user]] [[^user]] [[rule_name]] [[/user]]</em> [[option]] <b>[[operator]]</b> [[value]] [[/conditions]]</span><span id="span-[[rule_id]]"></span>
                 <button type="button" class="btn btn-danger deleteRuleBtn" style="float:right;margin-left:5px">Remove</button>
                 <button type="button" class="btn btn-warning thenRuleBtn" style="float:right">Then</button></h5>
 
@@ -199,12 +199,13 @@
                  <option value="or">Or</option>
                  <option value="not">Not</option>
                  </select>
-                 [[option]] [[operator]] [[value]]
+                 [[#user]] <b>User</b> [[/user]] [[option]] <b> [[operator]] </b> [[value]]
                 <button type="button" class="btn btn-danger deleteAndBtn" style="float:right;margin-left:5px">Remove</button></span>[[/and]]
                 <br>
 
                 <div id="then[[rule_id]]" style="display:none">
                     <div>
+                    <br>
                         <label for="precondition-[[rule_id]]"><em>Then</em> <b>Pre-Condition</b> is:</label>
                         <select id="precondition-[[rule_id]]" class="form-control selectThen" style="width:50%">
                             <option value=''></option>
@@ -1000,31 +1001,28 @@ function get_course() {
   contador=0;
   $("body").on('click', '.submit-Btn' ,function(){
       var btntype = $(this).attr('id').split('-')[0];
+      var name = ($('#activity-select option:selected').html()).replace(/\s/g, "_");
+      var uri = ($('#activity-select option:selected').attr('uri'));
+      var activity_id=$("#activity-select").val();
       if (btntype == 'activity'){
-          var name = ($('#activity-select option:selected').html()).replace(/\s/g, "_");
-          var uri = ($('#activity-select option:selected').attr('uri'));
-          var activity_id=$("#activity-select").val();
           var option = $('#activity-options').val();
           var operator = $("#activity-operators").val();
           var value = $("#activity-txt").val();
+          $("#"+btntype+"-txt").val('');
       }
       else if (btntype == 'user'){
-          name = ($('#activity-select option:selected').html()).replace(/\s/g, "_");
-          uri = ($('#activity-select option:selected').attr('uri'));
           var user = true;
-          activity_id=$("#activity-select").val();
           option = $('#user-options').val();
           operator = $("#user-operators").val();
           value = $("#user-txt").val();
+          $("#"+btntype+"-txt").val('');
       }
       else if (btntype == 'context'){
-          name = ($('#activity-select option:selected').html()).replace(/\s/g, "_");
           var context = true;
-          uri = ($('#activity-select option:selected').attr('uri'));
-          activity_id=$("#activity-select").val();
           option = $('#context-options').val();
           operator = $("#context-operators").val();
           value = $("#context-txt").val();
+          $("#"+btntype+"-txt").val('');
       }
 
       Mustache.tags = ['[[', ']]'];
@@ -1036,13 +1034,20 @@ function get_course() {
               var rules={'name':name+contador,'uri':uri, 'id': activity_id, 'rule': '','if':'','operator':'','then':''};
               var condition = {'rule':'','option':option,'operator':operator,'value':value};
               var index = rules_activities.length;
+              if (user == true){
+              condition['user']='true'
+              }
+              else if (context == true){
+                  condition['context'] = 'true'
+              }
               rules_activities[index-1].then = condition;
               $("#"+rules_activities[index-1].name).remove();
               rendered = Mustache.render(rules_template, {
                   rule_id: rules_activities[index-1].name,
                   rule_name: rules_activities[index-1].name,
                   conditions: rules_activities[index-1].if,
-                  and: rules_activities[index-1].then
+                  and: rules_activities[index-1].then,
+                  user: rules_activities[index-1].user
               });
               $("#rules-body").append(rendered);
           }
@@ -1050,12 +1055,19 @@ function get_course() {
               contador=contador+1;
               rules={'name':name+contador,'uri':uri, 'id': activity_id, 'rule': '','if':'','operator':'and','then':''};
               condition = {'rule':'','option':option,'operator':operator,'value':value};
+              if (user == true){
+                  condition['user']='true'
+              }
+              else if (context == true){
+                  condition['context'] = 'true'
+              }
               rules['if'] = condition;
               rules_activities.push(rules);
               rendered = Mustache.render(rules_template, {
                   rule_id: rules['name'],
                   rule_name: rules['name'],
-                  conditions: rules['if']
+                  conditions: rules['if'],
+                  user: rules['user']
               });
               $("#rules-body").append(rendered);
           }
@@ -1063,12 +1075,19 @@ function get_course() {
       else{
           rules={'name':name+contador,'uri':uri, 'id': activity_id, 'rule': '','if':'','operator':'and','then':''};
           condition = {'rule':'','option':option,'operator':operator,'value':value};
+          if (user == true){
+              condition['user']='true'
+          }
+          else if (context == true){
+              condition['context'] = 'true'
+          }
           rules['if'] = condition;
           rules_activities.push(rules);
           rendered = Mustache.render(rules_template, {
               rule_id: rules['name'],
               rule_name: rules['name'],
-              conditions: rules['if']
+              conditions: rules['if'],
+              user: rules['user']
           });
           $("#rules-body").append(rendered);
 
