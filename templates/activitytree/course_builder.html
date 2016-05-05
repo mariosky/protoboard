@@ -190,10 +190,19 @@
 <script id="rules_template" type="x-tmpl-mustache">
 
             <div class="inline" id="[[rule_id]]">
-                <h5><span id="">IF <em>[[rule_name]]</em> [[rule_options]] <b>[[rule_operator]]</b> [[rule_value]]</span><span id="span-[[rule_id]]"></span>
+                <h5><span id="">[[#conditions]]IF <em>[[rule_name]]</em> [[option]] <b>[[operator]]</b> [[value]] [[/conditions]]</span><span id="span-[[rule_id]]"></span>
                 <button type="button" class="btn btn-danger deleteRuleBtn" style="float:right;margin-left:5px">Remove</button>
                 <button type="button" class="btn btn-warning thenRuleBtn" style="float:right">Then</button></h5>
+
+                [[#and]]<span id="and-[[rule_id]]"><br> <select id='condition-[[rule_id]]' class="conditionSelect">
+                 <option value="and">And</option>
+                 <option value="or">Or</option>
+                 <option value="not">Not</option>
+                 </select>
+                 [[option]] [[operator]] [[value]]
+                <button type="button" class="btn btn-danger deleteAndBtn" style="float:right;margin-left:5px">Remove</button></span>[[/and]]
                 <br>
+
                 <div id="then[[rule_id]]" style="display:none">
                     <div>
                         <label for="precondition-[[rule_id]]"><em>Then</em> <b>Pre-Condition</b> is:</label>
@@ -205,7 +214,8 @@
                             <option value="enabled">Enabled</option>
                         </select>
                     </div>
-                </div>
+                </div><br>
+
 
 </script>
 
@@ -956,6 +966,8 @@ function get_course() {
   $(document).ready(function(){
       $(window).load(function() {
           rules_activities = [];
+          rule_history = [];
+          conditions = [];
           if (learning_activities.length != 0) {
               $.each(learning_activities, function (index, value) {
                   if (typeof value === 'undefined' || value.root_id == null) return;
@@ -986,29 +998,82 @@ function get_course() {
   });
 
   contador=0;
-  $("body").on('click', '#activity-submit' ,function(){
-      var name = ($('#activity-select option:selected').html()).replace(/\s/g, "_");
-      var uri = ($('#activity-select option:selected').attr('uri'));
-      var activity_id=$("#activity-select").val();
-      var option = $('#activity-options').val();
-      var operator = $("#activity-operators").val();
-      var value = $("#activity-txt").val();
-      //var rule = "if get_attr('"+name+"','"+option+"') == '"+value+"':";
-      var rules={'name':name+contador,'uri':uri, 'id': activity_id, 'rule': '', 'option': option, 'operator':operator, 'value':value};
+  $("body").on('click', '.submit-Btn' ,function(){
+      var btntype = $(this).attr('id').split('-')[0];
+      if (btntype == 'activity'){
+          var name = ($('#activity-select option:selected').html()).replace(/\s/g, "_");
+          var uri = ($('#activity-select option:selected').attr('uri'));
+          var activity_id=$("#activity-select").val();
+          var option = $('#activity-options').val();
+          var operator = $("#activity-operators").val();
+          var value = $("#activity-txt").val();
+      }
+      else if (btntype == 'user'){
+          name = ($('#activity-select option:selected').html()).replace(/\s/g, "_");
+          uri = ($('#activity-select option:selected').attr('uri'));
+          var user = true;
+          activity_id=$("#activity-select").val();
+          option = $('#user-options').val();
+          operator = $("#user-operators").val();
+          value = $("#user-txt").val();
+      }
+      else if (btntype == 'context'){
+          name = ($('#activity-select option:selected').html()).replace(/\s/g, "_");
+          var context = true;
+          uri = ($('#activity-select option:selected').attr('uri'));
+          activity_id=$("#activity-select").val();
+          option = $('#context-options').val();
+          operator = $("#context-operators").val();
+          value = $("#context-txt").val();
+      }
 
-      rules_activities.push(rules);
       Mustache.tags = ['[[', ']]'];
       var rules_template = $('#rules_template').html();
       Mustache.parse(rules_template);
-      rendered = Mustache.render(rules_template, {
-          rule_id: name+contador,
-          rule_name: name,
-          rule_options:option,
-          rule_operator: operator,
-          rule_value:value
+
+      if (rule_history.length >= 1){
+          if(rule_history[rule_history.length-1] == name){
+              var rules={'name':name+contador,'uri':uri, 'id': activity_id, 'rule': '','if':'','operator':'','then':''};
+              var condition = {'rule':'','option':option,'operator':operator,'value':value};
+              var index = rules_activities.length;
+              rules_activities[index-1].then = condition;
+              $("#"+rules_activities[index-1].name).remove();
+              rendered = Mustache.render(rules_template, {
+                  rule_id: rules_activities[index-1].name,
+                  rule_name: rules_activities[index-1].name,
+                  conditions: rules_activities[index-1].if,
+                  and: rules_activities[index-1].then
+              });
+              $("#rules-body").append(rendered);
+          }
+          else{
+              contador=contador+1;
+              rules={'name':name+contador,'uri':uri, 'id': activity_id, 'rule': '','if':'','operator':'and','then':''};
+              condition = {'rule':'','option':option,'operator':operator,'value':value};
+              rules['if'] = condition;
+              rules_activities.push(rules);
+              rendered = Mustache.render(rules_template, {
+                  rule_id: rules['name'],
+                  rule_name: rules['name'],
+                  conditions: rules['if']
+              });
+              $("#rules-body").append(rendered);
+          }
+      }
+      else{
+          rules={'name':name+contador,'uri':uri, 'id': activity_id, 'rule': '','if':'','operator':'and','then':''};
+          condition = {'rule':'','option':option,'operator':operator,'value':value};
+          rules['if'] = condition;
+          rules_activities.push(rules);
+          rendered = Mustache.render(rules_template, {
+              rule_id: rules['name'],
+              rule_name: rules['name'],
+              conditions: rules['if']
           });
-      $("#rules-body").append(rendered);
-      contador=contador+1;
+          $("#rules-body").append(rendered);
+
+      }
+      rule_history.push(name);
   });
 
   $('body').on('click', '.deleteRuleBtn', function(){
@@ -1017,6 +1082,14 @@ function get_course() {
       rules_activities = $.grep(rules_activities,
                    function(o,i) { return o.name === activity_to_delete; },
                    true);
+    });
+
+  $('body').on('click', '.deleteAndBtn', function(){
+      var id = $(this).parentsUntil('div').parent().attr("id");
+      $("#and-"+id).remove();
+      var index = rules_activities.map(function(e) { return e.name; }).indexOf(id);
+      rules_activities[index].then = '';
+      rules_activities[index].operator = 'and';
     });
 
   $('body').on('click', '.thenRuleBtn', function(){
@@ -1035,6 +1108,13 @@ function get_course() {
       $('#span-'+id).append(" Then " + value);
       $("#then"+id).slideToggle('fast', function(){
       });
+  });
+
+  $('body').on('change', '.conditionSelect', function(){
+      var id = $(this).attr('id').split('-')[1];
+      var val = $(this).val();
+      var index = rules_activities.map(function(e) { return e.name; }).indexOf(id);
+      rules_activities[index].operator = val;
   });
 //
   //change action for search textbox, determines if the input is a tag or just a title search
@@ -1468,7 +1548,7 @@ function get_course() {
 
                                     <input type="text" class="form-control" id="activity-txt" placeholder="Value" style="width:20%">
 
-                                    <input type="button" id="activity-submit" class="form-control btn-primary" value="Add Rule">
+                                    <input type="button" id="activity-submit" class="form-control btn-primary submit-Btn" value="Add Rule">
                                 </div>
                             </div><br>
                         </div>
@@ -1492,7 +1572,7 @@ function get_course() {
 
                                     <input type="text" class="form-control" id="user-txt" placeholder="Value" style="width:20%">
 
-                                    <input type="button" id="user-submit" class="form-control btn-primary" value="Add Rule">
+                                    <input type="button" id="user-submit" class="form-control btn-primary submit-Btn" value="Add Rule">
                                 </div>
                             </div><br>
                     </div>
@@ -1517,7 +1597,7 @@ function get_course() {
 
                                     <input type="text" class="form-control" id="context-txt" placeholder="Value" style="width:20%">
 
-                                    <input type="button" id="user-submit" class="form-control btn-primary" value="Add Rule">
+                                    <input type="button" id="context-submit" class="form-control btn-primary submit-Btn" value="Add Rule">
                                 </div>
                             </div><br>
                     </div>
