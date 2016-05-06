@@ -203,16 +203,20 @@
                 <button type="button" class="btn btn-danger deleteAndBtn" style="float:right;margin-left:5px">Remove</button></span>[[/and]]
                 <br>
 
-                <div id="then[[rule_id]]" style="display:none">
+                <div class="form-inline" id="then[[rule_id]]" style="display:none">
                     <div>
                     <br>
-                        <label for="precondition-[[rule_id]]"><em>Then</em> <b>Pre-Condition</b> is:</label>
-                        <select id="precondition-[[rule_id]]" class="form-control selectThen" style="width:50%">
+                        <label for="precondition-[[rule_id]]"><em>Then</em> <b>Pre-Condition</b> is:  </label>
+                        <select id="precondition-[[rule_id]]" class="form-control selectThen" style="width:25%">
                             <option value=''></option>
                             <option value="skip">Skip</option>
                             <option value="stopForwardTraversal">Stop Forward Traversal</option>
                             <option value="disabled">Disabled</option>
                             <option value="enabled">Enabled</option>
+                        </select>
+                        <label for="applyto-[[rule_id]]" style="margin-left:5px"><em>Apply</em> <b>to Activity:</b>  </label>
+                        <select id="applyto-[[rule_id]]" class="form-control applyTo" style="width:25%">
+
                         </select>
                     </div>
                 </div><br>
@@ -308,6 +312,7 @@
       this.available_until = null;
       this.is_container = is_container;
       this.is_visible = true;
+      this.rules = '';
     };
 
 
@@ -968,7 +973,7 @@ function get_course() {
       $(window).load(function() {
           rules_activities = [];
           rule_history = [];
-          conditions = [];
+          //conditions = [];
           if (learning_activities.length != 0) {
               $.each(learning_activities, function (index, value) {
                   if (typeof value === 'undefined' || value.root_id == null) return;
@@ -976,8 +981,6 @@ function get_course() {
                           .attr("value", value.id)
                           .attr("uri", value.uri)
                           .text(value.name));
-                  //var rules={'name':value.name,'id': value.id};
-                  //rules_activities.push(rules);
               })
           }
       });
@@ -1000,6 +1003,7 @@ function get_course() {
 
   contador=0;
   $("body").on('click', '.submit-Btn' ,function(){
+      $("#rulebuilder-footer").show();
       var btntype = $(this).attr('id').split('-')[0];
       var name = ($('#activity-select option:selected').html()).replace(/\s/g, "_");
       var uri = ($('#activity-select option:selected').attr('uri'));
@@ -1093,6 +1097,13 @@ function get_course() {
 
       }
       rule_history.push(name);
+      $.each(learning_activities, function (index, value) {
+                  if (typeof value === 'undefined' || value.root_id == null) return;
+                  $("#applyto-"+name+contador).append($("<option></option>")
+                          .attr("value", value.id)
+                          .attr("uri", value.uri)
+                          .text(value.name));
+              })
   });
 
   $('body').on('click', '.deleteRuleBtn', function(){
@@ -1123,8 +1134,13 @@ function get_course() {
       var val = $(this).val();
       var index = rules_activities.map(function(e) { return e.name; }).indexOf(id);
       rules_activities[index].precondition = val;
-      $("#span-"+id).empty();
-      $('#span-'+id).append(" Then " + value);
+      if ($("#and-"+id).length > 0){
+          $('#and-'+id).append("<em> Then </em>" + value);
+      }
+      else{
+          $("#span-"+id).empty();
+          $('#span-'+id).append("<em> Then </em>" + value);
+      }
       $("#then"+id).slideToggle('fast', function(){
       });
   });
@@ -1135,6 +1151,43 @@ function get_course() {
       var index = rules_activities.map(function(e) { return e.name; }).indexOf(id);
       rules_activities[index].operator = val;
   });
+
+  $('body').on('change', '.applyTo', function(){
+      var id = $(this).attr('id').split('-')[1];
+      var val = $(this).val();
+      var index = rules_activities.map(function(e) { return e.name; }).indexOf(id);
+      rules_activities[index].applyto = val;
+  });
+
+  $('body').on('click',"#save-rules",function(){
+      rule_builder();
+      var index = learning_activities.map(function(e) { return e.order_in_container; }).indexOf(0);
+      learning_activities[index].rules = JSON.stringify(rules_activities);
+  });
+
+  function rule_builder(){
+      $.each(rules_activities, function(index, value){
+          var activity_id = value.id;
+          var activity_uri = value.uri;
+          var rule = '';
+          if (value.if != '') {
+              rule = "if get_attr('" + activity_uri + "','" + value.if.option + "') "+value.if.operator+" '" + value.if.value + "': \n";
+              if (value.precondition != ''){
+                  rule = rule + "    activity['pre_condition'] = '"+value.precondition+"'"
+              }
+          }
+
+          if (value.applyto){
+              learning_activities[value.applyto].pre_condition_rule = rule;
+          }
+          else{
+              learning_activities[activity_id].pre_condition_rule = rule;
+          }
+          console.log(rule);
+      })
+  }
+
+
 //
   //change action for search textbox, determines if the input is a tag or just a title search
   $("body").on('change', "#txtname", function(){
@@ -1559,9 +1612,9 @@ function get_course() {
                                     </select>
 
                                     <select class="form-control" id="activity-operators" style="width:20%">
-                                        <option value="equals">Equals</option>
-                                        <option value="more">More than</option>
-                                        <option value="less">Less than</option>
+                                        <option value="==">Equals</option>
+                                        <option value=">">More than</option>
+                                        <option value="<">Less than</option>
                                         <option value="not">Not Equal than</option>
                                     </select>
 
@@ -1625,6 +1678,10 @@ function get_course() {
                         <div id="rules-body" class="panel-body">
 
                         </div>
+                    </div>
+                    <div class="modal-footer" id="rulebuilder-footer" style="display: none">
+                        <input type="button" class="col-lg-5 btn btn-primary" id="save-rules" value="Save Rules">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div><!-- /.modal-content -->
