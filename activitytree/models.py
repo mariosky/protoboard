@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+
 from FIS import Text_Verbal
 # Create your models here.
 
@@ -54,7 +55,7 @@ class LearningActivity(models.Model):
     is_visible = models.BooleanField(default=True)
 
     order_in_container = models.PositiveIntegerField(default=0)
-
+    rules = models.TextField(blank=True)
 
     def get_children(self, recursive = False):
         l=[]

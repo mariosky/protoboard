@@ -65,6 +65,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
             root.available_from =activity['learning_activity']['available_from']
             root.description =activity['learning_activity']['description']
             root.image = activity['learning_activity']['image']
+            root.rules = activity['learning_activity']['rules'] or ""
             root.pre_condition_rule =activity['learning_activity']['pre_condition_rule'] or ""
             root.rollup_rule  = ('rollup_rule' in activity['learning_activity'] and  activity['learning_activity']['rollup_rule']) or ""
             root.save()
@@ -87,6 +88,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
             rollup_rule  =activity['learning_activity']['rollup_rule'],
             is_container = activity['learning_activity']['is_container'],
             is_visible = activity['learning_activity']['is_visible'],
+            rules=activity['learning_activity']['rules'] or "",
             order_in_container = activity['learning_activity']['order_in_container'],
             choice_exit = activity['learning_activity']['choice_exit'],
             rollup_progress= activity['learning_activity']['rollup_progress'])
@@ -127,6 +129,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
         learning_activity.is_visible = activity['learning_activity']['is_visible']
         learning_activity.order_in_container = activity['learning_activity']['order_in_container']
         learning_activity.choice_exit = activity['learning_activity']['choice_exit']
+        learning_activity.rules = activity['learning_activity']['rules'] or ""
         learning_activity.rollup_progress= ('rollup_progress' in activity['learning_activity'] and activity['learning_activity']['rollup_progress']) or ""
         print activity['learning_activity']['name'],activity['learning_activity']['choice_exit']
         learning_activity.save()

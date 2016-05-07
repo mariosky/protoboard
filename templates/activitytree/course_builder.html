@@ -312,14 +312,15 @@
       this.available_until = null;
       this.is_container = is_container;
       this.is_visible = true;
-      this.rules = '';
+      this.rules = "";
     };
 
 
 
 
 
-     learning_activities = [];
+      learning_activities = [];
+      rules_activities = [];
 
       //alert( {{ course_id }} );
 
@@ -417,7 +418,8 @@
              "id": '{{ course_id }}',
              "order": 0,
              "children":tree,
-             "learning_activity":learning_activities['{{ course_id }}']
+             "learning_activity":learning_activities['{{ course_id }}'],
+             "rules":rules_activities
             }];
 
           console.log(JSON.stringify(course));
@@ -1163,6 +1165,7 @@ function get_course() {
       rule_builder();
       var index = learning_activities.map(function(e) { return e.order_in_container; }).indexOf(0);
       learning_activities[index].rules = JSON.stringify(rules_activities);
+      //learning_activities[index].rules = rules_activities;
   });
 
   function rule_builder(){
