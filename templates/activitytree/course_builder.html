@@ -988,7 +988,6 @@ function get_course() {
               Mustache.parse(rules_template);
               $.each(rules_activities, function (index, value) {
                   contador = parseInt(value.name.substr(value.name.length - 1)) + 1;
-                  console.log(contador);
                   rendered = Mustache.render(rules_template, {
                       rule_id: value.name,
                       rule_name: value.name,
@@ -1004,7 +1003,8 @@ function get_course() {
                               .attr("value", v.id)
                               .attr("uri", v.uri)
                               .text(v.name));
-                  })
+                  });
+                  $("#applyto-"+value.name+" option[value="+value.applyto+"]").prop("selected","selected")
               })
           }
 
@@ -1225,6 +1225,11 @@ function get_course() {
   }
 
   function rule_builder(){
+      $.each(learning_activities, function (index, value) {
+          if (typeof value === 'undefined' || value.root_id == null) return;
+            value.pre_condition_rule = ''
+      });
+
       $.each(rules_activities, function(index, value){
           var activity_id = value.id;
           var activity_uri = value.uri;
