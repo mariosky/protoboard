@@ -189,7 +189,7 @@
 
 <script id="rules_template" type="x-tmpl-mustache">
 
-            <div class="inline" id="[[rule_id]]">
+            <div class="inline" id="[[rule_id]]" container="[[container_id]]">
                 <h5><span id="">[[#conditions]]IF <em>[[#user]] User [[/user]] [[^user]] [[rule_name]] [[/user]]</em> [[option]] <b>[[operator]]</b> [[value]] [[/conditions]]</span><span id="span-[[rule_id]]"></span>
                 <button type="button" class="btn btn-danger deleteRuleBtn" style="float:right;margin-left:5px">Remove</button>
                 <button type="button" class="btn btn-warning thenRuleBtn" style="float:right">Then</button></h5>
@@ -369,8 +369,6 @@
                     });
 
 
-
-
     });
 
   function tree_to_json(id_selector){
@@ -451,6 +449,7 @@ function get_course() {
                            learning_activities = [];
 
                             traverse(data);
+                            update_ruleselect();
 
                            // Wait.hide();
 
@@ -628,6 +627,7 @@ function get_course() {
       learning_activities[activity_id].state = "Added";
 
 
+
       rendered = Mustache.render(activity_template, { activity_id:activity_id, activity_name:"Activity Name"});
       $("#sTree2").append(rendered);
     });
@@ -803,8 +803,7 @@ function get_course() {
       $(escaped_container_id).find('.container_name').first().text(learning_activities[container_id].name);
 
       }
-
-
+      update_ruleselect();
       $('#modalContainer').modal('hide');
 
     });
@@ -973,18 +972,42 @@ function get_course() {
 //rule builder modal options
   $(document).ready(function(){
       $(window).load(function() {
+          contador=0;
           rules_activities = [];
           rule_history = [];
-          //conditions = [];
-          if (learning_activities.length != 0) {
-              $.each(learning_activities, function (index, value) {
-                  if (typeof value === 'undefined' || value.root_id == null) return;
-                  $("#activity-select").append($("<option></option>")
-                          .attr("value", value.id)
-                          .attr("uri", value.uri)
-                          .text(value.name));
+          var index = learning_activities.map(function(e) { return e.order_in_container; }).indexOf(0);
+          var rules = learning_activities[index].rules;
+          if (rules == ''){
+              console.log('No rules');
+          }
+          else{
+              $("#rulebuilder-footer").show();
+              rules_activities = JSON.parse(learning_activities[index].rules);
+              Mustache.tags = ['[[', ']]'];
+              var rules_template = $('#rules_template').html();
+              Mustache.parse(rules_template);
+              $.each(rules_activities, function (index, value) {
+                  contador = parseInt(value.name.substr(value.name.length - 1)) + 1;
+                  console.log(contador);
+                  rendered = Mustache.render(rules_template, {
+                      rule_id: value.name,
+                      rule_name: value.name,
+                      conditions: value.if,
+                      and: value.then,
+                      user: value.user,
+                      container_id: value.applyto
+                  });
+                  $("#rules-body").append(rendered);
+                  $.each(learning_activities, function (i, v) {
+                      if (typeof v === 'undefined' || v.root_id == null) return;
+                      $("#applyto-"+value.name).append($("<option></option>")
+                              .attr("value", v.id)
+                              .attr("uri", v.uri)
+                              .text(v.name));
+                  })
               })
           }
+
       });
   });
 
@@ -1003,7 +1026,6 @@ function get_course() {
       })
   });
 
-  contador=0;
   $("body").on('click', '.submit-Btn' ,function(){
       $("#rulebuilder-footer").show();
       var btntype = $(this).attr('id').split('-')[0];
@@ -1034,11 +1056,37 @@ function get_course() {
       Mustache.tags = ['[[', ']]'];
       var rules_template = $('#rules_template').html();
       Mustache.parse(rules_template);
+      var rules={'name':name+contador,'uri':uri, 'id': activity_id, 'applyto': activity_id ,'rule': '','if':'','operator':'','then':''};
+      var condition = {'rule':'','option':option,'operator':operator,'value':value};
 
-      if (rule_history.length >= 1){
-          if(rule_history[rule_history.length-1] == name){
-              var rules={'name':name+contador,'uri':uri, 'id': activity_id, 'rule': '','if':'','operator':'','then':''};
-              var condition = {'rule':'','option':option,'operator':operator,'value':value};
+      if (rule_history.length == 0){
+          if (user == true){
+              condition['user']='true'
+          }
+          else if (context == true){
+              condition['context'] = 'true'
+          }
+          rules['if'] = condition;
+          rules_activities.push(rules);
+          rendered = Mustache.render(rules_template, {
+              rule_id: rules['name'],
+              rule_name: rules['name'],
+              conditions: rules['if'],
+              user: rules['user'],
+              container_id: rules['applyto']
+          });
+          $("#rules-body").append(rendered);
+          rule_history.push(name);
+          $.each(learning_activities, function (index, value) {
+                  if (typeof value === 'undefined' || value.root_id == null) return;
+                  $("#applyto-"+name+contador).append($("<option></option>")
+                          .attr("value", value.id)
+                          .attr("uri", value.uri)
+                          .text(value.name));
+              })
+      }
+      else if (rule_history.length == 1){
+          if (rule_history[rule_history.length-1] == name){
               var index = rules_activities.length;
               if (user == true){
               condition['user']='true'
@@ -1053,14 +1101,22 @@ function get_course() {
                   rule_name: rules_activities[index-1].name,
                   conditions: rules_activities[index-1].if,
                   and: rules_activities[index-1].then,
-                  user: rules_activities[index-1].user
+                  user: rules_activities[index-1].user,
+                  container_id: rules_activities[index-1].applyto
               });
               $("#rules-body").append(rendered);
+              rule_history = [];
+              $.each(learning_activities, function (index, value) {
+                  if (typeof value === 'undefined' || value.root_id == null) return;
+                  $("#applyto-"+name+contador).append($("<option></option>")
+                          .attr("value", value.id)
+                          .attr("uri", value.uri)
+                          .text(value.name));
+              });
+              contador=contador+1;
           }
           else{
               contador=contador+1;
-              rules={'name':name+contador,'uri':uri, 'id': activity_id, 'rule': '','if':'','operator':'and','then':''};
-              condition = {'rule':'','option':option,'operator':operator,'value':value};
               if (user == true){
                   condition['user']='true'
               }
@@ -1068,6 +1124,7 @@ function get_course() {
                   condition['context'] = 'true'
               }
               rules['if'] = condition;
+              rules['name'] = name + contador;
               rules_activities.push(rules);
               rendered = Mustache.render(rules_template, {
                   rule_id: rules['name'],
@@ -1076,40 +1133,26 @@ function get_course() {
                   user: rules['user']
               });
               $("#rules-body").append(rendered);
-          }
-      }
-      else{
-          rules={'name':name+contador,'uri':uri, 'id': activity_id, 'rule': '','if':'','operator':'and','then':''};
-          condition = {'rule':'','option':option,'operator':operator,'value':value};
-          if (user == true){
-              condition['user']='true'
-          }
-          else if (context == true){
-              condition['context'] = 'true'
-          }
-          rules['if'] = condition;
-          rules_activities.push(rules);
-          rendered = Mustache.render(rules_template, {
-              rule_id: rules['name'],
-              rule_name: rules['name'],
-              conditions: rules['if'],
-              user: rules['user']
-          });
-          $("#rules-body").append(rendered);
-
-      }
-      rule_history.push(name);
-      $.each(learning_activities, function (index, value) {
+              rule_history.shift();
+              rule_history.push(name);
+              $.each(learning_activities, function (index, value) {
                   if (typeof value === 'undefined' || value.root_id == null) return;
                   $("#applyto-"+name+contador).append($("<option></option>")
                           .attr("value", value.id)
                           .attr("uri", value.uri)
                           .text(value.name));
               })
+          }
+      }
+
   });
 
   $('body').on('click', '.deleteRuleBtn', function(){
       var activity_to_delete = $(this).parentsUntil('div').parent().attr("id");
+      var container = $(this).parentsUntil('div').parent().attr("container");
+      console.log(container);
+      var index = learning_activities.map(function(e) { return e.id; }).indexOf(parseInt(container));
+      learning_activities[index].pre_condition_rule = "";
       $("#"+activity_to_delete).remove();
       rules_activities = $.grep(rules_activities,
                    function(o,i) { return o.name === activity_to_delete; },
@@ -1167,6 +1210,19 @@ function get_course() {
       learning_activities[index].rules = JSON.stringify(rules_activities);
       //learning_activities[index].rules = rules_activities;
   });
+
+  function update_ruleselect(){
+      $("body #activity-select").empty();
+      if (learning_activities.length != 0) {
+              $.each(learning_activities, function (index, value) {
+                  if (typeof value === 'undefined' || value.root_id == null) return;
+                  $("body #activity-select").append($("<option></option>")
+                          .attr("value", value.id)
+                          .attr("uri", value.uri)
+                          .text(value.name));
+              })
+          }
+  }
 
   function rule_builder(){
       $.each(rules_activities, function(index, value){
@@ -1683,8 +1739,8 @@ function get_course() {
                         </div>
                     </div>
                     <div class="modal-footer" id="rulebuilder-footer" style="display: none">
-                        <input type="button" class="col-lg-5 btn btn-primary" id="save-rules" value="Save Rules">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <input type="button" class="btn btn-primary" id="save-rules" value="Save Rules">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                     </div>
                 </div>
             </div><!-- /.modal-content -->
