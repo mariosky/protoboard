@@ -16,12 +16,33 @@ if __name__ == "__main__":
 import json
 from activitytree.models import LearningActivity, Course, AuthorLearningActivity,UserLearningActivity
 from interaction_handler import sql_activity_tree
+import ast
 
 
 def update_course_from_json( json_tree, user):
     activity_tree = json.loads(json_tree)[0]
     print "update_course_from_json",activity_tree
     _traverse_update(activity_tree, user=user)
+
+
+def add_precondition(rule):
+    rule = rule.encode('ascii','ignore')
+    if 'if' in rule:
+        try:
+            rule = ast.literal_eval(rule)
+            if rule['if'] != '':
+                pre = "if get_attr('{0}','{1}') {2} '{3}':\n" \
+                    "    activity['pre_condition']='{4}'".format(rule['uri'], rule['if']['option'], rule['if']['operator'], rule['if']['value'], rule['precondition'])
+                print pre, "PRECONDITION"
+                return pre
+            else:
+                pass
+        except Exception:
+            pass
+    else:
+        pass
+
+    return rule
 
 
 def create_empty_course(url,user, name ='New Course', short_description=""):
@@ -84,7 +105,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
             available_from =activity['learning_activity']['available_from'],
             description =activity['learning_activity']['description'],
             image = activity['learning_activity']['image'],
-            pre_condition_rule =activity['learning_activity']['pre_condition_rule'] or "",
+            pre_condition_rule = add_precondition(activity['learning_activity']['pre_condition_rule']) or "",
             rollup_rule  =activity['learning_activity']['rollup_rule'],
             is_container = activity['learning_activity']['is_container'],
             is_visible = activity['learning_activity']['is_visible'],
@@ -123,7 +144,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
         learning_activity.available_from =activity['learning_activity']['available_from']
         learning_activity.description =activity['learning_activity']['description']
         learning_activity.image = activity['learning_activity']['image']
-        learning_activity.pre_condition_rule =activity['learning_activity']['pre_condition_rule'] or ""
+        learning_activity.pre_condition_rule = add_precondition(activity['learning_activity']['pre_condition_rule']) or ""
         learning_activity.rollup_rule  = ('rollup_rule' in activity['learning_activity'] and  activity['learning_activity']['rollup_rule']) or ""
         learning_activity.is_container = activity['learning_activity']['is_container']
         learning_activity.is_visible = activity['learning_activity']['is_visible']

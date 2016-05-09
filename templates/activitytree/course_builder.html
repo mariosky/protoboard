@@ -896,7 +896,7 @@ function get_course() {
       var container_id  = $('#PreconditionURI').val();
       var editor = ace.edit("editor1");
 
-      learning_activities[container_id].pre_condition_rule = editor.getValue();
+      //learning_activities[container_id].pre_condition_rule = editor.getValue();
       console.log(learning_activities[container_id]);
       $('#modalPrecondition').modal('hide');
 
@@ -990,7 +990,7 @@ function get_course() {
                   contador = parseInt(value.name.substr(value.name.length - 1)) + 1;
                   rendered = Mustache.render(rules_template, {
                       rule_id: value.name,
-                      rule_name: value.name,
+                      rule_name: value.act_name,
                       conditions: value.if,
                       and: value.then,
                       user: value.user,
@@ -1030,6 +1030,7 @@ function get_course() {
       $("#rulebuilder-footer").show();
       var btntype = $(this).attr('id').split('-')[0];
       var name = ($('#activity-select option:selected').html()).replace(/\s/g, "_");
+      var act_name = $('#activity-select option:selected').html();
       var uri = ($('#activity-select option:selected').attr('uri'));
       var activity_id=$("#activity-select").val();
       if (btntype == 'activity'){
@@ -1056,8 +1057,8 @@ function get_course() {
       Mustache.tags = ['[[', ']]'];
       var rules_template = $('#rules_template').html();
       Mustache.parse(rules_template);
-      var rules={'name':name+contador,'uri':uri, 'id': activity_id, 'applyto': activity_id ,'rule': '','if':'','operator':'','then':''};
-      var condition = {'rule':'','option':option,'operator':operator,'value':value};
+      var rules={'name':name+contador,'uri':uri, 'act_name':act_name, 'id': activity_id, 'applyto': activity_id , 'if':'','operator':'','then':''};
+      var condition = {'option':option,'operator':operator,'value':value};
 
       if (rule_history.length == 0){
           if (user == true){
@@ -1070,7 +1071,7 @@ function get_course() {
           rules_activities.push(rules);
           rendered = Mustache.render(rules_template, {
               rule_id: rules['name'],
-              rule_name: rules['name'],
+              rule_name: rules['act_name'],
               conditions: rules['if'],
               user: rules['user'],
               container_id: rules['applyto']
@@ -1098,7 +1099,7 @@ function get_course() {
               $("#"+rules_activities[index-1].name).remove();
               rendered = Mustache.render(rules_template, {
                   rule_id: rules_activities[index-1].name,
-                  rule_name: rules_activities[index-1].name,
+                  rule_name: rules_activities[index-1].act_name,
                   conditions: rules_activities[index-1].if,
                   and: rules_activities[index-1].then,
                   user: rules_activities[index-1].user,
@@ -1128,7 +1129,7 @@ function get_course() {
               rules_activities.push(rules);
               rendered = Mustache.render(rules_template, {
                   rule_id: rules['name'],
-                  rule_name: rules['name'],
+                  rule_name: rules['act_name'],
                   conditions: rules['if'],
                   user: rules['user']
               });
@@ -1233,21 +1234,21 @@ function get_course() {
       $.each(rules_activities, function(index, value){
           var activity_id = value.id;
           var activity_uri = value.uri;
-          var rule = '';
-          if (value.if != '') {
+
+          /*if (value.if != '') {
               rule = "if get_attr('" + activity_uri + "','" + value.if.option + "') "+value.if.operator+" '" + value.if.value + "': \n";
               if (value.precondition != ''){
                   rule = rule + "    activity['pre_condition'] = '"+value.precondition+"'"
               }
           }
-
+         */
           if (value.applyto){
-              learning_activities[value.applyto].pre_condition_rule = rule;
+              learning_activities[value.applyto].pre_condition_rule = JSON.stringify(value);
           }
           else{
-              learning_activities[activity_id].pre_condition_rule = rule;
+              learning_activities[activity_id].pre_condition_rule = JSON.stringify(value);
           }
-          console.log(rule);
+
       })
   }
 
