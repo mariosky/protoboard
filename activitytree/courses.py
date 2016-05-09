@@ -26,22 +26,22 @@ def update_course_from_json( json_tree, user):
 
 
 def add_precondition(rule):
-    rule = rule.encode('ascii','ignore')
-    if 'if' in rule:
-        try:
-            rule = ast.literal_eval(rule)
-            if rule['if'] != '':
-                pre = "if get_attr('{0}','{1}') {2} '{3}':\n" \
-                    "    activity['pre_condition']='{4}'".format(rule['uri'], rule['if']['option'], rule['if']['operator'], rule['if']['value'], rule['precondition'])
-                print pre, "PRECONDITION"
-                return pre
-            else:
+    if rule is not None:
+        rule = rule.encode('ascii','ignore')
+        if 'if' in rule:
+            try:
+                rule = ast.literal_eval(rule)
+                if rule['if'] != '':
+                    pre = "if get_attr('{0}','{1}') {2} '{3}':\n" \
+                        "    activity['pre_condition']='{4}'".format(rule['uri'], rule['if']['option'], rule['if']['operator'], rule['if']['value'], rule['precondition'])
+                    print pre, "PRECONDITION"
+                    return pre
+                else:
+                    pass
+            except Exception:
                 pass
-        except Exception:
+        else:
             pass
-    else:
-        pass
-
     return rule
 
 

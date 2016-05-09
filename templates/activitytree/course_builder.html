@@ -203,7 +203,7 @@
                 <button type="button" class="btn btn-danger deleteAndBtn" style="float:right;margin-left:5px">Remove</button></span>[[/and]]
                 <br>
 
-                <div class="form-inline" id="then[[rule_id]]" style="display:none">
+                <div class="form-inline" id="then-[[rule_id]]" style="display:none">
                     <div>
                     <br>
                         <label for="precondition-[[rule_id]]"><em>Then</em> <b>Pre-Condition</b> is:  </label>
@@ -216,7 +216,7 @@
                         </select>
                         <label for="applyto-[[rule_id]]" style="margin-left:5px"><em>Apply</em> <b>to Activity:</b>  </label>
                         <select id="applyto-[[rule_id]]" class="form-control applyTo" style="width:25%">
-
+                            <option value=''></option>
                         </select>
                     </div>
                 </div><br>
@@ -1004,7 +1004,8 @@ function get_course() {
                               .attr("uri", v.uri)
                               .text(v.name));
                   });
-                  $("#applyto-"+value.name+" option[value="+value.applyto+"]").prop("selected","selected")
+                  $("#applyto-"+value.name+" option[value="+value.applyto+"]").prop("selected","selected");
+                  $("#precondition-"+value.name+" option[value="+value.precondition+"]").prop("selected", "selected");
               })
           }
 
@@ -1030,6 +1031,7 @@ function get_course() {
       $("#rulebuilder-footer").show();
       var btntype = $(this).attr('id').split('-')[0];
       var name = ($('#activity-select option:selected').html()).replace(/\s/g, "_");
+      name = name.replace(/\-/g,"_");
       var act_name = $('#activity-select option:selected').html();
       var uri = ($('#activity-select option:selected').attr('uri'));
       var activity_id=$("#activity-select").val();
@@ -1151,7 +1153,6 @@ function get_course() {
   $('body').on('click', '.deleteRuleBtn', function(){
       var activity_to_delete = $(this).parentsUntil('div').parent().attr("id");
       var container = $(this).parentsUntil('div').parent().attr("container");
-      console.log(container);
       var index = learning_activities.map(function(e) { return e.id; }).indexOf(parseInt(container));
       learning_activities[index].pre_condition_rule = "";
       $("#"+activity_to_delete).remove();
@@ -1170,7 +1171,7 @@ function get_course() {
 
   $('body').on('click', '.thenRuleBtn', function(){
       var activity_to_delete = $(this).parentsUntil('div').parent().attr("id");
-      $("#then"+activity_to_delete).slideToggle('fast', function(){
+      $("#then-"+activity_to_delete).slideToggle('fast', function(){
       });
     });
 
@@ -1187,7 +1188,7 @@ function get_course() {
           $("#span-"+id).empty();
           $('#span-'+id).append("<em> Then </em>" + value);
       }
-      $("#then"+id).slideToggle('fast', function(){
+      $("#then+"+id).slideToggle('fast', function(){
       });
   });
 
@@ -1671,16 +1672,16 @@ function get_course() {
                                 </select><br>
                                 <div class="form-inline">
                                     <select class="form-control" id="activity-options" style="width:20%">
-                                        <option value="number_of_attempts">Attempts</option>
+                                        <option value="num_attempts">Attempts</option>
                                         <option value="progress_status">Progress</option>
-                                        <option value="objective">Objective Measure</option>
+                                        <option value="objective_measure">Objective Measure</option>
                                     </select>
 
                                     <select class="form-control" id="activity-operators" style="width:20%">
                                         <option value="==">Equals</option>
                                         <option value=">">More than</option>
                                         <option value="<">Less than</option>
-                                        <option value="not">Not Equal than</option>
+                                        <option value="!=">Different than</option>
                                     </select>
 
                                     <input type="text" class="form-control" id="activity-txt" placeholder="Value" style="width:20%">
@@ -1701,10 +1702,10 @@ function get_course() {
                                     </select>
 
                                     <select class="form-control" id="user-operators" style="width:20%">
-                                        <option value="equals">Equals</option>
-                                        <option value="more">More than</option>
-                                        <option value="less">Less than</option>
-                                        <option value="not">Not Equal than</option>
+                                        <option value="==">Equals</option>
+                                        <option value=">">More than</option>
+                                        <option value="<">Less than</option>
+                                        <option value="!=">Different than</option>
                                     </select>
 
                                     <input type="text" class="form-control" id="user-txt" placeholder="Value" style="width:20%">
@@ -1726,10 +1727,10 @@ function get_course() {
                                     </select>
 
                                     <select class="form-control" id="context-operators" style="width:20%">
-                                        <option value="equals">Equals</option>
-                                        <option value="more">More than</option>
-                                        <option value="less">Less than</option>
-                                        <option value="not">Not Equal than</option>
+                                        <option value="==">Equals</option>
+                                        <option value=">">More than</option>
+                                        <option value="<">Less than</option>
+                                        <option value="!=">Different than</option>
                                     </select>
 
                                     <input type="text" class="form-control" id="context-txt" placeholder="Value" style="width:20%">
