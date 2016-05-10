@@ -56,6 +56,7 @@
             <li><button id="newContainerBtn" type="button" class="btn btn-default navbar-btn">New Container</button></li>
             <li><button id="newActivityBtn" type="button" class="btn btn-default navbar-btn">New Activity</button></li>
             <li><button  id="saveChangesBtn" type="button" class="btn btn-default navbar-btn">Save</button></li>
+            <li><button  id="modalRules" type="button" class="btn btn-default navbar-btn">Rules</button></li>
 
           </ul>
 
@@ -195,6 +196,7 @@
                 <button type="button" class="btn btn-warning thenRuleBtn" style="float:right">Then</button></h5>
 
                 [[#and]]<span id="and-[[rule_id]]"><br> <select id='condition-[[rule_id]]' class="conditionSelect">
+                 <option value=''></option>
                  <option value="and">And</option>
                  <option value="or">Or</option>
                  <option value="not">Not</option>
@@ -1006,10 +1008,18 @@ function get_course() {
                   });
                   $("#applyto-"+value.name+" option[value="+value.applyto+"]").prop("selected","selected");
                   $("#precondition-"+value.name+" option[value="+value.precondition+"]").prop("selected", "selected");
+                  if (value.operator != ''){
+                      $("#condition-"+value.name+" option[value="+value.operator+"]").prop("selected", "selected");
+                  }
+
               })
           }
 
       });
+  });
+
+  $("#modalRules").click(function(){
+      $("#modal-rulebuilder").modal();
   });
 
   $("body").on('click','#usertab', function(){
@@ -1210,7 +1220,7 @@ function get_course() {
       rule_builder();
       var index = learning_activities.map(function(e) { return e.order_in_container; }).indexOf(0);
       learning_activities[index].rules = JSON.stringify(rules_activities);
-      //learning_activities[index].rules = rules_activities;
+      $("#modal-rulebuilder").modal('hide');
   });
 
   function update_ruleselect(){
@@ -1234,15 +1244,7 @@ function get_course() {
 
       $.each(rules_activities, function(index, value){
           var activity_id = value.id;
-          var activity_uri = value.uri;
 
-          /*if (value.if != '') {
-              rule = "if get_attr('" + activity_uri + "','" + value.if.option + "') "+value.if.operator+" '" + value.if.value + "': \n";
-              if (value.precondition != ''){
-                  rule = rule + "    activity['pre_condition'] = '"+value.precondition+"'"
-              }
-          }
-         */
           if (value.applyto){
               learning_activities[value.applyto].pre_condition_rule = JSON.stringify(value);
           }

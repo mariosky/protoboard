@@ -31,10 +31,15 @@ def add_precondition(rule):
         if 'if' in rule:
             try:
                 rule = ast.literal_eval(rule)
-                if rule['if'] != '':
+                if rule['if']['option'] == 'num_attempts':
+                    pre = "if get_attr('{0}','{1}') {2} {3}:\n" \
+                        "    activity['pre_condition']='{4}'".format(rule['uri'], rule['if']['option'], rule['if']['operator'], int(rule['if']['value']), rule['precondition'])
+                    #print pre, "PRECONDITION"
+                    return pre
+                elif rule['if'] != '':
                     pre = "if get_attr('{0}','{1}') {2} '{3}':\n" \
                         "    activity['pre_condition']='{4}'".format(rule['uri'], rule['if']['option'], rule['if']['operator'], rule['if']['value'], rule['precondition'])
-                    print pre, "PRECONDITION"
+                    #print pre, "PRECONDITION"
                     return pre
                 else:
                     pass
@@ -87,7 +92,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
             root.description =activity['learning_activity']['description']
             root.image = activity['learning_activity']['image']
             root.rules = activity['learning_activity']['rules'] or ""
-            root.pre_condition_rule =activity['learning_activity']['pre_condition_rule'] or ""
+            root.pre_condition_rule =add_precondition(activity['learning_activity']['pre_condition_rule']) or ""
             root.rollup_rule  = ('rollup_rule' in activity['learning_activity'] and  activity['learning_activity']['rollup_rule']) or ""
             root.save()
 
