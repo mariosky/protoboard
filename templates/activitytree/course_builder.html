@@ -189,7 +189,7 @@
 <script id="rules_template" type="x-tmpl-mustache">
 
             <div class="inline" id="rule" container="[[container_id]]">
-                <h5><span id="">[[#conditions]]IF <em>[[#user]] User [[/user]] [[^user]] [[rule_name]] [[/user]]</em> [[option]] <b>[[operator]]</b> [[value]] [[/conditions]]</span><span id="span-rule"></span>
+                <h5><span id="">[[#conditions]]IF <em>[[#user]] User [[/user]] [[^user]] [[rule_name]] [[/user]]</em> [[option]] <b>[[operator]]</b> [[value]] [[/conditions]]</span>
                 [[#then]] Then <b>[[then]]</b> [[/then]]
                 <button type="button" class="btn btn-danger deleteRuleBtn" style="float:right;margin-left:5px">Remove</button>
                 <button type="button" class="btn btn-warning thenRuleBtn" style="float:right">Then</button></h5>
@@ -202,7 +202,7 @@
                  [[#user]] <b>User</b> [[/user]] [[option]] <b> [[operator]] </b> [[value]]
                 <button type="button" class="btn btn-danger deleteAndBtn" style="float:right;margin-left:5px">Remove</button></span>[[/and]]
                 <br>
-
+                <span id="span-rule" style="font-size: medium"></span>
                 <div class="form-inline" id="then-condition">
                     <div>
                     <br>
@@ -858,6 +858,8 @@ function get_course() {
 
     var container_id  = $( this).parentsUntil('li').parent().attr("id");
     var index = rules_activities.map(function(e) { return e.applyto; }).indexOf(container_id);
+    var learning_activity = learning_activities[container_id];
+    $("#modal-rulebuilder").find(".modal-title").text("Rule Builder - " + learning_activity.name);
     if (index != -1){
         $("#container_rule_id").val(container_id);
         populate_conditions(rules_activities[index],container_id);
@@ -867,9 +869,9 @@ function get_course() {
         $("#container_rule_id").val(container_id);
         $("#modal-rulebuilder").modal()
     }
-    var learning_activity = learning_activities[container_id];
+/*
     //$('#containerPrecondition').val(learning_activity.pre_condition_rule );
-    $('#PreconditionURI').val(container_id);
+    //$('#PreconditionURI').val(container_id);
     var editor = ace.edit("editor1");
 
     if (learning_activity.pre_condition_rule == null || learning_activity.pre_condition_rule == ""){
@@ -894,7 +896,7 @@ function get_course() {
 
 
     //$('#modalPrecondition').modal();
-
+*/
   });
 
 
@@ -978,7 +980,6 @@ function get_course() {
 //rule builder modal options
   $(document).ready(function(){
       $(window).load(function() {
-          contador=0;
           rules_activities = [];
           rule_history = [];
           var index = learning_activities.map(function(e) { return e.order_in_container; }).indexOf(0);
@@ -1013,6 +1014,17 @@ function get_course() {
       rule_history = [];
   });
 
+  $("body").on('change', "#activity-options", function(){
+      if ($(this).val() == "progress_status"){
+          $("#activity-value-select").show();
+          $("#activity-txt").hide()
+      }
+      else{
+          $("#activity-value-select").hide();
+          $("#activity-txt").show()
+      }
+  });
+
   $("body").on('click', '.submit-Btn' ,function(){
       $("#rulebuilder-footer").show();
       var btntype = $(this).attr('id').split('-')[0];
@@ -1023,7 +1035,12 @@ function get_course() {
       if (btntype == 'activity'){
           var option = $('#activity-options').val();
           var operator = $("#activity-operators").val();
-          var value = $("#activity-txt").val();
+          if ($("#activity-value-select").is(":visible")){
+              var value = $("#activity-value-select").val();
+          }
+          else{
+              value = $("#activity-txt").val();
+          }
           $("#"+btntype+"-txt").val('');
       }
       else if (btntype == 'user'){
@@ -1056,18 +1073,11 @@ function get_course() {
           }
           rules['if'] = condition;
           index = rules_activities.map(function(e) { return e.applyto; }).indexOf(container_id);
-          console.log(index, container_id);
           if (index != -1){
               rules_activities.splice(index,1)
           }
           rules_activities.push(rules);
-          rendered = Mustache.render(rules_template, {
-              rule_name: rules['act_name'],
-              conditions: rules['if'],
-              user: rules['user'],
-              container_id: rules['applyto']
-          });
-          $("#rules-body").append(rendered);
+          populate_conditions(rules, container_id);
           rule_history.push(act_name);
       }
       else if (rule_history.length == 1){
@@ -1080,21 +1090,12 @@ function get_course() {
                   condition['context'] = 'true'
               }
               rules_activities[index-1].then = condition;
-              rendered = Mustache.render(rules_template, {
-                  rule_name: rules_activities[index-1].act_name,
-                  conditions: rules_activities[index-1].if,
-                  and: rules_activities[index-1].then,
-                  user: rules_activities[index-1].user,
-                  container_id: rules_activities[index-1].applyto
-              });
-              $("#rules-body").append(rendered);
+              populate_conditions(rules_activities[index-1], container_id);
               rule_history = [];
-              contador=contador+1;
           }
       }
 
   });
-
 
   $('body').on('click', '.deleteRuleBtn', function(){
       var container = $(this).parentsUntil('div').parent().attr("container");
@@ -1120,17 +1121,10 @@ function get_course() {
 
   $('body').on('change', '.selectThen', function(){
       var container_id = $(this).attr('container');
-      var value = $("option:selected", this).html();
       var val = $(this).val();
       var index = rules_activities.map(function(e) { return e.applyto; }).indexOf(container_id);
       rules_activities[index].precondition = val;
-      if ($("#and-condition").length > 0){
-          $('#and-condition').append("<em> Then </em>" + value);
-      }
-      else{
-          $("#span-rule").empty();
-          $('#span-rule').append("<em> Then </em>" + value);
-      }
+      populate_conditions(rules_activities[index],container_id);
       $("#then-condition").slideToggle('fast', function(){
       });
   });
@@ -1631,6 +1625,11 @@ function get_course() {
                                     </select>
 
                                     <input type="text" class="form-control" id="activity-txt" placeholder="Value" style="width:20%">
+
+                                    <select class="form-control" id="activity-value-select" style="display:none;width:20%">
+                                        <option value="completed">Completed</option>
+                                        <option value="incomplete">Incomplete</option>
+                                    </select>
 
                                     <input type="button" id="activity-submit" class="form-control btn-primary submit-Btn" value="Add Rule">
                                 </div>
