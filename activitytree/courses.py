@@ -33,12 +33,15 @@ def add_precondition(rule):
                 rule = ast.literal_eval(rule)
                 if rule['if']['option'] == 'num_attempts':
                     pre = "if get_attr('{0}','{1}') {2} {3}:\n" \
-                        "    activity['pre_condition']='{4}'".format(rule['uri'], rule['if']['option'], rule['if']['operator'], int(rule['if']['value']), rule['precondition'])
-                    #print pre, "PRECONDITION"
+                        "    activity['pre_condition']='{4}'\n" \
+                          "else:\n" \
+                        "    activity['pre_condition']=''".format(rule['uri'], rule['if']['option'], rule['if']['operator'], int(rule['if']['value']), rule['precondition'])
                     return pre
                 elif rule['if'] != '':
                     pre = "if get_attr('{0}','{1}') {2} '{3}':\n" \
-                        "    activity['pre_condition']='{4}'".format(rule['uri'], rule['if']['option'], rule['if']['operator'], rule['if']['value'], rule['precondition'])
+                        "    activity['pre_condition']='{4}'\n" \
+                          "else:\n" \
+                        "    activity['pre_condition']=''".format(rule['uri'], rule['if']['option'], rule['if']['operator'], rule['if']['value'], rule['precondition'])
                     #print pre, "PRECONDITION"
                     return pre
                 else:
