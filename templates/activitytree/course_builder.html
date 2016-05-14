@@ -644,6 +644,9 @@ function get_course() {
             alert("Delete:" + activity_to_delete + learning_activities[activity_to_delete] );
             learning_activities[activity_to_delete].state ="Deleted";
             $( this).parentsUntil('li').parent().addClass("hidden");
+            rules_activities = $.grep(rules_activities,
+                   function(o,i) { return o.applyto === activity_to_delete; },
+                   true);
 
         }
     });
@@ -857,18 +860,37 @@ function get_course() {
   $('body').on('click', '.containerPrecondition', function(){
 
     var container_id  = $( this).parentsUntil('li').parent().attr("id");
-    var index = rules_activities.map(function(e) { return e.applyto; }).indexOf(container_id);
+    //var index = rules_activities.map(function(e) { return e.applyto; }).indexOf(container_id);
     var learning_activity = learning_activities[container_id];
     $("#modal-rulebuilder").find(".modal-title").text("Rule Builder - " + learning_activity.name);
-    if (index != -1){
+    $("#container_rule_id").val(container_id);
+      if (learning_activity.rules == ''){
+          $("#rules-body").empty();
+          $("#modal-rulebuilder").modal()
+      }
+      else{
+          try{
+              var rule = JSON.parse(learning_activity.rules);
+              rule['applyto'] = container_id;
+              learning_activities[container_id].rules = JSON.stringify(rule);
+              populate_conditions(rule, container_id);
+          }
+          catch(error){
+              console.log(error)
+          }
+      }
+
+    /*if (index != -1){
         $("#container_rule_id").val(container_id);
-        populate_conditions(rules_activities[index],container_id);
+        populate_conditions(learning_activities[container_id].rules,container_id);
     }
     else{
         $("#rules-body").empty();
         $("#container_rule_id").val(container_id);
         $("#modal-rulebuilder").modal()
     }
+    */
+
 /*
     //$('#containerPrecondition').val(learning_activity.pre_condition_rule );
     //$('#PreconditionURI').val(container_id);
@@ -984,37 +1006,42 @@ function get_course() {
           rule_history = [];
           var index = learning_activities.map(function(e) { return e.order_in_container; }).indexOf(0);
           var rules = learning_activities[index].rules;
-          if (rules == ''){
+          if (rules == '' || rules == '[]'){
               console.log('No rules');
           }
           else{
-              $("#rulebuilder-footer").show();
-              rules_activities = JSON.parse(learning_activities[index].rules);
+              //rules_activities = JSON.parse(learning_activities[index].rules);
+              $.each(learning_activities, function (index, value) {
+                  if (typeof value === 'undefined' || value.root_id == null || value.rules == '') return;
+                      rules_activities.push(JSON.parse(value.rules))
+              });
           }
 
       });
   });
 
-  $("body").on('click','#usertab', function(){
+  var body = $('body');
+
+  body.on('click','#usertab', function(){
       $("#userdiv").slideToggle('fast',function(){
       })
   });
 
-  $("body").on('click','#activitytab', function(){
+  body.on('click','#activitytab', function(){
       $("#activitydiv").slideToggle('fast',function(){
       })
   });
 
-  $("body").on('click','#contexttab', function(){
+  body.on('click','#contexttab', function(){
       $("#contextdiv").slideToggle('fast',function(){
       })
   });
 
-  $("body").on('change', "#activity-select", function(){
+  body.on('change', "#activity-select", function(){
       rule_history = [];
   });
 
-  $("body").on('change', "#activity-options", function(){
+  body.on('change', "#activity-options", function(){
       if ($(this).val() == "progress_status"){
           $("#activity-value-select").show();
           $("#activity-txt").hide()
@@ -1025,7 +1052,24 @@ function get_course() {
       }
   });
 
-  $("body").on('change', "#context-options", function(){
+  body.on('change', "#activity-txt", function(){
+      var regex = /^[0-9]*(?:\.\d{1,2})?$/;    // allow only numbers [0-9]
+      if( !regex.test( $(this).val()) ) {
+          $(this).popover({
+              title: "Error",
+              content: "Only numbers accepted",
+              placement: 'top'
+          });
+          $(this).popover('show');
+          $("#activity-submit").prop('disabled', true);
+      }
+      else{
+          $(this).popover('destroy');
+          $("#activity-submit").prop('disabled', false);
+      }
+  });
+
+  body.on('change', "#context-options", function(){
       if ($(this).val() == "dayof"){
           $("#context-value-select").show();
           $("#context-txt").hide()
@@ -1036,8 +1080,7 @@ function get_course() {
       }
   });
 
-  $("body").on('click', '.submit-Btn' ,function(){
-      $("#rulebuilder-footer").show();
+  body.on('click', '.submit-Btn' ,function(){
       var btntype = $(this).attr('id').split('-')[0];
       var act_name = $('#activity-select option:selected').html();
       var uri = ($('#activity-select option:selected').attr('uri'));
@@ -1066,7 +1109,7 @@ function get_course() {
           option = $('#context-options').val();
           operator = $("#context-operators").val();
           if ($("#context-value-select").is(":visible")){
-              var value = $("#context-value-select").val();
+              value = $("#context-value-select").val();
           }
           else{
               value = $("#context-txt").val();
@@ -1110,29 +1153,31 @@ function get_course() {
 
   });
 
-  $('body').on('click', '.deleteRuleBtn', function(){
+  body.on('click', '.deleteRuleBtn', function(){
       var container = $(this).parentsUntil('div').parent().attr("container");
       var index = learning_activities.map(function(e) { return e.id; }).indexOf(parseInt(container));
       learning_activities[index].pre_condition_rule = "";
+      learning_activities[index].rules = "";
       $("#rule").remove();
       rules_activities = $.grep(rules_activities,
                    function(o,i) { return o.applyto === container; },
                    true);
+      rule_history = [];
     });
 
-  $('body').on('click', '.deleteAndBtn', function(){
+  body.on('click', '.deleteAndBtn', function(){
       var container = $(this).parentsUntil('div').parent().attr("container");
       $("#and-condition").remove();
       var index = rules_activities.map(function(e) { return e.applyto; }).indexOf(container);
       rules_activities[index].then = '';
     });
 
-  $('body').on('click', '.thenRuleBtn', function(){
+  body.on('click', '.thenRuleBtn', function(){
       $("#then-condition").slideToggle('fast', function(){
       });
     });
 
-  $('body').on('change', '.selectThen', function(){
+  body.on('change', '.selectThen', function(){
       var container_id = $(this).attr('container');
       var val = $(this).val();
       var index = rules_activities.map(function(e) { return e.applyto; }).indexOf(container_id);
@@ -1142,20 +1187,21 @@ function get_course() {
       });
   });
 
-  $('body').on('change', '.conditionSelect', function(){
+  body.on('change', '.conditionSelect', function(){
       var id = $(this).parentsUntil('div').parent().attr("container");
       var val = $(this).val();
       var index = rules_activities.map(function(e) { return e.applyto; }).indexOf(id);
       rules_activities[index].operator = val;
   });
 
-  $('body').on('click',"#save-rules",function(){
+  body.on('click',"#save-rules",function(){
       rule_builder();
       var index = learning_activities.map(function(e) { return e.order_in_container; }).indexOf(0);
       learning_activities[index].rules = JSON.stringify(rules_activities);
       $("#modal-rulebuilder").modal('hide');
   });
 
+  //updates activity select dropdownlist with the different activities in the course (learning_activities)
   function update_ruleselect(){
       $("body #activity-select").empty();
       if (learning_activities.length != 0) {
@@ -1176,18 +1222,12 @@ function get_course() {
       });
 
       $.each(rules_activities, function(index, value){
-          var activity_id = value.id;
-
-          if (value.applyto){
-              learning_activities[value.applyto].pre_condition_rule = JSON.stringify(value);
-          }
-          else{
-              learning_activities[activity_id].pre_condition_rule = JSON.stringify(value);
-          }
-
+          learning_activities[value.applyto].pre_condition_rule = JSON.stringify(value);
+          learning_activities[value.applyto].rules = JSON.stringify(value);
       })
   }
 
+  //receives a rule and container_id, and populates it on modal rulebuilder
   function populate_conditions(regla, container_id){
       $("#rules-body").empty();
       Mustache.tags = ['[[', ']]'];
@@ -1204,6 +1244,7 @@ function get_course() {
       $("#rules-body").append(rendered);
       $("#precondition-select option[value="+regla.precondition+"]").prop("selected", "selected");
       $("#modal-rulebuilder").modal()
+
   }
 
 //
@@ -1713,7 +1754,7 @@ function get_course() {
 
                         </div>
                     </div>
-                    <div class="modal-footer" id="rulebuilder-footer" style="display: none">
+                    <div class="modal-footer" id="rulebuilder-footer">
                         <input type="button" class="btn btn-primary" id="save-rules" value="Save Rules">
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                     </div>

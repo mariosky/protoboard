@@ -31,7 +31,7 @@ def add_precondition(rule):
         if 'if' in rule:
             try:
                 rule = ast.literal_eval(rule)
-                if rule['if']['option'] == 'num_attempts':
+                if rule['if']['option'] == 'num_attempts' or rule['if']['option'] == 'objective_measure':
                     pre = "if get_attr('{0}','{1}') {2} {3}:\n" \
                         "    activity['pre_condition']='{4}'\n" \
                           "else:\n" \
