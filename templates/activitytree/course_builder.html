@@ -1043,16 +1043,19 @@ function get_course() {
           $("#context-value-select").show();
           $("#context-txt").hide();
           $("#contextime").hide();
+          $("#context-operators").val("==").prop('disabled', true);
       }
       else if ($(this).val() == "time"){
           $("#context-value-select").hide();
           $("#context-txt").hide();
           $("#contextime").show();
+          $("#context-operators").val("==").prop('disabled', false);
       }
       else{
           $("#context-value-select").hide();
           $("#contextime").hide();
-          $("#context-txt").show()
+          $("#context-txt").show();
+          $("#context-operators").val("==").prop('disabled', true);
       }
   });
 
@@ -1089,7 +1092,7 @@ function get_course() {
           }
           else if ($("#contextime").is(":visible")){
               value = $("#context-time").val();
-              $("#context-time").val('0');
+              $("#context-time").val('00:00:00');
           }
           else{
               value = $("#context-txt").val();
@@ -1721,7 +1724,7 @@ function get_course() {
                                         <option value="dayof">Day of Week</option>
                                     </select>
 
-                                    <select class="form-control" id="context-operators" style="width:20%">
+                                    <select class="form-control" id="context-operators" disabled style="width:20%">
                                         <option value="==">Equals</option>
                                         <option value=">">More than</option>
                                         <option value="<">Less than</option>
