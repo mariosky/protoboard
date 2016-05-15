@@ -81,11 +81,10 @@
 {% endblock content %}
 
 {% block scripts %}
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js " type="text/javascript" charset="utf-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/javascript.js" type="text/javascript" charset="utf-8"></script>
-
+<script src="https://42a589419d9bcbba9bee202ffa3030d25a995449.googledrive.com/host/0B4KIaVIuZK2JbEhwYUJhQ0xLdXc/boostrap-timepicker.js" type="text/javascript"></script>
 <script id="activities_template" type="x-tmpl-mustache">
          <div class="panel panel-default container-fluid" style="width:500px">
             <div class="panel-heading row">
@@ -194,7 +193,7 @@
                 <button type="button" class="btn btn-danger deleteRuleBtn" style="float:right;margin-left:5px">Remove</button>
                 <button type="button" class="btn btn-warning thenRuleBtn" style="float:right">Then</button></h5>
 
-                [[#and]]<span id="and-condition"><br> <select id='condition-select]' class="conditionSelect">
+                [[#and]]<span id="and-condition"><br> <select id='condition-select' class="conditionSelect">
                  <option value="and">And</option>
                  <option value="or">Or</option>
                  <option value="not">Not</option>
@@ -860,65 +859,24 @@ function get_course() {
   $('body').on('click', '.containerPrecondition', function(){
 
     var container_id  = $( this).parentsUntil('li').parent().attr("id");
-    //var index = rules_activities.map(function(e) { return e.applyto; }).indexOf(container_id);
     var learning_activity = learning_activities[container_id];
     $("#modal-rulebuilder").find(".modal-title").text("Rule Builder - " + learning_activity.name);
     $("#container_rule_id").val(container_id);
       if (learning_activity.rules == ''){
+          rules = '';
           $("#rules-body").empty();
           $("#modal-rulebuilder").modal()
       }
       else{
           try{
-              var rule = JSON.parse(learning_activity.rules);
-              rule['applyto'] = container_id;
-              learning_activities[container_id].rules = JSON.stringify(rule);
-              populate_conditions(rule, container_id);
+              rules = JSON.parse(learning_activity.rules);
+              populate_conditions(rules, container_id);
           }
           catch(error){
               console.log(error)
           }
       }
 
-    /*if (index != -1){
-        $("#container_rule_id").val(container_id);
-        populate_conditions(learning_activities[container_id].rules,container_id);
-    }
-    else{
-        $("#rules-body").empty();
-        $("#container_rule_id").val(container_id);
-        $("#modal-rulebuilder").modal()
-    }
-    */
-
-/*
-    //$('#containerPrecondition').val(learning_activity.pre_condition_rule );
-    //$('#PreconditionURI').val(container_id);
-    var editor = ace.edit("editor1");
-
-    if (learning_activity.pre_condition_rule == null || learning_activity.pre_condition_rule == ""){
-        editor.setValue("");
-    }
-    else{
-
-        console.log(learning_activity.pre_condition_rule);
-
-        editor.setValue(learning_activity.pre_condition_rule);
-    }
-
-
-    if (learning_activity.is_container == true)
-    {
-      $("#modalPrecondition").find(".modal-title").text("Edit Container");
-    }
-    else{
-      $("#modalPrecondition").find(".modal-title").text("Edit Activity");
-
-    }
-
-
-    //$('#modalPrecondition').modal();
-*/
   });
 
 
@@ -1004,8 +962,17 @@ function get_course() {
       $(window).load(function() {
           rules_activities = [];
           rule_history = [];
-          var index = learning_activities.map(function(e) { return e.order_in_container; }).indexOf(0);
-          var rules = learning_activities[index].rules;
+
+          $('#context-time').timepicker({
+              minuteStep: 1,
+              secondStep: 5,
+              showInputs: false,
+              showSeconds: true,
+              showMeridian: false
+          });
+          //var index = learning_activities.map(function(e) { return e.order_in_container; }).indexOf(0);
+          //var rules = learning_activities[index].rules;
+          /*
           if (rules == '' || rules == '[]'){
               console.log('No rules');
           }
@@ -1016,7 +983,7 @@ function get_course() {
                       rules_activities.push(JSON.parse(value.rules))
               });
           }
-
+          */
       });
   });
 
@@ -1044,11 +1011,13 @@ function get_course() {
   body.on('change', "#activity-options", function(){
       if ($(this).val() == "progress_status"){
           $("#activity-value-select").show();
-          $("#activity-txt").hide()
+          $("#activity-txt").hide();
+          $("#activity-operators").val("==").prop('disabled', true);
       }
       else{
           $("#activity-value-select").hide();
-          $("#activity-txt").show()
+          $("#activity-txt").show();
+          $("#activity-operators").val("==").prop('disabled', false);
       }
   });
 
@@ -1072,10 +1041,17 @@ function get_course() {
   body.on('change', "#context-options", function(){
       if ($(this).val() == "dayof"){
           $("#context-value-select").show();
-          $("#context-txt").hide()
+          $("#context-txt").hide();
+          $("#contextime").hide();
+      }
+      else if ($(this).val() == "time"){
+          $("#context-value-select").hide();
+          $("#context-txt").hide();
+          $("#contextime").show();
       }
       else{
           $("#context-value-select").hide();
+          $("#contextime").hide();
           $("#context-txt").show()
       }
   });
@@ -1111,13 +1087,17 @@ function get_course() {
           if ($("#context-value-select").is(":visible")){
               value = $("#context-value-select").val();
           }
+          else if ($("#contextime").is(":visible")){
+              value = $("#context-time").val();
+              $("#context-time").val('0');
+          }
           else{
               value = $("#context-txt").val();
           }
           $("#"+btntype+"-txt").val('');
       }
 
-      var rules={'uri':uri, 'act_name':act_name, 'id': activity_id, 'applyto': container_id , 'if':'','operator':'and','then':''};
+      rules = {'uri':uri, 'act_name':act_name, 'id': activity_id, 'applyto': container_id , 'if':'','operator':'and','then':''};
       var condition = {'option':option,'operator':operator,'value':value};
       $("#rule").remove();
       if (rule_history.length == 0){
@@ -1139,14 +1119,15 @@ function get_course() {
       else if (rule_history.length == 1){
           if (rule_history[rule_history.length-1] == act_name){
               var index = rules_activities.length;
+              rules = rules_activities[index-1];
               if (user == true){
-              condition['user']='true'
+                  condition['user']='true'
               }
               else if (context == true){
                   condition['context'] = 'true'
               }
-              rules_activities[index-1].then = condition;
-              populate_conditions(rules_activities[index-1], container_id);
+              rules.then = condition;
+              populate_conditions(rules, container_id);
               rule_history = [];
           }
       }
@@ -1154,22 +1135,18 @@ function get_course() {
   });
 
   body.on('click', '.deleteRuleBtn', function(){
-      var container = $(this).parentsUntil('div').parent().attr("container");
-      var index = learning_activities.map(function(e) { return e.id; }).indexOf(parseInt(container));
-      learning_activities[index].pre_condition_rule = "";
-      learning_activities[index].rules = "";
+      var container = $("#container_rule_id").val();
+      //learning_activities[container].pre_condition_rule = "";
+      //learning_activities[container].rules = "";
       $("#rule").remove();
-      rules_activities = $.grep(rules_activities,
-                   function(o,i) { return o.applyto === container; },
-                   true);
       rule_history = [];
+      rules = '';
     });
 
   body.on('click', '.deleteAndBtn', function(){
       var container = $(this).parentsUntil('div').parent().attr("container");
       $("#and-condition").remove();
-      var index = rules_activities.map(function(e) { return e.applyto; }).indexOf(container);
-      rules_activities[index].then = '';
+      rules.then = '';
     });
 
   body.on('click', '.thenRuleBtn', function(){
@@ -1178,26 +1155,38 @@ function get_course() {
     });
 
   body.on('change', '.selectThen', function(){
-      var container_id = $(this).attr('container');
+      var container_id = $("#container_rule_id").val();
       var val = $(this).val();
-      var index = rules_activities.map(function(e) { return e.applyto; }).indexOf(container_id);
-      rules_activities[index].precondition = val;
-      populate_conditions(rules_activities[index],container_id);
+      rules['precondition'] = val;
+      populate_conditions(rules, container_id);
+      /*
+      if (learning_activities[container_id].rules != ''){
+          var rule = learning_activities[container_id].rules;
+          rule = JSON.parse(rule);
+          rule['precondition'] = val;
+          learning_activities[container_id].rules = JSON.stringify(rule);
+          populate_conditions(rule,container_id);
+      }
+      else{
+          learning_activities[container_id].rules = JSON.stringify(rules);
+          populate_conditions(rules,container_id);
+      }
+      */
+      //var index = rules_activities.map(function(e) { return e.applyto; }).indexOf(container_id);
+      //rules_activities[index].precondition = val;
+      //populate_conditions(rules_activities[index],container_id);
       $("#then-condition").slideToggle('fast', function(){
       });
   });
 
   body.on('change', '.conditionSelect', function(){
-      var id = $(this).parentsUntil('div').parent().attr("container");
-      var val = $(this).val();
-      var index = rules_activities.map(function(e) { return e.applyto; }).indexOf(id);
-      rules_activities[index].operator = val;
+      rules['operator'] = $(this).val();
   });
 
   body.on('click',"#save-rules",function(){
+      rules_activities = [];
+      rule_history = [];
       rule_builder();
-      var index = learning_activities.map(function(e) { return e.order_in_container; }).indexOf(0);
-      learning_activities[index].rules = JSON.stringify(rules_activities);
       $("#modal-rulebuilder").modal('hide');
   });
 
@@ -1216,15 +1205,19 @@ function get_course() {
   }
 
   function rule_builder(){
-      $.each(learning_activities, function (index, value) {
-          if (typeof value === 'undefined' || value.root_id == null) return;
-            value.pre_condition_rule = ''
-      });
+      var container = $("#container_rule_id").val();
+      if (jQuery.type(rules) != 'object'){
+          rules = '';
+          learning_activities[container].pre_condition_rule = rules;
+          learning_activities[container].rules = rules;
+      }
+      else{
+          rules['applyto'] = container;
+          learning_activities[container].pre_condition_rule = JSON.stringify(rules);
+          learning_activities[container].rules = JSON.stringify(rules);
+          rules = '';
+      }
 
-      $.each(rules_activities, function(index, value){
-          learning_activities[value.applyto].pre_condition_rule = JSON.stringify(value);
-          learning_activities[value.applyto].rules = JSON.stringify(value);
-      })
   }
 
   //receives a rule and container_id, and populates it on modal rulebuilder
@@ -1243,9 +1236,12 @@ function get_course() {
       });
       $("#rules-body").append(rendered);
       $("#precondition-select option[value="+regla.precondition+"]").prop("selected", "selected");
+      $("#condition-select option[value="+regla.operator+"]").prop("selected", "selected");
       $("#modal-rulebuilder").modal()
 
   }
+
+
 
 //
   //change action for search textbox, determines if the input is a tag or just a title search
@@ -1741,6 +1737,11 @@ function get_course() {
                                         <option value="saturday">Saturday</option>
                                         <option value="sunday">Sunday</option>
                                     </select>
+
+                                    <div id="contextime" class="input-group bootstrap-timepicker timepicker" style="width:20%;display:none">
+                                        <input id="context-time" type="text" value="12:00 PM" class="form-control input-small">
+                                        <span class="input-group-addon"><i class=""></i></span>
+                                    </div>
 
                                     <input type="text" class="form-control" id="context-txt" placeholder="Value" style="width:20%">
 
