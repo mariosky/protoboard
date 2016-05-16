@@ -49,7 +49,8 @@ def add_precondition(rule):
             except Exception:
                 pass
         else:
-            pass
+            rule = ""
+            return rule
     return rule
 
 

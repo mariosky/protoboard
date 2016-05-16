@@ -188,8 +188,8 @@
 <script id="rules_template" type="x-tmpl-mustache">
 
             <div class="inline" id="rule" container="[[container_id]]">
-                <h5><span id="">[[#conditions]]IF <em>[[#user]] User [[/user]] [[^user]] [[rule_name]] [[/user]]</em> [[option]] <b>[[operator]]</b> [[value]] [[/conditions]]</span>
-                [[#then]] Then <b>[[then]]</b> [[/then]]
+                <h5><span id="">[[#conditions]]IF <em>[[#user]] User [[/user]] [[^user]] [[rule_name]] [[/user]]</em> [[option_txt]] <b>[[operator]]</b> [[value]] [[/conditions]]</span>
+
                 <button type="button" class="btn btn-danger deleteRuleBtn" style="float:right;margin-left:5px">Remove</button>
                 <button type="button" class="btn btn-warning thenRuleBtn" style="float:right">Then</button></h5>
 
@@ -198,9 +198,9 @@
                  <option value="or">Or</option>
                  <option value="not">Not</option>
                  </select>
-                 [[#user]] <b>User</b> [[/user]] [[option]] <b> [[operator]] </b> [[value]]
+                 [[#user]] <b>User</b> [[/user]] [[option_txt]] <b> [[operator]] </b> [[value]]
                 <button type="button" class="btn btn-danger deleteAndBtn" style="float:right;margin-left:5px">Remove</button></span>[[/and]]
-                <br>
+
                 <span id="span-rule" style="font-size: medium"></span>
                 <div class="form-inline" id="then-condition">
                     <div>
@@ -970,24 +970,19 @@ function get_course() {
               showSeconds: true,
               showMeridian: false
           });
-          //var index = learning_activities.map(function(e) { return e.order_in_container; }).indexOf(0);
-          //var rules = learning_activities[index].rules;
-          /*
-          if (rules == '' || rules == '[]'){
-              console.log('No rules');
-          }
-          else{
-              //rules_activities = JSON.parse(learning_activities[index].rules);
-              $.each(learning_activities, function (index, value) {
-                  if (typeof value === 'undefined' || value.root_id == null || value.rules == '') return;
-                      rules_activities.push(JSON.parse(value.rules))
-              });
-          }
-          */
       });
   });
 
   var body = $('body');
+
+  body.on('hidden.bs.modal', '#modal-rulebuilder', function(){
+      rules = '';
+      $('.selection').prop('selectedIndex',0);
+      $('#activity-txt, #context-txt').show();
+      $('#activity-value-select, #context-value-select, #contextime').hide();
+      $("#context-operators").prop('disabled', true);
+      $("#activity-operators").prop('disabled', false);
+  });
 
   body.on('click','#usertab', function(){
       $("#userdiv").slideToggle('fast',function(){
@@ -1041,19 +1036,16 @@ function get_course() {
   body.on('change', "#context-options", function(){
       if ($(this).val() == "dayof"){
           $("#context-value-select").show();
-          $("#context-txt").hide();
-          $("#contextime").hide();
+          $("#context-txt, #contextime").hide();
           $("#context-operators").val("==").prop('disabled', true);
       }
       else if ($(this).val() == "time"){
-          $("#context-value-select").hide();
-          $("#context-txt").hide();
+          $("#context-value-select, #context-txt").hide();
           $("#contextime").show();
           $("#context-operators").val("==").prop('disabled', false);
       }
       else{
-          $("#context-value-select").hide();
-          $("#contextime").hide();
+          $("#context-value-select, #contextime").hide();
           $("#context-txt").show();
           $("#context-operators").val("==").prop('disabled', true);
       }
@@ -1067,25 +1059,48 @@ function get_course() {
       var container_id= $("#container_rule_id").val();
       if (btntype == 'activity'){
           var option = $('#activity-options').val();
+          var option_txt = $('#activity-options option:selected').html();
           var operator = $("#activity-operators").val();
           if ($("#activity-value-select").is(":visible")){
               var value = $("#activity-value-select").val();
           }
           else{
-              value = $("#activity-txt").val();
+              var txt = $("#activity-txt");
+              value = txt.val();
+              if (value == ''){
+                  txt.popover({
+                      title: "Error",
+                      content: "Submit a numeric value",
+                      placement: 'top'
+                  });
+                  txt.popover('show');
+                  return false;
+              }
           }
           $("#"+btntype+"-txt").val('');
       }
       else if (btntype == 'user'){
           var user = true;
+          txt = $("#user-txt");
           option = $('#user-options').val();
+          option_txt = $('#user-options option:selected').html();
           operator = $("#user-operators").val();
-          value = $("#user-txt").val();
-          $("#"+btntype+"-txt").val('');
+          value = txt.val();
+          if (value == ''){
+              txt.popover({
+                  title: "Error",
+                  content: "Submit value",
+                  placement: 'top'
+              });
+              txt.popover('show');
+              return false;
+          }
+          txt.val('');
       }
       else if (btntype == 'context'){
           var context = true;
           option = $('#context-options').val();
+          option_txt = $('#context-options option:selected').html();
           operator = $("#context-operators").val();
           if ($("#context-value-select").is(":visible")){
               value = $("#context-value-select").val();
@@ -1095,13 +1110,23 @@ function get_course() {
               $("#context-time").val('00:00:00');
           }
           else{
-              value = $("#context-txt").val();
+              txt = $("#context-txt");
+              value = txt.val();
+              if (value == ''){
+              txt.popover({
+                  title: "Error",
+                  content: "Submit value",
+                  placement: 'top'
+              });
+              txt.popover('show');
+              return false;
+              }
           }
           $("#"+btntype+"-txt").val('');
       }
 
       rules = {'uri':uri, 'act_name':act_name, 'id': activity_id, 'applyto': container_id , 'if':'','operator':'and','then':''};
-      var condition = {'option':option,'operator':operator,'value':value};
+      var condition = {'option':option,'option_txt':option_txt,'operator':operator,'value':value};
       $("#rule").remove();
       if (rule_history.length == 0){
           if (user == true){
@@ -1139,8 +1164,6 @@ function get_course() {
 
   body.on('click', '.deleteRuleBtn', function(){
       var container = $("#container_rule_id").val();
-      //learning_activities[container].pre_condition_rule = "";
-      //learning_activities[container].rules = "";
       $("#rule").remove();
       rule_history = [];
       rules = '';
@@ -1159,25 +1182,8 @@ function get_course() {
 
   body.on('change', '.selectThen', function(){
       var container_id = $("#container_rule_id").val();
-      var val = $(this).val();
-      rules['precondition'] = val;
+      rules['precondition'] = $(this).val();
       populate_conditions(rules, container_id);
-      /*
-      if (learning_activities[container_id].rules != ''){
-          var rule = learning_activities[container_id].rules;
-          rule = JSON.parse(rule);
-          rule['precondition'] = val;
-          learning_activities[container_id].rules = JSON.stringify(rule);
-          populate_conditions(rule,container_id);
-      }
-      else{
-          learning_activities[container_id].rules = JSON.stringify(rules);
-          populate_conditions(rules,container_id);
-      }
-      */
-      //var index = rules_activities.map(function(e) { return e.applyto; }).indexOf(container_id);
-      //rules_activities[index].precondition = val;
-      //populate_conditions(rules_activities[index],container_id);
       $("#then-condition").slideToggle('fast', function(){
       });
   });
@@ -1660,17 +1666,17 @@ function get_course() {
                             <input type="hidden" id="container_rule_id" value="">
                             <div id="activitydiv"><br>
                                 <label for="activity-select">Activity</label>
-                                <select id="activity-select" class="form-control" style="width:20%">
+                                <select id="activity-select" class="form-control selection" style="width:20%">
 
                                 </select><br>
                                 <div class="form-inline">
-                                    <select class="form-control" id="activity-options" style="width:20%">
+                                    <select class="form-control selection" id="activity-options" style="width:20%">
                                         <option value="num_attempts">Attempts</option>
                                         <option value="progress_status">Progress</option>
                                         <option value="objective_measure">Objective Measure</option>
                                     </select>
 
-                                    <select class="form-control" id="activity-operators" style="width:20%">
+                                    <select class="form-control selection" id="activity-operators" style="width:20%">
                                         <option value="==">Equals</option>
                                         <option value=">">More than</option>
                                         <option value="<">Less than</option>
@@ -1679,7 +1685,7 @@ function get_course() {
 
                                     <input type="text" class="form-control" id="activity-txt" placeholder="Value" style="width:20%">
 
-                                    <select class="form-control" id="activity-value-select" style="display:none;width:20%">
+                                    <select class="form-control selection" id="activity-value-select" style="display:none;width:20%">
                                         <option value="completed">Completed</option>
                                         <option value="incomplete">Incomplete</option>
                                     </select>
@@ -1692,14 +1698,14 @@ function get_course() {
                             <a class="panel-title" id="usertab">User<span class="caret"></span></a>
                             <div id="userdiv" style="display:none"><br>
                                 <div class="form-inline">
-                                    <select class="form-control" id="user-options" style="width:20%">
+                                    <select class="form-control selection" id="user-options" style="width:20%">
                                         <option value="level">Level</option>
                                         <option value="points">Points</option>
                                         <option value="experience">Experience</option>
                                         <option value="tag">Tag</option>
                                     </select>
 
-                                    <select class="form-control" id="user-operators" style="width:20%">
+                                    <select class="form-control selection" id="user-operators" style="width:20%">
                                         <option value="==">Equals</option>
                                         <option value=">">More than</option>
                                         <option value="<">Less than</option>
@@ -1717,21 +1723,21 @@ function get_course() {
                             <a class="panel-title" id="contexttab">Context<span class="caret"></span></a>
                             <div id="contextdiv" style="display:none"><br>
                                 <div class="form-inline">
-                                    <select class="form-control" id="context-options" style="width:20%">
+                                    <select class="form-control selection" id="context-options" style="width:20%">
                                         <option value="device">Device</option>
                                         <option value="place">Place</option>
                                         <option value="time">Time</option>
                                         <option value="dayof">Day of Week</option>
                                     </select>
 
-                                    <select class="form-control" id="context-operators" disabled style="width:20%">
+                                    <select class="form-control selection" id="context-operators" disabled style="width:20%">
                                         <option value="==">Equals</option>
                                         <option value=">">More than</option>
                                         <option value="<">Less than</option>
                                         <option value="!=">Different than</option>
                                     </select>
 
-                                    <select class="form-control" id="context-value-select" style="display:none;width:20%">
+                                    <select class="form-control selection" id="context-value-select" style="display:none;width:20%">
                                         <option value="monday">Monday</option>
                                         <option value="tuesday">Tuesday</option>
                                         <option value="wednesday">Wednesday</option>
