@@ -28,22 +28,32 @@ def update_course_from_json( json_tree, user):
 def add_precondition(rule):
     if rule is not None:
         rule = rule.encode('ascii','ignore')
-        if 'if' in rule:
+        if 'conditions' in rule:
             try:
                 rule = ast.literal_eval(rule)
-                if rule['if']['option'] == 'num_attempts' or rule['if']['option'] == 'objective_measure':
-                    pre = "if get_attr('{0}','{1}') {2} {3}:\n" \
-                        "    activity['pre_condition']='{4}'\n" \
-                          "else:\n" \
-                        "    activity['pre_condition']=''".format(rule['uri'], rule['if']['option'], rule['if']['operator'], int(rule['if']['value']), rule['precondition'])
-                    return pre
-                elif rule['if'] != '':
-                    pre = "if get_attr('{0}','{1}') {2} '{3}':\n" \
-                        "    activity['pre_condition']='{4}'\n" \
-                          "else:\n" \
-                        "    activity['pre_condition']=''".format(rule['uri'], rule['if']['option'], rule['if']['operator'], rule['if']['value'], rule['precondition'])
-                    #print pre, "PRECONDITION"
-                    return pre
+                if len(rule['conditions']) > 0:
+                    string = ''
+                    first = True
+                    for elem in rule['conditions']:
+                        if first and (elem['option'] == 'num_attempts' or elem['option'] == 'objective_measure'):
+                            first = False
+                            string += "if get_attr('{0}','{1}') {2} {3}".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
+                        elif first:
+                            first = False
+                            string += "if get_attr('{0}','{1}') {2} '{3}'".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
+                        elif elem['option'] == 'num_attempts' or elem['option'] == 'objective_measure':
+                            string += " and get_attr('{0}','{1}') {2} {3}".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
+                        else:
+                            string += " and get_attr('{0}','{1}') {2} '{3}'".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
+                    else:
+                        string += ":\n" \
+                                "    activity['pre_condition'] = '{0}'\n" \
+                                "else:\n" \
+                                "    activity['pre_condition'] = ''".format(rule['precondition'])
+
+                    #print string, "PRECONDITION"
+                    #return pre
+                    return string
                 else:
                     pass
             except Exception:

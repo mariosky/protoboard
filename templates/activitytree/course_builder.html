@@ -188,18 +188,15 @@
 <script id="rules_template" type="x-tmpl-mustache">
 
             <div class="inline" id="rule" container="[[container_id]]">
-                <h5><span id="">[[#conditions]]IF <em>[[#user]] User [[/user]] [[^user]] [[rule_name]] [[/user]]</em> [[option_txt]] <b>[[operator]]</b> [[value]] [[/conditions]]</span>
 
-                <button type="button" class="btn btn-danger deleteRuleBtn" style="float:right;margin-left:5px">Remove</button>
-                <button type="button" class="btn btn-warning thenRuleBtn" style="float:right">Then</button></h5>
+                [[#condiciones]]
 
-                [[#and]]<span id="and-condition"><br> <select id='condition-select' class="conditionSelect">
-                 <option value="and">And</option>
-                 <option value="or">Or</option>
-                 <option value="not">Not</option>
-                 </select>
-                 [[#user]] <b>User</b> [[/user]] [[option_txt]] <b> [[operator]] </b> [[value]]
-                <button type="button" class="btn btn-danger deleteAndBtn" style="float:right;margin-left:5px">Remove</button></span>[[/and]]
+                <div id="[[id]]" style="border-bottom:2px dashed #EEEEEE;padding-bottom:2%;margin-bottom:2.5%;margin-left:3%;margin-top:2.5%;text-align:center;margin-right:3%">
+                <em>IF</em> [[#user]] User [[/user]] [[^user]] <b> [[act_name]] </b> [[/user]] [[option_txt]] <b>[[operator]]</b> [[value]] </span>
+
+                <button type="button" condition-id="[[id]]" class="btn btn-danger deleteRuleBtn" style="float:right;margin-left:5px">Remove</button>
+                </div>
+                [[/condiciones]]
 
                 <span id="span-rule" style="font-size: medium"></span>
                 <div class="form-inline" id="then-condition">
@@ -864,12 +861,19 @@ function get_course() {
     $("#container_rule_id").val(container_id);
       if (learning_activity.rules == ''){
           rules = '';
+          conditions = [];
           $("#rules-body").empty();
           $("#modal-rulebuilder").modal()
       }
       else{
           try{
               rules = JSON.parse(learning_activity.rules);
+              if (rules['conditions'] == undefined){
+                  conditions = [];
+              }
+              else{
+                  conditions = rules['conditions'];
+              }
               populate_conditions(rules, container_id);
           }
           catch(error){
@@ -977,6 +981,7 @@ function get_course() {
 
   body.on('hidden.bs.modal', '#modal-rulebuilder', function(){
       rules = '';
+      conditions = [];
       $('.selection').prop('selectedIndex',0);
       $('#activity-txt, #context-txt').show();
       $('#activity-value-select, #context-value-select, #contextime').hide();
@@ -1049,6 +1054,11 @@ function get_course() {
           $("#context-txt").show();
           $("#context-operators").val("==").prop('disabled', true);
       }
+  });
+
+  body.on('click', '#deleteAllbtn', function(){
+      $("#rule").remove();
+      rules = '';
   });
 
   body.on('click', '.submit-Btn' ,function(){
@@ -1125,76 +1135,47 @@ function get_course() {
           $("#"+btntype+"-txt").val('');
       }
 
-      rules = {'uri':uri, 'act_name':act_name, 'id': activity_id, 'applyto': container_id , 'if':'','operator':'and','then':''};
-      var condition = {'option':option,'option_txt':option_txt,'operator':operator,'value':value};
+      if ($.isPlainObject(rules)){
+          //pass
+      }
+      else{
+          //rules = {'uri':uri, 'act_name':act_name, 'id': activity_id, 'conditions':conditions, 'applyto': container_id , 'operator':'and'};
+          rules = {'id': activity_id, 'conditions':conditions, 'applyto': container_id , 'operator':'and'};
+      }
+      var id = Math.random().toString(36).substr(2, 5);
+      var condition = {'id':id,'uri':uri, 'act_name':act_name ,'option':option,'option_txt':option_txt,'operator':operator,'value':value};
       $("#rule").remove();
-      if (rule_history.length == 0){
-          if (user == true){
-              condition['user']='true'
-          }
-          else if (context == true){
-              condition['context'] = 'true'
-          }
-          rules['if'] = condition;
-          index = rules_activities.map(function(e) { return e.applyto; }).indexOf(container_id);
-          if (index != -1){
-              rules_activities.splice(index,1)
-          }
-          rules_activities.push(rules);
-          populate_conditions(rules, container_id);
-          rule_history.push(act_name);
+      if (user == true){
+          condition['user']='true'
       }
-      else if (rule_history.length == 1){
-          if (rule_history[rule_history.length-1] == act_name){
-              var index = rules_activities.length;
-              rules = rules_activities[index-1];
-              if (user == true){
-                  condition['user']='true'
-              }
-              else if (context == true){
-                  condition['context'] = 'true'
-              }
-              rules.then = condition;
-              populate_conditions(rules, container_id);
-              rule_history = [];
-          }
+      else if (context == true){
+          condition['context'] = 'true'
       }
-
+      //rules['if'] = condition;
+      conditions.push(condition);
+      populate_conditions(rules, container_id);
   });
 
   body.on('click', '.deleteRuleBtn', function(){
-      var container = $("#container_rule_id").val();
-      $("#rule").remove();
-      rule_history = [];
-      rules = '';
-    });
-
-  body.on('click', '.deleteAndBtn', function(){
-      var container = $(this).parentsUntil('div').parent().attr("container");
-      $("#and-condition").remove();
-      rules.then = '';
-    });
-
-  body.on('click', '.thenRuleBtn', function(){
-      $("#then-condition").slideToggle('fast', function(){
-      });
+      var container = $(this).attr("condition-id");
+      $("#"+container).remove();
+      var index = rules.conditions.map(function(e) { return e.id; }).indexOf(container);
+      rules.conditions.splice(index,1);
+      if (rules.conditions.length == 0){
+          $("#rule").remove();
+          rules = '';
+      }
     });
 
   body.on('change', '.selectThen', function(){
       var container_id = $("#container_rule_id").val();
       rules['precondition'] = $(this).val();
       populate_conditions(rules, container_id);
-      $("#then-condition").slideToggle('fast', function(){
-      });
-  });
-
-  body.on('change', '.conditionSelect', function(){
-      rules['operator'] = $(this).val();
   });
 
   body.on('click',"#save-rules",function(){
-      rules_activities = [];
-      rule_history = [];
+      //rules_activities = [];
+      //rule_history = [];
       rule_builder();
       $("#modal-rulebuilder").modal('hide');
   });
@@ -1236,16 +1217,15 @@ function get_course() {
       var rules_template = $('#rules_template').html();
       Mustache.parse(rules_template);
       rendered = Mustache.render(rules_template, {
-          rule_name: regla.act_name,
-          conditions: regla.if,
-          and: regla.then,
+          //rule_name: regla.act_name,
+          //conditions: regla.if,
+          condiciones: regla.conditions,
           user: regla.user,
           container_id: regla.applyto,
           then: regla.precondition
       });
       $("#rules-body").append(rendered);
       $("#precondition-select option[value="+regla.precondition+"]").prop("selected", "selected");
-      $("#condition-select option[value="+regla.operator+"]").prop("selected", "selected");
       $("#modal-rulebuilder").modal()
 
   }
@@ -1759,7 +1739,7 @@ function get_course() {
                             </div><br>
                     </div>
                     <div id="rules-display" class="panel panel-default" style="width:90%">
-                        <div class="panel-heading">Conditions</div>
+                        <div class="panel-heading" style="padding:15px 15px !important;"><span style="position: relative;left:40px;font-size: medium">Conditions</span>  <button class="btn btn-danger" type="button" id="deleteAllbtn" style="float:right;position: relative;top:-5px">Delete All</button>  </div>
                         <div id="rules-body" class="panel-body">
 
                         </div>
