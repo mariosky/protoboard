@@ -194,8 +194,8 @@
 
                 [[#condiciones]]
 
-                <div id="[[id]]" style="border-bottom:2px dashed #EEEEEE;padding-bottom:2%;margin-bottom:2.5%;margin-left:3%;margin-top:2.5%;text-align:center;margin-right:3%">
-                <em>IF</em> [[#user]] User [[/user]] [[^user]] <b> [[act_name]] </b> [[/user]] [[option_txt]] <b>[[operator]]</b> [[value]] </span>
+                <div id="[[id]]" style="border-bottom:2px dashed #EEEEEE;padding-bottom:2%;margin-bottom:2.5%;margin-left:3%;margin-top:2.5%;text-align:left;margin-right:3%">
+                [[#user]]<b> User </b> [[/user]] [[^user]] <b> [[act_name]] </b> [[/user]]<em> has [[option_txt]]</em> <b>[[operator_txt]]</b> [[value]] </span>
 
                 <button type="button" condition-id="[[id]]" class="btn btn-danger deleteRuleBtn" style="float:right;margin-left:5px">Remove</button>
                 </div>
@@ -1071,6 +1071,7 @@ function get_course() {
           var option = $('#activity-options').val();
           var option_txt = $('#activity-options option:selected').html();
           var operator = $("#activity-operators").val();
+          var operator_text = $("#activity-operators option:selected").html();
           if ($("#activity-value-select").is(":visible")){
               var value = $("#activity-value-select").val();
           }
@@ -1095,6 +1096,7 @@ function get_course() {
           option = $('#user-options').val();
           option_txt = $('#user-options option:selected').html();
           operator = $("#user-operators").val();
+          operator_text = $("#user-operators option:selected").html();
           value = txt.val();
           if (value == ''){
               txt.popover({
@@ -1112,6 +1114,7 @@ function get_course() {
           option = $('#context-options').val();
           option_txt = $('#context-options option:selected').html();
           operator = $("#context-operators").val();
+          operator_text = $("#context-operators option:selected").html();
           if ($("#context-value-select").is(":visible")){
               value = $("#context-value-select").val();
           }
@@ -1143,7 +1146,7 @@ function get_course() {
           rules = {'id': activity_id, 'conditions':conditions, 'applyto': container_id , 'operator':'and'};
       }
       var id = Math.random().toString(36).substr(2, 5);
-      var condition = {'id':id,'uri':uri, 'act_name':act_name ,'option':option,'option_txt':option_txt,'operator':operator,'value':value};
+      var condition = {'id':id,'uri':uri, 'act_name':act_name ,'option':option,'option_txt':option_txt,'operator':operator,'operator_txt':operator_text,'value':value};
       $("#rule").remove();
       if (user == true){
           condition['user']='true'
