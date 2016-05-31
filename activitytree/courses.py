@@ -51,8 +51,6 @@ def add_precondition(rule):
                                 "else:\n" \
                                 "    activity['pre_condition'] = ''".format(rule['precondition'])
 
-                    #print string, "PRECONDITION"
-                    #return pre
                     return string
                 else:
                     pass

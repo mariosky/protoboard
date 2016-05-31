@@ -1,11 +1,14 @@
 {% extends "activitytree/base.html" %}
 
-
 {% block style %}
 
 /*
  * Editor
  */
+    .bootstrap-timepicker-widget.dropdown-menu {
+    z-index: 1050!important;
+}
+
 
     #editor1 {
 
@@ -36,7 +39,7 @@
 
 {% block content %}
 
-        <h3 id="course-title">  {{ course_name }}                 <small id="course-url"> {{ course_uri }}  </small>  </h3>
+    <h3 id="course-title">  {{ course_name }}                 <small id="course-url"> {{ course_uri }}  </small>  </h3>
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -84,7 +87,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js " type="text/javascript" charset="utf-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/javascript.js" type="text/javascript" charset="utf-8"></script>
-<script src="https://42a589419d9bcbba9bee202ffa3030d25a995449.googledrive.com/host/0B4KIaVIuZK2JbEhwYUJhQ0xLdXc/boostrap-timepicker.js" type="text/javascript"></script>
+<script src="http://gdriv.es/proto/bootstrap-timepicker3.min.js" type="text/javascript"></script>
 <script id="activities_template" type="x-tmpl-mustache">
          <div class="panel panel-default container-fluid" style="width:500px">
             <div class="panel-heading row">
@@ -965,9 +968,6 @@ function get_course() {
 //rule builder modal options
   $(document).ready(function(){
       $(window).load(function() {
-          rules_activities = [];
-          rule_history = [];
-
           $('#context-time').timepicker({
               minuteStep: 1,
               secondStep: 5,
@@ -988,6 +988,7 @@ function get_course() {
       $('#activity-value-select, #context-value-select, #contextime').hide();
       $("#context-operators").prop('disabled', true);
       $("#activity-operators").prop('disabled', false);
+      $("#deleteAllbtn").prop("disabled", true);
   });
 
   body.on('click','#usertab', function(){
@@ -1003,10 +1004,6 @@ function get_course() {
   body.on('click','#contexttab', function(){
       $("#contextdiv").slideToggle('fast',function(){
       })
-  });
-
-  body.on('change', "#activity-select", function(){
-      rule_history = [];
   });
 
   body.on('change', "#activity-options", function(){
@@ -1154,7 +1151,6 @@ function get_course() {
       else if (context == true){
           condition['context'] = 'true'
       }
-      //rules['if'] = condition;
       conditions.push(condition);
       populate_conditions(rules, container_id);
       $("#deleteAllbtn").prop("disabled",false);
@@ -1179,8 +1175,6 @@ function get_course() {
   });
 
   body.on('click',"#save-rules",function(){
-      //rules_activities = [];
-      //rule_history = [];
       rule_builder();
       $("#modal-rulebuilder").modal('hide');
   });
@@ -1222,8 +1216,6 @@ function get_course() {
       var rules_template = $('#rules_template').html();
       Mustache.parse(rules_template);
       rendered = Mustache.render(rules_template, {
-          //rule_name: regla.act_name,
-          //conditions: regla.if,
           condiciones: regla.conditions,
           user: regla.user,
           container_id: regla.applyto,
@@ -1734,7 +1726,7 @@ function get_course() {
 
                                     <div id="contextime" class="input-group bootstrap-timepicker timepicker" style="width:20%;display:none">
                                         <input id="context-time" type="text" value="12:00 PM" class="form-control input-small">
-                                        <span class="input-group-addon"><i class=""></i></span>
+                                        <span class="input-group-addon"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
                                     </div>
 
                                     <input type="text" class="form-control" id="context-txt" placeholder="Value" style="width:20%">
