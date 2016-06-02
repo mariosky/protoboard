@@ -207,7 +207,7 @@
                     <br>
                         <label for="precondition-select"><em>Then</em> <b>Pre-Condition</b> is:  </label>
                         <select id="precondition-select" class="form-control selectThen" container="[[container_id]]" style="width:25%">
-                            <option value=''></option>
+                            <option value=""></option>
                             <option value="skip">Skip</option>
                             <option value="stopForwardTraversal">Stop Forward Traversal</option>
                             <option value="disabled">Disabled</option>
@@ -1178,8 +1178,14 @@ function get_course() {
   });
 
   body.on('click',"#save-rules",function(){
-      rule_builder();
-      $("#modal-rulebuilder").modal('hide');
+      var precondition = $("#precondition-select");
+      if (precondition.length != 0 && precondition.val()==""){
+          alert("Select a Precondition");
+      }
+      else{
+          rule_builder();
+          $("#modal-rulebuilder").modal('hide');
+      }
   });
 
   //updates activity select dropdownlist with the different activities in the course (learning_activities)
