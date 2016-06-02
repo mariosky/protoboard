@@ -57,6 +57,7 @@ def add_precondition(rule):
             except Exception:
                 pass
         else:
+            rule = ""
             return rule
     return rule
 
@@ -103,7 +104,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
             root.description =activity['learning_activity']['description']
             root.image = activity['learning_activity']['image']
             root.rules = activity['learning_activity']['rules'] or ""
-            root.pre_condition_rule =add_precondition(activity['learning_activity']['pre_condition_rule']) or ""
+            root.pre_condition_rule =add_precondition(activity['learning_activity']['rules']) or ""
             root.rollup_rule  = ('rollup_rule' in activity['learning_activity'] and  activity['learning_activity']['rollup_rule']) or ""
             root.save()
 
@@ -121,7 +122,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
             available_from =activity['learning_activity']['available_from'],
             description =activity['learning_activity']['description'],
             image = activity['learning_activity']['image'],
-            pre_condition_rule = add_precondition(activity['learning_activity']['pre_condition_rule']) or "",
+            pre_condition_rule = add_precondition(activity['learning_activity']['rules']) or "",
             rollup_rule  =activity['learning_activity']['rollup_rule'],
             is_container = activity['learning_activity']['is_container'],
             is_visible = activity['learning_activity']['is_visible'],
@@ -160,7 +161,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
         learning_activity.available_from =activity['learning_activity']['available_from']
         learning_activity.description =activity['learning_activity']['description']
         learning_activity.image = activity['learning_activity']['image']
-        learning_activity.pre_condition_rule = add_precondition(activity['learning_activity']['pre_condition_rule']) or ""
+        learning_activity.pre_condition_rule = add_precondition(activity['learning_activity']['rules']) or ""
         learning_activity.rollup_rule  = ('rollup_rule' in activity['learning_activity'] and  activity['learning_activity']['rollup_rule']) or ""
         learning_activity.is_container = activity['learning_activity']['is_container']
         learning_activity.is_visible = activity['learning_activity']['is_visible']
