@@ -1019,6 +1019,7 @@ function get_course() {
       }
   });
 
+  //validates numeric fields
   body.on('change', "#activity-txt", function(){
       var regex = /^[0-9]*(?:\.\d{1,2})?$/;    // allow only numbers [0-9]
       if( !regex.test( $(this).val()) ) {
@@ -1054,6 +1055,7 @@ function get_course() {
       }
   });
 
+  //deletes rule but does not save til user click Save Changes button
   body.on('click', '#deleteAllbtn', function(){
       $("#rule").remove();
       rules = '';
@@ -1061,6 +1063,7 @@ function get_course() {
       $(this).prop("disabled",true);
   });
 
+  //fired when user adds a rule using Add Rule
   body.on('click', '.submit-Btn' ,function(){
       var btntype = $(this).attr('id').split('-')[0];
       var act_name = $('#activity-select option:selected').html();
@@ -1142,7 +1145,6 @@ function get_course() {
           //pass
       }
       else{
-          //rules = {'uri':uri, 'act_name':act_name, 'id': activity_id, 'conditions':conditions, 'applyto': container_id , 'operator':'and'};
           rules = {'id': activity_id, 'conditions':conditions, 'applyto': container_id , 'operator':'and'};
       }
       var id = Math.random().toString(36).substr(2, 5);
@@ -1159,6 +1161,7 @@ function get_course() {
       $("#deleteAllbtn").prop("disabled",false);
   });
 
+  //deletes individual rule/condition, but does not save til user click Save Changes button
   body.on('click', '.deleteRuleBtn', function(){
       var container = $(this).attr("condition-id");
       $("#"+container).remove();
@@ -1171,12 +1174,14 @@ function get_course() {
       }
     });
 
+  //saves selected precondition in rule
   body.on('change', '.selectThen', function(){
       var container_id = $("#container_rule_id").val();
       rules['precondition'] = $(this).val();
       populate_conditions(rules, container_id);
   });
 
+  //saves rules in its learning activity
   body.on('click',"#save-rules",function(){
       var precondition = $("#precondition-select");
       if (precondition.length != 0 && precondition.val()==""){
@@ -1202,6 +1207,7 @@ function get_course() {
           }
   }
 
+  //saves or clear precondition_rule, if user deleted the rule, the fields are emptied
   function rule_builder(){
       var container = $("#container_rule_id").val();
       if (jQuery.type(rules) != 'object'){
