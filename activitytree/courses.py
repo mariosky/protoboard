@@ -46,11 +46,16 @@ def add_precondition(rule):
                         else:
                             string += " and get_attr('{0}','{1}') {2} '{3}'".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
                     else:
-                        string += ":\n" \
-                                "    activity['pre_condition'] = '{0}'\n" \
-                                "else:\n" \
-                                "    activity['pre_condition'] = ''".format(rule['precondition'])
-
+                        if 'precondition' in rule:
+                            string += ":\n" \
+                                    "    activity['pre_condition'] = '{0}'\n" \
+                                    "else:\n" \
+                                    "    activity['pre_condition'] = ''".format(rule['precondition'])
+                        else:
+                            string += ":\n" \
+                                    "    activity['pre_condition'] = ''\n" \
+                                    "else:\n" \
+                                    "    activity['pre_condition'] = ''"
                     return string
                 else:
                     pass
