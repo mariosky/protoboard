@@ -23,7 +23,6 @@ from django.db.models import Avg, Count
 
 from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event, FacebookSession,LearningActivityRating,AuthorLearningActivity
 from activitytree.interaction_handler import SimpleSequencing
-from activitytree.interaction_handler import get_nav
 
 from activitytree.activities import multi_device_activities
 from activitytree.models import FacebookSession, GoogleSession,UserProfile
@@ -266,7 +265,7 @@ def dashboard(request,path_id):
                 # if choice_exit consider complete
 
 
-            _XML = get_nav(root)
+            _XML = s.get_nav(root)
             #Escape for javascript
             XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')        #navegation_tree = s.nav_to_html(nav)
 
@@ -394,7 +393,7 @@ def path_activity(request,path_id, uri):
                 return HttpResponseRedirect( '/%s%s'% (next_activity.learning_activity.id,next_activity.learning_activity.uri))
 
 
-        _XML = get_nav(root)
+        _XML = s.get_nav(root)
         #Escape for javascript
         XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
 
@@ -537,7 +536,7 @@ def path_test(request,path_id, uri):
 
        # Gets the current navegation tree as HTML
 
-        _XML = get_nav(root)
+        _XML = s.get_nav(root)
         #Escape for javascript
         XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')        #navegation_tree = s.nav_to_html(nav)
         rating_totals = LearningActivityRating.objects.filter(learning_activity__uri=requested_activity.learning_activity.uri).aggregate(Count('rating'), Avg('rating'))
@@ -598,7 +597,7 @@ def path_program(request,path_id, uri):
             _set_current(request,requested_activity, root, s)
 
         # Gets the current navegation tree as XML
-        _XML = get_nav(root)
+        _XML = s.get_nav(root)
         #Escape for javascript
         XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
 
@@ -1360,7 +1359,7 @@ def users(request,user_id=None,course_id=None,):
                 root = UserLearningActivity.objects.get(learning_activity__id = course_id ,user = user_id )
         except (ObjectDoesNotExist, IndexError) as e:
                 root = None
-        _XML = get_nav(root)
+        _XML = s.get_nav(root)
         #Escape for javascript
         XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
         return render_to_response ('activitytree/dashboard.html',{'user':user, 'XML_NAV':XML} ,context_instance=RequestContext(request))

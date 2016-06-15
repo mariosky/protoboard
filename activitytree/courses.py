@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
 import json
 from activitytree.models import LearningActivity, Course, AuthorLearningActivity,UserLearningActivity
-from interaction_handler import sql_activity_tree
+from interaction_handler import SimpleSequencing
 import ast
 
 
@@ -37,14 +37,14 @@ def add_precondition(rule):
                     for elem in rule['conditions']:
                         if first and (elem['option'] == 'num_attempts' or elem['option'] == 'objective_measure'):
                             first = False
-                            string += "if get_attr('{0}','{1}') {2} {3}".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
+                            string += "if self.get_attr('{0}','{1}') {2} {3}".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
                         elif first:
                             first = False
-                            string += "if get_attr('{0}','{1}') {2} '{3}'".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
+                            string += "if self.get_attr('{0}','{1}') {2} '{3}'".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
                         elif elem['option'] == 'num_attempts' or elem['option'] == 'objective_measure':
-                            string += " and get_attr('{0}','{1}') {2} {3}".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
+                            string += " and self.get_attr('{0}','{1}') {2} {3}".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
                         else:
-                            string += " and get_attr('{0}','{1}') {2} '{3}'".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
+                            string += " and self.get_attr('{0}','{1}') {2} '{3}'".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
                     else:
                         if 'precondition' in rule:
                             string += ":\n" \
@@ -211,7 +211,8 @@ def activity_tree(parent, nodes):
 
 
 def get_activity_tree(id):
-    tree = sql_activity_tree(id)
+    ss = SimpleSequencing()
+    tree = ss.sql_activity_tree(id)
     result = activity_tree(None,tree)
     print result
     return result
