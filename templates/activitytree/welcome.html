@@ -20,11 +20,7 @@
 
 
         <div class="col-md-7 col-sm-7">
-            <ul class="nav nav-tabs course-listing-nav">
-          <li role="presentation" class="active"><a href="#"> Nuevos Cursos</a></li>
-          <li role="presentation"><a href="/courses"> Ver todos </a></li>
-          <li role="presentation"><a href="#">Crear tu curso</a></li>
-        </ul>
+            <h3>Cursos</h3>
 
 
             {% for c in courses %}
@@ -73,11 +69,7 @@
 
 
       <div id='activities' class="col-md-5 col-sm-5">
-       <ul class="nav nav-tabs">
-          <li role="presentation" class="active"><a href="#">Small Bits</a></li>
-          <li role="presentation"><a href="/courses"> Ver todos </a></li>
-          <li role="presentation"><a href="#">Crear tus Bits</a></li>
-        </ul>
+       <h3>Biblioteca</h3>
 
       </div>
 
@@ -105,7 +97,7 @@
          $(document).ready(function() {
 
 
-
+        alert("hola");
 
 
 
@@ -145,6 +137,9 @@
 </script>
 
 <script id="activities_template" type="x-tmpl-mustache">
+
+<div class="well">
+
          <div class="media">
              <div class="media-body">
 
@@ -186,7 +181,7 @@
 
             </div>
         </div>
-
+</div>
 </script>
 
 

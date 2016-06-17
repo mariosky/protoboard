@@ -370,5 +370,6 @@ class SimpleSequencing(object):
         return None
 
     def get_nav(self,root):
+        self.RECORDS = {}
         self.sql(root.learning_activity.id,root.user_id)
         return self._get_nav(root.learning_activity.id)
