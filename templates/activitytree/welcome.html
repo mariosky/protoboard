@@ -24,7 +24,7 @@
          <div class="card-deck">
                 {% for c in courses %}
 
-                <div class="card" style="width: 6rem;">
+                <div class="card">
                   {% if c.root.image %}
                   <img class="card-img-top" data-src="{{ c.root.image }}" alt="Card image cap">
                   {% endif %}
@@ -33,9 +33,9 @@
                     <p class="card-text">{{ c.short_description|safe }}</p>
                     <p class="card-text">
                         <ul class="course-listing-bar">
-                          <li> <i class="fa fa-pencil"></i>   <a href="#"> {{ c.root.authorlearningactivity_set.all.0.user.get_full_name }} </a></li>
-                          <li><i class="fa fa-university"></i> Principiante </li>
-                          <li> <i class="fa fa-clock-o"></i> 4 horas </li>
+                          <li> <i class="fa fa-pencil"></i>   <a href="#"  class="card-link"> {{ c.root.authorlearningactivity_set.all.0.user.get_full_name }} </a></li>
+                          <li class="text-muted"><i class="fa fa-university"></i> Principiante </li>
+                          <li class="text-muted"> <i class="fa fa-clock-o"></i> 4 horas </li>
 
                         </ul>
                   </p>
