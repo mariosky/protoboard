@@ -7,7 +7,6 @@
       <div class="container">
         <h2>Aprende como a tí te gusta.</h2>
         <p> <b>Inscríbete a uno de los cursos  o crea el tuyo.</b>    ¿Sin mucho tiempo? Visita algún <b>bit de aprendizaje</b>: prácticas, ejercicios o videos sobre algún tema. </p>
-        <p><a class="btn btn-primary" href="/login/?next=/welcome" role="button">Ingresa o Regístrate</a></p>
     </div>
     </div>
 
@@ -19,60 +18,98 @@
       <div class="row">
 
 
-        <div class="col-md-7 col-sm-7">
+        <div class="col-md-12 col-sm-12">
             <h3>Cursos</h3>
+        <div class="card-deck-wrapper">
+         <div class="card-deck">
+                {% for c in courses %}
+
+                <div class="card" style="width: 6rem;">
+                  <img class="card-img-top" data-src="{{ c.root.image }}" alt="Card image cap">
+                  <div class="card-block">
+                    <h4 class="card-title">{{c.root.name}}</h4>
+                    <p class="card-text">{{ c.short_description|safe }}</p>
+                    <p class="card-text">
+                        <ul class="course-listing-bar">
+                          <li> <i class="fa fa-pencil"></i>   <a href="#"> {{ c.root.authorlearningactivity_set.all.0.user.get_full_name }} </a></li>
+                          <li><i class="fa fa-university"></i> Principiante </li>
+                          <li> <i class="fa fa-clock-o"></i> 4 horas </li>
+
+                        </ul>
+                  </p>
+                        {% if user.is_authenticated %}
+                           <a class="card-link" href="/{{c.root.id }}{{c.root.uri }}?nav=continue" role="button"> Ir al curso &raquo;</a>
+                        {% else %}
+                           <a class="card-link" href="/{{c.root.id }}{{c.root.uri }}" role="button">Regístrate &raquo;</a>
+                        {% endif %}
 
 
-            {% for c in courses %}
-        <div class="course-listing">
-            <div class="row">
+                  </div>
+                </div>
 
-            <div class="col-md-3 col-xs-6">
+                <div class="card">
+                  <img class="card-img-top" data-src="{{ c.root.image }}" alt="Card image cap">
+                 <div class="card-block" style="width: 12rem;">
+                    <h4 class="card-title">{{c.root.name}}</h4>
+                    <p class="card-text">{{ c.short_description|safe }}</p>
+                    <p class="card-text">
+                        <ul class="course-listing-bar">
+                          <li> <i class="fa fa-pencil"></i>   <a href="#"> {{ c.root.authorlearningactivity_set.all.0.user.get_full_name }} </a></li>
+                          <li><i class="fa fa-university"></i> Principiante </li>
+                          <li> <i class="fa fa-clock-o"></i> 4 horas </li>
 
-                <a href="#">
-                    <img class="img-rounded img-responsive" src="{{ c.root.image }}" alt="...">
-
-
-                </a>
-
-            </div>
-            <div class="clearfix visible-xs-block"></div>
-            <div class="col-md-9">
-
-                <h4> {{c.root.name}} </h4>
-
-                {{ c.short_description|safe }}
-
-<ul class="course-listing-bar">
-  <li> <i class="fa fa-pencil"></i>   <a href="#"> {{ c.root.authorlearningactivity_set.all.0.user.get_full_name }} </a></li>
-  <li><i class="fa fa-university"></i> Principiante </li>
-  <li> <i class="fa fa-clock-o"></i> 4 horas </li>
-
-</ul>
-
-{% if user.is_authenticated %}
-                       <a class="btn btn-default btn-sm pull-right" href="/{{c.root.id }}{{c.root.uri }}?nav=continue" role="button"> Ir al curso &raquo;</a>
-                     {% else %}
-                        <a class="btn btn-default btn-sm pull-right" href="/{{c.root.id }}{{c.root.uri }}" role="button">Regístrate &raquo;</a>
-                {% endif %}
+                        </ul>
+                  </p>
+                        {% if user.is_authenticated %}
+                           <a class="card-link" href="/{{c.root.id }}{{c.root.uri }}?nav=continue" role="button"> Ir al curso &raquo;</a>
+                        {% else %}
+                           <a class="card-link" href="/{{c.root.id }}{{c.root.uri }}" role="button">Regístrate &raquo;</a>
+                        {% endif %}
 
 
+                  </div>
+                </div>
+                <div class="card">
+                  <img class="card-img-top" data-src="{{ c.root.image }}" alt="Card image cap">
+                  <div class="card-block">
+                    <h4 class="card-title">{{c.root.name}}</h4>
+                    <p class="card-text">{{ c.short_description|safe }}</p>
+                    <p class="card-text">
+                        <ul class="course-listing-bar">
+                          <li> <i class="fa fa-pencil"></i>   <a href="#"> {{ c.root.authorlearningactivity_set.all.0.user.get_full_name }} </a></li>
+                          <li><i class="fa fa-university"></i> Principiante </li>
+                          <li> <i class="fa fa-clock-o"></i> 4 horas </li>
+
+                        </ul>
+                  </p>
+                        {% if user.is_authenticated %}
+                           <a class="card-link" href="/{{c.root.id }}{{c.root.uri }}?nav=continue" role="button"> Ir al curso &raquo;</a>
+                        {% else %}
+                           <a class="card-link" href="/{{c.root.id }}{{c.root.uri }}" role="button">Regístrate &raquo;</a>
+                        {% endif %}
 
 
-            </div>
+                  </div>
+                </div>
 
-            </div>
+
+
+
+            {% endfor %}
+ </div>
+         </div>
+
         </div>
-         {% endfor %}
-        </div>
+
+
+
+
+      </div>
 
 
 
       <div id='activities' class="col-md-5 col-sm-5">
        <h3>Biblioteca</h3>
-
-      </div>
-
 
       </div>
 
@@ -97,7 +134,7 @@
          $(document).ready(function() {
 
 
-        alert("hola");
+
 
 
 

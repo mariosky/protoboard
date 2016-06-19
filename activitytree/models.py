@@ -138,7 +138,7 @@ class UserLearningActivity(models.Model):
             return activity[0].objective_measure
 
     def get_ula_attr(self, activity_name, attr):
-        activity = UserLearningActivity.objects.select_related('user','learning_activity').filter(user = self.user,
+        activity = UserLearningActivity.objects.select_related('user','learning_acti  vity').filter(user = self.user,
             learning_activity = LearningActivity.objects.filter(name=activity_name))
         return getattr(activity[0],attr)
 

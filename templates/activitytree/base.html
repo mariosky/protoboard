@@ -85,7 +85,7 @@
             <li class="nav-item"><a class="nav-link"  href="/me"> {{ user.username }} </a></li>
             {% endif %}
 
-            <li class="nav-item"><a class="nav-link"  class="navbar-user" href="/me">
+            <li class="nav-item"><a class="nav-link nav-link-user" href="/me">
 
                 <img src="{% gravatar_url user.email 50%}">
                 </a>
@@ -100,6 +100,9 @@
           {% else %}
             {% if not hidde_login_link %}
             <li class="nav-item"><a class="nav-link"  href="/login/?next=/welcome">Iniciar Sesión</a></li>
+             <li class="nav-item"> <a class="btn btn-primary-outline"  href="/register">Crear Cuenta</a></li>
+
+
             {% endif %}
           {% endif %}
 
