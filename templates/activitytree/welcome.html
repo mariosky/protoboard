@@ -14,28 +14,49 @@
       <!-- Example row of columns -->
 
 
-
+        <h3>Cursos</h3>
       <div class="row">
+        <div class="col-md-3">
+        <div class="card">
+  <ul class="list-group list-group-flush">
+      <li class="list-group-item">Todos</li>
+    <li class="list-group-item">Python</li>
+    <li class="list-group-item">Javascript</li>
+    <li class="list-group-item">Java</li>
+  </ul>
+</div>
+        </div>
 
+        <div class="col-md-9">
 
-        <div class="col-md-12 col-sm-12">
-            <h3>Cursos</h3>
         <div class="card-deck-wrapper">
-         <div class="card-deck">
-                {% for c in courses %}
+         <div class="card-columns">
 
+                {% for c in courses %}
+                <a class="card-link" href="/{{c.root.id }}{{c.root.uri }}">
                 <div class="card">
-                  {% if c.root.image %}
-                  <img class="card-img-top" data-src="{{ c.root.image }}" alt="Card image cap">
+                   {% if c.root.image %}
+                       <img class="card-img-top center-block img-fluid" src="{{ c.root.image }}" alt="Card image cap">
+                  {% endif %}
+                  <div class="card-block">
+                    <h5 class="card-title">{{c.root.name}}</h5>
+
+                    <p class="card-text">{{ c.short_description|safe }}</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                  </div>
+
+                </div>
+                <div class="card">
+                   {% if c.root.image %}
+                       <img class="card-img-top center-block img-fluid" src="{{ c.root.image }}" alt="Card image cap">
                   {% endif %}
                   <div class="card-block">
                     <h4 class="card-title">{{c.root.name}}</h4>
-                    <p class="card-text">{{ c.short_description|safe }}</p>
+
                     <p class="card-text">
                         <ul class="course-listing-bar">
                           <li> <i class="fa fa-pencil"></i>   <a href="#"  class="card-link"> {{ c.root.authorlearningactivity_set.all.0.user.get_full_name }} </a></li>
-                          <li class="text-muted"><i class="fa fa-university"></i> Principiante </li>
-                          <li class="text-muted"> <i class="fa fa-clock-o"></i> 4 horas </li>
+
 
                         </ul>
                   </p>
@@ -47,30 +68,62 @@
 
 
                   </div>
+                </div></a>
+                <div class="card">
+                 <h5 class="card-header">Curso</h5>
+
+                  <div class="card-block">
+                    <h4 class="card-title">{{c.root.name}}</h4>
+                    <p class="card-text">Sección para una pequeña introducción al curso.</p>
+
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                  </div>
                 </div>
 
 
 
-
-
-
             {% endfor %}
- </div>
+            </div>
          </div>
 
         </div>
 
-
-
+      </div>
 
       </div>
 
+    <row>
+
+    <h3>Prácticas </h3>
+    <div class="col-md-3">
+        <div class="card">
+  <ul class="list-group list-group-flush">
+      <li class="list-group-item">Ejercicios</li>
+    <li class="list-group-item">Videos</li>
+    <li class="list-group-item">Lecturas</li>
+    <li class="list-group-item">Questionarios</li>
+  </ul>
+</div>
+        </div>
+
+        <div class="col-md-9">
+
+     <div class="card-deck-wrapper">
+         <div id='activities' class="card-columns">
+
+         </div>
+     </div>
+     </div>
+
+    </row>
 
 
-      <div id='activities' class="col-md-5 col-sm-5">
-       <h3>Biblioteca</h3>
 
-      </div>
+
+
+
+
+
 
       <hr>
 
@@ -134,19 +187,18 @@
 
 <script id="activities_template" type="x-tmpl-mustache">
 
-<div class="well">
 
-         <div class="media">
-             <div class="media-body">
-
-               <a class="media-heading" href="[[uri]]" role="button"><i class="fa fa-[[icon]]"></i> [[title]] &raquo;</a>
-               <p>
-
-                      [[description]]
-
-               </p>
-
-            <p>
+<div class="card card-block">
+   <p class="card-text"><small class="text-muted">Video</small>
+                 [[#lang]]
+              <span class="label label-success"><a href="/search/?lang=[[lang]]" style="color:#FFFFFF">[[lang]]</a></span>
+              [[/lang]]
+              [[^lang]]
+              [[/lang]]
+   </p>
+  <h6 class="card-title"> <a class="media-heading" href="[[uri]]" role="button"><i class="fa fa-[[icon]]"></i> [[title]] &raquo;</a> </h6>
+  <p class="card-text"> [[description]]</p>
+  <p>
             {% comment %}
               [[#type]]
               <span class="label label-info"><a href="/search/?type=[[type]]" style="color:#FFFFFF">[[type]]</a></span>
@@ -173,11 +225,11 @@
               [[^.]]
               [[/.]]
               [[/tags]]
-            </p>
+  </p>
 
-            </div>
-        </div>
 </div>
+
+
 </script>
 
 
