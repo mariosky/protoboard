@@ -3,16 +3,38 @@
 
 
 {% block content %}
+
+    <div class="card">
+
+                    <div class="card-block">
+                      <h4 class="card-title">Card title</h4>
+                      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Cras justo odio</li>
+                        <li class="list-group-item">Dapibus ac facilisis in</li>
+                        <li class="list-group-item">Vestibulum at eros</li>
+                    </ul>
+                      <div class="card-footer">
+                         <i class="fa fa-check fa-2x"></i> <small>COMPLETO</small>
+                        </div>
+                    </div>
+
+                </div>
      <div class = "row">
 
      {{content|safe}}
 
      </div>
+    <div class="row">
+        <div  id="navlist"  class="card-columns">
 
-    <div id="navlist" class = "row">
 
-
+         </div>
      </div>
+
+
+
 
     <div class="row">
 
@@ -36,22 +58,23 @@
 {% block scripts %}
 
 <script id="container_template" type="x-tmpl-mustache">
-	<div class="col-xs-12 col-md-4 col-sm-6">
-		<div class="thumbnail">
+		<div class="card">
 
 		   <a href="/[[path_id]][[uri]]">
 		   [[#image]]
-		       <img src="[[image]]" alt="..."/>
+		       <img class="card-img-top  img-fluid" src="[[image]]" alt="..."/>
 		   [[/image]]
 		   </a>
 
-			<div class="caption">
+
+
+			<div class="card-block">
 			   <h4><small><i class="[[icon]]"></i> [[activity_type]]  </small></h4>
 				<a href="/[[path_id]][[uri]]" class="disabled">
-					<h4>[[name]] </h4>
+					 <h4 class="card-title">[[name]] </h4>
 				</a>
 				<div id="rating-[[id]]" class="raty"> </div>
-				<p>[[description]]</p>
+				<p class="card-text">[[description]]</p>
 
                      <div class="list-group">
 
@@ -73,20 +96,19 @@
                      </div>
 			</div>
 		</div>
-	</div>
+
 </script>
 
 
 <script id="disabled_container_template" type="x-tmpl-mustache">
-	<div class="col-xs-12 col-md-4 col-sm-6">
-		<div class="thumbnail">
+		<div class="card">
 		   <a href="/[[path_id]][[uri]]">
             [[#image]]
-		       <img src="[[image]]" alt="..."/>
+		      <img class="card-img-top  img-fluid" src="[[image]]" alt="..."/>
 		    [[/image]]
 		   </a>
 
-			<div class="caption">
+			<div class="card-block">
 			   <h4><small><i class="[[icon]]"></i> [[activity_type]]  </small></h4>
 					<h4>[[name]] </h4>
 				<div id="rating-[[id]]" class="raty"> </div>
@@ -110,20 +132,19 @@
                   </div>
 			</div>
 		</div>
-	</div>
 </script>
 
 <script id="activity_template" type="x-tmpl-mustache">
-	<div class="col-xs-12 col-md-4 col-sm-6">
-		<div class="thumbnail">
+
+		<div class="card">
 
 		   <a href="/[[path_id]][[uri]]">
             [[#image]]
-		       <img src="[[image]]" alt="..."/>
+		       <img class="card-img-top  img-fluid" src="[[image]]" alt="..."/>
 		    [[/image]]
 		   </a>
 
-			<div class="caption">
+			<div class="card-block">
 			   <h4><small><i class="[[icon]]"></i> [[activity_type]]  </small></h4>
 				<a href="/[[path_id]][[uri]]" class="disabled">
 					<h4>[[name]] </h4>
@@ -179,13 +200,13 @@
                      </div>
 			</div>
 		</div>
-	</div>
+
 </script>
 
 <script id="disabled_activity_template" type="x-tmpl-mustache">
-	<div class="col-xs-12 col-md-4 col-sm-6">
-		<div class="thumbnail">
-		   	<div class="caption">
+
+		<div class="card">
+		   	<div class="card-block">
 			   <h4><small><i class="[[icon]]"></i> [[activity_type]]  </small></h4>
 
 					<h4>[[name]] </h4>
@@ -211,7 +232,7 @@
                      </div>
 			</div>
 		</div>
-	</div>
+
 </script>
 
 

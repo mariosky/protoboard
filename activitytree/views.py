@@ -426,9 +426,9 @@ def path_activity(request,path_id, uri):
 
         elif requested_activity.learning_activity.is_container:
 
-            return render_to_response('activitytree/container.html',
+            return render_to_response('activitytree/container_list.html',
 
-                                  {
+                                      {
                                    'XML_NAV':XML,
                                    'children': requested_activity.get_children(),
                                    'uri':requested_activity.learning_activity.uri,
@@ -437,7 +437,7 @@ def path_activity(request,path_id, uri):
                                    'root':requested_activity.learning_activity.get_root().uri,
                                    'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
                                    'breadcrumbs':breadcrumbs},
-                                    context_instance=RequestContext(request))
+                                      context_instance=RequestContext(request))
         else:
             return render_to_response('activitytree/activity.html',
 
