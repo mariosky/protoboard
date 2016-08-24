@@ -1,9 +1,37 @@
 {% extends "activitytree/base.html" %}
 
 {% block content %}
+ <!--Instructor Header BEGIN -->
+      <!--Instructor TABS -->
+
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link " href="/instructor">Mis Cursos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/activitybuilder">Actividades</a>
+          </li>
+        </ul>
+
+       <!--Instructor Menu -->
+
+      <div class="container">
+
+        <ul class="nav  nav-inline">
+
+        <li class="nav-item">
+            <a class="nav-link active create-course" href="#" role="button">Nuevo Curso</a>
+        </li>
+
+        </ul>
+      </div>
+
+ <!--Instructor Header END -->
+
 
     <nav class="navbar navbar-default">
       <div class="container-fluid">
+
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
           </button>
@@ -12,7 +40,7 @@
 
         <div class="" id="#navbar" >
             <div class="col-lg-8 col-lg-offset-2" >
-                <form class="navbar-form" role="search" onsubmit="return false">
+                <form role="search" onsubmit="return false">
                     <div class="input-group"  style="width: 100%">
                         <input type="text" class="form-control" placeholder="Search by Title or #Tag" name="srch-term" id="txtname">
                         <div class="input-group-btn">

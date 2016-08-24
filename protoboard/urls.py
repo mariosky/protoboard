@@ -12,7 +12,11 @@ from registration.backends.default.views import RegistrationView
 urlpatterns = patterns('',
     # Example:
       (r'^$','activitytree.views.welcome'),
+
       (r'^welcome/$','activitytree.views.welcome'),
+      (r'^instructor/$', 'activitytree.views.instructor'),
+      (r'^student/$', 'activitytree.views.student'),
+
       (r'^dashboard/(?P<path_id>[0-9]+)$','activitytree.views.dashboard'),
 
       (r'^(?P<uri>activity/([\w+](\/*)(-*))+)$','activitytree.views.activity'),

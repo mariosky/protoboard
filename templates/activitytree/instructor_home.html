@@ -3,10 +3,33 @@
 
 {% block content %}
 <div class="container">
-      <!-- Example row of columns -->
 
-        <h4>Mis cursos</h4>
+ <!--Instructor Header BEGIN -->
+      <!--Instructor TABS -->
 
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Mis Cursos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/activitybuilder">Actividades</a>
+          </li>
+        </ul>
+
+       <!--Instructor Menu -->
+
+      <div class="container">
+
+        <ul class="nav  nav-inline">
+
+        <li class="nav-item">
+            <a class="nav-link active create-course" href="#" role="button">Nuevo Curso</a>
+        </li>
+
+        </ul>
+      </div>
+
+ <!--Instructor Header END -->
 
      {% for c in courses %}
       <div class="row">
