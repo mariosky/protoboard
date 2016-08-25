@@ -2,29 +2,42 @@
 
 {% block content %}
  <!--Instructor Header BEGIN -->
+
+
+    <!--Instructor Menu -->
+
+      <div class="container">
+
+        <ul class="nav  nav-inline">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-plus"></i> Nueva Actividad </a>
+                                <ul class="dropdown-menu" id="sidebar">
+                                    <li><a href="#" id="htmlBtn">HTML</a></li>
+	                                <li><a href="#" id="videoBtn">Video</a></li>
+	                                <li><a href="/build_quiz">Quiz</a></li>
+	                                <li><a href="/build_program">Program</a></li>
+                                </ul>
+                            </li>
+                    <li class="nav-item">
+
+            <a class="nav-link active create-course" href="#" role="button">Buscar</a>
+        </li>
+
+
+        </ul>
+      </div>
+
       <!--Instructor TABS -->
 
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link " href="/instructor">Mis Cursos</a>
+            <a class="nav-link " href="/instructor">Cursos</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" href="/activitybuilder">Actividades</a>
           </li>
         </ul>
 
-       <!--Instructor Menu -->
-
-      <div class="container">
-
-        <ul class="nav  nav-inline">
-
-        <li class="nav-item">
-            <a class="nav-link active create-course" href="#" role="button">Nuevo Curso</a>
-        </li>
-
-        </ul>
-      </div>
 
  <!--Instructor Header END -->
 
