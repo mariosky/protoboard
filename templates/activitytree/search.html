@@ -4,84 +4,31 @@
 
     <nav class="navbar navbar-default">
       <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
-          </button>
-        </div>
+                <row>
+                          <form class="form" role="search" onsubmit="return false">
+                             <div class="input-group">
+                                 <input class="form-control" type="text" placeholder="Search by Title or #Tag" name="srch-term" id="txtname">
+                                <span class="input-group-btn">
+                            <button class="btn  btn-secondary" type="submit">Search</button>
+                                     </span>
+                             </div>
 
+                          </form>
 
-        <div class="" id="#navbar" >
-            <div class="col-lg-8 col-lg-offset-2" >
-                <form class="navbar-form" role="search" onsubmit="return false">
-                    <div class="input-group"  style="width: 90%">
-                        <input type="text" class="form-control" placeholder="Search by Title or #Tag" name="srch-term" id="txtname">
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" type="submit" style="background-color: #4285F4"><i class="fa fa-search" style="color: white"></i></button>
-                        </div>
-
-                    </div>
-                    <a class="navbar-btn" style="float:right;width: 10%"  id="tools">Options</a>
-                </form>
-            </div>
-
-            <div class="row" id="row" style="display:none" >
-                <div class="col-lg-8 col-lg-offset-2 col-md-11 ">
-                    <div class="collapse navbar-collapse" id="mainNav">
-                        <ul class="nav navbar-nav">
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-search"></i> Filter By<span class="caret"></span></a>
-                                <ul class="dropdown-menu" id="sidebar">
-                                    <li> <a class="small" data-value="option1" tabIndex="-1"><input type="checkbox" id="text" value="text"/>&nbsp;HTML</a></li>
-                                    <li> <a class="small" data-value="option2" tabIndex="-1"><input type="checkbox" id="video" value="video"/>&nbsp;Video</a> </li>
-                                    <li> <a class="small" data-value="option3" tabIndex="-1"><input type="checkbox" id="quiz" value="quiz"/>&nbsp;Quiz</a></li>
-                                    <li> <a class="small" data-value="option4" tabIndex="-1"><input type="checkbox" id="prog" value="prog"/>&nbsp;Program</a> </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-flag"></i> By Difficulty<span class="caret"></span></a>
-                                <ul class="dropdown-menu" id="difficulty">
-                                    <li id="anylevel" class="active"> <a class="small" id="dif0" data-value="any">Any</a></li>
-                                    <li id="principiante"> <a class="small" id="dif1" data-value="principiante">Principiante</a></li>
-                                    <li id="intermedio"> <a class="small" id="dif2" data-value="intermedio">Intermedio</a></li>
-                                    <li id="avanzado"> <a class="small" id="dif3" data-value="avanzado">Avanzado</a></li>
-
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-code"></i> By Language<span class="caret"></span></a>
-                                <ul class="dropdown-menu" id="lang">
-                                    <li id="anylang" class="active"> <a class="small" id="dif4" data-value="any">Any</a></li>
-                                    <li id="javascript"> <a class="small" id="dif5" data-value="javascript">Javascript</a></li>
-                                    <li id="python"> <a class="small" id="dif6" data-value="python">Python</a></li>
-                                    <li id="csharp"> <a class="small" id="dif7" data-value="csharp">Csharp</a></li>
-                                    <li id="java"> <a class="small" id="dif8" data-value="java">Java</a></li>
-                                    <li id="jquery"> <a class="small" id="dif9" data-value="jquery">Jquery</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-users"></i> By User<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li> <a class="small" data-value="option1" tabIndex="-1"><input class="form-control" placeholder="Username" type="text" id="txtuser"/></a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown"> <a id="clear" style="color:red">Clear all</a> </li>
-                        </ul>
-
-                    </div>
-                </div>
-            </div>
-        </div>
+               </row>
       </div>
     </nav>
 
-    <div class="container-fluid" style="width: 100%" align="center">
-        <h2>Actividades</h2>
-        <div id="paginator"></div>
-        <div class="container-fluid" id="actividades"  style="width: 60%">
+    <div class="col-md-12">
+           <div class="card-deck-wrapper">
+               <div id='actividades' class="card-columns">
 
-        </div>
+              </div>
+           </div>
     </div>
 
+
+ <div id="paginator"></div>
 
 {% endblock %}
 
@@ -89,42 +36,21 @@
 
 <script type="text/javascript" src="https://70023e2a50a4aa4a1f1759c8ec88a0ec7a694dbe.googledrive.com/host/0B4KIaVIuZK2JTTU5OW45M3hRb28/jquery.bootpag.min.js"></script>
 
+
 <script id="activities_template" type="x-tmpl-mustache">
-         <div class="panel panel-success container-fluid" style="width:500px">
-            <div class="panel-heading row">
-            <div class="col-xs-15 text-right">
-                    <button type="button" value="[[id]]" onclick='copyToClipboard("[[id]]")' data-toggle="" data-target="#"  data-href="[[id]]" class="btn btn-default clickable   editBtn"><i class="fa fa-clipboard clickable clipBtn"></i> </button>
-            </div>
-                <p style='line-height: 10px'>
-                <a href="#" onclick='javascript:window.open("[[id]]", "_blank", "scrollbars=1,resizable=1,height=600,width=650");' class=""><i class="fa fa-[[icon]] fa-lg" style='vertical-align:middle'> [[title]] </i></a>
-            </div>
-             <div class="panel-body">
 
-               [[#description]]
-                    <b>Descripcion: [[description]]
-               [[ /description ]]
-               [[^description]]
-                    <b>Sin descripcion</b>
-               [[/description]]
+<div class="card">
+<div class="card-block">
 
-            <p>
-              [[#type]]
-              <span class="label label-info"><a href="/search/?type=[[type]]" style="color:#FFFFFF">[[type]]</a></span>
-              [[/type]]
-              [[^type]]
-              [[/type]]
+  <h6 class="card-title"> <i class="fa fa-[[icon]]"> </i> <a href="[[id]]">[[title]]</a> </h6>
 
-              [[#lang]]
-              <span class="label label-success"><a href="/search/?lang=[[lang]]" style="color:#FFFFFF">[[lang]]</a></span>
-              [[/lang]]
-              [[^lang]]
-              [[/lang]]
 
-              [[#level]]
-              <span class="label label-default"><a href="/search/?level=[[level]]" style="color:#FFFFFF">[[level]]</a></span><br>
-              [[/level]]
-              [[^level]]
-              [[/level]]
+
+  <p class="card-text"> [[description]]</p>
+
+   [[#has_tags]]
+    <i class="fa fa-tags"></i>
+        [[/has_tags]]
 
               [[#tags]]
               [[#.]]
@@ -132,13 +58,23 @@
               [[/.]]
               [[^.]]
               [[/.]]
-              [[/tags]]
-            </p>
+        [[/tags]]
+</div>
 
-            </div>
+
+        <div class="card-footer">
+                <button type="button" value="[[id]]" onclick='copyToClipboard("[[id]]")' data-toggle="" data-target="#"  data-href="[[id]]" class="btn btn-secondary   editBtn"><i class="fa fa-clipboard clipBtn"></i> </button>
+
         </div>
+</div>
+
+
+
 
 </script>
+
+
+
 
     <script>
     $(function(){

@@ -6,21 +6,19 @@
 
     <div class="container">
 
-    <row>
+
 
     <h3>Biblioteca </h3>
 
+    <div class="col-md-12">
+       <div class="card-deck-wrapper">
+           <div id='activities' class="card-columns">
 
-        <div class="col-md-12">
+          </div>
+       </div>
+    </div>
 
-     <div class="card-deck-wrapper">
-         <div id='activities' class="card-columns">
 
-         </div>
-     </div>
-     </div>
-
-    </row>
 
 
 
@@ -75,7 +73,7 @@
                     level:value.level,
                     type:value.type,
                     tags:value.tags,
-                    has_tags:(value.tags === undefined)
+                    has_tags:(value.tags.length > 0)
                 });
 
                 $("#activities").append(rendered);
@@ -108,7 +106,7 @@
 
 
   <p class="card-text"> [[description]]</p>
-   [[^has_tags]]
+   [[#has_tags]]
    <i class="fa fa-tags"></i>
    [[/has_tags]]
 

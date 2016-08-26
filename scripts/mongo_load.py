@@ -380,7 +380,7 @@ public class ProductTest
 
     {'_id':'/program/js/1', 'title':u"suma.js",
      'description':u"Programa una función sencilla",
-     'type':"program",
+     'type':"prog",
      'icon':"coffee",
      'level':'principiante',
                 'initial_code':u"""//Completa el código
@@ -464,7 +464,7 @@ public class Calculator {
   }
 """,
                      'description':u"Utiliza split() para procesar una lista elementos",
-     'type':"Programa",
+     'type':"prog",
      'icon':"coffee",
      'level':'intermedio',
             'correct_code':u""" """,
@@ -492,11 +492,11 @@ public class CalculatorTest {
 {'_id': '/program/PPP/3',
         'title':u"Suma dos números",
         'description':u"Suma dos números",
-        'type':"Programa",
+        'type':"prog",
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"Programa" ,
+
 
 
             'initial_code':u"""
@@ -531,11 +531,10 @@ class Test(unittest.TestCase):
 {'_id': '/program/PPP/4',
         'title':u"distancia()",
         'description':u"Valor absoluto de la diferencia",
-        'type':"Programa",
+        'type':"prog",
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"Programa" ,
         'initial_code':u"""
 def distancia():
     pass
@@ -563,11 +562,11 @@ class Test(unittest.TestCase):
 {'_id': '/program/PPP/5',
         'title':u"mayor()",
         'description':u"Regresa el mayor de dos números",
-        'type':"Programa",
+
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"Programa" ,
+        "type":"prog" ,
         'initial_code':u"""
 def mayor():
     pass
@@ -624,11 +623,11 @@ print json.dumps(result)
 {'_id': '/program/PPP/6',
         'title':u"mayor()",
         'description':u"Mayor de una lista",
-        'type':"Programa",
+
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"Programa" ,
+        "type":"prog" ,
 
             'initial_code':u"""
 def regresa_lista():
@@ -687,11 +686,10 @@ print json.dumps(result)
 {'_id': '/program/PPP/7',
         'title':u"Dame una tupla",
         'description':u"Crear una tupla",
-        'type':"Programa",
+ "type": "prog",
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"Programa" ,
             'initial_code':u"""
 def regresa_tupla(a,b,c):
     pass
@@ -750,11 +748,10 @@ print json.dumps(result)
 
  'title':u"Solo una tajada",
         'description':u"Slicing o tajadas de una lista",
-        'type':"Programa",
+        "type":"prog" ,
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"Programa" ,
             'initial_code':u"""
 def recorta(pelicula):
     pass
@@ -808,11 +805,11 @@ print json.dumps(result)
 {'_id': '/program/PPP/9', 'title':u"Solo una tajadita",
 
         'description':u"Solo una tajadita",
-        'type':"Programa",
+        "type":"prog" ,
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"Programa" ,
+
 
             'initial_code':u"""
 def recorta(pelicula):
@@ -867,11 +864,11 @@ print json.dumps(result)
 
 {'_id': '/program/PPP/10',  'title':u"¡Pura Acción!",
         'description':u"Elementos de una Lista",
-        'type':"Programa",
+        "type":"prog" ,
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"Programa" ,
+
 
 
             'initial_code':u"""
@@ -933,11 +930,11 @@ print json.dumps(result)
  'title':u"Mutantes",
 
         'description':u"Parametros Mutantes",
-        'type':"Programa",
+        "type":"prog" ,
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"Programa" ,
+
 
             'initial_code':u"""
 def activa_usuario(usr):
@@ -995,11 +992,11 @@ print json.dumps(result)
 {'_id': '/program/PPP/12',
  'title':u"Ordena la Lista",
         'description':u"Ordena una Lista en python",
-        'type':"Programa",
+        "type":"prog" ,
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"Programa" ,
+
             'initial_code':u"""
 # Funcion que ordena una lista, puedes utilizar sort()
 def solution():
@@ -1066,11 +1063,11 @@ print json.dumps(result)
 
   'title':u"Producto punto",
          'description':u"Producto punto entre dos vectores",
-        'type':"Programa",
+        "type":"prog" ,
         'icon':"coffee",
         'level':'principiante',
         "lang":"python",
-        "type":"Programa" ,
+
             'initial_code':u"""
 def producto(l1,l2):
     pass
