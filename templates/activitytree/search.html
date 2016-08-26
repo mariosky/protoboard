@@ -1,8 +1,9 @@
 {% extends "activitytree/base.html" %}
 
 {% block content %}
-
+<h3>Biblioteca </h3>
     <nav class="navbar navbar-default">
+
       <div class="container-fluid">
                 <row>
                           <form class="form" role="search" onsubmit="return false">
@@ -200,9 +201,9 @@
             page: 1
         }).on("page", function(event, num){
             $("#actividades").empty();
-            query['page'] = (5) * (num - 1) ;
+            query['page'] = (10) * (num - 1) ;
             buscar(query);
-            $(this).bootpag({total: Math.floor((count + 5 -1)/5), maxVisible: 10});
+            $(this).bootpag({total: Math.floor((count + 10 -1)/10), maxVisible: 10});
         });
 
         //gets parameter from url and returns values
@@ -384,7 +385,7 @@
                     }
                 });
                 $("#paginator").show();
-                $("#paginator").bootpag({total: Math.floor((count + 5 -1)/5), maxVisible: 10});
+                $("#paginator").bootpag({total: Math.floor((count + 10 -1)/10), maxVisible: 10});
                 $('#actividades').val(data);
 
             }
