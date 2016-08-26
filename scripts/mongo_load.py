@@ -4,10 +4,10 @@
 activities = [
 
     {
- '_id':'/activity/bienvenidos',
- 'title':u"Introducción al Secuenciado Simple",
- 'type':'text',
-  'content':u"""
+    '_id':'/activity/bienvenidos',
+    'title':u"Introducción al Secuenciado Simple",
+    'type':'text',
+    'content':u"""
         <h3>Introducción</h3>
 		<p>
 		    Aprender a programar de forma autodidácta puede ser una tarea difícil. No sabemos por donde empezar, ¿que material debo leer
@@ -69,16 +69,24 @@ else:
 
  <p> Ocultaría esta actividad después de visitarla una vez. </p>
     <p> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Reconocimiento 3.0 Unported License</a>.</q>
-</p>"""},
+</p>""",
+    'tags': ['secuenciado'],'author':'mariosky@gmail.com',
+    'description':u"Descripción de la técnica utilizada para secuenciar a las actividades en un curso.",
+     'icon':'file'
+
+    },
 
 
     {'_id':'/activity/video/intro',
-     'title':u'Python para principiantes (1)',
+     'title':u'Python para principiantes: Video I',
      'url':u"http://www.youtube.com/embed/qM5nKU40KVg?rel=0",
      'youtube_id':'qM5nKU40KVg',
       'content' : u"""
-                <p>Primer video de presentación</p>
-                  """
+                <p>Una introducción al lenguaje python.</p>
+                  """,
+    'tags': ['python','principiantes'],'author':'mariosky@gmail.com',
+    'description':u"Una introducción al lenguaje python.",
+        'icon': 'youtube-play'
 
      },
 
@@ -89,7 +97,11 @@ else:
     'type':u"video",
       'content' : u"""
                 <p>Listas, Tuplas y Cadenas</p>
-                  """
+                  """,
+    'tags': ['python','colecciones'],'author':'mariosky@gmail.com',
+    'description':u"Una introducción a las colecciones (list,tuple,str) en python."
+    ,
+    'icon': 'youtube-play'
 
      },
 
@@ -100,7 +112,11 @@ else:
      'youtube_id':'1SyVe0v0iVA',
       'content' : u"""
                 <p>¿Que es un paradigma de programación? Primera versión de prueba.</p>
-                  """
+                  """,
+    'tags': ['oop'],'author':'mariosky@gmail.com',
+    'description':u"¿Que es un paradigma de programación? Primera versión de prueba.",
+        'icon': 'youtube-play'
+
 
      },
 
@@ -112,7 +128,9 @@ else:
      'youtube_id':'6BL6P48r_9A',
       'content' : u"""
                 <p>Ejercicios basados en pruebas</p>
-                  """
+                """,
+             'tags': [], 'author': 'mariosky@gmail.com',
+        'icon': 'youtube-play'
 
      },
 
@@ -192,7 +210,9 @@ else:
     'intro':"""<h3>Evaluación Previa</h3>
     <p> Contesta las preguntas, eligiendo la opción mas adecuada de la lista </p>""",
     'bye':"""""",
-     'satisfied_at_least':3
+     'satisfied_at_least':3,
+             'tags': [], 'author': 'mariosky@gmail.com',
+        'icon': 'pencil'
                     },
 
     {'_id':'/test/demo',
@@ -241,7 +261,8 @@ else:
     'intro':"""<h3>Evaluación Previa</h3>
     <p> Contesta las preguntas, eligiendo la opción mas adecuada de la lista </p>""",
     'bye':"""""",
-     'satisfied_at_least':3
+     'satisfied_at_least':3,
+             'tags': [], 'author': 'mariosky@gmail.com'
                     },
 
 
@@ -347,7 +368,8 @@ public class ProductTest
 
     }
 }""",
-     "lang":"csharp" },
+     "lang":"csharp",
+             'tags': ["csharp"], 'author': 'mariosky@gmail.com' },
 
 
 
@@ -375,7 +397,7 @@ public class ProductTest
                         assert.equal(suma(2,3), 5, "Debe sumar positivos");
                         assert.equal(suma(2,-3), -1, "Debe sumar negativos");
                         });""",
-                "lang":"javascript" },
+                "lang":"javascript",  'tags': ["javascript"], 'author': 'mariosky@gmail.com'},
 
 
 
@@ -420,7 +442,8 @@ $('.panel-title').html("Hola");
                 <pre>
 $('<strong>#</strong>nombre_del_elemento');
                 </pre>
-                """}
+                """,
+             'tags': ['jquery'], 'author': 'mariosky@gmail.com'}
 
 ,
 
@@ -461,7 +484,8 @@ public class CalculatorTest {
     assertEquals(6, sum);
   }
 }""",
-     "lang":"java" },
+     "lang":"java",
+             'tags': ['java'], 'author': 'mariosky@gmail.com' },
 
 
 
@@ -499,7 +523,8 @@ class Test(unittest.TestCase):
         self.assertEqual(suma(3,9),12)
     def test_negativos(self):
         self.assertEqual(suma(5,-12),-7)
-""", "lang":"python", "type":"unit_test"  },
+""", "lang":"python", "type":"unit_test" ,
+             'tags': ['python'], 'author': 'mariosky@gmail.com' },
 
 
 
@@ -532,7 +557,8 @@ class Test(unittest.TestCase):
         self.assertEqual(distancia(3,9),6)
     def test_negativos(self):
         self.assertEqual(distancia(5,-12),17)
-"""},
+""",
+             'tags': ['python'], 'author': 'mariosky@gmail.com'},
 
 {'_id': '/program/PPP/5',
         'title':u"mayor()",
@@ -592,7 +618,8 @@ result['failures']=  [str(e[0]) for e in Resultado.failures]
 result['successes']=  [str(e)  for e in Resultado.success]
 print "!!!---"
 print json.dumps(result)
-"""},
+""",
+             'tags': ['python'], 'author': 'mariosky@gmail.com'},
 
 {'_id': '/program/PPP/6',
         'title':u"mayor()",
@@ -654,7 +681,8 @@ result['failures']=  [str(e[0]) for e in Resultado.failures]
 result['successes']=  [str(e)  for e in Resultado.success]
 print "!!!---"
 print json.dumps(result)
-"""},
+""",
+             'tags': ['python'], 'author': 'mariosky@gmail.com'},
 
 {'_id': '/program/PPP/7',
         'title':u"Dame una tupla",
@@ -715,7 +743,8 @@ result['failures']=  [str(e[0]) for e in Resultado.failures]
 result['successes']=  [str(e)  for e in Resultado.success]
 print "!!!---"
 print json.dumps(result)
-"""},
+""",
+             'tags': ['python'], 'author': 'mariosky@gmail.com'},
 
 {'_id': '/program/PPP/8',
 
@@ -774,7 +803,8 @@ result['failures']=  [str(e[0]) for e in Resultado.failures]
 result['successes']=  [str(e)  for e in Resultado.success]
 print "!!!---"
 print json.dumps(result)
-"""},
+""",
+             'tags': ['python'], 'author': 'mariosky@gmail.com'},
 {'_id': '/program/PPP/9', 'title':u"Solo una tajadita",
 
         'description':u"Solo una tajadita",
@@ -832,7 +862,8 @@ result['failures']=  [str(e[0]) for e in Resultado.failures]
 result['successes']=  [str(e)  for e in Resultado.success]
 print "!!!---"
 print json.dumps(result)
-"""},
+""",
+             'tags': ['python'], 'author': 'mariosky@gmail.com'},
 
 {'_id': '/program/PPP/10',  'title':u"¡Pura Acción!",
         'description':u"Elementos de una Lista",
@@ -893,7 +924,8 @@ result['failures']=  [str(e[0]) for e in Resultado.failures]
 result['successes']=  [str(e)  for e in Resultado.success]
 print "!!!---"
 print json.dumps(result)
-"""},
+""",
+             'tags': ['python'], 'author': 'mariosky@gmail.com'},
 
 
 {'_id': '/program/PPP/11',
@@ -957,7 +989,8 @@ result['failures']=  [str(e[0]) for e in Resultado.failures]
 result['successes']=  [str(e)  for e in Resultado.success]
 print "!!!---"
 print json.dumps(result)
-"""},
+""",
+             'tags': ['python'], 'author': 'mariosky@gmail.com'},
 
 {'_id': '/program/PPP/12',
  'title':u"Ordena la Lista",
@@ -1025,7 +1058,8 @@ result['failures']=  [str(e[0]) for e in Resultado.failures]
 result['successes']=  [str(e)  for e in Resultado.success]
 print "!!!---"
 print json.dumps(result)
-"""}
+""",
+             'tags': ['python'], 'author': 'mariosky@gmail.com'}
         ,
 
  {'_id': '/program/PPP/13',
@@ -1087,7 +1121,8 @@ result['failures']=  [str(e[0]) for e in Resultado.failures]
 result['successes']=  [str(e)  for e in Resultado.success]
 print "!!!---"
 print json.dumps(result)
-"""}
+""",
+             'tags': ['python'], 'author': 'mariosky@gmail.com'}
 
     ]
 
