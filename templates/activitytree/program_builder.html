@@ -57,14 +57,16 @@
        {{ title }}
   {% endif %}
   <ul class="nav nav-tabs" id="tab-menu">
+      <ul class="nav nav-tabs">
+        <li class="nav-item"> <a class="nav-link active" href="#test" id="testid" data-toggle="tab">Unit Test</a></li>
+        <li class="nav-item"> <a class="nav-link" href="#correct" id="correctid" data-toggle="tab">Correct Code</a></li>
+        <li class="nav-item"> <a class="nav-link" href="#initial" id="initialid" data-toggle="tab">Initial Code</a></li>
 
+          <li class="nav-item"> <a class="nav-link" href="#htmltab" id="htmla" data-toggle="tab">HTML</a></li>
+          <li class="nav-item"> <a class="nav-link" id="infoid" href="#info" data-toggle="tab">Detail</a></li>
+<li class="nav-item"><button value="Help" class="btn btn-info" id="helpbtn">Help</button></li>
+      </ul>
 
-      <li class="active"><a href="#test" id="testid" data-toggle="tab">Unit Test</a></li>
-      <li><a href="#correct" id="correctid" data-toggle="tab">Correct Code</a></li>
-      <li><a href="#initial" id="initialid" data-toggle="tab">Initial Code</a></li>
-      <li id="htmlli" class="disabled"><a href="#htmltab" id="htmla" data-toggle="">HTML</a></li>
-      <li ><a id="infoid" href="#info" data-toggle="tab">Detail</a> </li>
-      <li style="float:right"><button value="Help" class="btn btn-warning" id="helpbtn">Help</button></li>
   </ul>
 
   <br>

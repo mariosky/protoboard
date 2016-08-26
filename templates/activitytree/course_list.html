@@ -9,108 +9,43 @@
 
 
         <h3>Cursos</h3>
-      <div class="row">
-        <div class="col-md-3">
-        <div class="card">
-              <ul class="list-group list-group-flush">
-                  <li class="list-group-item">Todos</li>
-                <li class="list-group-item">Python</li>
-                <li class="list-group-item">Javascript</li>
-                <li class="list-group-item">Java</li>
-              </ul>
-        </div>
 
-        </div>
 
-        <div class="col-md-9">
 
-        <div class="card-deck-wrapper">
+
+
          <div class="card-columns">
 
                 {% for c in courses %}
-                <a class="card-link" href="/{{c.root.id }}{{c.root.uri }}">
-                <div class="card">
-                   {% if c.root.image %}
-                       <img class="card-img-top center-block img-fluid" src="{{ c.root.image }}" alt="Card image cap">
-                  {% endif %}
-                  <div class="card-block">
-                    <h5 class="card-title">{{c.root.name}}</h5>
 
-                    <p class="card-text">{{ c.short_description|safe }}</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                  </div>
+                <div class="card">
+                    <a class="card-link" href="/{{c.root.id }}{{c.root.uri }}">
+                       {% if c.root.image %}
+                           <img class="card-img-top center-block img-fluid" src="{{ c.root.image }}" alt="Card image cap">
+                      {% endif %}
+                    </a>
+
+                      <div class="card-block">
+                       <a class="card-link" href="/{{c.root.id }}{{c.root.uri }}">
+                           <h5 class="card-title">{{c.root.name}}</h5>
+                       </a>
+                        <p class="card-text">{{ c.short_description|safe }}</p>
+                                  <ul class="course-listing-bar">
+                              <li><small> Instructor:   <a href="#"  class="card-link">  {{ c.root.authorlearningactivity_set.all.0.user.get_full_name }} </a></small></li>
+
+                            </ul>
+                      </div>
 
                 </div>
-                <div class="card">
-                   {% if c.root.image %}
-                       <img class="card-img-top center-block img-fluid" src="{{ c.root.image }}" alt="Card image cap">
-                  {% endif %}
-                  <div class="card-block">
-                    <h4 class="card-title">{{c.root.name}}</h4>
-
-                    <p class="card-text">
-                        <ul class="course-listing-bar">
-                          <li> <i class="fa fa-pencil"></i>   <a href="#"  class="card-link"> {{ c.root.authorlearningactivity_set.all.0.user.get_full_name }} </a></li>
-
-
-                        </ul>
-                  </p>
-                        {% if user.is_authenticated %}
-                           <a class="card-link" href="/{{c.root.id }}{{c.root.uri }}?nav=continue" role="button"> Ir al curso &raquo;</a>
-                        {% else %}
-                           <a class="card-link" href="/{{c.root.id }}{{c.root.uri }}" role="button">Regístrate &raquo;</a>
-                        {% endif %}
-
-
-                  </div>
-                </div></a>
-                <div class="card">
-                 <h5 class="card-header">Curso</h5>
-
-                  <div class="card-block">
-                    <h4 class="card-title">{{c.root.name}}</h4>
-                    <p class="card-text">Sección para una pequeña introducción al curso.</p>
-
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                  </div>
-                </div>
-
-
 
             {% endfor %}
+
+
+
+
+
+
             </div>
-         </div>
-
-        </div>
-
-      </div>
-
-      </div>
-
-    <row>
-
-    <h3>Clases </h3>
-    <div class="col-md-3">
-        <div class="card">
-  <ul class="list-group list-group-flush">
-      <li class="list-group-item">Ejercicios</li>
-    <li class="list-group-item">Videos</li>
-    <li class="list-group-item">Lecturas</li>
-    <li class="list-group-item">Questionarios</li>
-  </ul>
-</div>
-        </div>
-
-        <div class="col-md-9">
-
-     <div class="card-deck-wrapper">
-         <div id='activities' class="card-columns">
-
-         </div>
-     </div>
-     </div>
-
-    </row>
 
 
 
@@ -118,9 +53,6 @@
 
 
 
-
-
-      <hr>
 
       <footer>
         <p>
@@ -138,45 +70,6 @@
 
   <script type="text/javascript" charset="utf-8">
 
-         $(document).ready(function() {
-
-
-
-
-
-
-
-        $.get( '/get_activities',  function (data) {
-
-            Mustache.tags = ['[[', ']]'];
-            var activities_template = $('#activities_template').html();
-            Mustache.parse(activities_template);
-            var obj = jQuery.parseJSON( data );
-
-
-            $.each(obj, function( index, value ) {
-
-                rendered = Mustache.render(activities_template, {
-                    title: value.title,
-                    uri: value._id,
-                    icon:value.icon,
-                    description: value.description,
-                    lang:value.lang,
-                    level:value.level,
-                    type:value.type,
-                    tags:value.tags});
-
-                $("#activities").append(rendered);
-
-            });
-
-
-
-
-
-            });
-
- });
 
 </script>
 

@@ -16,6 +16,7 @@ urlpatterns = patterns('',
       (r'^welcome/$','activitytree.views.welcome'),
       (r'^instructor/$', 'activitytree.views.instructor'),
       (r'^student/$', 'activitytree.views.student'),
+      (r'^courses/$', 'activitytree.views.course_list'),
 
       (r'^dashboard/(?P<path_id>[0-9]+)$','activitytree.views.dashboard'),
 

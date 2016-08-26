@@ -60,6 +60,23 @@ def welcome(request):
                  },
                 context_instance=RequestContext(request))
 
+def course_list(request):
+    courses = Course.objects.all()
+
+    if request.user.is_authenticated() and request.user != 'AnonymousUser' :
+         return render_to_response('activitytree/course_list.html',
+            {'courses':courses
+                #, 'plus_scope':plus_scope,'plus_id':plus_id
+            },
+                context_instance=RequestContext(request))
+    else:
+        return render_to_response('activitytree/course_list.html',
+            {'user_name':None,'courses':courses
+                #,'plus_scope':plus_scope,'plus_id':plus_id
+                 },
+                context_instance=RequestContext(request))
+
+
 
 def instructor(request):
     if request.user.is_authenticated() and request.user != 'AnonymousUser':

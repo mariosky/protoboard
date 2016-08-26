@@ -39,34 +39,33 @@
 
 {% block content %}
 
-    <h3 id="course-title">  {{ course_name }}                 <small id="course-url"> {{ course_uri }}  </small>  </h3>
+    <h3 >  {{ course_name }}                 <small id="course-url"> {{ course_uri }}  </small>  </h3>
+
+    <ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="/instructor">Mis Cursos</a></li>
+  <li id="course-title" class="breadcrumb-item active">{{ course_name }} <small id="course-url"> {{ course_uri }}  </small> </li>
+</ol>
+
     <nav class="navbar navbar-default">
       <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="row instructor-tab" >
+                <nav class="navbar navbar-light bg-faded">
+                    <ul class="nav navbar-nav">
+                     <li class="nav-item"> <button id="newContainerBtn" class="btn btn-primary">New Container</button></li>
+                     <li class="nav-item"> <button id="newActivityBtn" class="btn btn-primary">New Activity</button></li>
+                     <li class="nav-item"> <button id="saveChangesBtn" class="btn btn-primary">Save </button></li>
+                    </ul>
+                    <ul class="nav navbar-nav  pull-xs-right">
+                     <li class="nav-item"> <button id="courseSettingsBtn" class="btn btn-primary"><i class="fa fa-cog"></i></button></li>
+                     <li class="nav-item"> <button id="courseCalendarBtn" class="btn btn-primary"><i class="fa fa-calendar"></i></button></li>
+                     <li class="nav-item"> <button id="courseDeleteBtn" class="btn btn-primary"><i class="fa fa-trash-o"></i> </button></li>
+                    </ul>
+                </nav>
+             </div>
 
-          <ul class="nav navbar-nav">
-            <li><button id="newContainerBtn" type="button" class="btn btn-default navbar-btn">New Container</button></li>
-            <li><button id="newActivityBtn" type="button" class="btn btn-default navbar-btn">New Activity</button></li>
-            <li><button  id="saveChangesBtn" type="button" class="btn btn-default navbar-btn">Save</button></li>
-          </ul>
-
-           <ul class="nav navbar-nav navbar-right">
-           <li> <button id="courseSettingsBtn" type="button"  class="btn btn-default navbar-btn"><i class="fa fa-cog"></i> </button></li>
-           <li> <button id="courseCalendarBtn"  type="button" class="btn btn-default navbar-btn"><i class="fa fa-calendar"></i></button></li>
-           <li> <button id="courseDeleteBtn"  type="button" class="btn btn-default navbar-btn"><i class="fa fa-trash-o"></i></button></li>
-           </ul>
-        </div><!-- /.navbar-collapse -->
+       <!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
     <ul class="sTree2 listsClass" id="sTree2">
@@ -137,20 +136,20 @@
                   <i class="fa fa-folder"></i>  <span class="h5 container_name"> [[container_name]] </span>
 
                     <div class="btn-group navbar-right" role="group" aria-label="..." >
-                      <button type="button" class="btn btn-default  clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i></button>
+                      <button type="button" class="btn btn-secondary  clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i></button>
 
                     </div>
 
                   <div class="btn-group navbar-right" role="group" aria-label="..." >
-                      <button type="button" class="btn btn-default  clickable   containerPrecondition">Precondition</button>
-                      <button type="button" class="btn btn-default  clickable   containerRollup">Rollup</button>
+                      <button type="button" class="btn btn-secondary  clickable   containerPrecondition">Precondition</button>
+                      <button type="button" class="btn btn-secondary  clickable   containerRollup">Rollup</button>
 
 
                     </div>
 
                     <div class="btn-group navbar-right" role="group" aria-label="..." >
-                      <button type="button" class="btn btn-default clickable   containerEditBtn"><i class="fa fa-cog clickable containerEditBtn"></i> </button>
-                      <button type="button" class="btn btn-default clickable   containerFromUntil"><i class="fa fa-calendar  clickable  containerFromUnti"></i></button>
+                      <button type="button" class="btn btn-secondary clickable   containerEditBtn"><i class="fa fa-cog clickable containerEditBtn"></i> </button>
+                      <button type="button" class="btn btn-secondary clickable   containerFromUntil"><i class="fa fa-calendar  clickable  containerFromUnti"></i></button>
 
                     </div>
       </div>
@@ -169,18 +168,18 @@
             <i class="fa fa-file"></i> <span class="h5 container_name">[[activity_name]] </span>
 
           <div class="btn-group navbar-right" role="group" aria-label="..." >
-            <button type="button" class="btn btn-default  clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i></button>
+            <button type="button" class="btn btn-secondary  clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i></button>
           </div>
 
             <div class="btn-group navbar-right" role="group" aria-label="..." >
-                <button type="button" class="btn btn-default  clickable   activityEditBtn">Activity</button>
-                <button type="button" class="btn btn-default  clickable   containerPrecondition">Precondition</button>
+                <button type="button" class="btn btn-secondary  clickable   activityEditBtn">Activity</button>
+                <button type="button" class="btn btn-secondary  clickable   containerPrecondition">Precondition</button>
           </div>
 
           <div class="btn-group navbar-right" role="group" aria-label="..." >
-            <button type="button" class="btn btn-default clickable   containerSearch"><i class="fa fa-search  clickable  containerSearch"></i></button>
-            <button type="button" class="btn btn-default clickable   containerEditBtn"><i class="fa fa-cog clickable containerEditBtn"></i> </button>
-            <button type="button" class="btn btn-default clickable   containerFromUntil"><i class="fa fa-calendar  clickable  containerFromUnti"></i></button>
+            <button type="button" class="btn btn-secondary clickable   containerSearch"><i class="fa fa-search  clickable  containerSearch"></i></button>
+            <button type="button" class="btn btn-secondary clickable   containerEditBtn"><i class="fa fa-cog clickable containerEditBtn"></i> </button>
+            <button type="button" class="btn btn-secondary clickable   containerFromUntil"><i class="fa fa-calendar  clickable  containerFromUnti"></i></button>
           </div>
         </div>
  </li>
