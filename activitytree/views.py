@@ -96,7 +96,7 @@ def student(request):
     if request.user.is_authenticated() and request.user != 'AnonymousUser':
         courses = LearningActivity.objects.filter(authorlearningactivity__user=request.user, root=None)
 
-        return render_to_response('activitytree/instructor_home.html',
+        return render_to_response('activitytree/student_home.html',
                                   {'courses': courses
                                    # , 'plus_scope':plus_scope,'plus_id':plus_id
                                    },
