@@ -118,18 +118,12 @@ def my_courses(request):
         return HttpResponseRedirect('/login/?next=%s' % request.path)
 
 
-def my_active_courses(request): #view that determines if user has unfinished courses, and returns the courses
+def my_enrolled_courses(request, status = 'incomplete'): #view that determines if user has unfinished courses, and returns the courses
     if request.user.is_authenticated() and request.user != 'AnonymousUser' :
-        incomplete_courses = ActivityTree.objects.filter(current_activity__progress_status='incomplete')
 
-        courses = UserLearningActivity.objects.filter(user__username=request.user, progress_status='incomplete').values('learning_activity_id')
-        courses = LearningActivity.objects.filter(id__in=courses).values('root_id')
-
-        courses = Course.objects.filter(root_id__in=courses)
-
-
-        return render_to_response('activitytree/active_courses.html',
-                                  {'courses': courses},
+        courses = Course.objects.filter(root__userlearningactivity__user=request.user, root__userlearningactivity__progress_status=status)
+        return render_to_response('activitytree/my_enrolled_courses.html',
+                                  {'courses': courses, 'status':status},
                                   context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/login/?next=%s' % request.path)
@@ -309,16 +303,17 @@ def dashboard(request,path_id):
                 # Exits last activity, and sets requested activity as current
                 # if choice_exit consider complete
 
-
+            print 'root' ,root.learning_activity.uri
             _XML = s.get_nav(root)
             #Escape for javascript
             XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')        #navegation_tree = s.nav_to_html(nav)
 
             return render_to_response('activitytree/dashboard.html', {'XML_NAV':XML,
                                     'children': requested_activity.get_children(),
-                                    'uri':requested_activity.learning_activity.uri,
-                                    'root':requested_activity.learning_activity.get_root().uri,
-                                    'root':requested_activity.learning_activity.get_root().uri
+                                    'uri':root.learning_activity.uri,
+                                    'root':root.learning_activity.uri ,
+                                                                      'root_id':'/%s'% (root.learning_activity.id,)
+
                                                                     },
                                       context_instance=RequestContext(request))
 

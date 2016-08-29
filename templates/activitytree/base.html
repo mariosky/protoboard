@@ -72,7 +72,7 @@
           {% if user.is_authenticated %}
 
            {% if XML_NAV %}
-            <li class="nav-item"><a  class="nav-link" href="{{root}}">Curso</a></li>
+            <li class="nav-item"><a  class="nav-link" href="{{ root_id }}{{root}}">Curso</a></li>
             <li class="nav-item"><a  class="nav-link" href="/dashboard{{ root_id }}">Dashboard</a></li>
             <li class="nav-item"><p id="user_points" class="navbar-text"></p></li>
            {% endif %}

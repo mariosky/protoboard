@@ -15,7 +15,7 @@ urlpatterns = patterns('',
 
       (r'^welcome/$','activitytree.views.welcome'),
       (r'^instructor/$', 'activitytree.views.instructor'),
-      (r'^student/$', 'activitytree.views.student'),
+      (r'^student/$', 'activitytree.views.my_enrolled_courses'),
       (r'^courses/$', 'activitytree.views.course_list'),
 
       (r'^dashboard/(?P<path_id>[0-9]+)$','activitytree.views.dashboard'),
@@ -50,7 +50,7 @@ urlpatterns = patterns('',
 
       (r'^test_program$','activitytree.views.test_program'),
       (r'^search_prueba$','activitytree.views.search_prueba'),
-      (r'^active_courses$','activitytree.views.my_active_courses'),
+      (r'^my_enrolled_courses/(?P<status>(incomplete|completed))$','activitytree.views.my_enrolled_courses'),
       (r'^search$','activitytree.views.search'),
       (r'^search/?$','activitytree.views.search'),
       (r'^activitybuilder$','activitytree.views.activity_builder'),
