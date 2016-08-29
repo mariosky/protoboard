@@ -21,7 +21,7 @@ from django.contrib.auth.models import User
 from backends import AuthAlreadyAssociated, google_query_me, facebook_query_me
 from django.db.models import Avg, Count
 
-from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event, FacebookSession,LearningActivityRating,AuthorLearningActivity
+from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event,LearningActivityRating
 from activitytree.interaction_handler import SimpleSequencing
 
 from activitytree.activities import multi_device_activities
@@ -120,6 +120,8 @@ def my_courses(request):
 
 def my_active_courses(request): #view that determines if user has unfinished courses, and returns the courses
     if request.user.is_authenticated() and request.user != 'AnonymousUser' :
+        incomplete_courses = ActivityTree.objects.filter(current_activity__progress_status='incomplete')
+
         courses = UserLearningActivity.objects.filter(user__username=request.user, progress_status='incomplete').values('learning_activity_id')
         courses = LearningActivity.objects.filter(id__in=courses).values('root_id')
 
