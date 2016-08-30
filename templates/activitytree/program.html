@@ -26,6 +26,14 @@
     margin-bottom:0px;
     }
 
+  #info_panel{
+    padding:10px;
+
+    }
+
+  #program_header{
+    margin-bottom:0px;
+    }
 
 {% endblock style %}
 
@@ -38,9 +46,11 @@
 
 <div class="col-md-5">
                 <!-- Nav tabs -->
+
+
         <ul id="main_tab" class="nav nav-tabs">
-          <li class="active"><a href="#instrucciones" data-toggle="tab">Actividad</a></li>
-          <li><a href="#results" data-toggle="tab">Consola</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#instrucciones" data-toggle="tab">Actividad</a></li>
+          <li class="nav-item" ><a class="nav-link" href="#results" data-toggle="tab">Consola</a></li>
         </ul>
 
         <!-- Tab panes -->
@@ -69,36 +79,28 @@
 </div>
     <div class="col-md-7">
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
-            <h5 style="display: inline;" class="panel-title">{{program_quiz.title}}</h5>
+        <div class="card">
 
-            </div>
+            <h6 id="program_header" class="card-header">{{program_quiz.title}}</h6>
+
+
             <div id="editor_alert">
 
                 </div>
 
-            <div class="panel-body">{% csrf_token %}
+             <div class="panel-body">{% csrf_token %}
                 <div id="editor">{{program_quiz.initial_code}}</div>
             </div>
 
-         <div class="panel-footer">
+            <div class="card-footer">
 
-  <button type="button" id="sendButton"  data-complete-text="finished!" data-loading-text="Trabajando..."  class="btn btn-primary btn-sm" autocomplete="off">Ejecuta el código</button>
-          <button type="button" id="resetButton" class="btn btn-default btn-sm "> Reinicia el código</button>
+                <button type="button" id="sendButton"  data-complete-text="finished!" data-loading-text="Trabajando..."  class="btn btn-primary btn-sm" autocomplete="off">Ejecuta el código</button>
+                <button type="button" id="resetButton" class="btn btn-default btn-sm "> Reinicia el código</button>
 
+                 <span id="num_attempts" class="text-info pull-right">  </span>
+            </div>
 
-
-             <span id="num_attempts" class="text-info pull-right">  </span>
-
-
-
-
-       </div>
-
-
-
-             </div>
+        </div>
 
         </div>
     </div>
