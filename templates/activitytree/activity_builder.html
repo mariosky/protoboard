@@ -86,33 +86,22 @@
 
 {% block scripts %}
 
-<script type="text/javascript" src="{{ STATIC_URL }}app/scripts/jquery.bootpag.js"></script>
-
-
 <script id="activities_template" type="x-tmpl-mustache">
 
        <div class="col-sm-6">
           <div class="card">
           <div class="card-block">
             <h4 class="card-title">
-
               <i class="fa fa-[[icon]]"> </i> [[title]]
-
-
              </h4>
-
-
-
-
-
-                              [[#description]]
+               [[#description]]
                    <p> [[description]]</p>
                [[ /description ]]
                [[^description]]
                   <p> Sin descripción </p>
                [[/description]]
 
-                 <i class="fa fa-tags"></i>
+               <i class="fa fa-tags"></i>
 
               [[#tags]]
               [[#.]]
@@ -121,7 +110,6 @@
               [[^.]]
               [[/.]]
               [[/tags]]
-
 
                               </div>
 
@@ -141,11 +129,9 @@
     $(function(){
         //if user deletes activity, modal shows
         $('#confirm-delete').on('show.bs.modal', function(e) {
-            console.log(e);
-            var value = ($(e.relatedTarget).data('href'));
-            console.log(value);
-            $('.debug-url').html('Delete activity: <strong>' + value + '? </strong>');
 
+            var value = ($(e.relatedTarget).data('href'));
+            $('.debug-url').html('Delete activity: <strong>' + value + '? </strong>');
             $('.btn-ok').click(function(){
                 delActivity(value);
                 $('#confirm-delete').modal('hide');
@@ -241,10 +227,6 @@
 <script type="text/javascript">
 var param = [];
 var tags = [];
-
-
-
-
 
 var getPages =  function( page , total, maxVisible )
     {
