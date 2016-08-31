@@ -4,10 +4,6 @@
  <!--Instructor Header BEGIN -->
 
 
-
-
-
-
       <!--Instructor TABS -->
 <div  class="row instructor-tab">
 
@@ -55,15 +51,15 @@
  <!--Instructor Header END -->
 
 
-   <nav aria-label="Page navigation" id="pagor">
 
-
-    </nav>
 
     <div class="container" id="actividades" >
 
     </div>
+   <nav aria-label="Page navigation" id="paginator" align="center">
 
+
+    </nav>
 
 
     <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -237,19 +233,15 @@
       </a>
     </li>
 
-    </ul>
-    [[/next]]
 
+    [[/next]]
+ </ul>
 </script>
 
 <script type="text/javascript">
 var param = [];
 var tags = [];
-var query = {};
-query['page'] = 0;
-var initialize = ['text','video','quiz','prog'];
-query['type'] = {'type': {'$in':initialize}};
-query['author'] = {'author': '{{user.email}}'};
+
 
 
 
@@ -302,14 +294,15 @@ var getPages =  function( page , total, maxVisible )
 
         //Pages
         var pages = [];
+        var pi = leftPage;
 
         for (var i = 0 ; i <= rightPage-rightExtra; i++ )
         {
 
-            pages[i]= { page:leftPage, active:leftPage==page} ;
-            leftPage++;
+            pages[i]= { page:pi, active:pi==page} ;
+            pi++;
 
-            if (leftPage > rightPage)
+            if (pi > rightPage)
                     break;
 
         }
@@ -341,43 +334,30 @@ var getPages =  function( page , total, maxVisible )
 
 
 
-console.log( "9,2,14,15,1");
+var renderPaginator = function ( page, total, max_visible, on_click) {
+     Mustache.tags = ['[[', ']]'];
+     var paginator_template = $('#paginator_template').html();
+     Mustache.parse(paginator_template);
+     var pages = getPages(page,total,max_visible);
 
-console.log( getPages(9,15,5));
-console.log( getPages(2,15,5));
-console.log( getPages(14,15,5));
-console.log( getPages(15,15,5));
-console.log( getPages(1,15,5));
-console.log( getPages(1,1,5));
+     rendered = Mustache.render(paginator_template, {
+                    pages: pages.pages,
+                    next:pages.next,
+                    nextPage: pages.nextPage,
+                    prevPage: pages.prevPage,
+                    prev:pages.prev
+                    });
 
- Mustache.tags = ['[[', ']]'];
- var paginator_template = $('#paginator_template').html();
- Mustache.parse(paginator_template);
- var page = 1;
- var pages = getPages(page,15,5);
- rendered = Mustache.render(paginator_template, {
-                pages: pages.pages,
-                next:pages.next,
-                nextPage: pages.nextPage,
-                prevPage: pages.prevPage,
+    $("#paginator").html(rendered);
+    console.log(pages);
+    console.log(rendered);
+    $('.page-item').on('click',function(){
+        var pagenum = $( this ).attr('data-page');
+        $("#actividades").empty();
 
-
-
-                prev:pages.prev
-
-                });
-console.log(rendered);
-
-$("#pagor").append(rendered);
-
-$('.page-item').on('click', function(){
-var pagenum = $( this ).attr('data-page');
- $("#actividades").empty();
-            query['page'] = (5) * (pagenum - 1) ;
-            buscar(query);
-
-
-});
+        buscar({ page:pagenum - 1, type: {'type': {'$in':['text','video','quiz','prog']}}, author: {'author': '{{user.email}}'}});
+    });
+}
 
 
 
@@ -385,26 +365,108 @@ var pagenum = $( this ).attr('data-page');
 
 
 
-
-
-
-//paginator plugin initialize
 $(function(){
-    page = 0;
-    $('#paginator').bootpag({
-            total: 1,
-            page: 1,
-            activeClass:"page-item active",
-            disabledClass:"page-item"
-
-        }).on("page", function(event, num){
-            $("#actividades").empty();
-            query['page'] = (5) * (num - 1) ;
-            buscar(query);
-            $(this).bootpag({total: Math.floor((count + 5 -1)/5), maxVisible: 10});
-        });
-    buscar(query)
+    buscar({ page:0, type: {'type': {'$in':['text','video','quiz','prog']}}, author: {'author': '{{user.email}}'}})
 });
+
+//ajax function that sends query to server and displays results
+function buscar(query){
+        $.ajax({
+        type: 'POST',
+        url: '/search_prueba',
+        data: JSON.stringify(query),
+        success: function (data) {
+            var obj = jQuery.parseJSON( data );
+            if (obj == "null" || obj[0].count == 0){
+                $("#paginator").empty();
+                $("#actividades").append('<h3 style="color:lightgray">No hay actividades</h3>');
+                count = 0
+            }
+            else{
+                Mustache.tags = ['[[', ']]'];
+                var activities_template = $('#activities_template').html();
+                Mustache.parse(activities_template);
+                $.each(obj, function( index, value ) {
+                    if (value.count){
+                        count = value.count
+                    }
+                    else{
+                        rendered = Mustache.render(activities_template, {
+                            title: value.title,
+                            id: value._id,
+                            icon:value.icon,
+                            description: value.description,
+                            lang:value.lang,
+                            level:value.level,
+                            type:value.type,
+                            tags:value.tags});
+                        $("#actividades").append(rendered);
+                    }
+                });
+
+                renderPaginator( query['page']+1, Math.floor((count + 10 -1)/10), 10);
+                $('#actividades').val(data);
+
+            }
+        },
+        error: function(data) {
+            console.log("Error");
+        }
+    });
+    }
+
+
+$("#txtname").on('change', function(){
+   $("#actividades").empty();
+   $("#row").show();
+    query_builder({ page:0, type: {'type': {'$in':['text','video','quiz','prog']}}, author: {'author': '{{user.email}}'}});
+ });
+
+
+
+
+//function that builds a query depending on input of user
+function query_builder(query)
+    {
+                var name = $("#txtname").val();
+                var exp_tags = /S*#(?:\[[^\]]+\]|\S+)/;
+                if (exp_tags.test(name)){
+                    var texto = name.split(/\s+/g);
+                    tags = [];
+                    title = [];
+                    for(var i=0;i<texto.length;i++){
+                        if(texto[i].match(exp_tags)){
+                            tags.push(texto[i].replace('#',''))
+                        }
+                        else{
+                            title.push(texto[i])
+                        }
+                    }
+                    title = title.join(" ");
+                    if (title != "" && tags.length != 0){
+                        query['title'] = {'title': {'$regex': title, '$options': 'i'}};
+                        query['tags'] = {'tags': {'$all': tags}};
+                    }
+                    else if (tags.length != 0 && title == ""){
+                        query['tags'] = {'tags': {'$all': tags}};
+                        delete query['title']
+                    }
+                    else if (tags.length == 0 && title != ""){
+                        query['title'] = {'title': {'$regex': title, '$options': 'i'}};
+                        delete query['tags']
+                    }
+                    else{
+                        delete query['title'];
+                        delete query['tags']
+                    }
+                    buscar(query)
+                }
+                else{
+                    query['title'] = {'title': {'$regex': $("#txtname").val(), '$options': 'i'}};
+                    delete query['tags'];
+                    buscar(query)
+                }
+    }
 
 
 
@@ -433,7 +495,6 @@ function delActivity(activity){
 
 //function that gets activity info for updating activity
 function get_activity(id,type){
-
     if (type == "prog"){
         load_dataProgram(id)
     }
@@ -511,215 +572,6 @@ function load_dataQuiz(id){
     window.location = '/build_quiz?id=' + id ;
 }
 
-        $('#difficulty li').click(function () {
-            $('#difficulty li').not(this).removeClass('active');
-            $(this).addClass('active');
-        });
-
-        $('#lang li').click(function () {
-            $('#lang li').not(this).removeClass('active');
-            $(this).addClass('active');
-        });
-
-        $("#difficulty a[class='small']").on('click',function(){
-            var param = this.getAttribute('data-value');
-            $("#actividades").empty();
-            if (param == 'any'){
-                param = "";
-            }
-            query_builder("level",param,query)
-        });
-
-        $("#lang a[class='small']").on('click',function(){
-            var param = this.getAttribute('data-value');
-            $("#actividades").empty();
-            if (param == 'any'){
-                param = "";
-            }
-            query_builder("lang",param,query)
-        });
-
-        $("#sidebar input[type='checkbox']").change(function(){
-            if(this.checked){
-                $("#actividades").empty();
-                param.push(this.value);
-                query_builder("type",param,query)
-            }
-            else
-            {
-                $("#actividades").empty();
-                param.splice($.inArray(this.value,param), 1);
-                if (param.length == 0){
-                    var initialize = ['text','video','quiz','prog'];
-                    query_builder("type",initialize,query)
-                }
-                else{
-                    query_builder("type",param,query)
-                }
-
-            }
-        });
-
-        $("#txtname").on('change', function(){
-            $("#actividades").empty();
-            $("#row").show();
-            query_builder("name",param,query);
-        });
-
-        $("#txtdifficulty").on('change', function(){
-            $("#actividades").empty();
-            query_builder("level",param,query)
-        });
-
-        $("#txtlang").on('change', function(){
-            $("#actividades").empty();
-            query_builder("lang",param,query)
-        });
-
-//clears all inputs from user and reinitializes query when Clear All is clicked
-        $("#clear").click(function(){
-            query = {};
-            param =[];
-            initialize = ['text','video','quiz','prog'];
-            query['author'] = {'author': '{{user.email}}'};
-            $('#lang li').not($("#lang li[id='anylang']")).removeClass('active');
-            $('#difficulty li').not($("#lang li[id='anylevel']")).removeClass('active');
-            $("#actividades").empty();
-            $("#txtname").val('');
-            $("#txtuser").val('');
-            $("#sidebar input[type='checkbox']").prop('checked', false);
-            query_builder("type",initialize,query);
-        });
-
-//function that builds a query depending on input of user
-function query_builder(flag,param,query)
-    {
-        if (flag == "type"){
-            if (param.length==0){
-                delete query["type"];
-                buscar(query)
-            }
-            else{
-                query['type'] = {'type': {'$in':param}};
-                buscar(query)
-            }
-        }
-        else if (flag == "name"){
-            if ($("#txtname").val() == ""){
-                delete query["title"];
-                delete query["tags"];
-                buscar(query)
-            }
-            else{
-                var name = $("#txtname").val();
-                var exp_tags = /S*#(?:\[[^\]]+\]|\S+)/;
-                if (exp_tags.test(name)){
-                    var texto = name.split(/\s+/g);
-                    tags = [];
-                    title = [];
-                    for(var i=0;i<texto.length;i++){
-                        if(texto[i].match(exp_tags)){
-                            tags.push(texto[i].replace('#',''))
-                        }
-                        else{
-                            title.push(texto[i])
-                        }
-                    }
-                    title = title.join(" ");
-                    if (title != "" && tags.length != 0){
-                        query['title'] = {'title': {'$regex': title, '$options': 'i'}};
-                        query['tags'] = {'tags': {'$all': tags}};
-                    }
-                    else if (tags.length != 0 && title == ""){
-                        query['tags'] = {'tags': {'$all': tags}};
-                        delete query['title']
-                    }
-                    else if (tags.length == 0 && title != ""){
-                        query['title'] = {'title': {'$regex': title, '$options': 'i'}};
-                        delete query['tags']
-                    }
-                    else{
-                        delete query['title'];
-                        delete query['tags']
-                    }
-                    buscar(query)
-                }
-                else{
-                    query['title'] = {'title': {'$regex': $("#txtname").val(), '$options': 'i'}};
-                    delete query['tags'];
-                    buscar(query)
-                }
-
-            }
-        }
-        else if (flag == "level"){
-            if (param == ""){
-                delete query["level"];
-                buscar(query)
-            }
-            else{
-                query['level'] = {'level': param};
-                buscar(query)
-            }
-        }
-        else if (flag == "lang"){
-            if (param == ""){
-                delete query["lang"];
-                buscar(query)
-            }
-            else{
-                query['lang'] = {'lang': param};
-                buscar(query)
-            }
-        }
-    }
-
-//ajax function that sends query to server and displays results
-function buscar(tipo){
-        $.ajax({
-        type: 'POST',
-        url: '/search_prueba',
-        data: JSON.stringify(tipo),
-        success: function (data) {
-            var obj = jQuery.parseJSON( data );
-            if (obj == "null" || obj[0].count == 0){
-                $("#paginator").hide();
-                $("#actividades").append('<h3 style="color:lightgray">No hay actividades</h3>');
-                //alert("No se encontro actividad con esas caracteristicas");
-                count = 0
-            }
-            else{
-                Mustache.tags = ['[[', ']]'];
-                var activities_template = $('#activities_template').html();
-                Mustache.parse(activities_template);
-                $.each(obj, function( index, value ) {
-                    if (value.count){
-                        count = value.count
-                    }
-                    else{
-                        rendered = Mustache.render(activities_template, {
-                            title: value.title,
-                            id: value._id,
-                            icon:value.icon,
-                            description: value.description,
-                            lang:value.lang,
-                            level:value.level,
-                            type:value.type,
-                            tags:value.tags});
-                        $("#actividades").append(rendered);
-                    }
-                });
-                $("#paginator").show();
-                $("#paginator").bootpag({total: Math.floor((count + 5 -1)/5), maxVisible: 10});
-                $('#actividades').val(data);
-
-            }
-        },
-        error: function(data) {
-            console.log("Error");
-        }
-    });
-    }
 
 
 </script>
