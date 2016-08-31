@@ -210,7 +210,7 @@
     <ul class="pagination">
 
     [[#prev]]
-     <li class="page-item">
+     <li class="page-item" data-page='[[prevPage]]'>
       <a class="page-link" href="#" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
         <span class="sr-only">Previous</span>
@@ -221,7 +221,7 @@
 
        [[#pages]]
           [[#page]]
-                <li class="page-item [[#active]]active[[/active]]"><a class="page-link" href="#">[[page]]</a></li>
+                <li class="page-item [[#active]]active[[/active]]" data-page=[[page]]><a class="page-link"  href="#">[[page]]</a></li>
 
           [[/page]]
 
@@ -230,7 +230,7 @@
        [[/pages]]
 
     [[#next]]
-    <li class="page-item">
+    <li class="page-item" data-page=[[nextPage]]>
       <a class="page-link" href="#" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
         <span class="sr-only">Next</span>
@@ -316,9 +316,24 @@ var getPages =  function( page , total, maxVisible )
         var prev =  leftPage > 1 ;
         var next =  rightPage < total ;
 
+        var prevPage ,nextPage;
+
+        if (prev)
+        {
+           prevPage = page - 1 ;
+        }
+
+        if (next)
+        {
+            nextPage = page +1
+        }
 
 
-        return { prev:prev , next:next, pages: pages  } ;
+
+
+
+
+        return { prev:prev , next:next, prevPage:prevPage,nextPage:nextPage, pages: pages  } ;
 
     }
 
@@ -338,17 +353,31 @@ console.log( getPages(1,1,5));
  Mustache.tags = ['[[', ']]'];
  var paginator_template = $('#paginator_template').html();
  Mustache.parse(paginator_template);
- var pages = getPages(9,15,5);
+ var page = 1;
+ var pages = getPages(page,15,5);
  rendered = Mustache.render(paginator_template, {
                 pages: pages.pages,
                 next:pages.next,
+                nextPage: pages.nextPage,
+                prevPage: pages.prevPage,
+
+
+
                 prev:pages.prev
 
                 });
 console.log(rendered);
 
-                $("#pagor").append(rendered);
+$("#pagor").append(rendered);
 
+$('.page-item').on('click', function(){
+var pagenum = $( this ).attr('data-page');
+ $("#actividades").empty();
+            query['page'] = (5) * (pagenum - 1) ;
+            buscar(query);
+
+
+});
 
 
 
