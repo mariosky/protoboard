@@ -29,13 +29,16 @@
     </div>
 
 
- <div id="paginator"></div>
+    <nav aria-label="Page navigation" id="paginator" align="center">
+
+
+    </nav>
 
 {% endblock %}
 
 {% block scripts %}
 
-<script type="text/javascript" src="https://70023e2a50a4aa4a1f1759c8ec88a0ec7a694dbe.googledrive.com/host/0B4KIaVIuZK2JTTU5OW45M3hRb28/jquery.bootpag.min.js"></script>
+
 
 
 <script id="activities_template" type="x-tmpl-mustache">
@@ -74,292 +77,74 @@
 
 </script>
 
+<script id="paginator_template" type="x-tmpl-mustache">
+    <ul class="pagination">
+
+    [[#prev]]
+     <li class="page-item" data-page='[[prevPage]]'>
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+        <span class="sr-only">Previous</span>
+      </a>
+    </li>
+
+    [[/prev]]
+
+       [[#pages]]
+          [[#page]]
+                <li class="page-item [[#active]]active[[/active]]" data-page=[[page]]><a class="page-link"  href="#">[[page]]</a></li>
+
+          [[/page]]
+
+          [[^.]]
+          [[/.]]
+       [[/pages]]
+
+    [[#next]]
+    <li class="page-item" data-page=[[nextPage]]>
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+        <span class="sr-only">Next</span>
+      </a>
+    </li>
+
+
+    [[/next]]
+ </ul>
+</script>
+
+<script type="text/javascript">
 
 
 
-    <script>
+
     $(function(){
         //if parameter is submitted on url, gets the value and send it to loadifurl function, if not, loads all activities in db
         var urltype = geturltype();
-        var param = [];
+
         var tags = [];
-        var query = {};
-        query['page'] = 0;
-        var initialize = ['text','video','quiz','prog'];
-        query['type'] = {'type': {'$in':initialize}};
+        var query = { page:0, type: {'type': {'$in':['text','video','quiz','prog']} } };
 
         if (typeof urltype != 'undefined') {
-            if (urltype[0] == 'tag'){
-                loadIfUrl(urltype[1], 'tags')
-            }
-            else if (urltype[0] == 'type') {
-                loadIfUrl(urltype[1], 'type')
-            }
-            else if (urltype[0] == 'level') {
-                loadIfUrl(urltype[1], 'level')
-            }
-            else if (urltype[0] == 'lang') {
-                loadIfUrl(urltype[1], 'lang')
-            }
+
+                loadIfUrl(urltype[1], 'tags',query);
         }
         else{
-            query_builder('type', initialize,query)
-        }
-
-        //shows toolbar when tools option is clicked
-        $("#tools").on('click',function(){
-            $("#row").toggle()
-        });
-
-        //changes active class depending of selected difficulty in toolbar
-        $('#difficulty li').click(function () {
-            $('#difficulty li').not(this).removeClass('active');
-            $(this).addClass('active');
-        });
-
-        //changes active class depending of selected language in toolbar
-        $('#lang li').click(function () {
-            $('#lang li').not(this).removeClass('active');
-            $(this).addClass('active');
-        });
-
-        //gets the selected value from difficulty dropdown and sends it to query_builder for search
-        $("#difficulty a[class='small']").on('click',function(){
-            var param = this.getAttribute('data-value');
-            $("#actividades").empty();
-            if (param == 'any'){
-                param = "";
-            }
-            query_builder("level",param,query)
-        });
-
-        //gets selected value from language dropdown and sends it to query_builder for search
-        $("#lang a[class='small']").on('click',function(){
-            var param = this.getAttribute('data-value');
-            $("#actividades").empty();
-            if (param == 'any'){
-                param = "";
-            }
-            query_builder("lang",param,query)
-        });
-
-        //when checkbox are selected or deselected from dropdown, get the value and sends it to query_builder for search
-        $("#sidebar input[type='checkbox']").change(function(){
-            if(this.checked){
-                $("#actividades").empty();
-                param.push(this.value);
-                query_builder("type",param,query)
-            }
-            else
-            {
-                $("#actividades").empty();
-                param.splice($.inArray(this.value,param), 1);
-                if (param.length == 0){
-                    var initialize = ['text','video','quiz','prog'];
-                    query_builder("type",initialize,query)
-                }
-                else{
-                    query_builder("type",param,query)
-                }
-
-            }
-        });
-
-        //gets value from txtname textbox on change event and sent to query_builder
-        $("#txtname").on('change', function(){
-            $("#actividades").empty();
-            $("#row").show();
-            query_builder("name",param,query);
-        });
-
-        //gets value from txtuser textbox on change event and sent to query_builder
-        $("#txtuser").on('change', function(){
-            $("#actividades").empty();
-            query_builder("user",param,query)
-        });
-
-
-        //when Clear option is clicked, this resets controls and reinitializes query
-        $("#clear").click(function(){
-            query = {};
-            param =[];
-            initialize = ['text','video','quiz','prog'];
-            $('#lang li').not($("#lang li[id='anylang']")).removeClass('active');
-            $('#difficulty li').not($("#lang li[id='anylevel']")).removeClass('active');
-            $("#actividades").empty();
-            $("#txtname").val('');
-            $("#txtuser").val('');
-            $("#sidebar input[type='checkbox']").prop('checked', false);
-            query_builder("type",initialize,query);
-        });
-
-        //$("#paginator").hide();
-
-        //initializes paginator plugin
-        $('#paginator').bootpag({
-            total: 1,
-            page: 1
-        }).on("page", function(event, num){
-            $("#actividades").empty();
-            query['page'] = (10) * (num - 1) ;
-            buscar(query);
-            $(this).bootpag({total: Math.floor((count + 10 -1)/10), maxVisible: 10});
-        });
-
-        //gets parameter from url and returns values
-        function geturltype(){
-            var parameters = window.location.href.split("?");
-            if (parameters.length > 1){
-                parameters.splice(0,1);
-                for (var i=0;i<parameters.length;i++){
-                    var vars = parameters[i].split("=");
-                    return vars
-                }
-            }
-            else{
-                return undefined
-            }
+            query_builder(query);
         }
 
 
-        //function that categorizes data received (from url) and sends it to query_builder with correct parameters
-        function loadIfUrl(type, category){
+        });
 
-            if (category == "type"){
-                $("#actividades").empty();
-                $("input[id=" + type +"]").prop('checked', true);
-                param.push(type);
-                query_builder("type",param,query)
-            }
-            else if (category == "tags"){
-                $("#actividades").empty();
-                $("#txtname").val("#"+type);
-                query_builder("name",param,query)
-            }
-            else if (category == "level"){
-                $("#actividades").empty();
-                $("#difficulty li[id='anylevel']").removeClass('active');
-                $("#difficulty li[id="+type+"]").addClass('active');
-                query_builder("level",type,query)
-            }
-            else if (category == "lang"){
-                $("#actividades").empty();
-                $("#lang li[id='anylang']").removeClass('active');
-                $("#lang li[id="+type+"]").addClass('active');
-                query_builder("lang",type,query)
-            }
-        }
-
-    });
-
-    //function that builds query for mongodb depending on parameters received
-    function query_builder(flag,param,query)
-    {
-        if (flag == "type"){
-            if (param.length==0){
-                delete query["type"];
-                buscar(query)
-            }
-            else{
-                query['type'] = {'type': {'$in':param}};
-                buscar(query)
-            }
-        }
-        else if (flag == "name"){
-            if ($("#txtname").val() == ""){
-                delete query["title"];
-                delete query["tags"];
-                buscar(query)
-            }
-            else{
-                var name = $("#txtname").val();
-                var exp_tags = /S*#(?:\[[^\]]+\]|\S+)/;
-                if (exp_tags.test(name)){
-                    var texto = name.split(/\s+/g);
-                    tags = [];
-                    title = [];
-                    for(var i=0;i<texto.length;i++){
-                        if(texto[i].match(exp_tags)){
-                            tags.push(texto[i].replace('#',''))
-                        }
-                        else{
-                            title.push(texto[i])
-                        }
-                    }
-                    title = title.join(" ");
-                    if (title != "" && tags.length != 0){
-                        query['title'] = {'title': {'$regex': title, '$options': 'i'}};
-                        query['tags'] = {'tags': {'$all': tags}};
-                    }
-                    else if (tags.length != 0 && title == ""){
-                        query['tags'] = {'tags': {'$all': tags}};
-                        delete query['title']
-                    }
-                    else if (tags.length == 0 && title != ""){
-                        query['title'] = {'title': {'$regex': title, '$options': 'i'}};
-                        delete query['tags']
-                    }
-                    else{
-                        delete query['title'];
-                        delete query['tags']
-                    }
-                    buscar(query)
-                }
-                else{
-                    query['title'] = {'title': {'$regex': $("#txtname").val(), '$options': 'i'}};
-                    delete query['tags'];
-                    buscar(query)
-                }
-
-            }
-        }
-        else if (flag == "user"){
-            if ($("#txtuser").val() == ""){
-                delete query["author"];
-                buscar(query)
-            }
-            else{
-                query['author'] = {'author': $("#txtuser").val()};
-                buscar(query)
-            }
-        }
-        else if (flag == "level"){
-            if (param == ""){
-                delete query["level"];
-                buscar(query)
-            }
-            else{
-                query['level'] = {'level': param};
-                buscar(query)
-            }
-        }
-        else if (flag == "lang"){
-            if (param == ""){
-                delete query["lang"];
-                buscar(query)
-            }
-            else{
-                query['lang'] = {'lang': param};
-                buscar(query)
-            }
-        }
-    }
-
-    //when copytoclipboard button is clicked, a message is displayed to user
-    function copyToClipboard(text) {
-        window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
-        }
-
-    //function that receives query thats going to be sent to server, and get back results of search of activities
-    function buscar(tipo){
+function buscar(query){
         $.ajax({
         type: 'POST',
         url: '/search_prueba',
-        data: JSON.stringify(tipo),
+        data: JSON.stringify(query),
         success: function (data) {
             var obj = jQuery.parseJSON( data );
             if (obj == "null" || obj[0].count == 0){
-                $("#paginator").hide();
+                $("#paginator").empty();
                 $("#actividades").append('<h3 style="color:lightgray">No hay actividades</h3>');
                 count = 0
             }
@@ -384,8 +169,8 @@
                         $("#actividades").append(rendered);
                     }
                 });
-                $("#paginator").show();
-                $("#paginator").bootpag({total: Math.floor((count + 10 -1)/10), maxVisible: 10});
+
+                renderPaginator( query['page']+1, Math.floor((count + 10 -1)/10), 10, on_click );
                 $('#actividades').val(data);
 
             }
@@ -395,6 +180,60 @@
         }
     });
     }
+
+
+$("#txtname").on('change', function(){
+   $("#actividades").empty();
+   $("#row").show();
+    query_builder({ page:0, type: {'type': {'$in':['text','video','quiz','prog']}}});
+ });
+
+
+
+
+var on_click = function(){
+        var pagenum = $( this ).attr('data-page');
+        $("#actividades").empty();
+
+        buscar({ page:pagenum - 1, type: {'type': {'$in':['text','video','quiz','prog']}}});
+    }
+
+
+
+
+        //gets parameter from url and returns values
+        function geturltype(){
+            var parameters = window.location.href.split("?");
+            if (parameters.length > 1){
+                parameters.splice(0,1);
+                for (var i=0;i<parameters.length;i++){
+                    var vars = parameters[i].split("=");
+                    return vars;
+                }
+            }
+            else{
+                return undefined;
+            }
+        }
+
+
+        //function that categorizes data received (from url) and sends it to query_builder with correct parameters
+        function loadIfUrl(type, category, query) {
+
+
+            if (category == "tags") {
+                $("#actividades").empty();
+                $("#txtname").val("#" + type);
+                query_builder(query);
+            }
+
+        }
+
+
+    //when copytoclipboard button is clicked, a message is displayed to user
+    function copyToClipboard(text) {
+        window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+        }
 
 
 
