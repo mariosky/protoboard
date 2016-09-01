@@ -1323,7 +1323,7 @@ def search_prueba(request): #view used by search, receives page and query and re
         message = "null"
         return HttpResponse(json.dumps(message), content_type='application/javascript')
     else:
-        activities = activities_collection.find({'$and': query}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1}).sort("$natural", pymongo.DESCENDING).limit(10).skip(page)
+        activities = activities_collection.find({'$and': query}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1}).sort("$natural", pymongo.DESCENDING).limit(10).skip(page *10)
         count = activities_collection.find({'$and': query}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1}).sort("$natural", pymongo.DESCENDING).count()
         count = {'count': count}
         json_docs = [doc for doc in activities]

@@ -120,21 +120,17 @@
 
     $(function(){
         //if parameter is submitted on url, gets the value and send it to loadifurl function, if not, loads all activities in db
-        var urltype = geturltype();
 
-        var tags = [];
+        loadURI("#txtname" );
         var query = { page:0, type: {'type': {'$in':['text','video','quiz','prog']} } };
-
-        if (typeof urltype != 'undefined') {
-
-                loadIfUrl(urltype[1], 'tags',query);
-        }
-        else{
-            query_builder(query);
-        }
-
+        query = load_query("#txtname",query);
+        $("#actividades").empty();
+        buscar(query);
+        console.log("buscar - new");
 
         });
+
+
 
 function buscar(query){
         $.ajax({
@@ -185,7 +181,8 @@ function buscar(query){
 $("#txtname").on('change', function(){
    $("#actividades").empty();
    $("#row").show();
-    query_builder({ page:0, type: {'type': {'$in':['text','video','quiz','prog']}}});
+   var query =  load_query( "#txtname" ,{ page:0, type: {'type': {'$in':['text','video','quiz','prog']}}});
+    buscar(query);
  });
 
 
@@ -194,40 +191,26 @@ $("#txtname").on('change', function(){
 var on_click = function(){
         var pagenum = $( this ).attr('data-page');
         $("#actividades").empty();
-
-        buscar({ page:pagenum - 1, type: {'type': {'$in':['text','video','quiz','prog']}}});
+        $("#paginator").empty();
+        var query =  load_query( "#txtname" ,{ page:0, type: {'type': {'$in':['text','video','quiz','prog']}}});
+        query.page =  (pagenum - 1);
+        buscar(query);
     }
 
+//Thanks to: http://stackoverflow.com/a/901144
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 
 
 
-        //gets parameter from url and returns values
-        function geturltype(){
-            var parameters = window.location.href.split("?");
-            if (parameters.length > 1){
-                parameters.splice(0,1);
-                for (var i=0;i<parameters.length;i++){
-                    var vars = parameters[i].split("=");
-                    return vars;
-                }
-            }
-            else{
-                return undefined;
-            }
-        }
 
-
-        //function that categorizes data received (from url) and sends it to query_builder with correct parameters
-        function loadIfUrl(type, category, query) {
-
-
-            if (category == "tags") {
-                $("#actividades").empty();
-                $("#txtname").val("#" + type);
-                query_builder(query);
-            }
-
-        }
 
 
     //when copytoclipboard button is clicked, a message is displayed to user

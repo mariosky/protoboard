@@ -105,7 +105,7 @@
 
               [[#tags]]
               [[#.]]
-              <span class="label label-info"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">[[.]]</a></span>
+              <span class="label label-info">[[.]]</span>
               [[/.]]
               [[^.]]
               [[/.]]
@@ -145,48 +145,6 @@
 </script>
 
 
-<script id="activities_template" type="x-tmpl-mustache">
-
-       <div class="col-sm-6">
-          <div class="card">
-          <div class="card-block">
-            <h4 class="card-title">
-
-              <i class="fa fa-[[icon]]"> </i> [[title]]
-
-
-             </h4>
-
-               [[#description]]
-                   <p> [[description]]</p>
-               [[ /description ]]
-               [[^description]]
-                  <p> Sin descripción </p>
-               [[/description]]
-
-                 <i class="fa fa-tags"></i>
-
-              [[#tags]]
-              [[#.]]
-              <span class="label label-info"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">[[.]]</a></span>
-              [[/.]]
-              [[^.]]
-              [[/.]]
-              [[/tags]]
-
-
-                              </div>
-
-             <div class="card-footer">
-                <button type="button" value="[[id]]" onclick='javascript:window.open("[[id]]", "_blank", "scrollbars=1,resizable=1,height=600,width=650");'  class="btn btn-primary"><i class="fa fa-eye"></i> </button>
-                 <button type="button" value="[[id]]" onclick='get_activity("[[id]]","[[type]]")' data-toggle="" data-target="#"  data-target="#confirm-edit" data-href="[[id]]" class="btn btn-primary"><i class="fa fa-cog"></i> </button>
-                 <button type="button" value="[[id]]" data-toggle="modal" data-target="#confirm-delete"  data-href="[[id]]" class="btn btn-primary"><i class="fa fa-trash-o"></i></button>
-
-            </div>
-       </div>
-
-  </div>
-</script>
 
 <script id="paginator_template" type="x-tmpl-mustache">
     <ul class="pagination">
@@ -298,8 +256,10 @@ $("#txtname").on('change', function(){
 var on_click = function(){
         var pagenum = $( this ).attr('data-page');
         $("#actividades").empty();
+        var query =  load_query( "#txtname" ,{ page:pagenum - 1, type: {'type': {'$in':['text','video','quiz','prog']}}, author: {'author': '{{user.email}}'} });
+    buscar(query);
 
-        buscar({ page:pagenum - 1, type: {'type': {'$in':['text','video','quiz','prog']}}, author: {'author': '{{user.email}}'}});
+       // buscar({ page:pagenum - 1, type: {'type': {'$in':['text','video','quiz','prog']}}, author: {'author': '{{user.email}}'}});
     }
 
 
