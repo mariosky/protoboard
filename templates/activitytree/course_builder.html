@@ -57,6 +57,7 @@
                      <li class="nav-item"> <button id="newActivityBtn" class="btn btn-primary">New Activity</button></li>
                      <li class="nav-item"> <button id="saveChangesBtn" class="btn btn-primary">Save </button></li>
                      <li class="nav-item"> <button id="exportBtn" class="btn btn-primary">Export to File </button></li>
+                     <li class="nav-item"> <button id="uploadBtn" class="btn btn-primary">Upload</button></li>
                     </ul>
                     <ul class="nav navbar-nav  pull-xs-right">
                      <li class="nav-item"> <button id="courseSettingsBtn" class="btn btn-primary"><i class="fa fa-cog"></i></button></li>
@@ -1063,6 +1064,10 @@ function get_course() {
       }
   });
 
+  //deletes rule but does not save til user click Save Changes button
+  body.on('click', '#uploadBtn', function(){
+    $('#upload').modal('show')
+  });
 
 
 
@@ -1358,6 +1363,29 @@ function get_course() {
         $("#modalSearch").modal('hide')
 
     }
+
+function fileSelected() {
+      var file = document.getElementById('fileToUpload').files[0];
+      if (file) {
+        var fileSize = 0;
+        if (file.size > 1024 * 1024)
+          fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+        else
+          fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+        document.getElementById('fileName').innerHTML = 'Name: ' + file.name;
+        document.getElementById('fileSize').innerHTML = 'Size: ' + fileSize;
+        document.getElementById('fileType').innerHTML = 'Type: ' + file.type;
+
+        if (file.size < 1024 * 1024) {
+          $("#uploadFileBtn").prop("disabled", false);
+          console.log("Not to big");
+          }
+        else
+        {
+            console.log(file.size);
+        }
+        }
+     }
 
 
 </script>
@@ -1776,6 +1804,38 @@ function get_course() {
         </div><!-- /.modal-dialog -->
     </div>
 
+
+
+<div class="modal fade" id="upload">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Upload Course</h4>
+      </div>
+      <div class="modal-body">
+
+  <form>
+  <div class="form-group">
+    <label for="formGroupExampleInput">Select a File to Upload</label>
+    <input type="file" name="fileToUpload" class="form-control" id="fileToUpload" onchange="fileSelected()">
+  </div>
+    <div id="fileName"></div>
+    <div id="fileSize"></div>
+    <div id="fileType"></div>
+</form>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button id="uploadFileBtn" type="button" class="btn btn-primary" onclick="uploadFile()" disabled >Upload</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 {% endblock scripts %}
