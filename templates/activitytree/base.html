@@ -215,7 +215,8 @@
     <script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.raty.js"></script>
 
     <script>tinymce.init({ selector:'tinytext', height:"220", automatic_uploads:true, plugins: "image link", toolbar:" undo redo| styleselect | bold italic | alignleft aligncenter alignright | link image" })</script>
-<!-- endbuild -->
+   <script async="" src="{{ STATIC_URL }}app/scripts/FileSaver.min.js"/>
+  <!-- endbuild -->
 
 <!-- build:js scripts/main.js -->
 <script src="{{ STATIC_URL }}app/scripts/main.js"></script>

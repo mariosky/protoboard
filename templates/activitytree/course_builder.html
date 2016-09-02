@@ -56,6 +56,7 @@
                      <li class="nav-item"> <button id="newContainerBtn" class="btn btn-primary">New Container</button></li>
                      <li class="nav-item"> <button id="newActivityBtn" class="btn btn-primary">New Activity</button></li>
                      <li class="nav-item"> <button id="saveChangesBtn" class="btn btn-primary">Save </button></li>
+                     <li class="nav-item"> <button id="exportBtn" class="btn btn-primary">Export to File </button></li>
                     </ul>
                     <ul class="nav navbar-nav  pull-xs-right">
                      <li class="nav-item"> <button id="courseSettingsBtn" class="btn btn-primary"><i class="fa fa-cog"></i></button></li>
@@ -414,12 +415,20 @@
              "rules":rules_activities
             }];
 
-          console.log(JSON.stringify(course));
-          return JSON.stringify(course);
+
+          return JSON.stringify(course, null, 4);
 
 
 
   }
+
+
+         //Export  button
+  body.on('click', '#exportBtn', function(){
+        var tree = tree_to_json( '#sTree2');
+        var blob = new Blob( [tree] , {type: "text/json;charset=utf-8"});
+        saveAs(blob, "course.json");
+  });
 
 function get_course() {
 
@@ -1053,6 +1062,9 @@ function get_course() {
           $("#context-operators").val("==").prop('disabled', true);
       }
   });
+
+
+
 
   //deletes rule but does not save til user click Save Changes button
   body.on('click', '#deleteAllbtn', function(){
@@ -1763,6 +1775,7 @@ function get_course() {
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
+
 
 
 {% endblock scripts %}
