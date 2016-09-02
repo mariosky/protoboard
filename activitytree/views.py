@@ -1428,8 +1428,25 @@ def me(request):
 
 
 
+@csrf_exempt
+def upload_course(request):
+    if request.method == 'POST':
+        request.FILES['fileToUpload'].open('rt',encoding='utf-8')
 
 
+        j = request.FILES['fileToUpload'].read()
+        print file.encoding
+        file.close()
+        print j
+        print type(j)
+
+
+#        data = json.loads(j)
+#       print data
+        #update_course_from_json(j, request.user)
+
+        result = {"result": "added", "error": None, "id": None}
+        return HttpResponse(json.dumps(result), content_type='application/javascript')
 
 
 

@@ -1364,6 +1364,41 @@ function get_course() {
 
     }
 
+
+function uploadFile() {
+  var xhr = new XMLHttpRequest();
+  var fd = new FormData(document.getElementById('uploadForm')) ;
+  /* event listners */
+  xhr.upload.addEventListener("progress", uploadProgress, false);
+  xhr.addEventListener("load", uploadComplete, false);
+  xhr.addEventListener("error", uploadFailed, false);
+  xhr.addEventListener("abort", uploadCanceled, false);
+  /* Be sure to change the url below to the url of your upload server side script */
+  xhr.open("POST", "/upload_course");
+  xhr.send(fd);
+       }
+     function uploadProgress(evt) {
+            if (evt.lengthComputable) {
+       var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+            document.getElementById('progressNumber').innerHTML = percentComplete.toString() + '%';
+             }
+            else {
+            document.getElementById('progressNumber').innerHTML = 'unable to compute';
+            }
+    }
+function uploadComplete(evt) {
+  /* This event is raised when the server send back a response */
+  alert(evt.target.responseText);
+}
+function uploadFailed(evt) {
+  alert("There was an error attempting to upload the file.");
+}
+function uploadCanceled(evt) {
+  alert("The upload has been canceled by the user or the browser dropped the connection.");
+}
+
+
+
 function fileSelected() {
       var file = document.getElementById('fileToUpload').files[0];
       if (file) {
@@ -1817,7 +1852,7 @@ function fileSelected() {
       </div>
       <div class="modal-body">
 
-  <form>
+  <form id="uploadForm" enctype="multipart/form-data" method="post" action="upload">
   <div class="form-group">
     <label for="formGroupExampleInput">Select a File to Upload</label>
     <input type="file" name="fileToUpload" class="form-control" id="fileToUpload" onchange="fileSelected()">
@@ -1825,6 +1860,7 @@ function fileSelected() {
     <div id="fileName"></div>
     <div id="fileSize"></div>
     <div id="fileType"></div>
+    <div id="progressNumber"></div>
 </form>
 
 
