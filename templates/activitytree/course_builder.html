@@ -427,7 +427,7 @@
          //Export  button
   body.on('click', '#exportBtn', function(){
         var tree = tree_to_json( '#sTree2');
-        var blob = new Blob( [tree] , {type: "text/json;charset=utf-8"});
+        var blob = new Blob( [tree] , {type: "application/json;charset=utf-8"});
         saveAs(blob, "course.json");
   });
 
@@ -1852,7 +1852,7 @@ function fileSelected() {
       </div>
       <div class="modal-body">
 
-  <form id="uploadForm" enctype="multipart/form-data" method="post" action="upload">
+  <form id="uploadForm" enctype="multipart/form-data" method="post" action="upload" accept-charset="UTF-8">
   <div class="form-group">
     <label for="formGroupExampleInput">Select a File to Upload</label>
     <input type="file" name="fileToUpload" class="form-control" id="fileToUpload" onchange="fileSelected()">

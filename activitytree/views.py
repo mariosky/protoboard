@@ -1431,19 +1431,24 @@ def me(request):
 @csrf_exempt
 def upload_course(request):
     if request.method == 'POST':
-        request.FILES['fileToUpload'].open('rt',encoding='utf-8')
+        print request.FILES
+        type(request.FILES['fileToUpload'])
+        print request.FILES['fileToUpload'].content_type
+        print request.FILES['fileToUpload'].charset
 
 
         j = request.FILES['fileToUpload'].read()
-        print file.encoding
-        file.close()
-        print j
-        print type(j)
+        type(j)
+        k = unicode(j)
+        print type(k)
 
 
-#        data = json.loads(j)
-#       print data
+
+
+        data = json.loads(j)
+        print data
         #update_course_from_json(j, request.user)
+        request.FILES['fileToUpload'].close()
 
         result = {"result": "added", "error": None, "id": None}
         return HttpResponse(json.dumps(result), content_type='application/javascript')
