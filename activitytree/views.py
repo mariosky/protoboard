@@ -1431,6 +1431,15 @@ def me(request):
 @csrf_exempt
 def upload_course(request):
     if request.method == 'POST':
+        #We need a Course ID
+        if request.POST and 'course_id' in request.POST :
+            print request.POST['course_id']
+
+        else:
+            #We can create a NEW empty course?
+            result = {"result": "error", "error": "No course id supplied", "id": None}
+            return HttpResponse(json.dumps(result), content_type='application/javascript')
+
         print request.FILES
         type(request.FILES['fileToUpload'])
         print request.FILES['fileToUpload'].content_type
@@ -1447,7 +1456,7 @@ def upload_course(request):
 
         data = json.loads(j)
         print data
-        #update_course_from_json(j, request.user)
+        update_course_from_json(j, request.user)
         request.FILES['fileToUpload'].close()
 
         result = {"result": "added", "error": None, "id": None}
