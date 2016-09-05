@@ -81,7 +81,205 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalhtml">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">HTML</h4>
+            </div>
 
+            <div class="modal-body">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item"> <a class="nav-link active" href="#main"  data-toggle="tab">Main</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="#detail"  data-toggle="tab">Detail</a></li>
+                </ul>
+                <br>
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="main">
+                        <div class="container-fluid">
+                            <form id="formahtml" >{% csrf_token %}
+                                <div class="form-group">
+                                    <label for="title">Display Name</label>
+                                    <input type="text" class="form-control" id="titleHtml" name="title"  required="true">
+                                    <label for="descriptionhtml">Description</label>
+                                    <textarea class="form-control" id="descriptionhtml" name="description" rows="3"></textarea>
+                                    <label for="tagshtml">Tags:</label><br>
+                                    <input class="form-control" id="tagshtml" name="tags"  placeholder="Create tags with tab">
+                                    <br>
+                                    <input type="hidden" id="type" name="type" value="text">
+                                    <input type="hidden" id="author" name="author" value="{{ user.email }}">
+                                    <label for="content">Content</label>
+                                    <tinytext name="content" id="content"></tinytext>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="detail">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <form id="formadetail" style="align-content: center">
+                                    <div class="form-group" >
+                                        <label for="idhtml">ID</label>
+                                        <input type="text" readonly="readonly" class="form-control" id="idhtml" name="_id">
+
+                                        <label for="rightshtml">Rights</label>
+                                        <input type="text" class="form-control" id="rightshtml" name="rights">
+                                        <label for="externalhtml">External URL</label>
+                                        <input type="text" class="form-control" id="externalhtml" name="external_url">
+                                        <label for="publisherhtml">Publisher</label>
+                                        <input type="text" class="form-control" id="publisherhtml" name="publisher">
+
+                                        <br>
+                                        <label for="iconhtml">Icon</label>
+                                        <select id="iconhtml" name="icon" >
+                                            <option value="coffee">Coffee</option>
+                                            <option value="file" selected>File</option>
+                                            <option value="youtube-play">Youtube</option>
+                                            <option value="puzzle-piece">Puzzle</option>
+                                        </select>
+                                        <label for="levelhtml">Level</label>
+                                        <select id="levelhtml" name="level">
+                                            <option value="principiante">Principiante</option>
+                                            <option value="intermedio">Intermedio</option>
+                                            <option value="avanzado">Avanzado</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="form-group" align="center">
+                <button id="_htmlActivity" type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalvideo">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Video</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item"> <a class="nav-link active" href="#mainv"  data-toggle="tab">Main</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="#detailv"  data-toggle="tab">Detail</a></li>
+                </ul>
+                <br>
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="mainv">
+                        <div class="container-fluid">
+                            <form id="formaVideo" >{% csrf_token %}
+                                <div class="form-group">
+                                    <label for="title">Display Name</label>
+                                    <input type="text" class="form-control" id="titleVideo" name="title"  required="true"><br>
+                                    <label for="descriptionvideo">Description</label>
+                                    <textarea class="form-control" id="descriptionvideo" name="description" rows="3">
+                                    </textarea>
+                                    <label for="tagsvideo">Tags</label>
+                                    <input class="form-control input-optional" id="tagsvideo" name="tags"><br>
+                                    <input type="hidden" id="type" name="type" value="video">
+                                    <input type="hidden" id="author" name="author" value="{{ user.email }}">
+                                    <input type="hidden" id="youtube_id" name="youtube_id">
+                                    <label for="url">URL Video</label>
+                                    <input type="text" id="url" name="url" class="form-control" placeholder="URL Video"><br>
+                                    <div class="form-inline" align="center" style="padding: 5px">
+                                    <div class="form-group">
+                                        <label for="startSeconds" class="">Start Seconds</label>
+                                        <input type="text" class="form-control input-optional" id="startSeconds" name="startSeconds" style="width: 30%">
+                                    </div>
+
+                                        <div class="form-group">
+                                            <label for="endSeconds" class="">End Seconds</label>
+                                            <input type="text" class="form-control input-optional" id="endSeconds" name="endSeconds" style="width: 30%">
+                                        </div>
+                                    </div><br>
+
+                                    <div id="ytVideo" align="center">
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="detailv">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <form id="formadetailv" style="align-content: center">
+                                    <div class="form-group" >
+                                        <label for="idvideo">ID</label>
+                                        <input type="text" readonly="readonly" class="form-control" id="idvideo" name="_id">
+
+                                        <label for="rightsvideo">Rights</label>
+                                        <input type="text" class="form-control" id="rightsvideo" name="rights">
+                                        <label for="externalvideo">External URL</label>
+                                        <input type="text" class="form-control" id="externalvideo" name="external_url">
+                                        <label for="publishervideo">Publisher</label>
+                                        <input type="text" class="form-control" id="publishervideo" name="publisher">
+
+                                        <label for="iconvideo">Icon</label>
+                                        <select id="iconvideo" name="icon" >
+                                            <option value="coffee">Coffee</option>
+                                            <option value="file">File</option>
+                                            <option value="youtube-play" selected>Youtube</option>
+                                            <option value="puzzle-piece">Puzzle</option>
+                                        </select>
+                                        <label for="levelvideo">Level</label>
+                                        <select id="levelvideo" name="level">
+                                            <option value="principiante">Principiante</option>
+                                            <option value="intermedio">Intermedio</option>
+                                            <option value="avanzado">Avanzado</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="form-group" align="center">
+                <button id="_videoActivity" type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="pleaseWaitDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h1>Processing...</h1>
+      </div>
+      <div class="modal-body">
+        <div class="progress">
+          <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+            <span class="sr-only">40% Complete (success)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -128,6 +326,12 @@
   </div>
 </script>
 
+
+
+
+
+
+
 <script>
 
     $(function(){
@@ -145,6 +349,29 @@
 
 
     });
+
+
+
+
+
+              $('body').on('click', '.create-activity', function() {
+
+      $('#modalChooseType').modal();
+  });
+
+    $('body').on('click', '#createActivityBtn', function(e){
+
+        $('#modalCreateActivity').modal('hide');
+    });
+
+     $('body').on('click', '#htmlBtn', function(e){
+        $('#modalhtml').modal();
+    });
+
+     $('body').on('click', '#videoBtn', function(e){
+        $('#modalvideo').modal();
+     });
+
 
 </script>
 
@@ -378,8 +605,531 @@ function load_dataQuiz(id){
 }
 
 
+    $(function(){
+//when user submits html form, this validates that some key values are provided, such as title and content of activity
+        $('#_htmlActivity').click(function(e){
+            var isValid = true;
+            var title = $("#titleHtml").val();
+            if (title == ''){
+                isValid = false;
+                $("#titleHtml").css("background-color", "#FFCECE");
+            }
+            else{
+                $("#titleHtml").css("background-color", "");
+            }
+            //
+            var content = tinymce.get('content').getContent();
+            if (content==''){
+                isValid=false;
+                $(tinymce.activeEditor.getBody()).css("background-color",'#FFCECE');
+            }
+            else{
+                $(tinymce.activeEditor.getBody()).css("background-color",'');
+            }
+
+            if (isValid == false){
+                e.preventDefault();
+                return false;
+                }
+            else {
+                inserthtml();
+                return false
+            }
+        });
+
+        //when user submits video activity form, this validates that key values are provided
+        $('#_videoActivity').click(function(e){
+            var isValid = true;
+            var startS = parseInt($("#startSeconds").val());
+            var endS = parseInt($("#endSeconds").val());
+            $('#formaVideo')
+                    .find('input[type="text"]')
+                    .filter(":not(.ui-widget-content)")
+                    .filter(":not(.input-optional)")
+                    .each(function () {
+                        if ($.trim($(this).val()) == '') {
+                            isValid = false;
+                            $(this).css({
+                                "border": "1px solid red",
+                                "background": "#FFCECE"
+                            });
+                        }
+                        else {
+                            $(this).css({
+                                "border": "",
+                                "background": ""
+                            });
+                        }
+                    });
+
+            if (startS >= endS){
+                isValid = false;
+                alert("Tiempo de inicio debe ser menor al tiempo de fin del video.")
+            }
+
+            if (isValid == false){
+                e.preventDefault();
+                return false;
+                }
+            else {
+                insertvideo();
+                return false
+            }
+        });
+        //generates id(uri) of html activity using title provided by user
+        $('#titleHtml').on('change', function(){
+            var id = '/activity/' + this.value.replace(/ /g, '_');
+            check(id);
+            $('#idhtml').val(id)
+        });
+        //generates id(uri) of video activity using title provided by user
+        $('#titleVideo').on('change', function(){
+            var id = '/activity/video/' + this.value.replace(/ /g, '_');
+            check(id);
+            $('#idvideo').val(id);
+        });
+
+        //resets forms such as html and video when modal closes
+        $(".modal").on("hidden.bs.modal", function(){
+            $("#tagshtml").tagit("removeAll");
+            $("#tagsvideo").tagit("removeAll");
+            $('#formahtml')[0].reset();
+            $('#formadetail')[0].reset();
+            $('#formaVideo')[0].reset();
+            $('#formadetailv')[0].reset();
+            $('#ytVideo').empty();
+        });
+
+        //loads loadVideo function when url of video is provided by user
+        $('#url').on('change', loadVideo);
+
+
+
+    });
+
+    //function that gets all data from html forms and send it to server, if activity exists, it updates it
+    function inserthtml(){
+        tinyMCE.triggerSave();
+        var main= $('#formahtml').serializeArray();
+        var detail = $('#formadetail').serializeArray();
+        var data = main.concat(detail);
+        data = indexdata(data);
+        console.log(data);
+        var current = window.location.pathname;
+        $.ajax({
+            type: 'post',
+            url: '/upload_activity',
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (info){
+                info = jQuery.parseJSON(info);
+                if (info.updatedExisting == true){
+                    alert("Actividad modificada");
+                    $('#formahtml')[0].reset();
+                    $("#tagshtml").tagit("removeAll");
+                    $('#formadetail')[0].reset();
+                    $("#modalhtml").modal('hide');
+                    if (current == '/activitybuilder'){
+                        location.reload()
+                    }
+                }
+                else if (info.updatedExisting == false){
+                    alert("Actividad agregada");
+                    $('#formahtml')[0].reset();
+                    $("#tagshtml").tagit("removeAll");
+                    $('#formadetail')[0].reset();
+                    $("#modalhtml").modal('hide');
+                    if (current == '/activitybuilder'){
+                        location.reload()
+                    }
+                }
+                else if (info.message == "Duplicated"){
+                    alert("Duplicated Entry");
+                    $('#formahtml')[0].reset();
+                    $("#tagshtml").tagit("removeAll");
+                    $('#formadetail')[0].reset();
+                    $("#modalhtml").modal('hide');
+                    if (current == '/activitybuilder'){
+                        location.reload()
+                    }
+                }
+            },
+            error: function(info){
+                if (info){
+                    if (data.name == 'errmsg' && data.code== 11000){
+                        alert("Error. Intente otro nombre para su actividad");
+                    }
+                    return alert("Error. La actividad no se agrego")
+                }
+
+            }
+        });
+
+    }
+
+    //function that gets all data from video forms and sends it to the server for insertion, if id exists, it will update activity
+    function insertvideo(){
+        var main= $('#formaVideo').serializeArray();
+        var detail = $('#formadetailv').serializeArray();
+        var data = main.concat(detail);
+        data = indexdata(data);
+        var current = window.location.pathname;
+        console.log(data);
+        $.ajax({
+            type: 'post',
+            url: '/upload_activity',
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (info) {
+                info = jQuery.parseJSON(info);
+                if (info.updatedExisting == true){
+                    alert("Actividad modificada");
+                    $('#formaVideo')[0].reset();
+                    $("#tagsvideo").tagit("removeAll");
+                    $("#modalvideo").modal('hide');
+                    $("#ytVideo").empty();
+                    if (current == '/activitybuilder'){
+                        location.reload()
+                    }
+                }
+                else if (info.updatedExisting == false){
+                    alert("Actividad agregada");
+                    $('#formaVideo')[0].reset();
+                    $("#tagsvideo").tagit("removeAll");
+                    $("#modalvideo").modal('hide');
+                    $("#ytVideo").empty();
+                    if (current == '/activitybuilder'){
+                        location.reload()
+                    }
+                }
+                else if (info.message == "Duplicated"){
+                    alert("Duplicated Entry");
+                    $('#formaVideo')[0].reset();
+                    $("#tagsvideo").tagit("removeAll");
+                    $("#modalvideo").modal('hide');
+                    $("#ytVideo").empty();
+                    if (current == '/activitybuilder'){
+                        location.reload()
+                    }
+                }
+            },
+            error: function(info) {
+                   alert(info)
+            }
+        });
+    }
+
+    //function that receives data from all types of insert activities, and returns data stored in a dictionary with key and value for easy conversion to json
+  function indexdata(data){
+      var indexed = {};
+      $.map(data, function(n, i){
+          if (n['name']=='tags'){
+              n['value'] = n['value'].split(',')
+          }
+          indexed[n['name']] = n['value'];
+      });
+
+      return indexed
+  }
+
+    //function used to check if title of activities already exist in db, if it exists, user is prompted with a warning message
+   function check(valor){
+       $.ajax({
+           type: 'get',
+           url: '/get_activity',
+           data: { valor: valor},
+           success: function (data) {
+               var obj =jQuery.parseJSON(data);
+               if (jQuery.isEmptyObject(obj)){
+                   console.log("No existe");
+               }
+               else{
+                   alert("Nombre de actividad ya existe");
+               }
+           },
+           error: function (data){
+               console.log("Error")
+           }
+       });
+
+   }
+
+    //function used when user inputs a youtube url, load video in iframe
+    function loadVideo() {
+        var url = $('#url').val();
+        var p = /^(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?(?=.*v=((\w|-){11}))(?:\S+)?$/;
+        if ((url.match(p)) == null){
+            if (url == ''){
+                $('#ytVideo').empty()
+            }
+            else{
+                alert("URL invalida");
+                $('#ytVideo').empty()
+            }
+        }
+        else{
+            var urlchange = url.replace('https://www.youtube.com/watch?v=', 'http://www.youtube.com/embed/');
+            var vid_id=url.replace('https://www.youtube.com/watch?v=','');
+            $('#youtube_id').val(vid_id);
+            var htm = '<iframe width="425" height="300" src="' + urlchange + '?rel=0" frameborder="0" allowfullscreen ></iframe>';
+            $('#ytVideo').html(htm);
+            return false;
+        }
+
+    }
+
+//loads dropdown menu from another dropdown menu (Crear menu)
+    (function ($) {
+    $(document).ready(function () {
+        $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            $(this).parent().siblings().removeClass('open');
+            $(this).parent().toggleClass('open');
+        });
+    });
+    })(jQuery);
+
+    (function($){
+    $(document).ready(function () {
+        var user = '{{ user }}';
+        if(user =='AnonymousUser')  {
+            $('#_htmlActivity').attr("disabled",true);
+            $('#_videoActivity').attr("disabled",true);
+        }
+        else {
+            $('#_htmlActivity').removeAttr("disabled");
+            $('#_videoActivity').removeAttr("disabled");
+        }
+
+    });
+    })(jQuery);
+
+    //initializes tagit plugin for tag input
+    $(document).ready(function() {
+        $("#tagshtml").tagit({
+            fieldName: "tags"
+        });
+
+        $("#tagsvideo").tagit({
+            fieldName: "tags"
+        });
+
+        $("#tagsprog").tagit({
+            fieldName: "tags"
+        });
+
+        $("#tagsquiz").tagit({
+            fieldName: "tags"
+        });
+
+        $("#txttags").tagit({
+            fieldName: "tags"
+        });
+    });
 
 </script>
+
+<div class="modal fade" id="modalhtml">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">HTML</h4>
+            </div>
+
+            <div class="modal-body">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item"> <a class="nav-link active" href="#main"  data-toggle="tab">Main</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="#detail"  data-toggle="tab">Detail</a></li>
+                </ul>
+                <br>
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="main">
+                        <div class="container-fluid">
+                            <form id="formahtml" >{% csrf_token %}
+                                <div class="form-group">
+                                    <label for="title">Display Name</label>
+                                    <input type="text" class="form-control" id="titleHtml" name="title"  required="true">
+                                    <label for="descriptionhtml">Description</label>
+                                    <textarea class="form-control" id="descriptionhtml" name="description" rows="3"></textarea>
+                                    <label for="tagshtml">Tags:</label><br>
+                                    <input class="form-control" id="tagshtml" name="tags"  placeholder="Create tags with tab">
+                                    <br>
+                                    <input type="hidden" id="type" name="type" value="text">
+                                    <input type="hidden" id="author" name="author" value="{{ user.email }}">
+                                    <label for="content">Content</label>
+                                    <tinytext name="content" id="content"></tinytext>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="detail">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <form id="formadetail" style="align-content: center">
+                                    <div class="form-group" >
+                                        <label for="idhtml">ID</label>
+                                        <input type="text" readonly="readonly" class="form-control" id="idhtml" name="_id">
+
+                                        <label for="rightshtml">Rights</label>
+                                        <input type="text" class="form-control" id="rightshtml" name="rights">
+                                        <label for="externalhtml">External URL</label>
+                                        <input type="text" class="form-control" id="externalhtml" name="external_url">
+                                        <label for="publisherhtml">Publisher</label>
+                                        <input type="text" class="form-control" id="publisherhtml" name="publisher">
+
+                                        <br>
+                                        <label for="iconhtml">Icon</label>
+                                        <select id="iconhtml" name="icon" >
+                                            <option value="coffee">Coffee</option>
+                                            <option value="file" selected>File</option>
+                                            <option value="youtube-play">Youtube</option>
+                                            <option value="puzzle-piece">Puzzle</option>
+                                        </select>
+                                        <label for="levelhtml">Level</label>
+                                        <select id="levelhtml" name="level">
+                                            <option value="principiante">Principiante</option>
+                                            <option value="intermedio">Intermedio</option>
+                                            <option value="avanzado">Avanzado</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="form-group" align="center">
+                <button id="_htmlActivity" type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalvideo">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Video</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item"> <a class="nav-link active" href="#mainv"  data-toggle="tab">Main</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="#detailv"  data-toggle="tab">Detail</a></li>
+                </ul>
+                <br>
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="mainv">
+                        <div class="container-fluid">
+                            <form id="formaVideo" >{% csrf_token %}
+                                <div class="form-group">
+                                    <label for="title">Display Name</label>
+                                    <input type="text" class="form-control" id="titleVideo" name="title"  required="true"><br>
+                                    <label for="descriptionvideo">Description</label>
+                                    <textarea class="form-control" id="descriptionvideo" name="description" rows="3">
+                                    </textarea>
+                                    <label for="tagsvideo">Tags</label>
+                                    <input class="form-control input-optional" id="tagsvideo" name="tags"><br>
+                                    <input type="hidden" id="type" name="type" value="video">
+                                    <input type="hidden" id="author" name="author" value="{{ user.email }}">
+                                    <input type="hidden" id="youtube_id" name="youtube_id">
+                                    <label for="url">URL Video</label>
+                                    <input type="text" id="url" name="url" class="form-control" placeholder="URL Video"><br>
+                                    <div class="form-inline" align="center" style="padding: 5px">
+                                    <div class="form-group">
+                                        <label for="startSeconds" class="">Start Seconds</label>
+                                        <input type="text" class="form-control input-optional" id="startSeconds" name="startSeconds" style="width: 30%">
+                                    </div>
+
+                                        <div class="form-group">
+                                            <label for="endSeconds" class="">End Seconds</label>
+                                            <input type="text" class="form-control input-optional" id="endSeconds" name="endSeconds" style="width: 30%">
+                                        </div>
+                                    </div><br>
+
+                                    <div id="ytVideo" align="center">
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="detailv">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <form id="formadetailv" style="align-content: center">
+                                    <div class="form-group" >
+                                        <label for="idvideo">ID</label>
+                                        <input type="text" readonly="readonly" class="form-control" id="idvideo" name="_id">
+
+                                        <label for="rightsvideo">Rights</label>
+                                        <input type="text" class="form-control" id="rightsvideo" name="rights">
+                                        <label for="externalvideo">External URL</label>
+                                        <input type="text" class="form-control" id="externalvideo" name="external_url">
+                                        <label for="publishervideo">Publisher</label>
+                                        <input type="text" class="form-control" id="publishervideo" name="publisher">
+
+                                        <label for="iconvideo">Icon</label>
+                                        <select id="iconvideo" name="icon" >
+                                            <option value="coffee">Coffee</option>
+                                            <option value="file">File</option>
+                                            <option value="youtube-play" selected>Youtube</option>
+                                            <option value="puzzle-piece">Puzzle</option>
+                                        </select>
+                                        <label for="levelvideo">Level</label>
+                                        <select id="levelvideo" name="level">
+                                            <option value="principiante">Principiante</option>
+                                            <option value="intermedio">Intermedio</option>
+                                            <option value="avanzado">Avanzado</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="form-group" align="center">
+                <button id="_videoActivity" type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="pleaseWaitDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h1>Processing...</h1>
+      </div>
+      <div class="modal-body">
+        <div class="progress">
+          <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+            <span class="sr-only">40% Complete (success)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 {% endblock %}
 
