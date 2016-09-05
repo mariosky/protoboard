@@ -36,7 +36,7 @@ from django.shortcuts import get_object_or_404
 from eval_code.RedisCola import Cola, Task
 import json
 from django.conf import settings
-from courses import get_activity_tree, update_course_from_json, create_empty_course
+from courses import get_activity_tree, update_course_from_json, create_empty_course, upload_course_from_json
 from django.views.decorators.csrf import csrf_exempt
 import redis
 
@@ -1433,34 +1433,29 @@ def upload_course(request):
     if request.method == 'POST':
         #We need a Course ID
         if request.POST and 'course_id' in request.POST :
-            print request.POST['course_id']
+
+
+            json_course = request.FILES['fileToUpload'].read()
+
+
+            upload_course_from_json(json_course,request.POST['course_id'] ,request.user)
+            request.FILES['fileToUpload'].close()
+
+            result = {"result": "added", "error": None, "id": None}
+            return HttpResponse(json.dumps(result), content_type='application/javascript')
+
+
 
         else:
             #We can create a NEW empty course?
             result = {"result": "error", "error": "No course id supplied", "id": None}
             return HttpResponse(json.dumps(result), content_type='application/javascript')
-
-        print request.FILES
-        type(request.FILES['fileToUpload'])
-        print request.FILES['fileToUpload'].content_type
-        print request.FILES['fileToUpload'].charset
-
-
-        j = request.FILES['fileToUpload'].read()
-        type(j)
-        k = unicode(j)
-        print type(k)
-
-
-
-
-        data = json.loads(j)
-        print data
-        update_course_from_json(j, request.user)
-        request.FILES['fileToUpload'].close()
-
-        result = {"result": "added", "error": None, "id": None}
+    else:
+        # We can create a NEW empty course?
+        result = {"result": "error", "error": "Only PUT is supported", "id": None}
         return HttpResponse(json.dumps(result), content_type='application/javascript')
+
+
 
 
 

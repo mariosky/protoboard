@@ -25,6 +25,16 @@ def update_course_from_json( json_tree, user):
     _traverse_update(activity_tree, user=user)
 
 
+
+def upload_course_from_json( json_tree,course_id, user):
+    activity_tree = json.loads(json_tree)[0]
+    print "upload_course_from_json",activity_tree['id']
+    activity_tree['id'] = course_id
+    print activity_tree['id'], course_id
+    print "final",activity_tree
+    _traverse_upload(activity_tree, root=None, user=user)
+
+
 def add_precondition(rule):
     if rule is not None:
         rule = rule.encode('ascii','ignore')
@@ -128,7 +138,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
             description =activity['learning_activity']['description'],
             image = activity['learning_activity']['image'],
             pre_condition_rule = add_precondition(activity['learning_activity']['rules']) or "",
-            rollup_rule  =activity['learning_activity']['rollup_rule'],
+            rollup_rule  = activity['learning_activity']['rollup_rule'],
             is_container = activity['learning_activity']['is_container'],
             is_visible = activity['learning_activity']['is_visible'],
             rules=activity['learning_activity']['rules'] or "",
@@ -185,6 +195,48 @@ def _traverse_update(activity, parent=None, root=None, user=None):
         pass
 
 
+def _traverse_upload(activity, parent=None, root=None, user=None):
+
+    learning_activity = None
+    #If root is None then this is the root activity,
+    #it must be created in advance, so we get the activity.
+    if root is None:
+
+        root = LearningActivity.objects.get(pk=activity['id'])
+        learning_activity = root
+        print "upload root", root, root.id,activity['id']
+
+
+    else:
+        learning_activity = LearningActivity(
+            parent = parent,
+            root   = root,
+            name = activity['learning_activity']['name'],
+            uri = activity['learning_activity']['uri'],
+            lom = activity['learning_activity']['lom'] or "",
+            attempt_limit=activity['learning_activity']['attempt_limit'] ,
+            available_until=activity['learning_activity']['available_until'] ,
+            available_from =activity['learning_activity']['available_from'],
+            description =activity['learning_activity']['description'],
+            image = activity['learning_activity']['image'],
+            pre_condition_rule = add_precondition(activity['learning_activity']['rules']) or "",
+            rollup_rule  =('rollup_rule' in activity['learning_activity'] and  activity['learning_activity']['rollup_rule']) or "",
+            is_container = activity['learning_activity']['is_container'],
+            is_visible = activity['learning_activity']['is_visible'],
+            rules=activity['learning_activity']['rules'] or "",
+            order_in_container = activity['learning_activity']['order_in_container'],
+            choice_exit = activity['learning_activity']['choice_exit'],
+            rollup_progress= ('rollup_progress' in activity['learning_activity'] and activity['learning_activity']['rollup_progress']) or "")
+        learning_activity.save()
+        print "upload activity",learning_activity
+
+
+    if 'children' in activity:
+        if activity['children']:
+            for child in activity['children']:
+                _traverse_upload(child, parent=learning_activity, root=root)
+    else:
+        pass
 
 
 def activity_tree(parent, nodes):
