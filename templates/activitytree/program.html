@@ -121,6 +121,7 @@
 {% endblock content %}
 
 {% block scripts %}
+     <script src="{{ STATIC_URL }}app/scripts/main.js"></script>
 
     <script id="success_template" type="x-tmpl-mustache">
         <div class='alert alert-success alert-dismissible' role='alert'>
@@ -237,6 +238,13 @@ $(document).ready(function() {
                 {
                     url: '/execute_queue',
                     type: "POST",
+                    crossDomain: false, // obviates need for sameOrigin test
+                    beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                    },
                     contentType: "application/json",
                     data: JSON.stringify({"jsonrpc": "2.0", "method": "{{ activity_uri }}", "params": [code],
              {% if uri_id %}
@@ -288,6 +296,13 @@ $(document).ready(function() {
     function poll(){
         $.ajax({ url: '/get_result',
             type: "POST",
+            crossDomain: false, // obviates need for sameOrigin test
+            beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                var csrftoken = getCookie('csrftoken');
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+            },
             contentType: "application/json",
             data: JSON.stringify({"jsonrpc": "2.0", "method": "_execute", "params": ["{{ activity_uri }}"], "id": task_id }),
             success: function(data){
@@ -421,6 +436,7 @@ $(document).ready(function() {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js " type="text/javascript" charset="utf-8"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/{{ program_quiz.lang }}.js" type="text/javascript" charset="utf-8"></script>
+
 
 
     {% comment  %}

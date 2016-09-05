@@ -384,6 +384,11 @@ return x;}
         </script>
 
     <script>
+
+
+
+
+
     //if updating an existing program activity, loads parameter from url and sends it to get_activity function
     $(document).ready(function(){
         var url = getParameterByName('id');
@@ -535,7 +540,14 @@ return x;}
         $.ajax({
             type: 'get',
             url: '/get_id',
-            data: { _id: id,
+            crossDomain: false, // obviates need for sameOrigin test
+            beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                var csrftoken = getCookie('csrftoken');
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+            },
+             data: { _id: id,
                     user: '{{ user.email }}',
                     type: type},
             success: function (data){
@@ -646,6 +658,13 @@ return x;}
         $.ajax({
             type: 'post',
             url: '/upload_activity',
+            crossDomain: false, // obviates need for sameOrigin test
+            beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                var csrftoken = getCookie('csrftoken');
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+            },
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (info) {
@@ -718,6 +737,13 @@ return x;}
         $.ajax({
             type: 'post',
             url: '/test_program',
+            crossDomain: false, // obviates need for sameOrigin test
+            beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                var csrftoken = getCookie('csrftoken');
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+            },
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (data) {
@@ -741,6 +767,13 @@ return x;}
         $.ajax({ url: '/get_result',
             type: "POST",
             contentType: "application/json",
+            crossDomain: false, // obviates need for sameOrigin test
+            beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                var csrftoken = getCookie('csrftoken');
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+            },
             data: JSON.stringify({"jsonrpc": "2.0", "method": "_execute", "id": task_id }),
             success: function(data){
                 number_of_tries++;
