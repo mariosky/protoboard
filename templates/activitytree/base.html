@@ -210,16 +210,17 @@
 
        <!--<script src="{{ STATIC_URL }}app/scripts/bootstrap.min.js"></script>-->
     <script src="{{ STATIC_URL }}app/scripts/jquery-sortable-lists.min.js"></script>
+
     <script src="{{ STATIC_URL }}app/scripts/mustache.min.js"></script>
     <script type="text/javascript" src="https://b072a7493b24d80848609d1f4876edab240dff84.googledrive.com/host/0B4KIaVIuZK2JUEZmX0ZxQWgwb0k/jquery.oembed.js"></script>
     <script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.raty.js"></script>
 
     <script>tinymce.init({ selector:'tinytext', height:"220", automatic_uploads:true, plugins: "image link", toolbar:" undo redo| styleselect | bold italic | alignleft aligncenter alignright | link image" })</script>
    <script async="" src="{{ STATIC_URL }}app/scripts/FileSaver.min.js"/>
-  <!-- endbuild -->
+ <!-- endbuild -->
 
 <!-- build:js scripts/main.js -->
-<script src="{{ STATIC_URL }}app/scripts/main.js"></script>
+
 
   <script type="text/javascript" charset="utf-8">
 
@@ -238,37 +239,6 @@
     };
 })();
 
-
-    function getCookie(name) {
-                var cookieValue = null;
-                if (document.cookie && document.cookie != '') {
-                    var cookies = document.cookie.split(';');
-                    for (var i = 0; i < cookies.length; i++) {
-                        var cookie = jQuery.trim(cookies[i]);
-                        // Does this cookie string begin with the name we want?
-                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
-    function csrfSafeMethod(method) {
-                // these HTTP methods do not require CSRF protection
-                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-            }
-
-
-            $.ajaxSetup({
-                crossDomain: false, // obviates need for sameOrigin test
-                beforeSend: function(xhr, settings) {
-                    if (!csrfSafeMethod(settings.type)) {
-                        var csrftoken = getCookie('csrftoken');
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
-                }
-            });
 
 
 
@@ -332,6 +302,18 @@
 
 
 $(document).ready(function() {
+
+
+
+            $.ajaxSetup({
+                crossDomain: false, // obviates need for sameOrigin test
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
 
 
 

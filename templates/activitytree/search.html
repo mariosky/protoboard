@@ -112,8 +112,9 @@
     [[/next]]
  </ul>
 </script>
-
+ <script src="{{ STATIC_URL }}app/scripts/main.js"></script>
 <script type="text/javascript">
+
 
 
 
@@ -128,7 +129,7 @@
         buscar(query);
         console.log("buscar - new");
 
-        });
+
 
 
 
@@ -136,6 +137,13 @@ function buscar(query){
         $.ajax({
         type: 'POST',
         url: '/search_prueba',
+        crossDomain: false, // obviates need for sameOrigin test
+        beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
         data: JSON.stringify(query),
         success: function (data) {
             var obj = jQuery.parseJSON( data );
@@ -197,16 +205,6 @@ var on_click = function(){
         buscar(query);
     }
 
-//Thanks to: http://stackoverflow.com/a/901144
-function getParameterByName(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
 
 
 
@@ -218,7 +216,7 @@ function getParameterByName(name, url) {
         window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
         }
 
-
+   });
 
     </script>
 

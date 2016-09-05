@@ -185,7 +185,7 @@
     [[/next]]
  </ul>
 </script>
-
+ <script src="{{ STATIC_URL }}app/scripts/main.js"></script>
 <script type="text/javascript">
 
 
@@ -207,6 +207,13 @@ function buscar(query){
         type: 'POST',
         url: '/search_prueba',
         data: JSON.stringify(query),
+        crossDomain: false, // obviates need for sameOrigin test
+        beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
         success: function (data) {
             var obj = jQuery.parseJSON( data );
             if (obj == "null" || obj[0].count == 0){

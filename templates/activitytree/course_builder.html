@@ -238,7 +238,7 @@
 
 </script>
 
-
+ <script src="{{ STATIC_URL }}app/scripts/main.js"></script>
 
 <script type="text/javascript">
   $(function()
@@ -352,6 +352,13 @@
         $.ajax(   {
                     url: '/post_course',
                     type: "POST",
+                    crossDomain: false, // obviates need for sameOrigin test
+                    beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                    },
                     contentType: "application/json",
                     data: JSON.stringify({"jsonrpc": "2.0", "method": "post_course", "params": [tree],
                     "id": 1 }),
