@@ -508,6 +508,13 @@ function delActivity(activity){
     $.ajax({
         type: 'post',
         url: '/delete_activity',
+        crossDomain: false, // obviates need for sameOrigin test
+        beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
         data: { _id: activity,
                 user: '{{ user.email }}'},
         success: function (data){
@@ -537,6 +544,13 @@ function get_activity(id,type){
         $.ajax({
             type: 'get',
             url: '/get_id',
+            crossDomain: false, // obviates need for sameOrigin test
+            beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
             data: { _id: id,
                 user: '{{ user.email }}',
                 type: type},
@@ -718,6 +732,14 @@ function load_dataQuiz(id){
         var current = window.location.pathname;
         $.ajax({
             type: 'post',
+
+            crossDomain: false, // obviates need for sameOrigin test
+            beforeSend: function(xhr, settings) {
+                        if (!csrfSafeMethod(settings.type)) {
+                            var csrftoken = getCookie('csrftoken');
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                    },
             url: '/upload_activity',
             contentType: "application/json",
             data: JSON.stringify(data),
@@ -779,6 +801,14 @@ function load_dataQuiz(id){
             type: 'post',
             url: '/upload_activity',
             contentType: "application/json",
+            crossDomain: false, // obviates need for sameOrigin test
+            beforeSend: function(xhr, settings) {
+                        if (!csrfSafeMethod(settings.type)) {
+                            var csrftoken = getCookie('csrftoken');
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                    },
+
             data: JSON.stringify(data),
             success: function (info) {
                 info = jQuery.parseJSON(info);
@@ -838,6 +868,14 @@ function load_dataQuiz(id){
            type: 'get',
            url: '/get_activity',
            data: { valor: valor},
+           crossDomain: false, // obviates need for sameOrigin test
+           beforeSend: function(xhr, settings) {
+                        if (!csrfSafeMethod(settings.type)) {
+                            var csrftoken = getCookie('csrftoken');
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                    },
+
            success: function (data) {
                var obj =jQuery.parseJSON(data);
                if (jQuery.isEmptyObject(obj)){
@@ -929,206 +967,6 @@ function load_dataQuiz(id){
     });
 
 </script>
-
-<div class="modal fade" id="modalhtml">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content modal-lg">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">HTML</h4>
-            </div>
-
-            <div class="modal-body">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item"> <a class="nav-link active" href="#main"  data-toggle="tab">Main</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="#detail"  data-toggle="tab">Detail</a></li>
-                </ul>
-                <br>
-                <div class="tab-content">
-                    <div class="tab-pane fade in active" id="main">
-                        <div class="container-fluid">
-                            <form id="formahtml" >{% csrf_token %}
-                                <div class="form-group">
-                                    <label for="title">Display Name</label>
-                                    <input type="text" class="form-control" id="titleHtml" name="title"  required="true">
-                                    <label for="descriptionhtml">Description</label>
-                                    <textarea class="form-control" id="descriptionhtml" name="description" rows="3"></textarea>
-                                    <label for="tagshtml">Tags:</label><br>
-                                    <input class="form-control" id="tagshtml" name="tags"  placeholder="Create tags with tab">
-                                    <br>
-                                    <input type="hidden" id="type" name="type" value="text">
-                                    <input type="hidden" id="author" name="author" value="{{ user.email }}">
-                                    <label for="content">Content</label>
-                                    <tinytext name="content" id="content"></tinytext>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="detail">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-8 col-md-offset-2">
-                                <form id="formadetail" style="align-content: center">
-                                    <div class="form-group" >
-                                        <label for="idhtml">ID</label>
-                                        <input type="text" readonly="readonly" class="form-control" id="idhtml" name="_id">
-
-                                        <label for="rightshtml">Rights</label>
-                                        <input type="text" class="form-control" id="rightshtml" name="rights">
-                                        <label for="externalhtml">External URL</label>
-                                        <input type="text" class="form-control" id="externalhtml" name="external_url">
-                                        <label for="publisherhtml">Publisher</label>
-                                        <input type="text" class="form-control" id="publisherhtml" name="publisher">
-
-                                        <br>
-                                        <label for="iconhtml">Icon</label>
-                                        <select id="iconhtml" name="icon" >
-                                            <option value="coffee">Coffee</option>
-                                            <option value="file" selected>File</option>
-                                            <option value="youtube-play">Youtube</option>
-                                            <option value="puzzle-piece">Puzzle</option>
-                                        </select>
-                                        <label for="levelhtml">Level</label>
-                                        <select id="levelhtml" name="level">
-                                            <option value="principiante">Principiante</option>
-                                            <option value="intermedio">Intermedio</option>
-                                            <option value="avanzado">Avanzado</option>
-                                        </select>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <div class="form-group" align="center">
-                <button id="_htmlActivity" type="submit" class="btn btn-primary">Submit</button>
-                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-            </div>
-        </div>
-    </div>
-    </div>
-</div>
-
-
-<div class="modal fade" id="modalvideo">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content modal-lg">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Video</h4>
-            </div>
-            <div class="modal-body">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item"> <a class="nav-link active" href="#mainv"  data-toggle="tab">Main</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="#detailv"  data-toggle="tab">Detail</a></li>
-                </ul>
-                <br>
-                <div class="tab-content">
-                    <div class="tab-pane fade in active" id="mainv">
-                        <div class="container-fluid">
-                            <form id="formaVideo" >{% csrf_token %}
-                                <div class="form-group">
-                                    <label for="title">Display Name</label>
-                                    <input type="text" class="form-control" id="titleVideo" name="title"  required="true"><br>
-                                    <label for="descriptionvideo">Description</label>
-                                    <textarea class="form-control" id="descriptionvideo" name="description" rows="3">
-                                    </textarea>
-                                    <label for="tagsvideo">Tags</label>
-                                    <input class="form-control input-optional" id="tagsvideo" name="tags"><br>
-                                    <input type="hidden" id="type" name="type" value="video">
-                                    <input type="hidden" id="author" name="author" value="{{ user.email }}">
-                                    <input type="hidden" id="youtube_id" name="youtube_id">
-                                    <label for="url">URL Video</label>
-                                    <input type="text" id="url" name="url" class="form-control" placeholder="URL Video"><br>
-                                    <div class="form-inline" align="center" style="padding: 5px">
-                                    <div class="form-group">
-                                        <label for="startSeconds" class="">Start Seconds</label>
-                                        <input type="text" class="form-control input-optional" id="startSeconds" name="startSeconds" style="width: 30%">
-                                    </div>
-
-                                        <div class="form-group">
-                                            <label for="endSeconds" class="">End Seconds</label>
-                                            <input type="text" class="form-control input-optional" id="endSeconds" name="endSeconds" style="width: 30%">
-                                        </div>
-                                    </div><br>
-
-                                    <div id="ytVideo" align="center">
-                                    </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="detailv">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-8 col-md-offset-2">
-                                <form id="formadetailv" style="align-content: center">
-                                    <div class="form-group" >
-                                        <label for="idvideo">ID</label>
-                                        <input type="text" readonly="readonly" class="form-control" id="idvideo" name="_id">
-
-                                        <label for="rightsvideo">Rights</label>
-                                        <input type="text" class="form-control" id="rightsvideo" name="rights">
-                                        <label for="externalvideo">External URL</label>
-                                        <input type="text" class="form-control" id="externalvideo" name="external_url">
-                                        <label for="publishervideo">Publisher</label>
-                                        <input type="text" class="form-control" id="publishervideo" name="publisher">
-
-                                        <label for="iconvideo">Icon</label>
-                                        <select id="iconvideo" name="icon" >
-                                            <option value="coffee">Coffee</option>
-                                            <option value="file">File</option>
-                                            <option value="youtube-play" selected>Youtube</option>
-                                            <option value="puzzle-piece">Puzzle</option>
-                                        </select>
-                                        <label for="levelvideo">Level</label>
-                                        <select id="levelvideo" name="level">
-                                            <option value="principiante">Principiante</option>
-                                            <option value="intermedio">Intermedio</option>
-                                            <option value="avanzado">Avanzado</option>
-                                        </select>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <div class="form-group" align="center">
-                <button id="_videoActivity" type="submit" class="btn btn-primary">Submit</button>
-                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-<!-- Modal -->
-<div class="modal fade" id="pleaseWaitDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-          <h1>Processing...</h1>
-      </div>
-      <div class="modal-body">
-        <div class="progress">
-          <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-            <span class="sr-only">40% Complete (success)</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 {% endblock %}
