@@ -8,231 +8,40 @@
 
     <title>Código.uno</title>
 
-    <!-- Bootstrap core CSS -->
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/jquery.raty.css"/>
-    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css">
+
+    <!-- Latest compiled and minified CSS
+
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}app/styles/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css"  >
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker3.min.css">
+
     <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/bootstrap-social.css" title="social stylesheet" />
     <link rel="stylesheet" type="text/css" href="//code.jquery.com/qunit/qunit-1.18.0.css">
-    <!-- Custom styles for this template -->
+    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/jquery.raty.css"/>
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
+    <link href="https://59f98194dea4857a8142e998b76bddcb34d137dc.googledrive.com/host/0B4KIaVIuZK2JbVBkdTd3ak5WN2M/jquery.tagit.css" rel="stylesheet" type="text/css">
+    <!--
+    <link rel="stylesheet" type="text/css" href="http://gdriv.es/proto/bootstrap-timepicker3.min.css" />
+    -->
+      <script src="{{ STATIC_URL }}app/scripts/modernizr.js"></script>
 
     <!-- Custom styles for this template -->
-    <style type="text/css" media="screen">
-	 /*
- * Base structure
- */
-html {
-  position: relative;
-  min-height: 100%;
-}
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
- /* padding-top: 50px;*/
-}
-  #page  {
-	padding: 0;
-	margin: 0;
-    }
 
-  #main_container
-  {
-      padding-top: 60px;
-  }
-
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  background-color: #f5f5f5;
-}
-body > .container {
-  padding: 60px 15px 0;
-}
-.container .text-muted {
-  margin: 20px 0;
-}
-
-.footer > .container {
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-code {
-  font-size: 80%;
-}
-
-/*
- * Global add-ons
- */
-
-.sub-header {
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
-}
+    <link rel="stylesheet" href="{{ STATIC_URL }}app/styles/activity_tree.css">
+    <!-- Custom styles for this template-->
 
 
-/*
- * Sidebar
- */
+    <!-- Custom styles for derived templates -->
+      <style>
+         {% block style %}
 
-/* Hide for mobile, show later */
-.sidebar {
-  display: none;
-}
-@media (min-width: 768px) {
-  .sidebar {
-    position: fixed;
-    top: 51px;
-    bottom: 0;
-    left: 0;
-    z-index: 1000;
-    display: block;
-    padding: 20px;
-    overflow-x: hidden;
-    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-    background-color: #f5f5f5;
-    border-right: 1px solid #eee;
-  }
-}
+         {% endblock style %}
+      </style>
+
+    <!-- Custom styles for derived templates -->
 
 
-
-/*
- * Main content
- */
-
-.main {
-  padding: 20px;
-}
-@media (min-width: 768px) {
-  .main {
-    padding-right: 40px;
-    padding-left: 40px;
-  }
-}
-.main .page-header {
-  margin-top: 0;
-}
-
-
-/*
- * Placeholder dashboard ideas
- */
-
-.placeholders {
-  margin-bottom: 30px;
-  text-align: center;
-}
-.placeholders h4 {
-  margin-bottom: 0;
-}
-.placeholder {
-  margin-bottom: 20px;
-}
-.placeholder img {
-  display: inline-block;
-  border-radius: 50%;
-}
-
-
-
-
-.video-player {
-    position: relative;
-    padding-bottom: 56.25%;
-    padding-top: 30px; height: 0; overflow: hidden;
-    margin-bottom:10px;
-}
-
-.video-player iframe,
-.video-player object,
-.video-player embed {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-     #panel_col{
-      margin-top: 50px;
-        }
-.second-navbar{
-    top:40px;
-}
- .pager
- {
-     margin: 0px 0px;
-
- }
-    .pager li > span
-    {
-     color: #428BCA;
-     cursor:pointer;
-    }
-
-    .pager li > span:hover, .pager li > span:focus
-    {
-     background-color: #eeeeee;
-    }
-
-    input.btn
-    {
-        margin-top: 10px;
-    }
-
-   .navbar-nav > li >  a.navbar-user
-    {
-    padding-bottom: 0px;
-    padding-top: 0px;
-    }
-     {% block style %}
-
-     {%  endblock style %}
-
-
-   .fa-check
-   {
-       color: green;
-   }
-
-
-  .sign-in-label
-  {   color:#777;
-      display: block;
-      padding-top:0px;
-      padding-bottom:0px;
-      padding-left: 5px;
-      margin-bottom:0px ;
-
-  }
-  .sign-in-btn
-  {
-      margin-top:20px;
-  }
-
-  .sign-in-reset
-  {
-       display: block;
-       padding-top:6px;
-       padding-left: 5px;
-  }
-    #login_form
-    {
-        margin-top:0px ;
-        margin-bottom:0px ;
-    }
-
-
-    .btn-social{
-    margin-top: 10px;
-    }
-
-    </style>
     <!-- Just for debugging purposes. Don't actually copy this line! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
@@ -249,73 +58,77 @@ code {
 
   <body>
   <div id="page">
-    <div class="container">
+    <nav class="container">
 
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"  aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+    <nav class="navbar navbar-fixed-top navbar-light bg-faded">
 
-          <a class="navbar-brand" href="/"> protoboard.org </a>
+    <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar" aria-controls="exCollapsingNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        &#9776;
+    </button>
+
+    <div class="collapse" id="exCollapsingNavbar">
+    <div class="bg-inverse p-a-1">
+      <h4>Collapsed content</h4>
+      <span class="text-muted">Toggleable via the navbar brand.</span>
+    </div>
+  </div>
 
 
-         <!-- <a class="navbar-brand" href="/">protoboard.org</a> -->
-        </div>
+    <div class="collapse navbar-toggleable-xs" id="exCollapsingNavbar2">
 
-        <div  id="navbar" class=" collapse navbar-collapse">
-          <ul class="nav navbar-nav navbar-right">
+
+        <a class="navbar-brand" href="/">código.uno </a>
+        <ul class="nav navbar-nav">
+            <li class="nav-item"><a  class="nav-link" href="/courses">Cursos</a></li>
+              <li class="nav-item"><a class="nav-link"  href="/search"> Biblioteca</a>  </li>
+             <li class="nav-item"><a  class="nav-link" href="/student">Estudiante</a></li>
+             <li class="nav-item"><a  class="nav-link" href="/instructor">Instructor</a></li>
+        </ul>
+        <div class="nav navbar-nav pull-xs-right">
+
+
           {% if user.is_authenticated %}
 
-                {% if XML_NAV %}
-                <li><a href="{{root}}">Curso</a></li>
-                <li><a href="/dashboard{{ root_id }}">Dashboard</a></li>
-                <li><p id="user_points" class="navbar-text"></p></li>
+           {% if XML_NAV %}
+            <li class="nav-item"><a  class="nav-link" href="{{ root_id }}{{root}}">Curso</a></li>
+            <li class="nav-item"><a  class="nav-link" href="/dashboard{{ root_id }}">Dashboard</a></li>
+            <li class="nav-item"><p id="user_points" class="navbar-text"></p></li>
+           {% endif %}
 
-                {% endif %}
-
-            <li><a href="#"></a></li>
+            <li class="nav-item"><a  class="nav-link"  href="#"></a></li>
             {% if user.first_name %}
-            <li><a href="/me"> {{ user.first_name }} {{ user.last_name }}</a></li>
+            <li class="nav-item"><a class="nav-link"  href="/me"> {{ user.first_name }} {{ user.last_name }}</a></li>
             {% else %}
-            <li><a href="/me"> {{ user.username }} </a></li>
+            <li class="nav-item"><a class="nav-link"  href="/me"> {{ user.username }} </a></li>
             {% endif %}
 
-            <li><a class="navbar-user" href="/me">
-
-            {% comment %}
-                {%  if user.userprofile.facebook_uid %}
-                <img src="http://graph.facebook.com/{{ user.userprofile.facebook_uid}}/picture?type=square"/>
-               {% else %}
-                <img src="{% gravatar_url user.email 50%}">
-               {% endif %}
-
-             {% endcomment %}
+            <li class="nav-item"><a class="nav-link nav-link-user" href="/me">
 
                 <img src="{% gravatar_url user.email 50%}">
                 </a>
 
             </li>
 
-            <li><a href="/logout">Salir</a></li>
+
+
+
+            <li class="nav-item"><a class="nav-link"  href="/logout">Salir</a></li>
 
           {% else %}
             {% if not hidde_login_link %}
-            <li><a href="/login">Iniciar Sesión</a></li>
-            {% endif %}
+            <li class="nav-item"><a class="nav-link"  href="/login/?next=/welcome">Iniciar Sesión</a></li>
+             <li class="nav-item"> <a class="btn btn-primary-outline"  href="/register">Crear Cuenta</a></li>
+
+
+          {% endif %}
           {% endif %}
 
 
           </ul>
 
-        </div>
-      </div>
+</div>
+    </div>
     </nav>
-
 
 
 
@@ -343,9 +156,9 @@ code {
 
         <div id="user_points" class="col-md-3 ">
              {% if XML_NAV %}
- <div class="row">
+                <div class="row">
 
-         <form id="nav_form"   role="form" action="{{ root_id }}{{root}}" method = "POST">{% csrf_token %}
+                <form id="nav_form"   role="form" action="{{ root_id }}{{root}}" method = "POST">{% csrf_token %}
 
 
                <ul class="pager">
@@ -353,11 +166,11 @@ code {
                     <li ><span class="nav_next">  Continuar &rarr;</span></li>
                </ul>
 
-       </form>
+                </form>
 
 
-    </div>
-  {% endif %}
+                 </div>
+            {% endif %}
         </div>
      </div>
 
@@ -369,100 +182,180 @@ code {
 
                 -->
             {% endblock content %}
+    {% if rating_totals %}
+ <div class="col-md-6 col-md-offset-3">
+               <div class="panel panel-default">
+                    <div class="panel-body">
+
+                        <p>Califica esta actividad: <span id="rating-info"> </span>
+
+                            {% if rating_totals.rating__avg %}
+                            ({{ rating_totals.rating__avg|floatformat:2 }}/5)
+                            {% endif %}
+                            {{ rating_totals.rating__count }} voto(s).
+                        <span id="rating-message" class="label label-info"> Haz tu selección </span>
 
 
-
+                        </p>
+                  </div>
+               </div>
+</div>
+{% endif %}
 
     </div>
+
+
+
+      </div><!-- container -->
+   </div> <!-- page -->
 
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script  type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script  type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script  type="text/javascript" src="{{MEDIA_URL}}js/mustache.min.js"></script>
+
+    <!-- build:js(.) scripts/plugins.js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://www.atlasestateagents.co.uk/javascript/tether.min.js"></script><!-- Tether for Bootstrap -->
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <!-- <script src="{{ STATIC_URL }}app/scripts/jquery.min.js"></script>-->
+   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://59f98194dea4857a8142e998b76bddcb34d137dc.googledrive.com/host/0B4KIaVIuZK2JbVBkdTd3ak5WN2M/tag-it.js" type="text/javascript" charset="utf-8"></script>
+
+       <!--<script src="{{ STATIC_URL }}app/scripts/bootstrap.min.js"></script>-->
+    <script src="{{ STATIC_URL }}app/scripts/jquery-sortable-lists.min.js"></script>
+
+    <script src="{{ STATIC_URL }}app/scripts/mustache.min.js"></script>
+    <script type="text/javascript" src="https://b072a7493b24d80848609d1f4876edab240dff84.googledrive.com/host/0B4KIaVIuZK2JUEZmX0ZxQWgwb0k/jquery.oembed.js"></script>
     <script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.raty.js"></script>
+
+    <script>tinymce.init({ selector:'tinytext', height:"220", automatic_uploads:true, plugins: "image link", toolbar:" undo redo| styleselect | bold italic | alignleft aligncenter alignright | link image" })</script>
+
+ <!-- endbuild -->
+
+<!-- build:js scripts/main.js -->
 
 
   <script type="text/javascript" charset="utf-8">
 
+
+      Mustache.tags = ['[[', ']]'];
+
       {% if XML_NAV  %}
+            in_path = true;
 
-        in_path = true;
-        XML_NAV = "{{XML_NAV|safe}}";
-
-        xmlDoc= $.parseXML(XML_NAV);
-        $xml = $(xmlDoc);
-
-
-        $( document ).ready(function() {
-
-            var puntos_totales = 0;
-            $xml.find("item[objective_measure!='None']").each(function() {
-                var val =  this.getAttribute("objective_measure");
-                if (isNaN(val)==false)
-                {
-                puntos_totales += Number(val);
-                }
-            });
+            XML_NAV = "{{XML_NAV|safe}}";
+            xmlDoc= $.parseXML(XML_NAV);
+            $xml = $(xmlDoc);
 
 
-            $("#user_points").html("("+ Math.floor(puntos_totales)+" puntos)");
+            $( document ).ready(function() {
+
+                var puntos_totales = 0;
+                $xml.find("item[objective_measure!='None']").each(function() {
+                    var val =  this.getAttribute("objective_measure");
+                    if (isNaN(val)==false)
+                    {
+                    puntos_totales += Number(val);
+                    }
+                });
 
 
-
-            $(document).on("click",".nav_next",function( event ) {
-
-                   var form =  $("#nav_form");
-                   form.append( $('<input>').attr({ type: 'hidden',
-                                                    name: 'nav_event',
-                                                    value:'next'
-                                                  }));
-
-                  form.submit();
+                $("#user_points").html("("+ Math.floor(puntos_totales)+" puntos)");
 
 
 
-             });
-/*
+                $(document).on("click",".nav_next",function( event ) {
 
-*/
+                       var form =  $("#nav_form");
+                       form.append( $('<input>').attr({ type: 'hidden',
+                                                        name: 'nav_event',
+                                                        value:'next'
+                                                      }));
 
-            $(document).on("click",".nav_prev",function( event ) {
-                   var form =  $("#nav_form");
-                   form.append( $('<input>').attr({ type: 'hidden',
-                                                    name: 'nav_event',
-                                                    value:'prev'
-                                                  }));
-
-                  form.submit();
+                      form.submit();
 
 
-            });
 
-        });
+                 });
+
+                $(document).on("click",".nav_prev",function( event ) {
+                       var form =  $("#nav_form");
+                       form.append( $('<input>').attr({ type: 'hidden',
+                                                        name: 'nav_event',
+                                                        value:'prev'
+                                                      }));
+
+                      form.submit();
 
 
-$(document).ready(function() {
-  $('.previous').click(function() {
-    $('.previous').hide(0);
-    $('.next').hide(0);
-  });
-  $('.next').click(function() {
-    $('.previous').hide(0);
-    $('.next').hide(0);
-  });
-});
- 
+                });
+
+                });
+
+
+            $(document).ready(function() {
+
+
+            $("#nav_form").submit(function(){
+                this.submit();
+                $(".nav_next").prop("disabled", true);
+                  $(".nav_prev").prop("disabled", true);
+                console.log("disabled");
+                return false;
+              });
+
+               });
+
           {% else %}
 
           in_path = false;
 
 
     {% endif  %}
-    </script>
+          {% if user.is_authenticated %}
 
+
+
+            $('#rating-info').raty({
+                path: '{{MEDIA_URL}}images',
+                score: 0,
+                click: function(score, evt)
+                        {
+                        //alert('ID: ' + this.id + "\nscore: " + score + "\nevent: " + evt);
+
+                         $.ajax(
+                            {
+                                url: '/rate_object',
+                                type: "POST",
+                                contentType: "application/json",
+                                data: JSON.stringify({"uri": "{{ uri }}", "rating": score ,"user":"{{user.id}}"  }),
+                                dataType: "json",
+                                success: function(data, textStatus, jqXHR) {
+                                    $("#rating-message").removeClass("label-info").addClass("label-success");
+                                    $("#rating-message").text("Gracias, tu calificación fué registrada");
+
+
+                                    },
+                                error: function(jqXHR, textStatus, errorThrown) {
+                                    alert ("Error:" + textStatus+" "+errorThrown+" "+jqXHR.responseText);
+                                    }
+                                });
+
+
+
+                        }
+
+                });
+
+        {% else %}
+
+        {% endif %}
+
+    </script>
 
 
 
@@ -471,7 +364,11 @@ $(document).ready(function() {
 
   {% endblock scripts %}
 
-      </div><!-- container -->
-   </div> <!-- page -->
-  </body>
+
+
+
+
+
+
+</body>
 </html>
