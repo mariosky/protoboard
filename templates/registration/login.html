@@ -1,4 +1,4 @@
-{% extends "activitytree/../base.html" %}
+{% extends "activitytree/base.html" %}
 
 
 
@@ -33,9 +33,9 @@
 
 <div class="row">
 
-    <div class="col-md-4 col-md-offset-3">
+    <div class="col-md-6 col-md-offset-2">
 
-        <h2>Iniciar Sesión</h2>
+        <h3>¡Bienvenido de Regreso!</h3>
          <div class="form-group">
                <label for="id_username" class="sign-in-label control-label">Usuario</label>
 
@@ -51,48 +51,28 @@
 
 <div class="row">
 
-    <div class="col-md-4 col-md-offset-3">
+    <div class="col-md-6 col-md-offset-2">
 
          <div class="form-group">
                <label for="id_password" class="sign-in-label control-label">Contraseña</label>
 
              <input type="password" class="form-control" id="id_password" placeholder="Contraseña" name="password">
                 {{ form.password }} </input>
+        <label class="sign-in-reset control-label"> <a href="/password_reset"> <small> ¿Se te olvidó tu contraseña? </small> </a> </label>
+        <input type="hidden" name="next" value="{{ next }}" />
 
+       <button type="submit" class="sign-in-btn btn btn-success btn-block " >Inicia Sesión</button>
 
-       <button type="submit" class="sign-in-btn btn btn-success btn-block " >Iniciar Sesión</button>
-       <label class="sign-in-reset control-label"> <a href="/password_reset"> <small> ¿Se te olvidó la contraseña? </small> </a> </label>
-       <input type="hidden" name="next" value="{{ next }}" />
 
        </div>
 
     </div>
 
 </div>
-
-</form>
-
-<div class="row">
-  <div class="col-md-4 col-md-offset-3">
-    <h3> <small>¿Aún no tienes cuenta? </small></h3>
-      <p> <strong>
- Crea tu cuenta en
-          <a href="/register" class="">
-        protoboard.org</a>
-          </strong>
-</p>
-  </div>
-
-
-
-</div>
-
-
-
 <div class="row">
 
-  <div class="col-md-4 col-md-offset-3">
-      <h3><small>Registrate también con:</small></h3>
+  <div class="col-md-6 col-md-offset-2">
+      <h5><small>O inicia con:</small></h5>
       <a id="login-facebook-btn" class="btn btn-default btn-social btn-block btn-facebook " href="/facebook/get_login?next={{ next }}"> <i class="fa fa-facebook"></i>
         Facebook</a></div>
   <div class="col-md-1"> </div>
@@ -102,12 +82,35 @@
 
     <div class="row">
 
-  <div class="col-md-4 col-md-offset-3">
+  <div class="col-md-6 col-md-offset-2">
       <a id="loginGoogle" class="btn btn-default  btn-social btn-block btn-google-plus"><i class="fa fa-google-plus"></i>
        Google Plus </a>
   </div>
 
     </div>
+
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-2">
+        <div id="register-box" class="form-group">
+            <h5> Si aún no te haz registrado: </h5>
+            <a class="btn btn-primary-outline  btn-block"  href="/register">Crea tu cuenta</a>
+
+        </div>
+
+
+  </div>
+
+
+
+</div>
+
+</form>
+
+
+
+
+
 
 
 

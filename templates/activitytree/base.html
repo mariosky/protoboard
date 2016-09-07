@@ -34,6 +34,11 @@
 
     <!-- Custom styles for derived templates -->
       <style>
+
+      #register-box{
+          margin-top: 2rem;
+      }
+
          {% block style %}
 
          {% endblock style %}
@@ -116,11 +121,12 @@
 
           {% else %}
             {% if not hidde_login_link %}
-            <li class="nav-item"><a class="nav-link"  href="/login/?next=/welcome">Iniciar Sesión</a></li>
-             <li class="nav-item"> <a class="btn btn-primary-outline"  href="/register">Crear Cuenta</a></li>
+            <li class="nav-item"><a class="nav-link"  href="/login/?next=/welcome">Iniciar sesión</a></li>
+             <li class="nav-item"> <a class="btn btn-primary-outline"  href="/register">Crea tu cuenta</a></li>
 
 
           {% endif %}
+
           {% endif %}
 
 

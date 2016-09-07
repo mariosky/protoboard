@@ -4,11 +4,103 @@
 {% block title %}{% trans "Register for an account" %}{% endblock %}
 
 {% block content %}
-<form method="post" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="{% trans 'Submit' %}" />
-</form>
+
+    <div class="col-md-6 col-md-offset-2" xmlns="http://www.w3.org/1999/html">
+<h3>Crea una cuenta:</h3>
+        <form method="post" action="">
+
+
+            {% csrf_token %}
+
+          {% if form.username.errors  %}
+
+
+              <div class="form-group  has-danger">
+
+                <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                  <input type="text" maxlength="30" class="form-control required" id="{{ form.username.id_for_label }}"  value="{{ form.username.value|default_if_none:"" }}"  name="username" aria-describedby="usernameHelpBlock">
+                     <div class="form-control-feedback">{{ form.username.errors }}</div>
+                  <small class="form-text text-muted">
+                  {{ form.username.help_text }}
+
+                    </small>
+              </div>
+          {% else %}
+               <div class="form-group">
+               <input type="text" maxlength="30" class="form-control required" id="{{ form.username.id_for_label }}"  value="{{ form.username.value|default_if_none:"" }}"  name="username" aria-describedby="usernameHelpBlock">
+                 <small class="form-text text-muted">
+                  {{ form.username.help_text }}
+                    </small>
+               </div>
+          {% endif %}
+
+          {% if form.email.errors  %}
+                <div class="form-group has-danger">
+                 <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+
+                 <input type="text" maxlength="30" class="form-control required  form-control-danger" id="{{ form.email.id_for_label }}"     value="{{ form.email.value|default_if_none:"" }}"  name="email" aria-describedby="emailHelpBlock">
+                 </input>
+                 <div class="form-control-feedback">{{  form.email.errors}}</div>
+                 <small class="form-text text-muted"> {{ form.email.help_text }}</small>
+                 </div>
+
+              {% else %}
+                <div class="form-group">
+                 <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                <input type="text" maxlength="30" class="form-control required has-danger" id="{{ form.email.id_for_label }}"  value="{{ form.email.value|default_if_none:"" }}"    name="username" aria-describedby="emailHelpBlock">
+                <small id="emailHelpBlock" class="form-text text-muted">
+                      {{ form.email.help_text }}
+                </small>
+                 </div>
+
+          {% endif %}
+          {% if form.password1.errors  %}
+              <div class="form-group has-danger">
+                <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+                <input type="password" maxlength="30" class="form-control required" id="{{ form.password1.id_for_label }}"  name="password1" >
+                  <div class="form-control-feedback">{{ form.password1.errors }}</div>
+              </div>
+          {% else %}
+                <div class="form-group">
+                <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+                <input type="password" maxlength="30" class="form-control required" id="{{ form.password1.id_for_label }}"  name="password1" >
+
+              </div>
+
+          {% endif %}
+
+
+          {% if form.password2.errors  %}
+              <div class="form-group has-danger">
+                <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+                <input type="password" maxlength="30" class="form-control required" id="{{ form.password2.id_for_label }}"  name="password2" aria-describedby="password2HelpBlock">
+                  <div class="form-control-feedback">{{ form.password2.errors }}</div>
+                  <small id="password2HelpBlock" class="form-text text-muted">
+                      {{ form.password2.help_text }}
+                </small>
+              </div>
+          {% else %}
+                <div class="form-group">
+                <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+                <input type="password" maxlength="30" class="form-control required" id="{{ form.password2.id_for_label }}"  name="password2" aria-describedby="password2HelpBlock">
+                 <small id="password2HelpBlock" class="form-text text-muted">
+                      {{ form.password2.help_text }}
+                </small>
+              </div>
+
+          {% endif %}
+
+        <div class="form-group row">
+              <div class="offset-sm-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Enviar</button>
+              </div>
+            </div>
+        </form>
+
+
+
+
+ </div>
 {% endblock %}
 
 
