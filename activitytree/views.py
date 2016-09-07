@@ -9,6 +9,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.template import RequestContext
 from django.db import transaction
 from django.http import JsonResponse
+from django.contrib.auth import models as auth_models
 from pymongo import MongoClient
 from django.core.urlresolvers import reverse
 from pymongo import errors
@@ -1077,13 +1078,28 @@ def facebook_login(request):
         # LINK ACCOUNT
         profile = facebook_query_me(access_token_response['access_token'][0],'email')
 
-        # Email from Facebook must be the same as the current account
+        # Facebook account must:
+        # 1. Have a validated email in its Profile
+        # 2. Not be assigned to another account
         if 'email' not in profile or profile['email'] != request.user.email :
-            print 'DifferentEMAIL'
-            con=RequestContext(request)
-            con['DifferentEMAIL'] = True
-            return TemplateResponse(request, template='activitytree/me.html',context=con )
-
+            if 'email' not in profile:
+                print 'NotValidEmail'
+                con = RequestContext(request)
+                con['IntegrityError'] = True
+                return TemplateResponse(request, template='activitytree/me.html', context=con)
+            if profile['email'] != request.user.email:
+                # Its  assigned to someone?
+                try:
+                    # This user/email exists?
+                    user = auth_models.User.objects.get(email=profile['email'])
+                    # It is this is not Good
+                    print user
+                    con = RequestContext(request)
+                    con['AuthAlreadyAssociated'] = True
+                    return TemplateResponse(request, template='activitytree/me.html', context=con)
+                except auth_models.User.DoesNotExist, e:
+                    #This is Good carry on
+                    pass
 
         user_profile, created = UserProfile.objects.get_or_create(user=request.user)
         user_profile.facebook_uid = profile['id']
@@ -1121,7 +1137,7 @@ def facebook_login(request):
             #return HttpResponse(json.dumps({"success":False, "error":'AuthAlreadyAssociated' , "after_login":"/"}), content_type='application/javascript')
 
 
-        print user
+
         auth_status = None
         if user:
             if user.is_active:
@@ -1265,11 +1281,25 @@ def google_link(request):
 
     profile = google_query_me(access_token_response['access_token'])
     email = "emails" in profile and profile["emails"] and profile["emails"][0]["value"] or None
-
-    # Email from Facebook must be the same as the current account
-    if email is None or email != request.user.email :
-        print 'DifferentEMAIL'
-        return HttpResponse(json.dumps({"success":False , "error": 'DifferentEMAIL'} ), content_type='application/javascript')
+    # Gmail account must:
+    # 1. Have a validated email in its Profile
+    # 2. Not be assigned to another account
+    if email is None:
+        print 'IntegrityError'
+        return HttpResponse(json.dumps({"success":False , "error": 'IntegrityError'} ), content_type='application/javascript')
+    if email != request.user.email:
+        # Its  assigned to someone?
+        try:
+            # This user/email exists?
+            user = auth_models.User.objects.get(email=email)
+            # It is this is not Good
+            print user
+            con = RequestContext(request)
+            con['AuthAlreadyAssociated'] = True
+            return TemplateResponse(request, template='activitytree/me.html', context=con)
+        except auth_models.User.DoesNotExist, e:
+            # This is Good carry on
+            pass
 
 
 

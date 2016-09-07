@@ -96,26 +96,19 @@ class FacebookBackend:
 
             profile = facebook_query_me(access_token,'email,first_name,last_name')
             if 'email' not in profile:
-                print  'EMAIL_NOT_FOUND' ,profile
                 return None # EMAIL_NOT_FOUND
 
             try:
                 #This user/email exists?
                 user = auth_models.User.objects.get(email=profile['email'])
 
-                #if found and email is associated with the same facebook account, no problem
-                #if hasattr(user, 'userprofile') and user.userprofile.facebook_uid == Decimal(profile['id']):
-                #    pass
-                #else:
-                    #We must abort, log to your previous account
-                #    raise AuthAlreadyAssociated('We must abort, log to your previous account')
-
-
             except auth_models.User.DoesNotExist, e:
+                # IF NOT
                 # We create a new user
+                # Sometimes names are not set in profile
                 first_name = 'N/A' or 'first_name' in profile or profile['first_name']
                 last_name = 'N/A' or 'last_name' in profile or profile['last_name']
-
+                # We copy user data from their profile
                 user = auth_models.User(username=profile['email'], email=profile['email'], is_active=True, first_name = first_name, last_name= last_name)
                 user.set_unusable_password()
                 user.save()
@@ -153,17 +146,9 @@ class FacebookBackend:
                 return None
 
             try:
-
                 #This user/email exists?
                 user = auth_models.User.objects.get(email=email)
 
-                #if found and email is associated with the same facebook account, no problem
-                #if hasattr(user, 'userprofile') and user.userprofile.google_uid == Decimal(profile['id']):
-                #    print 'same user'
-                #    pass
-                #else:
-                    #We must abort, log to your previous account
-                #    raise AuthAlreadyAssociated('We must abort, log to your previous account')
 
             except auth_models.User.DoesNotExist, e:
                 # We create a new user
