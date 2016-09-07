@@ -27,6 +27,7 @@
               </div>
           {% else %}
                <div class="form-group">
+               <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
                <input type="text" maxlength="30" class="form-control required" id="{{ form.username.id_for_label }}"  value="{{ form.username.value|default_if_none:"" }}"  name="username" aria-describedby="usernameHelpBlock">
                  <small class="form-text text-muted">
                   {{ form.username.help_text }}
@@ -47,7 +48,7 @@
               {% else %}
                 <div class="form-group">
                  <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
-                <input type="text" maxlength="30" class="form-control required has-danger" id="{{ form.email.id_for_label }}"  value="{{ form.email.value|default_if_none:"" }}"    name="username" aria-describedby="emailHelpBlock">
+                <input type="text" maxlength="30" class="form-control required has-danger" id="{{ form.email.id_for_label }}"  value="{{ form.email.value|default_if_none:"" }}"    name="email" aria-describedby="emailHelpBlock">
                 <small id="emailHelpBlock" class="form-text text-muted">
                       {{ form.email.help_text }}
                 </small>
