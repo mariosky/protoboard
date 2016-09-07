@@ -1170,6 +1170,7 @@ def unlink_google(request):
     try:
         google_session = GoogleSession.objects.get(user=request.user)
     except GoogleSession.DoesNotExist, e:
+        print "Account does not exists"
         #There is no account any way
         return HttpResponseRedirect('/me')
 
@@ -1181,8 +1182,8 @@ def unlink_google(request):
     print url
 
     f = urllib.urlopen(url)
-    if f.code == 200:
-        #OK, DELETE Google Profile
+    if f.code in [200,400]:
+        #DELETE Google Profile
         try:
             GoogleSession.objects.get(user=request.user).delete()
         except GoogleSession.DoesNotExist, e:
@@ -1194,6 +1195,7 @@ def unlink_google(request):
         return HttpResponseRedirect('/me')
     else:
         #TO DO: Display Error
+        print f.code
         return HttpResponseRedirect('/me')
 
 

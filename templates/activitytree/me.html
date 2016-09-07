@@ -2,12 +2,8 @@ __author__ = 'mario'
 {% extends "activitytree/base.html" %}
 {% load gravatar %}
 
-
 {% block content %}
-  <div class="alert alert-info" role="alert">
-  <strong>Versión de Prueba:</strong> Por el momento no es posible modificar el correo ni el nombre de usuario de una cuenta.
-  La foto del perfil solo la puedes cambiar en Gravatar o usar Facebook o GPlus.
-</div>
+
 
 
 <row>
@@ -16,50 +12,90 @@ __author__ = 'mario'
 
                 <img src="{% gravatar_url user.email 150 %}"  class="text-center" alt="Generic placeholder thumbnail">
             <h4 class="text-lowercase text-left">{{ user.first_name }} {{ user.last_name }}</h4>
-           <p class="text-lowercase text-left">  <span class="text-muted">{{ user.email }}</span></p>
+            <p class="text-lowercase text-left">  <span class="text-muted">{{ user.email }}</span></p>
 
-               <hr/>
-               <h4 class="text-left">Cambia tu foto de perfil:</h4>
-               <a class="btn btn-default btn-block" href="http://gravatar.com" role="button"><i class="fa fa-camera"></i>
-                    Gravatar.com</a>
-
-
-
+              <a   href="http://gravatar.com" class="btn btn-block btn-secondary"> <i class="fa fa-camera"></i> Cambia tu foto de perfil </a>
+    <hr/>
 
     <form >
 
 
-
-
-                    <h4 class="text-left">Tus cuentas:</h4>
-        {{ user.userprofile.facebook_uid }}
-
+        {% comment %}
+        Si tenemos una cuenta ligada a Facebbok deberá de existir la facebook_uid
+        {% endcomment %}
                    {% if user.userprofile.facebook_uid  %}
+               <div class="card ">
+               <div class="card-header"> <i class="fa fa-facebook"></i> Facebook </a>   </div>
+               <div class="card-block ">
+                  <h6 class="text-success">Conectado</h6>
+
+                    <p class="card-text"><small class="text-muted"> Actualmente puedes ingresar con esta cuenta. </small></p>
+                <a id="unlink-login-facebook" href="/unlink_facebook" class="btn btn-secondary">Desconectar</a>
+                </div>
+                </div>
 
 
-    <a id="unlink-login-facebook"  href="/unlink_facebook" class="btn btn-block btn-default">
-        <i class="fa fa-facebook"></i> Desactivar</a>
                     {% else %}
-    <a id="link-login-facebook" href="/facebook/get_login" class="btn btn-block btn-default">
-        <i class="fa fa-facebook"></i> Activar</a>
+                  <div class="card ">
+                   <div class="card-header"> <i class="fa fa-facebook"></i> Facebook </a>   </div>
+               <div class="card-block ">
+                  <h6  class="text-warning">Desconectado</h6>
+
+                  <p class="card-text"><small class="text-muted"> Conéctate para que puedas ingresar con esta cuenta y  empezar a compartir. </small></p>
+                  <a id="link-login-facebook" href="/facebook/get_login"class="btn btn-primary">Conectar</a>
+                </div>
+                </div>
 
                     {% endif %}
- {{ user.userprofile.google_uid }}
-                 {% if user.userprofile.google_uid  %}
 
-               <a id="unlink-loginGoogle" href="/unlink_google" class="btn btn-block btn-default"><i class="fa fa-google-plus"></i>
-       Desactivar </a>
-                    {% else %}
-                 <a id="link-loginGoogle" class="btn btn-block btn-default"><i class="fa fa-google-plus"></i>
-       Activar </a>
-               {% endif %}
+        {% comment %}
+        Lo mismo para Google
+        {% endcomment %}
+
+        {% if user.userprofile.google_uid  %}
+            <div class="card ">
+               <div class="card-header"> <i class="fa fa-google-plus"></i> Google</a> </div>
+               <div class="card-block ">
+                  <h6 class="text-success">Conectado</h6>
+
+                    <p class="card-text"><small class="text-muted"> Actualmente puedes ingresar con esta cuenta. </small></p>
+                <a  id="unlink-loginGoogle" href="/unlink_google"  class="btn btn-secondary">Desconectar</a>
+                </div>
+            </div>
+
+
+
+        {% else %}
+        <div class="card ">
+           <div class="card-header"> <i class="fa fa-google-plus"></i> Google</div>
+           <div class="card-block ">
+              <h6  class="text-warning">Desconectado</h6>
+
+              <p class="card-text"><small class="text-muted"> Conéctate para que puedas ingresar con esta cuenta y  empezar a compartir. </small></p>
+              <a id="link-loginGoogle"  class="btn btn-primary">Conectar</a>
+           </div>
+        </div>
+
+
+        {% endif %}
 
                <hr/>
- <a  href="/password_change/" class="btn btn-block btn-danger"> Cambiar contraseña</a>
-</form>
+               <a  href="/password_change/" class="btn btn-block btn-danger"> Cambiar contraseña</a>
+
+    </form>
             </div>
 
             <div class="col-sm-9">
+              <div class="alert alert-info" role="alert">
+      <strong>Versión de Prueba:</strong> Por el momento no es posible modificar el correo ni el nombre de usuario de una cuenta.
+      La foto del perfil solo la puedes cambiar en Gravatar o usar Facebook o GPlus.
+  </div>
+
+    {% comment %}
+    Posibles excepciones
+
+    {% endcomment %}
+
 {% if IntegrityError %}
 
 <div class='alert alert-danger alert-dismissable'>
@@ -79,7 +115,7 @@ __author__ = 'mario'
 
 {% endif %}
 
-            <form  id="login_form">
+<form  id="login_form">
   <div class="form-group">
   <label for="username">Usuario</label>
   <input type="text" class="form-control" id="username" name="username"
@@ -104,7 +140,7 @@ __author__ = 'mario'
 
   </div>
 
-  <button id="form-submit" type="submit" class="btn btn-default"> Actualizar </button>
+  <button id="form-submit" type="submit" class="btn btn-primary"> Actualizar </button>
 
 
 </form>
@@ -130,10 +166,6 @@ __author__ = 'mario'
 
 
 <script>
-
-
-
-
 
             function getCookie(name) {
                 var cookieValue = null;
@@ -168,8 +200,6 @@ __author__ = 'mario'
                 }
             });
 
-
-
     function start() {
       gapi.load('auth2', function() {
         auth2 = gapi.auth2.init({
@@ -183,11 +213,11 @@ __author__ = 'mario'
 
 
 //
-// READY
+// When READY
 //
  $( document ).ready(function() {
 
- //$.ajaxSetup({ cache: true });
+
 
  $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
 
@@ -215,10 +245,10 @@ __author__ = 'mario'
 
         } else {
 
-        alert('not_logged');
+        console.log('not_logged');
         // the user isn't logged in to Facebook.
         }
-        alert('unknown');
+        console.log('unknown');
     });
 
   });
@@ -241,9 +271,8 @@ __author__ = 'mario'
 
       $.post('/me', $( "#login_form" ).serialize(),
               function(data) {
-                  alert( "succsess" );
-                   alert(data.success);
-                   alert(data.error);
+                  console.log( "succsess update" );
+
                 }
 
       );
@@ -309,7 +338,7 @@ __author__ = 'mario'
           }
           else
           {
-             alert("La cuenta de Google+ se ha activado con éxito.");
+
               window.location.href='/me';
           }
 
