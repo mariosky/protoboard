@@ -1296,7 +1296,8 @@ def google_link(request):
             print user
             con = RequestContext(request)
             con['AuthAlreadyAssociated'] = True
-            return TemplateResponse(request, template='activitytree/me.html', context=con)
+            return HttpResponse(json.dumps({"success": False, "error": 'AuthAlreadyAssociated'}),
+                                content_type='application/javascript')
         except auth_models.User.DoesNotExist, e:
             # This is Good carry on
             pass
