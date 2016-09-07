@@ -39,7 +39,7 @@
          <div class="form-group">
                <label for="id_username" class="sign-in-label control-label">Usuario</label>
 
-              <input type="text" class="form-control" id="inputEmail3" placeholder="Usuario" id="id_username" maxlength="254" name="username">
+              <input type="text" class="form-control" id="inputEmail3" id="id_username" maxlength="254" name="username">
 
                 {{ form.username }}
 
@@ -56,7 +56,7 @@
          <div class="form-group">
                <label for="id_password" class="sign-in-label control-label">Contraseña</label>
 
-             <input type="password" class="form-control" id="id_password" placeholder="Contraseña" name="password">
+             <input type="password" class="form-control" id="id_password" name="password">
                 {{ form.password }} </input>
         <label class="sign-in-reset control-label"> <a href="/password_reset"> <small> ¿Se te olvidó tu contraseña? </small> </a> </label>
         <input type="hidden" name="next" value="{{ next }}" />
