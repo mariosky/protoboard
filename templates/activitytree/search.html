@@ -1,11 +1,12 @@
 {% extends "activitytree/base.html" %}
 
 {% block content %}
-<h3>Biblioteca </h3>
+
     <nav class="navbar navbar-default">
 
       <div class="container-fluid">
                 <row>
+                    <h3>Biblioteca </h3>
                           <form class="form" role="search" onsubmit="return false">
                              <div class="input-group">
                                  <input class="form-control" type="text" placeholder="Search by Title or #Tag" name="srch-term" id="txtname">
@@ -19,14 +20,16 @@
                </row>
       </div>
     </nav>
-
-    <div class="col-md-12">
+<div class="row">
+    <div class="col-md-10  col-md-offset-1 col-sm-12">
            <div class="card-deck-wrapper">
                <div id='actividades' class="card-columns">
 
               </div>
            </div>
     </div>
+</div>
+
 
 
     <nav aria-label="Page navigation" id="paginator" align="center">
