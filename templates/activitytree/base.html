@@ -64,37 +64,37 @@
   <body>
 
 
-    <nav class="navbar navbar-fixed-top navbar-light bg-faded">
+    <nav class="navbar navbar-static-top navbar-light bg-faded">
 
     <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar" aria-controls="exCollapsingNavbar" aria-expanded="false" aria-label="Toggle navigation">
         &#9776;
     </button>
 
     <div class="collapse" id="exCollapsingNavbar">
-    <div class="bg-inverse p-a-1">
-        <div class="list-group">
+        <div class="bg-inverse p-a-1">
+            <div class="list-group">
 
-          <a href="/courses" class="list-group-item">Cursos</a>
-          <a href="/search" class="list-group-item">Biblioteca</a>
-          <a href="/student" class="list-group-item">Estudiante</a>
-          <a href="/instructor" class="list-group-item">Instructor</a>
-          {% if user.is_authenticated %}
-                  {% if XML_NAV %}
-                    <a href="{{ root_id }}{{root}}" class="list-group-item">Curso</a>
-                    <a  class="list-group-item" href="/dashboard{{ root_id }}">Dashboard</a>
+              <a href="/courses" class="list-group-item">Cursos</a>
+              <a href="/search" class="list-group-item">Biblioteca</a>
+              <a href="/student" class="list-group-item">Estudiante</a>
+              <a href="/instructor" class="list-group-item">Instructor</a>
+              {% if user.is_authenticated %}
+                      {% if XML_NAV %}
+                        <a href="{{ root_id }}{{root}}" class="list-group-item">Curso</a>
+                        <a  class="list-group-item" href="/dashboard{{ root_id }}">Dashboard</a>
 
-                  {% endif %}
-                     <a class="list-group-item" href="/logout">Salir</a>
-           {% else %}
-                {% if not hidde_login_link %}
-                    <a class="list-group-item"  href="/login/?next=/welcome">Iniciar sesión</a>
-                    <a class="list-group-item list-group-item-info"  href="/register">Crea tu cuenta</a>
-                {% endif %}
-          {% endif %}
+                      {% endif %}
+                         <a class="list-group-item" href="/logout">Salir</a>
+               {% else %}
+                    {% if not hidde_login_link %}
+                        <a class="list-group-item"  href="/login/?next=/welcome">Iniciar sesión</a>
+                        <a class="list-group-item list-group-item-info"  href="/register">Crea tu cuenta</a>
+                    {% endif %}
+              {% endif %}
 
 
+            </div>
         </div>
-    </div>
   </div>
 
 
@@ -163,7 +163,7 @@
     <div id="main_container" class="container-fluid">
 
      <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-12">
             {%if breadcrumbs%}
                  <ol class="breadcrumb">
                     {% for l in breadcrumbs %}
@@ -179,35 +179,15 @@
         </div>
 
 
-        <div id="user_points" class="col-md-3 ">
-             {% if XML_NAV %}
-                <div class="row">
 
-                <form id="nav_form"   role="form" action="{{ root_id }}{{root}}" method = "POST">{% csrf_token %}
-
-
-               <ul class="pager">
-                     <li ><span class="nav_prev" > &larr; Anterior</span></li>
-                    <li ><span class="nav_next">  Continuar &rarr;</span></li>
-               </ul>
-
-                </form>
-
-
-                 </div>
-            {% endif %}
-        </div>
      </div>
 
-     <div class="row">
             {% block content %}
-            <!--
 
-            {{content|safe}}
-
-                -->
             {% endblock content %}
-     </div>
+
+
+
     <div class="row">
 
 
