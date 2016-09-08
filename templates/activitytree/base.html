@@ -62,8 +62,7 @@
   </head>
 
   <body>
-  <div id="page">
-    <nav class="container">
+
 
     <nav class="navbar navbar-fixed-top navbar-light bg-faded">
 
@@ -109,7 +108,7 @@
              <li class="nav-item"><a  class="nav-link" href="/student">Estudiante</a></li>
              <li class="nav-item"><a  class="nav-link" href="/instructor">Instructor</a></li>
         </ul>
-        <div class="nav navbar-nav pull-xs-right">
+        <ul class="nav navbar-nav pull-xs-right">
 
 
           {% if user.is_authenticated %}
@@ -152,8 +151,8 @@
 
           </ul>
 
-</div>
-    </div>
+        </div>
+
     </nav>
 
 
@@ -200,7 +199,7 @@
         </div>
      </div>
 
-
+     <div class="row">
             {% block content %}
             <!--
 
@@ -208,6 +207,10 @@
 
                 -->
             {% endblock content %}
+     </div>
+    <div class="row">
+
+
     {% if rating_totals %}
  <div class="col-md-6 col-md-offset-3">
                <div class="panel panel-default">
@@ -226,14 +229,14 @@
                   </div>
                </div>
 </div>
+    </div>
 {% endif %}
 
     </div>
 
 
 
-      </div><!-- container -->
-   </div> <!-- page -->
+
 
 
     <!-- Bootstrap core JavaScript
