@@ -3,8 +3,8 @@
 
 
 {% block content %}
- <div class="container">
 
+   <div class="col-xs-12 col-md-6 col-md-offset-3">
 
 <form id='login_form' class="form-signin" role="form" method="post" action="{% url 'django.contrib.auth.views.login' %}"
       xmlns="http://www.w3.org/1999/html">{% csrf_token %}
@@ -31,11 +31,10 @@
 
 {% endif %}
 
-<div class="row">
 
-    <div class="col-md-6 col-md-offset-2 col-xs-12">
 
-        <h3>¡Bienvenido de Regreso!</h3>
+
+        <h5>¡Bienvenido de Regreso!</h5>
          <div class="form-group">
                <label for="id_username" class="sign-in-label control-label">Usuario</label>
 
@@ -46,12 +45,9 @@
                 </input>
 
              </div>
-    </div>
-</div>
 
-<div class="row">
 
-    <div class="col-md-6 col-md-offset-2 col-xs-12">
+
 
          <div class="form-group">
                <label for="id_password" class="sign-in-label control-label">Contraseña</label>
@@ -60,53 +56,53 @@
                 {{ form.password }} </input>
         <label class="sign-in-reset control-label"> <a href="/password_reset"> <small> ¿Se te olvidó tu contraseña? </small> </a> </label>
         <input type="hidden" name="next" value="{{ next }}" />
+           <div class="row">
 
-       <button type="submit" class="sign-in-btn btn btn-success btn-block " >Inicia Sesión</button>
+               <div class="col-xs-12 col-md-8 col-md-offset-2" >
+                <button type="submit" class="sign-in-btn btn btn-success btn-block " >Inicia Sesión</button>
+               </div>
+           </div>
+
+
+
 
 
        </div>
 
-    </div>
 
-</div>
-<div class="row">
+        <div class="row">
 
-  <div class="col-md-6 col-md-offset-2 col-xs-12">
-      <h5><small>O inicia con:</small></h5>
-      <a id="login-facebook-btn" class="btn btn-default btn-social btn-block btn-facebook " href="/facebook/get_login?next={{ next }}"> <i class="fa fa-facebook"></i>
-        Facebook</a></div>
-  <div class="col-md-1"> </div>
-
-
-</div>
-
-    <div class="row">
-
-  <div class="col-md-6 col-md-offset-2">
-      <a id="loginGoogle" class="btn btn-default  btn-social btn-block btn-google-plus"><i class="fa fa-google-plus"></i>
+        <div class="col-xs-12 col-md-8 col-md-offset-2" >
+             <h5><small>Tambíen puedes iniciar sesión con:</small></h5>
+               <a id="login-facebook-btn" class="btn btn-default btn-social btn-block btn-facebook " href="/facebook/get_login?next={{ next }}"> <i class="fa fa-facebook"></i>
+        Facebook</a>
+               </div>
+        <div class="col-xs-12 col-md-8 col-md-offset-2" >
+                <a id="loginGoogle" class="btn btn-default  btn-social btn-block btn-google-plus"><i class="fa fa-google-plus"></i>
        Google Plus </a>
-  </div>
+               </div>
+        </div>
 
-    </div>
+        <div class="row">
 
-
-    <div class="row">
-        <div class="col-md-6 col-md-offset-2">
-        <div id="register-box" class="form-group">
+         <div class="col-xs-12 col-md-8 col-md-offset-2" >
+                     <div id="register-box" class="form-group">
             <h5> Si aún no te haz registrado: </h5>
             <a class="btn btn-primary-outline  btn-block"  href="/register">Crea tu cuenta</a>
 
         </div>
+               </div>
+
+        </div>
 
 
-  </div>
 
 
 
-</div>
 
 </form>
 
+   </div>
 
 
 
@@ -116,7 +112,6 @@
 
 
 
-</div>
 
 
 
