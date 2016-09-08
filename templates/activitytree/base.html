@@ -73,8 +73,28 @@
 
     <div class="collapse" id="exCollapsingNavbar">
     <div class="bg-inverse p-a-1">
-      <h4>Collapsed content</h4>
-      <span class="text-muted">Toggleable via the navbar brand.</span>
+        <div class="list-group">
+
+          <a href="/courses" class="list-group-item">Cursos</a>
+          <a href="/search" class="list-group-item">Biblioteca</a>
+          <a href="/student" class="list-group-item">Estudiante</a>
+          <a href="/instructor" class="list-group-item">Instructor</a>
+          {% if user.is_authenticated %}
+                  {% if XML_NAV %}
+                    <a href="{{ root_id }}{{root}}" class="list-group-item">Curso</a>
+                    <a  class="list-group-item" href="/dashboard{{ root_id }}">Dashboard</a>
+
+                  {% endif %}
+                     <a class="list-group-item" href="/logout">Salir</a>
+           {% else %}
+                {% if not hidde_login_link %}
+                    <a class="list-group-item"  href="/login/?next=/welcome">Iniciar sesión</a>
+                    <a class="list-group-item list-group-item-info"  href="/register">Crea tu cuenta</a>
+                {% endif %}
+          {% endif %}
+
+
+        </div>
     </div>
   </div>
 
