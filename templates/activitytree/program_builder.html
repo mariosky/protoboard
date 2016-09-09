@@ -524,6 +524,8 @@ return x;}
 
     });
 
+
+
     //loads parameter from url if user is updating an existing program activity
     function getParameterByName(name, url) {
         if (!url) url = window.location.href;
@@ -640,6 +642,19 @@ return x;}
         }
     }
 
+    function indexdata( data){
+
+        var dict = {};
+        data.forEach(function (obj,index) {
+            dict[obj.name]=obj.value;
+            console.log(obj);
+        });
+
+        return dict;
+        
+
+
+    }
 //gets data from all forms and send it to server
     function submitProg(){
         tinyMCE.triggerSave();
@@ -935,6 +950,7 @@ return x;}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js " type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/javascript.js" type="text/javascript" charset="utf-8"></script>
+     <script src="{{ STATIC_URL }}app/scripts/main.js"></script>
 
 
 {% endblock %}
