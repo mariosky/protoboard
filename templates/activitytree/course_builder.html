@@ -164,9 +164,13 @@
 
 <script id="activity_template" type="x-tmpl-mustache">
 
-        <li id="[[ activity_id  ]]"  data-module="activity" class="activity">
-          <div>
+ <li id="[[ activity_id  ]]"  data-module="activity" class="activity">
+          <div class="row">
+          <div class="col-md-9">
             <i class="fa fa-file"></i> <span class="h5 container_name">[[activity_name]] </span>
+          </div>
+          <div class="col-md-3">
+
 
           <div class="btn-group navbar-right" role="group" aria-label="..." >
             <button type="button" class="btn btn-secondary  clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i></button>
@@ -181,6 +185,7 @@
             <button type="button" class="btn btn-secondary clickable   containerSearch"><i class="fa fa-search  clickable  containerSearch"></i></button>
             <button type="button" class="btn btn-secondary clickable   containerEditBtn"><i class="fa fa-cog clickable containerEditBtn"></i> </button>
             <button type="button" class="btn btn-secondary clickable   containerFromUntil"><i class="fa fa-calendar  clickable  containerFromUnti"></i></button>
+          </div>
           </div>
         </div>
  </li>
