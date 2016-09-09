@@ -8,29 +8,44 @@
  * Editor
  */
 
-    #editor1 {
+  #instructionsEditor{
 
-        height: 400px;
+        height: 700px;
         width: 200;
 
     }
 
-    #editor2{
+  #initialCodeEditor{
+        height: 300px;
+        width: 200;
+    }
 
-        height: 400px;
+  #UnitTestEditor {
+      height: 800px;
+      width: 200;
+    }
+
+  #correctCodeEditor{
+        height: 800px;
+        width: 200;
+    }
+
+
+
+
+
+    #HTMLEditor{
+        height: 800px;
+        width: 200;
+    }
+
+    #editorInstructions{
+
+        height: 800px;
         width: 200;
 
     }
 
-    #editor3{
-        height: 400px;
-        width: 200;
-    }
-
-    #editorhtml{
-        height: 400px;
-        width: 200;
-    }
 
  p.test_error, p.test_failure {
     color:#d9534f;
@@ -51,32 +66,128 @@
 
 
 {% block content %}
+<div class="row">
+<div class="col-md-9">
 
-<div class="container" style="width: 100%">
   {% if d %}
        {{ title }}
   {% endif %}
+
   <ul class="nav nav-tabs" id="tab-menu">
       <ul class="nav nav-tabs">
-        <li class="nav-item"> <a class="nav-link active" href="#test" id="testid" data-toggle="tab">Unit Test</a></li>
-        <li class="nav-item"> <a class="nav-link" href="#correct" id="correctid" data-toggle="tab">Correct Code</a></li>
-        <li class="nav-item"> <a class="nav-link" href="#initial" id="initialid" data-toggle="tab">Initial Code</a></li>
+        <li class="nav-item"> <a class="nav-link active" href="#instructions" id="instructions-id" data-toggle="tab">Instructions</a></li>
+        <li class="nav-item"> <a class="nav-link" href="#test" id="testid" data-toggle="tab">Unit Test</a></li>
+        <li class="nav-item"> <a class="nav-link" href="#correct-code" id="correct-code-id" data-toggle="tab">Correct Code</a></li>
 
-          <li class="nav-item"> <a class="nav-link" href="#htmltab" id="htmla" data-toggle="tab">HTML</a></li>
-          <li class="nav-item"> <a class="nav-link" id="infoid" href="#info" data-toggle="tab">Detail</a></li>
-<li class="nav-item"><button value="Help" class="btn btn-info" id="helpbtn">Help</button></li>
+        <li class="nav-item"> <a class="nav-link" href="#htmltab" id="htmla" data-toggle="tab">HTML</a></li>
+
+        <li class="nav-item"><button value="Help" class="btn btn-info" id="helpbtn">Help</button></li>
       </ul>
 
   </ul>
+    <div class="tab-content">
 
-  <br>
+    <!--
+    instructions
+    -->
+    <div class="tab-pane fade" id="instructions" >
+        <div style="width: 100%">
+            <div class="myeditor" id="instructionsEditor" style="border:3px solid lightgrey">
+                En este lugar se pondrán las correciones
+            </div>
+            <h5>Código Inicial</h5>
+            <div class="myeditor" id="initialCodeEditor" style="border:3px solid lightgrey">
+            El punto de partida para el estudiante.
+            </div>
+        </div>
+    </div>
+    <!--
+    test
+    -->
+    <div class="tab-pane fade in active" id="test" >
+        <div style="width: 100%" >
 
-    <div class="tab-content" style="width: 100%">
-        <div class="tab-pane fade" id="info">
-            <div class="container-fluid" style="float: left; width: 45%">
-            <form id="formaProg" class="form-group" onsubmit="return false">
+         <div class="myeditor" id="UnitTestEditor" style="border:3px solid lightgrey">
+function foo(items) { UnitTestEditor
+Unit test;
+return x;}
+           </div>
+         </div>
+    </div>
+
+
+<!--
+correct-Code
+-->
+        <div class="tab-pane fade" id="correct-code" >
+            <div style="width: 100%">
+            <div class="myeditor" id="correctCodeEditor" style="border:3px solid lightgrey">
+            Correct
+           </div>
+
+                </div>
+
+        </div>
+
+
+<!--
+htmltab
+-->
+        <div class="tab-pane fade" id="htmltab">
+            <div style="width: 100%" >
+                <div id="jquery-content"  style="text-align: center">
+                    <div class="panel panel-info" style="width:60%;display: inline-block">
+                        <div class="panel-heading">
+
+                        </div>
+                        <div id="jquery-body" class="panel-body">
+                           Jquey
+
+                        </div>
+                    </div>
+                </div>
+
+            <div class="myeditor" id="HTMLEditor" style="border:3px solid lightgrey">
+HTML Content
+            </div>
+            </div><br>
+
+        </div>
+
+
+
+
+
+
+</div>
+</div>
+
+<div class="col-md-3">
+
+            <form id="formadetailp" onsubmit="return false">
                 <label for="idprog">ID</label>
                 <input type="text" readonly="readonly" class="form-control" id="idprog" name="_id">
+                <label for="displayprog">Display Name</label>
+                <input type="text" id="displayprog" name="title" class="form-control">
+                <label for="descriptionprog">Description </label>
+                <textarea class="form-control" id="descriptionprog" name="description" rows="3" ></textarea>
+                <label for="tagsprog">Tags</label>
+                <input class="form-control" id="tagsprog" name="tags">
+                <label for="txtLang">Choose programming language</label>
+                <select id="txtLang" name="lang" class="form-control">
+                    <option value="python">Python</option>
+                    <option value="javascript">Javascript</option>
+                    <option value="csharp">Csharp</option>
+                    <option value="java">Java</option>
+                    <option value="jquery">Jquery</option>
+                </select>
+                <div class="form-group" id="test-buttons" align="center">
+                    <input type="button" id="probarProg" class="btn btn-primary" value="Test">
+                    <input type="button" id="refreshHtml" class="btn btn-default" value="Refresh HTML">
+                </div>
+
+
+
                 <label for="rightsprog">Rights</label>
                 <input type="hidden" name="type" value="prog">
                 <input type="hidden" name="author" value="{{ user.email }}">
@@ -99,108 +210,20 @@
                     <option value="avanzado">Avanzado</option>
                 </select><br>
 
-            </div>
-            <div class="" style="margin-left: 50%; height: 50%">
-                <label for="editor1">Advanced Help</label>
-                <tinytext name="content" id="html"></tinytext><br>
-            </div>
-            </form>
-        </div>
+        </form>
 
 
-        <div class="tab-pane fade" id="htmltab">
-            <div style="width: 100%" >
-                <div id="jquery-content"  style="text-align: center">
-                    <div class="panel panel-info" style="width:60%;display: inline-block">
-                        <div class="panel-heading">
-                        <h5 class="panel-title"> HTML Renderizado </h5>
-                        </div>
-                        <div id="jquery-body" class="panel-body">
-
-                        </div>
-                    </div>
-                </div>
-            <label for="editorhtml">HTML Code</label>
-            <div class="myeditor" id="editorhtml" style="border:3px solid lightgrey">
-HTML Content
-            </div>
-            </div><br>
-
-        </div>
-
-        <div class="tab-pane fade in active" id="test" >
-            <div style="width: 100%" >
-            <label for="editor1">Unit Test</label>
-            <div class="myeditor" id="editor1" style="border:3px solid lightgrey">
-function foo(items) {
-Unit test;
-return x;}
-            </div>
-            </div><br>
-        </div>
-
-        <div class="tab-pane fade" id="initial" >
-            <div style="width: 100%">
-                    <label for="editor3">Initial Code</label>
-                    <div class="myeditor" id="editor3" style="border:3px solid lightgrey">
-function foo(items){
-Initial code;
-}
-                    </div>
-                </div><br>
-
-        </div>
-
-        <div class="tab-pane fade" id="correct" >
-            <div style="width: 100%">
-            <label for="editor2">Correct Code</label>
-                <div class="myeditor" id="editor2" style="border:3px solid lightgrey">
-function foo(items) {
-Correct code;
-return x;}
-                </div><br>
-
-
-
-            </div>
-        </div>
-
-        </div>
-    </div>
-</div>
-
-    <div class="container-fluid" id="formadetaildiv">
-        <div style="float:left;margin-left: 3%;width: 41%;">
-            <form id="formadetailp" onsubmit="return false">
-                <label for="displayprog">Display Name</label>
-                <input type="text" id="displayprog" name="title" class="form-control">
-                <label for="tagsprog">Tags</label>
-                <input class="form-control" id="tagsprog" name="tags">
-                <label for="txtLang">Choose programming language</label>
-                <select id="txtLang" name="lang" class="form-control">
-                    <option value="python">Python</option>
-                    <option value="javascript">Javascript</option>
-                    <option value="csharp">Csharp</option>
-                    <option value="java">Java</option>
-                    <option value="jquery">Jquery</option>
-                </select>
-                <div class="form-group" id="test-buttons" align="center">
-                    <input type="button" id="probarProg" class="btn btn-primary" value="Test">
-                    <input type="button" id="refreshHtml" class="btn btn-default" value="Refresh HTML">
-                </div>
-        </div>
-        <div style="margin-left: 50%; width: 50%">
-            <label for="descriptionprog">Description </label>
-            <textarea class="form-control" id="descriptionprog" name="description" rows="3" ></textarea>
-            <label for="txtInstrucciones">Instructions </label>
-            <textarea class="form-control" id="txtInstrucciones" name="instructions" rows="3" ></textarea>
-        </div><br>
-        </form><br>
-    </div>
     <div class="form-group" align="center">
         <input type="submit" class="btn btn-warning" id="submitProg" value="Save Activity">
         <input type="button" class="btn btn-danger" id="cancelProg" value="Cancel">
     </div>
+</div>
+
+
+
+</div>
+
+
 
 
 <div id="confirmProg" class="modal fade">
@@ -469,8 +492,8 @@ return x;}
 
         $("#refreshHtml").click(function(e){
             $("#jquery-body").empty();
-            var editorhtml = ace.edit("editorhtml");
-            var html = editorhtml.getValue();
+            var HTMLEditor = ace.edit("HTMLEditor");
+            var html = HTMLEditor.getValue();
             $("#jquery-body").append(html);
         });
 
@@ -516,7 +539,7 @@ return x;}
 
         //goes back to first value of editor if clicked
         $('#borrarProg').click(function(){
-            var editor = ace.edit("editor1");
+            var editor = ace.edit("UnitTestEditor");
             editor.setValue(codigo);
         });
 
@@ -571,24 +594,24 @@ return x;}
 
     //if activity is going to be updated, loads data to controls
     function load_progdata(obj){
-        var editor = ace.edit("editor1");
-        var editor2 = ace.edit("editor2");
-        var editor3 = ace.edit("editor3");
-        var editorhtml = ace.edit("editorhtml");
+        var editor = ace.edit("UnitTestEditor");
+        var instructionsEditor = ace.edit("instructionsEditor");
+        var initialCodeEditor = ace.edit("initialCodeEditor");
+        var HTMLEditor = ace.edit("HTMLEditor");
         $.each(obj[0], function(key, value){
             $('#formaProg [name='+key+']').val(value);
             $('#formadetailp [name='+key+']').val(value);
             if (key == 'unit_test'){
                 editor.setValue(value,1)
             }
-            else if (key == "correct_code"){
-                editor2.setValue(value,1)
+            else if (key == "instrucions"){
+                instructionsEditor.setValue(value,1)
             }
             else if (key == "initial_code"){
-                editor3.setValue(value,1)
+                initialCodeEditor.setValue(value,1)
             }
             else if (key == "HTML_code"){
-                editorhtml.setValue(value,1);
+                HTMLEditor.setValue(value,1);
                 $("#jquery-body").append(value);
             }
             else if (key == 'tags'){
@@ -600,7 +623,7 @@ return x;}
             else if (key == 'content'){
                 tinyMCE.get('html').setContent(value)
             }
-            else if (key == 'instructions'){
+            else if (key == 'correct-code'){
                 $('#txtInstrucciones').val(value)
             }
             else if (key == 'description'){
@@ -714,17 +737,17 @@ return x;}
 
     //gets data from ace editors and stores it in objects for json conversion
     function progData(){
-        var editor = ace.edit("editor1");
-        var editor2 = ace.edit("editor2");
-        var editor3 = ace.edit("editor3");
-        var editorhtml = ace.edit("editorhtml");
+        var editor = ace.edit("UnitTestEditor");
+        var instructionsEditor = ace.edit("instructionsEditor");
+        var initialCodeEditor = ace.edit("initialCodeEditor");
+        var HTMLEditor = ace.edit("HTMLEditor");
         var obj1={
-            'name': 'correct_code',
-            'value': editor2.getValue()
+            'name': 'instructions',
+            'value': instructionsEditor.getValue()
         };
         var obj2={
               'name': 'initial_code',
-            'value': editor3.getValue()
+            'value': initialCodeEditor.getValue()
         };
         var obj3={
             'name': 'unit_test',
@@ -732,7 +755,7 @@ return x;}
         };
         var obj4={
             'name': 'HTML_code',
-            'value': editorhtml.getValue()
+            'value': HTMLEditor.getValue()
         };
 
         return {obj1:obj1,obj2:obj2,obj3:obj3,obj4:obj4}
