@@ -16,17 +16,17 @@
     }
 
   #initialCodeEditor{
-        height: 300px;
+        height: 700px;
         width: 200;
     }
 
   #UnitTestEditor {
-      height: 800px;
+      height: 700px;
       width: 200;
     }
 
   #correctCodeEditor{
-        height: 800px;
+        height: 700px;
         width: 200;
     }
 
@@ -35,16 +35,10 @@
 
 
     #HTMLEditor{
-        height: 800px;
+        height: 700px;
         width: 200;
     }
 
-    #editorInstructions{
-
-        height: 800px;
-        width: 200;
-
-    }
 
 
  p.test_error, p.test_failure {
@@ -76,26 +70,34 @@
   <ul class="nav nav-tabs" id="tab-menu">
       <ul class="nav nav-tabs">
         <li class="nav-item"> <a class="nav-link active" href="#instructions" id="instructions-id" data-toggle="tab">Instructions</a></li>
+        <li class="nav-item"> <a class="nav-link " href="#initial-code" id="initial-code-id" data-toggle="tab">Initial Code</a></li>
         <li class="nav-item"> <a class="nav-link" href="#test" id="testid" data-toggle="tab">Unit Test</a></li>
         <li class="nav-item"> <a class="nav-link" href="#correct-code" id="correct-code-id" data-toggle="tab">Correct Code</a></li>
-
         <li class="nav-item"> <a class="nav-link" href="#htmltab" id="htmla" data-toggle="tab">HTML</a></li>
-
         <li class="nav-item"><button value="Help" class="btn btn-info" id="helpbtn">Help</button></li>
       </ul>
 
   </ul>
-    <div class="tab-content">
+
+  <div class="tab-content">
 
     <!--
     instructions
     -->
-    <div class="tab-pane fade" id="instructions" >
+    <div class="tab-pane fade in active" id="instructions" >
         <div style="width: 100%">
             <div class="myeditor" id="instructionsEditor" style="border:3px solid lightgrey">
-                En este lugar se pondrán las correciones
+                En este lugar se pondrán las Instrucciones
             </div>
-            <h5>Código Inicial</h5>
+
+        </div>
+    </div>
+   <!--
+    initial code
+    -->
+    <div class="tab-pane fade" id="initial-code" >
+        <div style="width: 100%">
+
             <div class="myeditor" id="initialCodeEditor" style="border:3px solid lightgrey">
             El punto de partida para el estudiante.
             </div>
@@ -104,7 +106,7 @@
     <!--
     test
     -->
-    <div class="tab-pane fade in active" id="test" >
+    <div class="tab-pane fade" id="test" >
         <div style="width: 100%" >
 
          <div class="myeditor" id="UnitTestEditor" style="border:3px solid lightgrey">
@@ -121,14 +123,12 @@ correct-Code
 -->
         <div class="tab-pane fade" id="correct-code" >
             <div style="width: 100%">
-            <div class="myeditor" id="correctCodeEditor" style="border:3px solid lightgrey">
-            Correct
+                <div class="myeditor" id="correctCodeEditor" style="border:3px solid lightgrey">
+                Correct
+               </div>
+
            </div>
-
-                </div>
-
         </div>
-
 
 <!--
 htmltab
@@ -426,17 +426,6 @@ HTML Content
         }
     });
 
-    //hides lang form when in detail tab
-    $("#tab-menu a").click(function(){
-        if ($(this).attr("id") != 'infoid'){
-            $("#test-buttons").show()
-        }
-        else{
-            $("#test-buttons").hide()
-        }
-    });
-
-
 
     $(function(){
         //when user inputs title for activity, a id is generated and then checks if id already exists on db
@@ -490,6 +479,7 @@ HTML Content
             submitProg()
         });
 
+        //Refreshes the HTML Rendered
         $("#refreshHtml").click(function(e){
             $("#jquery-body").empty();
             var HTMLEditor = ace.edit("HTMLEditor");
@@ -499,7 +489,6 @@ HTML Content
 
         //if user cancels submission of activity, forms are reset
         $('#cancelProg').click(function(){
-            $('#formaProg')[0].reset();
             $('#formadetailp')[0].reset();
             tinyMCE.activeEditor.setContent('');
             window.location.href = "/build_program";
@@ -594,17 +583,20 @@ HTML Content
 
     //if activity is going to be updated, loads data to controls
     function load_progdata(obj){
-        var editor = ace.edit("UnitTestEditor");
+
         var instructionsEditor = ace.edit("instructionsEditor");
+        var editor = ace.edit("UnitTestEditor");
+        var correctCodeEditor = ace.edit("correctCodeEditor");
         var initialCodeEditor = ace.edit("initialCodeEditor");
         var HTMLEditor = ace.edit("HTMLEditor");
         $.each(obj[0], function(key, value){
-            $('#formaProg [name='+key+']').val(value);
+            console.log(key);
             $('#formadetailp [name='+key+']').val(value);
+
             if (key == 'unit_test'){
                 editor.setValue(value,1)
             }
-            else if (key == "instrucions"){
+            else if (key == "instructions"){
                 instructionsEditor.setValue(value,1)
             }
             else if (key == "initial_code"){
@@ -620,11 +612,8 @@ HTML Content
                     $("#tagsprog").tagit("createTag", value[i]);
                 }
             }
-            else if (key == 'content'){
-                tinyMCE.get('html').setContent(value)
-            }
             else if (key == 'correct-code'){
-                $('#txtInstrucciones').val(value)
+               correctCodeEditor.setValue(value,1);
             }
             else if (key == 'description'){
                 $("#descriptionprog").val(value)
@@ -665,8 +654,8 @@ HTML Content
         }
     }
 
+    //creates an object from JQuery data()
     function indexdata( data){
-
         var dict = {};
         data.forEach(function (obj,index) {
             dict[obj.name]=obj.value;
@@ -674,23 +663,17 @@ HTML Content
         });
 
         return dict;
-        
-
-
     }
-//gets data from all forms and send it to server
+
+    //gets data from all forms and send it to server
     function submitProg(){
         tinyMCE.triggerSave();
-        var main= $('#formaProg').serializeArray();
-        var detail = $('#formadetailp').serializeArray();
-        var data = main.concat(detail);
-        var obj = progData();
-        var html = {
-            name: "content",
-            value: tinyMCE.get('html').getContent()
-        };
-        data.push(html);
-        data.push(obj.obj1,obj.obj2,obj.obj3,obj.obj4);
+        var data = $('#formadetailp').serializeArray();
+        var editor_data = progData();
+        data.push(editor_data.instructions,editor_data.initial_code,editor_data.unit_test,editor_data.HTML_code,editor_data.correct_code);
+
+
+
         data=indexdata(data);
         console.log(data);
         $.ajax({
@@ -709,26 +692,23 @@ HTML Content
                 info = jQuery.parseJSON(info);
                 if (info.updatedExisting == true){
                     alert("Actividad modificada");
-                    $('#formaProg')[0].reset();
                     $('#formadetailp')[0].reset();
                     window.location.href = "/activitybuilder";
                 }
                 else if (info.updatedExisting == false){
                     alert("Actividad agregada");
-                    $('#formaProg')[0].reset();
                     $('#formadetailp')[0].reset();
                     window.location.href = "/activitybuilder";
                 }
                 else if (info.message == "Duplicated"){
                     alert("Duplicated Entry");
-                    $('#formaProg')[0].reset();
                     $('#formadetailp')[0].reset();
                     window.location.href = "/build_program";
                 }
             },
             error: function(info) {
 
-                alert("Error. La actividad no se agrego")
+                alert("Error. La actividad no se agregó")
 
             }
         });
@@ -739,26 +719,35 @@ HTML Content
     function progData(){
         var editor = ace.edit("UnitTestEditor");
         var instructionsEditor = ace.edit("instructionsEditor");
+         var correctCodeEditor = ace.edit("correctCodeEditor");
         var initialCodeEditor = ace.edit("initialCodeEditor");
         var HTMLEditor = ace.edit("HTMLEditor");
-        var obj1={
+
+
+
+        var correct_code={
+            'name': 'correct_code',
+            'value': correctCodeEditor.getValue()
+        };
+
+        var instructions={
             'name': 'instructions',
             'value': instructionsEditor.getValue()
         };
-        var obj2={
+        var initial_code={
               'name': 'initial_code',
             'value': initialCodeEditor.getValue()
         };
-        var obj3={
+        var unit_test={
             'name': 'unit_test',
             'value': editor.getValue()
         };
-        var obj4={
+        var HTML_code={
             'name': 'HTML_code',
             'value': HTMLEditor.getValue()
         };
 
-        return {obj1:obj1,obj2:obj2,obj3:obj3,obj4:obj4}
+        return {instructions:instructions,correct_code:correct_code,initial_code:initial_code,unit_test:unit_test,HTML_code:HTML_code};
 
     }
 
@@ -770,8 +759,9 @@ HTML Content
             'name': 'lang',
             'value': $("#txtLang").val()
         };
-        data.push(obj.obj1,obj.obj3,lang);
+        data.push(obj.correct_code,obj.unit_test,lang);
         data = indexdata(data);
+
         $.ajax({
             type: 'post',
             url: '/test_program',
