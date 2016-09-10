@@ -1,45 +1,54 @@
 # -*- coding: utf-8 -*-
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
-from django.shortcuts import render_to_response
-from django.template.response import TemplateResponse
-from django.core.exceptions import ObjectDoesNotExist
-from django.views.decorators.csrf import csrf_protect
-from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.template import RequestContext
-from django.db import transaction
 from django.http import JsonResponse
-from django.contrib.auth import models as auth_models
-from pymongo import MongoClient
+
+from django.template.response import TemplateResponse
+
+from django.db.models import Avg, Count
+from django.db import IntegrityError
+from django.db import transaction
+
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.conf import settings
 from django.core.urlresolvers import reverse
-from pymongo import errors
-import logging
-import pymongo
-import xml.etree.ElementTree as ET
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import models as auth_models
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_exempt
+
+
+import logging
+import xml.etree.ElementTree as ET
+
+import urllib
+import urlparse
+import json
+
+import pymongo
+from pymongo import errors
+from pymongo import MongoClient
+
+import redis
+import bleach
+from bleach_whitelist import all_tags,attrs
+
 from backends import AuthAlreadyAssociated, google_query_me, facebook_query_me
-from django.db.models import Avg, Count
+from mongo_activities import Activity
+
+from eval_code.RedisCola import Cola, Task
 
 from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event,LearningActivityRating
 from activitytree.interaction_handler import SimpleSequencing
-
 from activitytree.activities import multi_device_activities
 from activitytree.models import FacebookSession, GoogleSession,UserProfile
-from mongo_activities import Activity
-from django.db import IntegrityError
-import urllib
-import urlparse
-
-from django.shortcuts import get_object_or_404
-
-from eval_code.RedisCola import Cola, Task
-import json
-from django.conf import settings
 from courses import get_activity_tree, update_course_from_json, create_empty_course, upload_course_from_json
-from django.views.decorators.csrf import csrf_exempt
-import redis
 
 ip_couch = "http://127.0.0.1:5984"
 redis_service = redis.Redis("127.0.0.1")
@@ -224,6 +233,11 @@ def upload_activity(request): #view that receives activity data and saves it to 
             elif actividad['type'] == 'prog':
                 try:
                     actividad['_id'] = '/program/' + actividad['title'].replace(" ", '_')
+                    ##
+                    ## We need to clean the HTML to be rendered to users
+
+                    actividad['instructions'] = bleach.clean(actividad['instructions'],tags=all_tags,attributes=attrs)
+                    actividad['HTML_code'] = bleach.clean(actividad['HTML_code'], tags=all_tags, attributes=attrs)
                     message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=True)
                     return HttpResponse(json.dumps(message))
                 except pymongo.errors.DuplicateKeyError, e:
