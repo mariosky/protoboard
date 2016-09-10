@@ -86,7 +86,7 @@
     -->
     <div class="tab-pane fade in active" id="instructions" >
         <div style="width: 100%">
-            <div class="myeditor" id="instructionsEditor" style="border:3px solid lightgrey">
+            <div class="myHTMLeditor" id="instructionsEditor" style="border:3px solid lightgrey">
                 En este lugar se pondrán las Instrucciones
             </div>
 
@@ -147,7 +147,7 @@ htmltab
                     </div>
                 </div>
 
-            <div class="myeditor" id="HTMLEditor" style="border:3px solid lightgrey">
+            <div class="myHTMLeditor" id="HTMLEditor" style="border:3px solid lightgrey">
 HTML Content
             </div>
             </div><br>
@@ -171,8 +171,10 @@ HTML Content
                 <input type="text" id="displayprog" name="title" class="form-control">
                 <label for="descriptionprog">Description </label>
                 <textarea class="form-control" id="descriptionprog" name="description" rows="3" ></textarea>
+
                 <label for="tagsprog">Tags</label>
                 <input class="form-control" id="tagsprog" name="tags">
+
                 <label for="txtLang">Choose programming language</label>
                 <select id="txtLang" name="lang" class="form-control">
                     <option value="python">Python</option>
@@ -444,6 +446,14 @@ HTML Content
             editor.setShowPrintMargin(false);
         });
 
+        $('.myHTMLeditor').each(function(){
+            editor = ace.edit(this.id);
+            editor.setTheme("ace/theme/monokai");
+            editor.getSession().setMode('ace/mode/html');
+            editor.setShowPrintMargin(false);
+        });
+
+
         //if submit button is clicked, checks if certain key values where input, if true, confirmation message is displayed
         $('#submitProg').click(function(e){
             var val = check_ifempty(e);
@@ -453,6 +463,10 @@ HTML Content
             else {
 
             }
+        });
+
+        $("#tagsprog").tagit({
+            fieldName: "tags"
         });
 
         //
@@ -654,17 +668,19 @@ HTML Content
         }
     }
 
-    //creates an object from JQuery data()
-    function indexdata( data){
-        var dict = {};
-        data.forEach(function (obj,index) {
-            dict[obj.name]=obj.value;
-            console.log(obj);
-        });
+    ///// Needed in activity builder, consider moving to main.js or other script
+    //function that receives data from all types of insert activities, and returns data stored in a dictionary with key and value for easy conversion to json
+  function indexdata(data){
+      var indexed = {};
+      $.map(data, function(n, i){
+          if (n['name']=='tags'){
+              n['value'] = n['value'].split(',')
+          }
+          indexed[n['name']] = n['value'];
+      });
 
-        return dict;
-    }
-
+      return indexed
+  }
     //gets data from all forms and send it to server
     function submitProg(){
         tinyMCE.triggerSave();
