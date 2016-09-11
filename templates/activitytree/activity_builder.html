@@ -21,9 +21,7 @@
 </div>
 
  <!--Instructor Menu -->
-
-
-           <div class="container m-b-2">
+<div class="container m-b-2">
 
                 <nav class="navbar navbar-light bg-faded">
                            <ul class="nav navbar-nav">
@@ -47,17 +45,12 @@
                           </form>
 
                            </ul>
-                      </nav>
-            </div>
+                </nav>
+</div>
 
 
 
  <!--Instructor Header END -->
-
-
-
-
-
       <div class="row">
         <div class="col-md-10 col-md-offset-1 col-xs-12"  >
              <div class="card-deck-wrapper" id="actividades">
@@ -75,7 +68,7 @@
     </nav>
 
 
-    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog"  aria-hidden="true">
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog"  aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" align="center" style="font-size: large">
@@ -101,7 +94,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">HTML</h4>
             </div>
-
             <div class="modal-body">
                 <ul class="nav nav-tabs">
                     <li class="nav-item"> <a class="nav-link active" href="#main"  data-toggle="tab">Main</a></li>
@@ -124,66 +116,67 @@
                                     <input type="hidden" id="author" name="author" value="{{ user.email }}">
                                     <label for="content">Content</label>
                                     <tinytext name="content" id="content"></tinytext>
+                                </div>
                             </form>
                         </div>
                     </div>
-                </div>
-                <div class="tab-pane fade" id="detail">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-8 col-md-offset-2">
-                                <form id="formadetail" style="align-content: center">
-                                    <div class="form-group" >
-                                        <label for="idhtml">ID</label>
-                                        <input type="text" readonly="readonly" class="form-control" id="idhtml" name="_id">
+                    <div class="tab-pane fade" id="detail">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-2">
+                                    <form id="formadetail" style="align-content: center">
+                                        <div class="form-group" >
+                                            <label for="idhtml">ID</label>
+                                            <input type="text" readonly="readonly" class="form-control" id="idhtml" name="_id">
 
-                                        <label for="rightshtml">Rights</label>
-                                        <input type="text" class="form-control" id="rightshtml" name="rights">
-                                        <label for="externalhtml">External URL</label>
-                                        <input type="text" class="form-control" id="externalhtml" name="external_url">
-                                        <label for="publisherhtml">Publisher</label>
-                                        <input type="text" class="form-control" id="publisherhtml" name="publisher">
+                                            <label for="rightshtml">Rights</label>
+                                            <input type="text" class="form-control" id="rightshtml" name="rights">
+                                            <label for="externalhtml">External URL</label>
+                                            <input type="text" class="form-control" id="externalhtml" name="external_url">
+                                            <label for="publisherhtml">Publisher</label>
+                                            <input type="text" class="form-control" id="publisherhtml" name="publisher">
 
-                                        <br>
-                                        <label for="iconhtml">Icon</label>
-                                        <select id="iconhtml" name="icon" >
-                                            <option value="coffee">Coffee</option>
-                                            <option value="file" selected>File</option>
-                                            <option value="youtube-play">Youtube</option>
-                                            <option value="puzzle-piece">Puzzle</option>
-                                        </select>
-                                        <label for="levelhtml">Level</label>
-                                        <select id="levelhtml" name="level">
-                                            <option value="principiante">Principiante</option>
-                                            <option value="intermedio">Intermedio</option>
-                                            <option value="avanzado">Avanzado</option>
-                                        </select>
-                                    </div>
-                                </form>
+                                            <br>
+                                            <label for="iconhtml">Icon</label>
+                                            <select id="iconhtml" name="icon" >
+                                                <option value="coffee">Coffee</option>
+                                                <option value="file" selected>File</option>
+                                                <option value="youtube-play">Youtube</option>
+                                                <option value="puzzle-piece">Puzzle</option>
+                                            </select>
+                                            <label for="levelhtml">Level</label>
+                                            <select id="levelhtml" name="level">
+                                                <option value="principiante">Principiante</option>
+                                                <option value="intermedio">Intermedio</option>
+                                                <option value="avanzado">Avanzado</option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="modal-footer">
+            <div class="modal-footer">
             <div class="form-group" align="center">
                 <button id="_htmlActivity" type="submit" class="btn btn-primary">Submit</button>
                 <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
             </div>
         </div>
-    </div>
+        </div>
     </div>
 </div>
+
 
 
 <div class="modal fade" id="modalvideo">
     <div class="modal-dialog modal-lg">
         <div class="modal-content modal-lg">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Video</h4>
-            </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Video</h4>
+                </div>
             <div class="modal-body">
                 <ul class="nav nav-tabs">
                     <li class="nav-item"> <a class="nav-link active" href="#mainv"  data-toggle="tab">Main</a></li>
@@ -221,11 +214,12 @@
 
                                     <div id="ytVideo" align="center">
                                     </div>
+                                 </div>
                             </form>
                         </div>
                     </div>
-                </div>
-                <div class="tab-pane fade" id="detailv">
+
+                    <div class="tab-pane fade" id="detailv">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-8 col-md-offset-2">
@@ -260,14 +254,17 @@
                         </div>
                     </div>
                 </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="form-group" align="center">
+                    <button id="_videoActivity" type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                </div>
             </div>
         </div>
-        <div class="modal-footer">
-            <div class="form-group" align="center">
-                <button id="_videoActivity" type="submit" class="btn btn-primary">Submit</button>
-                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-            </div>
-        </div>
+
+
     </div>
 </div>
 
