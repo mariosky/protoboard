@@ -2,33 +2,32 @@
 
 {% block content %}
 
+   <div class="row">
 
-                <div class="row">
-
-                    <div class="col-md-10  col-md-offset-1 col-sm-12">
-                        <h3>Biblioteca </h3>
-                          <form class="form" role="search" onsubmit="return false">
-                             <div class="input-group">
-                                 <input class="form-control" type="text" placeholder="Search by Title or #Tag" name="srch-term" id="txtname">
-                                <span class="input-group-btn">
-                            <button class="btn  btn-secondary" type="submit">Search</button>
-                                     </span>
-                             </div>
-
-                          </form>
-
-                    </div>
+       <div class="col-md-10  col-md-offset-1 col-sm-12">
+           <h3>Biblioteca </h3>
+             <form class="form" role="search" onsubmit="return false">
+                <div class="input-group">
+                    <input id="txtname" class="form-control" type="text" placeholder="Search by Title or #Tag" name="srch-term" >
+                   <span class="input-group-btn">
+               <button class="btn  btn-secondary" type="submit">Search</button>
+                        </span>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-10  col-md-offset-1 col-sm-12 m-t-1">
-                           <div class="card-deck-wrapper">
-                               <div id='actividades' class="card-columns">
+             </form>
 
-                              </div>
-                           </div>
-                    </div>
-                </div>
+       </div>
+   </div>
+
+   <div class="row">
+       <div class="col-md-10  col-md-offset-1 col-sm-12 m-t-1">
+              <div class="card-deck-wrapper">
+                  <div id='actividades' class="card-columns">
+
+                 </div>
+              </div>
+       </div>
+   </div>
 
 
 
@@ -44,8 +43,9 @@
 
 
 
-<script id="activities_template" type="x-tmpl-mustache">
 
+
+<script id="activities_template" type="x-tmpl-mustache">
 <div class="card">
 <div class="card-block">
 
@@ -74,10 +74,6 @@
 
         </div>
 </div>
-
-
-
-
 </script>
 
 <script id="paginator_template" type="x-tmpl-mustache">

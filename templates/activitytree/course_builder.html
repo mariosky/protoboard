@@ -238,16 +238,6 @@
 
 
 
-  function generateUUID() {
-    var d = new Date().getTime();
-    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      var r = (d + Math.random() * 16) % 16 | 0;
-      d = Math.floor(d / 16);
-      return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-    return uuid;
-  }
-
 </script>
 
  <script src="{{ STATIC_URL }}app/scripts/main.js"></script>
@@ -1001,6 +991,7 @@ function get_course() {
               showMeridian: false
           });
       });
+
   });
 
   var body = $('body');
@@ -1276,7 +1267,88 @@ function get_course() {
 
 
 
+
+
+
+
 //
+//  Search Activity
+//
+
+body.on('change',"#txtname",function(){
+   $("#actividades").empty();
+   $("#row").show();
+   var query =  load_query( "#txtname" ,{ page:0, type: {'type': {'$in':['text','video','quiz','prog']}}});
+    buscar(query);
+ });
+
+
+  function buscar(query){
+        $.ajax({
+        type: 'POST',
+        url: '/search_prueba',
+        crossDomain: false, // obviates need for sameOrigin test
+        beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
+        data: JSON.stringify(query),
+        success: function (data) {
+            var obj = jQuery.parseJSON( data );
+            if (obj == "null" || obj[0].count == 0){
+                $("#paginator").empty();
+                $("#actividades").append('<h3 style="color:lightgray">No hay actividades</h3>');
+                count = 0
+            }
+            else{
+                Mustache.tags = ['[[', ']]'];
+                var activities_template = $('#searched_activities_template').html();
+                Mustache.parse(activities_template);
+                $.each(obj, function( index, value ) {
+                    if (value.count){
+                        count = value.count
+                    }
+                    else{
+                        rendered = Mustache.render(activities_template, {
+                            title: value.title,
+                            id: value._id,
+                            icon:value.icon,
+                            description: value.description,
+                            lang:value.lang,
+                            level:value.level,
+                            type:value.type,
+                            tags:value.tags});
+                        $("#actividades").append(rendered);
+                    }
+                });
+
+                renderPaginator( query['page']+1, Math.floor((count + 10 -1)/10), 10, on_click );
+                $('#actividades').val(data);
+
+            }
+        },
+        error: function(data) {
+            console.log("Error");
+        }
+    });
+    }
+
+
+
+var on_click = function(){
+        var pagenum = $( this ).attr('data-page');
+        $("#actividades").empty();
+        $("#paginator").empty();
+        var query =  load_query( "#txtname" ,{ page:0, type: {'type': {'$in':['text','video','quiz','prog']}}});
+        query.page =  (pagenum - 1);
+        buscar(query);
+    }
+
+
+/*
+
   //change action for search textbox, determines if the input is a tag or just a title search
   $("body").on('change', "#txtname", function(){
       $("#data").empty();
@@ -1379,10 +1451,18 @@ function get_course() {
         }
     });
     }
+*/
 
-    function copyUri(id,title){
+
+
+
+
+
+
+    function copyUri(id,title,description){
         learning_activities[container_id].name = title;
         learning_activities[container_id].uri = id;
+        learning_activities[container_id].description = description;
         containerEdit(container_id);
         $("#modalSearch").modal('hide')
 
@@ -1450,6 +1530,91 @@ function fileSelected() {
 
 
 </script>
+
+
+<!--
+paginator_template
+COPY PASTE FROM search.html
+TO DO: Reuse mustache  templates
+-->
+
+<script id="paginator_template" type="x-tmpl-mustache">
+    <ul class="pagination">
+
+    [[#prev]]
+     <li class="page-item" data-page='[[prevPage]]'>
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+        <span class="sr-only">Previous</span>
+      </a>
+    </li>
+
+    [[/prev]]
+
+       [[#pages]]
+          [[#page]]
+                <li class="page-item [[#active]]active[[/active]]" data-page=[[page]]><a class="page-link"  href="#">[[page]]</a></li>
+
+          [[/page]]
+
+          [[^.]]
+          [[/.]]
+       [[/pages]]
+
+    [[#next]]
+    <li class="page-item" data-page=[[nextPage]]>
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+        <span class="sr-only">Next</span>
+      </a>
+    </li>
+
+
+    [[/next]]
+ </ul>
+</script>
+
+
+
+<!--
+activities_template
+COPY PASTE FROM search.html
+TO DO: Reuse mustache  templates
+-->
+  <script id="searched_activities_template" type="x-tmpl-mustache">
+<div class="card">
+<div class="card-block">
+
+  <h6 class="card-title"> <i class="fa fa-[[icon]]"> </i> <a href="[[id]]">[[title]]</a> </h6>
+
+
+
+  <p class="card-text"> [[description]]</p>
+
+   [[#has_tags]]
+    <i class="fa fa-tags"></i>
+        [[/has_tags]]
+
+              [[#tags]]
+              [[#.]]
+              <span class="label label-info"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">#[[.]]</a></span>
+              [[/.]]
+              [[^.]]
+              [[/.]]
+        [[/tags]]
+</div>
+
+
+        <div class="card-footer">
+              <button type="button" value="[[id]]" onclick='copyUri("[[id]]","[[title]]","[[description]]")' data-toggle="" data-target="#"  data-href="[[id]]" class="btn btn-default clickable   editBtn"><i class="fa fa-plus clickable clipBtn"></i> </button>
+        </div>
+</div>
+</script>
+
+
+
+
+
 
 
 <div class="modal fade" id="modalContainer">
@@ -1725,21 +1890,39 @@ function fileSelected() {
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Search Activity</h4>
       </div>
-       <div class="container" style="width: 70%">
-           <br>
-           <form id="formSearch" onsubmit="return false">
+       <div class="container">
+           <div class="row m-t-1">
+                <div class="col-md-10  col-md-offset-1 col-sm-12">
+                                      <form id="formSearch" onsubmit="return false">
            <div class="input-group">
-               <input type="text" class="form-control" placeholder="Search by Title or #Tag" id="txtname">
+               <input id="txtname" type="text" class="form-control" placeholder="Search by Title or #Tag" >
                <div class="input-group-btn">
-                   <button class="btn btn-default" type="submit" style="background-color: #4285F4"><i class="fa fa-search" style="color: white"></i></button>
+                   <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
                </div>
            </div>
            </form>
-           <br>
-       </div>
-        <div id="data" align="center">
+           </div>
+         </div>
 
-        </div>
+             <div class="row">
+      <div class="col-md-10  col-md-offset-1 col-sm-12 m-t-1">
+             <div class="card-deck-wrapper">
+                 <div id='actividades' class="card-columns">
+
+                </div>
+             </div>
+      </div>
+  </div>
+
+       </div>
+
+
+
+    <nav aria-label="Page navigation" id="paginator" align="center">
+
+
+    </nav>
+
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
