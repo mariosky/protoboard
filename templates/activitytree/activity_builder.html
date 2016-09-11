@@ -704,7 +704,7 @@ function load_dataQuiz(id){
             }
         });
         //generates id(uri) of html activity using title provided by user
-        $('#titleHtml').on('change', function(){
+        /*$('#titleHtml').on('change', function(){
             var id = '/activity/' + this.value.replace(/ /g, '_');
             check(id);
             $('#idhtml').val(id)
@@ -715,7 +715,7 @@ function load_dataQuiz(id){
             check(id);
             $('#idvideo').val(id);
         });
-
+        */
         //resets forms such as html and video when modal closes
         $(".modal").on("hidden.bs.modal", function(){
             $("#tagshtml").tagit("removeAll");
@@ -863,17 +863,7 @@ function load_dataQuiz(id){
     }
 
     //function that receives data from all types of insert activities, and returns data stored in a dictionary with key and value for easy conversion to json
-  function indexdata(data){
-      var indexed = {};
-      $.map(data, function(n, i){
-          if (n['name']=='tags'){
-              n['value'] = n['value'].split(',')
-          }
-          indexed[n['name']] = n['value'];
-      });
 
-      return indexed
-  }
 
     //function used to check if title of activities already exist in db, if it exists, user is prompted with a warning message
    function check(valor){
@@ -968,9 +958,6 @@ function load_dataQuiz(id){
 
 
 
-        $("#tagsquiz").tagit({
-            fieldName: "tags"
-        });
 
         $("#txttags").tagit({
             fieldName: "tags"

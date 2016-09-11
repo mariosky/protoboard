@@ -114,7 +114,7 @@ Pregunta de texto directa
           </div>
         <br>
         <div class="container-fluid" id="formadetaildiv" style="margin-left: 3%">
-            <form id="formadetailtab" onsubmit="return false">
+            <form id="formadetailtab" onsubmit="return false">{% csrf_token %}
             <div style="float:left;width: 45%;">
                 <label for="displayquiz">Display Name</label>
                 <input type="text" id="displayquiz" name="title" class="form-control">
@@ -125,7 +125,7 @@ Pregunta de texto directa
                 <label for="satisfy">Satisfy at least</label>
                 <input type="text" class="form-control" id="satisfy" name="satisfied_at_least">
                 <label for="descriptionquiz">Description</label>
-                <textarea class="form-control" id="descriptionquiz" name="description" rows="3" ></textarea>
+                <textarea class="form-control" id="descriptionquiz" name="description" rows="3" ></textarea></div>
                 </form>
             </div><br>
             <br>
@@ -189,6 +189,7 @@ $(document).ready(function(){
         console.log(url)
     }
 
+
 });
 
 $(function(){
@@ -231,6 +232,11 @@ $(function(){
         window.location.href = "/build_quiz";
     });
 
+
+        $("#tagsquiz").tagit({
+            fieldName: "tags"
+        });
+
 //when submit is clicked, validates if key values were input by user
     $('#submitquiz').click(function(e){
 
@@ -264,12 +270,6 @@ $(function(){
             $('#preguntas').empty()
         });
 
-    //generates id when user inputs title
-    $("#displayquiz").on('change', function(){
-        var id = '/test/' + this.value.replace(/ /g, '_');
-        check(id);
-        $('#idquiz').val(id);
-    });
 
 
 });
@@ -523,6 +523,13 @@ function submit_quiz(){
         type: 'post',
         url: '/upload_activity',
         contentType: "application/json",
+        crossDomain: false, // obviates need for sameOrigin test
+        beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
         data: JSON.stringify(data),
         success: function (info) {
             info = jQuery.parseJSON(info);
@@ -558,5 +565,6 @@ function submit_quiz(){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js " type="text/javascript" charset="utf-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/javascript.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}app/scripts/main.js"></script>
 
 {% endblock %}

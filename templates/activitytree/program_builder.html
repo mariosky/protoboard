@@ -432,9 +432,9 @@ HTML Content
     $(function(){
         //when user inputs title for activity, a id is generated and then checks if id already exists on db
         $('#displayprog').on('change', function(){
-            var id = '/program/' + this.value.replace(/ /g, '_');
-            check(id);
-            $('#idprog').val(id);
+            //var id = '/program/' + this.value.replace(/ /g, '_');
+            //check(id);
+            // $('#idprog').val(id);
         });
 
         //initializes all ace editors on page
@@ -448,7 +448,7 @@ HTML Content
 
         $('.myHTMLeditor').each(function(){
             editor = ace.edit(this.id);
-            editor.setTheme("ace/theme/monokai   ");
+            editor.setTheme("ace/theme/monokai");
             editor.getSession().setMode('ace/mode/html');
             editor.setShowPrintMargin(false);
         });
@@ -458,6 +458,8 @@ HTML Content
         $('#submitProg').click(function(e){
             var val = check_ifempty(e);
             if (val == true){
+
+
                 $("#confirmProg").modal();
             }
             else {
@@ -666,23 +668,13 @@ HTML Content
                 return false;
                 }
             else {
+
                 return true
         }
+
     }
 
-    ///// Needed in activity builder, consider moving to main.js or other script
-    //function that receives data from all types of insert activities, and returns data stored in a dictionary with key and value for easy conversion to json
-  function indexdata(data){
-      var indexed = {};
-      $.map(data, function(n, i){
-          if (n['name']=='tags'){
-              n['value'] = n['value'].split(',')
-          }
-          indexed[n['name']] = n['value'];
-      });
 
-      return indexed
-  }
     //gets data from all forms and send it to server
     function submitProg(){
         tinyMCE.triggerSave();

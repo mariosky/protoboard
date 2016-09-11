@@ -26,6 +26,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 import logging
 import xml.etree.ElementTree as ET
+import uuid
 
 import urllib
 import urlparse
@@ -206,9 +207,14 @@ def upload_activity(request): #view that receives activity data and saves it to 
             client = MongoClient(settings.MONGO_DB)
             db = client.protoboard_database
             activities_collection = db.activities_collection
+
+
+
             if actividad['type'] == 'video':
                 try:
-                    actividad['_id'] = '/activity/video/' + actividad['title'].replace(" ", "_")
+                    if not actividad['_id']:
+                        ## Is a new activity Generate a Global ID
+                        actividad['_id'] = '/activity/video/' + str(uuid.uuid1())
                     actividad['content'] = actividad['description']
                     message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=True)
                     return HttpResponse(json.dumps(message))
@@ -217,7 +223,9 @@ def upload_activity(request): #view that receives activity data and saves it to 
                         return HttpResponse(json.dumps({'message':'Duplicated'}))
             elif actividad['type'] == 'text':
                 try:
-                    actividad['_id'] = '/activity/' + actividad['title'].replace(" ", '_')
+                    if not actividad['_id']:
+                        ## Is a new activity Generate a Global ID
+                        actividad['_id'] = '/activity/' +  str(uuid.uuid1())
                     message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=True)
                     return HttpResponse(json.dumps(message))
                 except pymongo.errors.DuplicateKeyError, e:
@@ -225,6 +233,10 @@ def upload_activity(request): #view that receives activity data and saves it to 
                         return HttpResponse(json.dumps({'message':'Duplicated'}))
             elif actividad['type'] == 'quiz':
                 try:
+                    if not actividad['_id']:
+                        ## Is a new activity Generate a Global ID
+                        actividad['_id'] = '/test/' +  str(uuid.uuid1())
+
                     message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=True)
                     return HttpResponse(json.dumps(message))
                 except pymongo.errors.DuplicateKeyError, e:
@@ -232,12 +244,13 @@ def upload_activity(request): #view that receives activity data and saves it to 
                         return HttpResponse(json.dumps({'message':'Duplicated'}))
             elif actividad['type'] == 'prog':
                 try:
-                    actividad['_id'] = '/program/' + actividad['title'].replace(" ", '_')
-                    ##
+                    if not actividad['_id']:
+                        ## Is a new activity Generate a Global ID
+                        actividad['_id'] = '/program/' +  str(uuid.uuid1())
                     ## We need to clean the HTML to be rendered to users
-
                     actividad['instructions'] = bleach.clean(actividad['instructions'],tags=all_tags,attributes=attrs)
                     actividad['HTML_code'] = bleach.clean(actividad['HTML_code'], tags=all_tags, attributes=attrs)
+
                     message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=True)
                     return HttpResponse(json.dumps(message))
                 except pymongo.errors.DuplicateKeyError, e:
