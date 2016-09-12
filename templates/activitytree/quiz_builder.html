@@ -132,7 +132,8 @@ Pregunta de texto directa
         </div>
         <div class="form-group" align="center">
 
-            <a id="preview" class="btn btn-primary active" role="button" aria-pressed="true">Preview & Send </a>
+            <a id="preview" class="btn btn-primary active" role="button" aria-pressed="true">Preview </a>
+             <button type="button" class="btn btn-primary" id="submitquiz">Submit</button>
             <a href="/activitybuilder" class="btn btn-secondary active" role="button" aria-pressed="true">Cancel</a>
 
         </div>
@@ -160,8 +161,8 @@ Pregunta de texto directa
 
         <div class="modal-footer">
             <div class="form-group" align="center">
-            <button type="button" class="btn btn-primary" id="submitquiz">Submit</button>
-            <button type="button" data-dismiss="modal" id="CancelQuiz" class="btn btn-default">Cancel</button>
+
+            <button type="button" data-dismiss="modal" id="CancelQuiz" class="btn btn-default">OK</button>
             </div>
         </div>
       </div>
@@ -204,9 +205,11 @@ $(function(){
     $('#preview').click(function(){
         //valor = tinyMCE.activeEditor.getContent();
         valor = editor.getValue();
+        console.log(valor);
         var quiz = analize(valor);
-
+        console.log(JSON.stringify(quiz));
         var cont = 0;
+
         $.each(quiz,function(index,value){
             if (value.type == "multi"){
                 value.question = value.question.replace(/[>\<]/g,'');
@@ -223,13 +226,13 @@ $(function(){
                 preview_quiz(value,cont,1);
                 cont++
             }
-            $('#modalquiz').modal();
-        });
 
+        });
+        $('#modalquiz').modal();
     });
 
     $("#CancelQuiz").click(function(){
-        window.location.href = "/build_quiz";
+      // window.location.href = "/build_quiz";
     });
 
 
@@ -267,7 +270,7 @@ $(function(){
 
     //resets values in modal when modal is closed
     $(".modal").on("hidden.bs.modal", function(){
-            $('#preguntas').empty()
+           // $('#preguntas').empty()
         });
 
 
@@ -344,13 +347,6 @@ function analize(valor){
 
     dic = [];
 
-    //texto = valor.replace(/<\/?[^>]+(>|$)/g, "/\n/g");
-    //texto = texto.replace(/&gt;/g, '>');
-    //texto = texto.replace(/&lt;/g, '<');
-    //texto = texto.replace(/\/g/g, '');
-    //texto = texto.replace(/\//g, '');
-    //texto = texto.split(/\n/g);
-    //texto = texto.filter(Boolean);
     texto = valor.split(/\n/g);
     texto = texto.filter(Boolean);
 

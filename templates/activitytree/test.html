@@ -32,9 +32,9 @@
 
         {% for q in content.questions %}
             {% if q.feedback.correct %}
-            <h4> <span><i class="fa fa-check"></i></span> {{q.question}} </h4>
+            <h4 class="question"> <span><i class="fa fa-check"></i></span> {{q.question}} </h4>
             {% else %}
-            <h4>  <span><i class="fa fa-times"></i></span></span> {{q.question}} </h4>
+            <h4 class="question">  <span><i class="fa fa-times"></i></span></span> {{q.question}} </h4>
             {% endif %}
             {% if q.options %}
                 {% for o in q.feedback_options %}
@@ -60,7 +60,7 @@
 
                 {% else %}
                     {% if q.hints|length != 0 %}
-                    <a class="hint-btn" id="tools-{{ q.id }}" style="font-size: large"><i class="fa fa-comments" aria-hidden="true"></i> Hint Available</a><br>
+                    <a class="hint-btn" id="tools-{{ q.id }}" style="font-size: large"><i class="fa fa-comments" aria-hidden="true"></i> Una pista </a><br>
                     <div class="alert alert-info" id="div-{{ q.id }}" style="display:none;font-size: large;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif">
                         <em>
                         {% for hint in q.hints %}
@@ -77,7 +77,7 @@
                     {% else %}
                         {% if q.hints|length != 0 %}
                             <a class="hint-btn" id="tools-{{ q.id }}" style="font-size: large"><i class="fa fa-comments" aria-hidden="true"></i> Hint Available</a><br>
-                            <div class="alert alert-info" id="div-{{ q.id }}" style="display:none;font-size: large;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif">
+                            <div class="alert alert-info" id="div-{{ q.id }}">
                             <em>
                             {% for hint in q.hints %}
                                 {{ hint }}<br>
@@ -93,7 +93,7 @@
 
 
     {% for q in content.questions %}
-        <h4>{{q.question}} </h4>
+        <h4 class="question">{{q.question}} </h4>
             {% if q.options %}
                 {% for o in q.options %}
                     {% if q.interaction == 'choiceInteraction' %}
@@ -128,14 +128,14 @@
 
         {% if feedback %}
 
-        <input type="submit" name="check" value="Re-Enviar" class="btn btn-primary">
+        <input type="submit" name="check" value="Re-Enviar" class="btn btn-primary question-submit">
 
 
         {% else %}
 
 
 
-         <input type="submit" name="check" value="Enviar" class="btn btn-primary">
+         <input type="submit" name="check" value="Enviar" class="btn btn-primary question-submit">
 
         {% endif %}
     {% endif %}
