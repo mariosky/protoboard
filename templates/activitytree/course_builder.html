@@ -1319,7 +1319,8 @@ body.on('change',"#txtname",function(){
                             lang:value.lang,
                             level:value.level,
                             type:value.type,
-                            tags:value.tags});
+                            tags:value.tags,
+                            image_url:value.image_url});
                         $("#actividades").append(rendered);
                     }
                 });
@@ -1589,7 +1590,7 @@ TO DO: Reuse mustache  templates
 
 
 
-  <p class="card-text"> [[description]]</p>
+  <p class="card-text"> [[description]] [[image_url]]</p>
 
    [[#has_tags]]
     <i class="fa fa-tags"></i>

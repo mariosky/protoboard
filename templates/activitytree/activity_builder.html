@@ -58,14 +58,19 @@
             </div>
         </div>
     </div>
-
-
-
-
-   <nav aria-label="Page navigation" id="paginator" align="center">
+ <!--Instructor Header END -->
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1 col-xs-12"  >
+             <nav aria-label="Page navigation" id="paginator" align="center">
 
 
     </nav>
+        </div>
+    </div>
+
+
+
+
 
 
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -128,22 +133,33 @@
                                         <div class="form-group" >
                                             <label for="idhtml">ID</label>
                                             <input type="text" readonly="readonly" class="form-control" id="idhtml" name="_id">
-
-                                            <label for="rightshtml">Rights</label>
+                                         </div>
+                                        <div class="form-group">
+                                         <label for="rightshtml">Rights</label>
                                             <input type="text" class="form-control" id="rightshtml" name="rights">
+                                        </div>
+
+                                        <div class="form-group">
                                             <label for="externalhtml">External URL</label>
                                             <input type="text" class="form-control" id="externalhtml" name="external_url">
-                                            <label for="publisherhtml">Publisher</label>
-                                            <input type="text" class="form-control" id="publisherhtml" name="publisher">
+                                        </div>
 
-                                            <br>
-                                            <label for="iconhtml">Icon</label>
+                                        <div class="form-group">
+                                             <label for="publisherhtml">Publisher</label>
+                                            <input type="text" class="form-control" id="publisherhtml" name="publisher">
+                                        </div>
+
+                                        <div class="form-group">
+                                             <label for="iconhtml">Icon</label>
                                             <select id="iconhtml" name="icon" >
                                                 <option value="coffee">Coffee</option>
                                                 <option value="file" selected>File</option>
                                                 <option value="youtube-play">Youtube</option>
                                                 <option value="puzzle-piece">Puzzle</option>
                                             </select>
+                                        </div>
+
+                                        <div class="form-group">
                                             <label for="levelhtml">Level</label>
                                             <select id="levelhtml" name="level">
                                                 <option value="principiante">Principiante</option>
@@ -151,6 +167,19 @@
                                                 <option value="avanzado">Avanzado</option>
                                             </select>
                                         </div>
+
+                                            <div class="form-group">
+
+                                        <label for="image_url">Image</label>
+                                        <input type="text" class="form-control" id="image_url" name="image_url">
+                                            </div>
+
+
+
+
+
+
+
                                     </form>
                                 </div>
                             </div>
@@ -228,13 +257,20 @@
                                         <label for="idvideo">ID</label>
                                         <input type="text" readonly="readonly" class="form-control" id="idvideo" name="_id">
 
+                                      </div>
+                                    <div class="form-group">
                                         <label for="rightsvideo">Rights</label>
                                         <input type="text" class="form-control" id="rightsvideo" name="rights">
-                                        <label for="externalvideo">External URL</label>
+                                    </div>
+                                        <div class="form-group">
+                                          <label for="externalvideo">External URL</label>
                                         <input type="text" class="form-control" id="externalvideo" name="external_url">
-                                        <label for="publishervideo">Publisher</label>
+                                    </div>
+                                        <div class="form-group">
+                                         <label for="publishervideo">Publisher</label>
                                         <input type="text" class="form-control" id="publishervideo" name="publisher">
-
+                                    </div>
+                                        <div class="form-group">
                                         <label for="iconvideo">Icon</label>
                                         <select id="iconvideo" name="icon" >
                                             <option value="coffee">Coffee</option>
@@ -242,6 +278,8 @@
                                             <option value="youtube-play" selected>Youtube</option>
                                             <option value="puzzle-piece">Puzzle</option>
                                         </select>
+                                    </div>
+                                        <div class="form-group">
                                         <label for="levelvideo">Level</label>
                                         <select id="levelvideo" name="level">
                                             <option value="principiante">Principiante</option>
@@ -249,6 +287,12 @@
                                             <option value="avanzado">Avanzado</option>
                                         </select>
                                     </div>
+                                        <div class="form-group">
+                                        <label for="image_url">Image</label>
+                                        <input type="text" class="form-control" id="image_url" name="image_url">
+
+                                    </div>
+
                                 </form>
                             </div>
                         </div>
@@ -475,7 +519,8 @@ function buscar(query){
                             lang:value.lang,
                             level:value.level,
                             type:value.type,
-                            tags:value.tags});
+                            tags:value.tags,
+                            image_url:value.image_url});
                         $("#actividades").append(rendered);
                     }
                 });
@@ -915,6 +960,32 @@ function load_dataQuiz(id){
         }
 
     }
+
+    //function used when user inputs a youtube url, load video in iframe
+    function loadImage() {
+        var url = $('#image_url').val();
+        var p = /^(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?(?=.*v=((\w|-){11}))(?:\S+)?$/;
+        if ((url.match(p)) == null){
+            if (url == ''){
+                $('#ytVideo').empty()
+            }
+            else{
+                alert("URL invalida");
+                $('#ytVideo').empty()
+            }
+        }
+        else{
+            var urlchange = url.replace('https://www.youtube.com/watch?v=', 'http://www.youtube.com/embed/');
+            var vid_id=url.replace('https://www.youtube.com/watch?v=','');
+            $('#youtube_id').val(vid_id);
+            var htm = '<iframe width="425" height="300" src="' + urlchange + '?rel=0" frameborder="0" allowfullscreen ></iframe>';
+            $('#ytVideo').html(htm);
+            return false;
+        }
+
+    }
+
+
 
 //loads dropdown menu from another dropdown menu (Crear menu)
     (function ($) {
