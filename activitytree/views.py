@@ -622,10 +622,6 @@ def path_test(request,path_id, uri):
 
 
         test = Activity.get(requested_activity.learning_activity.uri)
-
-        print test
-
-
         if feedback:
             for q in test['questions']:
                 if q['id'] in feedback:

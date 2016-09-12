@@ -9,6 +9,12 @@
 
     }
 
+      #ace_content_editor {
+      height: 700px;
+      width: 200;
+    }
+
+
  p.test_error, p.test_failure {
     color:#d9534f;
     }
@@ -25,20 +31,19 @@
 {% endblock %}
 
 {% block content %}
-
-<div class="container-fluid" align="center">
+             <div class="myeditor" id="ace_content_editor">
+                                HOla
+                  </div>
+<div class="container-fluid">
     <div class="container-fluid">
 
         <ul class="nav nav-tabs">
               <li class="nav-item"> <a class="nav-link active" href="#preview-tab"  data-toggle="tab">Quiz</a></li>
               <li class="nav-item"> <a class="nav-link" href="#info-tab"  data-toggle="tab">Detail</a></li>
         </ul>
-
-
-        <br>
-
           <div class="tab-content" style="width: 100%">
               <div class="tab-pane fade in active" id="preview-tab">
+
                   <form id="formaQuiz" style="width: 100%;height: 100%;align-content: center" onsubmit="return false" >
                       <div class="form-group" style="width: 100%; height: 100%">
             <!-- <tiny class="form-control" name="content" id="quiz"> </tiny> -->
@@ -58,7 +63,8 @@
                                   </div>
                               </div>
                           </div>
-                          <div class="myeditor" id="editor1" align="left" style="width: 70%;border:3px solid lightgrey">
+
+                          <div class="myeditor" id="editor1">
 Pregunta de opcion multiple encerrada entre > < con Enter entre respuestas
 Marcar respuesta correcta con (x)
 Ejemplo
@@ -82,33 +88,78 @@ Pregunta de texto directa
                   </form>
               </div>
 
+
               <div class="tab-pane fade" id="info-tab">
-                  <div class="container-fluid" style="width:50%">
+                  <div class="container-fluid">
                       <form id="formadetailq" class="form-group" onsubmit="return false">
-                          <label for="idquiz">ID</label>
-                          <input type="text" readonly="readonly" class="form-control" id="idquiz" name="_id">
-                          <label for="rightsquiz">Rights</label>
-                          <input type="hidden" name="type" value="quiz">
-                          <input type="hidden" name="author" value="{{ user.email }}">
-                          <input type="text" class="form-control" id="rightsquiz" name="rights">
+                        <div class="form-group">
+                           <label for="idquiz">ID</label>
+                           <input type="text" readonly="readonly" class="form-control" id="idquiz" name="_id">
+                        </div>
+                        <div class="form-group">
+                            <label for="displayquiz">Display Name</label>
+                            <input type="text" id="displayquiz" name="title" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="tagsquiz">Tags</label>
+                            <input class="form-control" id="tagsquiz" name="tags">
+                        </div>
+                        <div class="form-group">
+                            <label for="satisfy">Satisfy at least</label>
+                            <input type="text" class="form-control" id="satisfy" name="satisfied_at_least">
+                        </div>
+                        <div class="form-group">
+                            <label for="rightsquiz">Rights</label>
+                            <input type="text" class="form-control" id="rightsquiz" name="rights">
+                        </div>
+                        <div class="form-group">
+                            <label for="descriptionquiz">Description</label>
+                            <textarea class="form-control" id="descriptionquiz" name="description" rows="3" ></textarea>
+                        </div>
+                        <div class="form-group">
                           <label for="externalquiz">External URL</label>
                           <input type="text" class="form-control" id="externalquiz" name="external_url">
-                          <label for="publisherquiz">Publisher</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="publisherquiz">Publisher</label>
                           <input type="text" class="form-control" id="publisherquiz" name="publisher"><br>
-                          <label for="iconquiz">Icon</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="iconquiz">Icon</label>
                           <select id="iconquiz" name="icon" >
                               <option value="coffee">Coffee</option>
                               <option value="file">File</option>
                               <option value="youtube-play">Youtube</option>
                               <option value="puzzle-piece">Puzzle</option>
                           </select>
-                          <label for="levelquiz">Level</label>
+                        </div>
+                        <div class="form-group">
+                              <label for="levelquiz">Level</label>
                           <select id="levelquiz" name="level">
                               <option value="principiante">Principiante</option>
                               <option value="intermedio">Intermedio</option>
                               <option value="avanzado">Avanzado</option>
-                          </select><br>
-                  </div>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="type" value="quiz">
+                          <input type="hidden" name="author" value="{{ user.email }}">
+
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                   </form>
               </div>
           </div>
@@ -116,16 +167,10 @@ Pregunta de texto directa
         <div class="container-fluid" id="formadetaildiv" style="margin-left: 3%">
             <form id="formadetailtab" onsubmit="return false">{% csrf_token %}
             <div style="float:left;width: 45%;">
-                <label for="displayquiz">Display Name</label>
-                <input type="text" id="displayquiz" name="title" class="form-control">
-                <label for="tagsquiz">Tags</label>
-                <input class="form-control" id="tagsquiz" name="tags">
+
             </div>
             <div style="margin-left: 50%; width: 50%">
-                <label for="satisfy">Satisfy at least</label>
-                <input type="text" class="form-control" id="satisfy" name="satisfied_at_least">
-                <label for="descriptionquiz">Description</label>
-                <textarea class="form-control" id="descriptionquiz" name="description" rows="3" ></textarea></div>
+                </div>
                 </form>
             </div><br>
             <br>
@@ -174,9 +219,6 @@ Pregunta de texto directa
 
 {% block scripts %}
 
-<script>tinymce.init({ selector:'tiny', height:"400", width: "500", entities: "", entity_encoding: "raw" });</script>
-
-
 <script>
 //checks if url has parameters to load activity
 $(document).ready(function(){
@@ -194,16 +236,23 @@ $(document).ready(function(){
 });
 
 $(function(){
-//loads ace editor for input of quiz by user
+    //loads ace editor for input of quiz by user
     var editor = ace.edit('editor1');
     editor.setTheme("ace/theme/dawn");
     editor.getSession().setMode('ace/mode/text');
     editor.renderer.setShowGutter(false);
     editor.setShowPrintMargin(false);
 
+    var ace_content_editor = ace.edit('ace_content_editor');
+    ace_content_editor.setTheme("ace/theme/dawn");
+    ace_content_editor.getSession().setMode('ace/mode/html');
+    ace_content_editor.renderer.setShowGutter(false);
+    ace_content_editor.setShowPrintMargin(false);
+
+
     //when Preview button is clicked, text is sent to be analized, then determine what type of object is going to be displayed
     $('#preview').click(function(){
-        //valor = tinyMCE.activeEditor.getContent();
+
         valor = editor.getValue();
         console.log(valor);
         var quiz = analize(valor);
@@ -243,8 +292,11 @@ $(function(){
 //when submit is clicked, validates if key values were input by user
     $('#submitquiz').click(function(e){
 
+
+       var QuizAsText = editor.getValue();
+       var QuizAsObject = analize(QuizAsText);
         //get_value();
-        var verificar = verify_checkbox(e);
+        var verificar = verify_checkbox(QuizAsObject);
         if (verificar == false){
             alert("Seleccione respuestas correctas")
         }
@@ -270,7 +322,7 @@ $(function(){
 
     //resets values in modal when modal is closed
     $(".modal").on("hidden.bs.modal", function(){
-           // $('#preguntas').empty()
+            $('#preguntas').empty()
         });
 
 
@@ -321,6 +373,9 @@ function load_quizdata(obj){
             var editor = ace.edit('editor1');
             editor.setValue(value,1)
         }
+        else if (key == 'quiz_as_text'){
+            console.log(value);
+        }
         else if (key == 'tags'){
             $('#tagsquiz').val("");
             for (var i=0; i < value.length ; i++){
@@ -337,28 +392,32 @@ function load_quizdata(obj){
 //function that analizes input from user and store info of questions and answer in a object for each one, using regular expressions
 function analize(valor){
 
-    exp_radio = /^\s*\(.?\)/;
-    exp_answer = /\[.?]/;
-    exp_question = /\s*>>(.*?)<</;
-    exp_correct = /^\s*\[x\]/;
-    exp_radio_correct = /^\s*\(x\)/;
-    exp_hint = /{*{(.*?)}}/;
-    exp_text = /\=.*?=/;
+    var exp_radio = /^\s*\(.?\)/;
+    var exp_answer = /\[.?]/;
+    var exp_question = /\s*>>(.*?)<</;
+    var exp_correct = /^\s*\[x\]/;
+    var exp_radio_correct = /^\s*\(x\)/;
+    var exp_hint = /{*{(.*?)}}/;
+    var exp_text = /\=.*?=/;
 
-    dic = [];
+    var dic = [];
 
-    texto = valor.split(/\n/g);
+    var texto = valor.split(/\n/g);
     texto = texto.filter(Boolean);
 
-    lista = [];
-    correct = [];
-    answers = [];
-    n = 0;
+    var lista = [];
+    var correct = [];
+    var answers = [];
+    var hintlist=[];
+    var n = 0;
+    var obj = {};
     for (var i=0;i<texto.length;i++) {
         if (exp_question.test(texto[i])) {
             var match = texto[i].match(exp_question);
-            obj= {
-                question: match[0],
+            console.log(match);
+
+               obj= {
+                question: match[1],
                 options: '',
                 answer: '',
                 type:'',
@@ -446,10 +505,7 @@ function analize(valor){
 
 
     }
-
-    $('#preguntas').empty();
     return dic;
-
 
 }
 
@@ -484,7 +540,7 @@ function preview_quiz(obj,cont,flag){
     }
 }
 
-function verify_checkbox(){
+function verify_checkbox(dic){
     var flag = true;
     for (var i=0;i < dic.length;i++){
         if (dic[i].answer_text.length == 0){
@@ -497,22 +553,36 @@ function verify_checkbox(){
 
 //function that gets all data from forms and send it to server for insertion, updates activity if it already exists
 function submit_quiz(){
+    var editor = ace.edit('editor1');
+    var  QuizAsText = editor.getValue();
+    var QuizAsObject = analize(QuizAsText);
+    console.log(QuizAsObject);
+    // Also check is less or equal to length
     if ($("#satisfy").val() == ""){
-        $("#satisfy").val(dic.length);
+        $("#satisfy").val(QuizAsObject.length);
     }
+
     var detail = $('#formadetailq').serializeArray();
     var detailtab = $("#formadetailtab").serializeArray();
     detail = detail.concat(detailtab);
     var questions = {
         name: 'questions',
-        value: dic
+        value: QuizAsObject
     };
     detail.push(questions);
+
     var content = {
             name: 'content',
-            value: valor
+            value: QuizAsText
         };
     detail.push(content);
+
+    var quiz_as_text = {
+            name: 'quiz_as_text',
+            value: QuizAsText
+        };
+    detail.push(quiz_as_text);
+
     var data = indexdata(detail);
     console.log(data);
     $.ajax({
