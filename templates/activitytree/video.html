@@ -15,22 +15,90 @@
 
 
    </div>
+    {% if XML_NAV %}
+          <div class="row">
+    {% if rating_totals %}
+
+                 <div class="col-md-6  m-b-1 col-md-offset-1">
+                               <div class="panel panel-default">
+                                    <div class="panel-body">
+
+                                        <p>Califica este recurso: <span id="rating-info"> </span>
+
+                                            {% if rating_totals.rating__avg %}
+                                            ({{ rating_totals.rating__avg|floatformat:2 }}/5)
+                                            {% endif %}
+                                            {{ rating_totals.rating__count }} voto(s).
+
+
+
+                                        </p>
+                                  </div>
+                               </div>
+                        </div>
+
+     {% endif %}
+
+        <div class="col-md-4 col-sm-12 m-b-1">
+
+
+                         <form id="nav_form"   role="form" action="{{ root_id }}{{root}}" method = "POST">{% csrf_token %}
+
+
+                               <ul class="pager">
+                                     <li class="previous"><span class="nav_prev" > &larr; Anterior</span></li>
+                                    <li class="next"><span class="nav_next">  Continuar &rarr;</span></li>
+                               </ul>
+
+                       </form>
+
+                </div>
+            </div>
+
+
+
+    {% endif %}
+
     <row>
-    <div class="col-md-6 col-md-offset-3">
+    <div class="col-md-12 ">
                <div class="card ">
                <div class="card-header"> {{ video.title }}  </div>
                <div class="card-block ">
-                        {{ video.content }}
+                        {{ video.content|safe }}
                 </div>
                 </div>
 
          </div>
-
     </row>
 
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 col-sm-12 m-b-1">
+           <div id="disqus_thread"></div>
+        </div>
+    </div>
 {% endblock content %}
 
 {% block scripts %}
+
+<script>
+
+/**
+ *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+ *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
+/*
+var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '//codigo-uno.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
          <script type="text/javascript" charset="utf-8">
 
         // 2. This code loads the IFrame Player API code asynchronously.
