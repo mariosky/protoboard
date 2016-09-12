@@ -580,7 +580,12 @@ def path_test(request,path_id, uri):
                 return HttpResponseNotFound('<h1>Path not found</h1>')
 
         feedback = None
-        attempts_left = requested_activity.learning_activity.attempt_limit-requested_activity.num_attempts
+        #IF 100 attempts there is really no limit
+        if requested_activity.learning_activity.attempt_limit < 100:
+            attempts_left = requested_activity.learning_activity.attempt_limit-requested_activity.num_attempts
+        else:
+            attempts_left = 100
+
         if request.method == 'GET':
             # Exits last activity, and sets requested activity as current
             # if choice_exit consider complete
@@ -600,7 +605,9 @@ def path_test(request,path_id, uri):
                         progress_status='incomplete'
 
                     s.update(requested_activity, progress_status = progress_status, attempt=True, objective_measure=objective_measure)
-                    attempts_left-=1
+                    # IF 100 attempts there is really no limit
+                    if requested_activity.learning_activity.attempt_limit < 100:
+                        attempts_left-=1
 
 
        # Gets the current navegation tree as HTML
