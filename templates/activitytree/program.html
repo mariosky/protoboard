@@ -342,7 +342,7 @@ $(document).ready(function() {
                         {
                            $("#result_panel").removeClass("panel-info").removeClass("panel-danger").addClass("panel-success");
                            $("#result_panel_heading").html("Pruebas exitosas");
-                           $("#result_panel").html( Mustache.render(success_template,
+                           $("#result_panel").append( Mustache.render(success_template,
                                    {
                                        in_path:in_path
 
