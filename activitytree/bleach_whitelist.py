@@ -6,8 +6,10 @@ all_tags = [
 ]
 
 attrs = {
- '*': ['class'],
+ '*': ['class','id'],
  'a': ['href', 'rel'],
  'img': ['alt'],
- 'div': ['role']
+ 'div': ['role'],
+ 'button':['type','data-toggle','data-target','aria-expanded','aria-controls']
+
 }
