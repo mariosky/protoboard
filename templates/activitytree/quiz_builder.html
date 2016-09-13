@@ -4,16 +4,15 @@
 
     #editor1 {
 
-        height: 500px;
+        height:400px;
         width: ;
 
     }
 
       #ace_content_editor {
-      height: 700px;
-      width: 200;
+      height: 200px;
+      width: ;
     }
-
 
  p.test_error, p.test_failure {
     color:#d9534f;
@@ -31,66 +30,25 @@
 {% endblock %}
 
 {% block content %}
-             <div class="myeditor" id="ace_content_editor">
-                                HOla
-                  </div>
+
 <div class="container-fluid">
-    <div class="container-fluid">
+
 
         <ul class="nav nav-tabs">
-              <li class="nav-item"> <a class="nav-link active" href="#preview-tab"  data-toggle="tab">Quiz</a></li>
-              <li class="nav-item"> <a class="nav-link" href="#info-tab"  data-toggle="tab">Detail</a></li>
+              <li class="nav-item"> <a class="nav-link " href="#preview-tab"  data-toggle="tab">Quiz</a></li>
+              <li class="nav-item"> <a class="nav-link active" href="#info-tab"  data-toggle="tab">Detail</a></li>
         </ul>
-          <div class="tab-content" style="width: 100%">
-              <div class="tab-pane fade in active" id="preview-tab">
+          <div class="tab-content">
+              <div class="tab-pane" id="preview-tab">
+                    <div class="myeditor" id="ace_content_editor" name="content">
 
-                  <form id="formaQuiz" style="width: 100%;height: 100%;align-content: center" onsubmit="return false" >
-                      <div class="form-group" style="width: 100%; height: 100%">
-            <!-- <tiny class="form-control" name="content" id="quiz"> </tiny> -->
-                          <div class="" style="width: 28%;float: left">
-                              <div class="panel panel-info" style="height:400px;max-height:450px;overflow: auto">
-                                  <div class="panel-heading">
-                                      <h4> Instrucciones </h4>
-                                  </div>
-                                  <div class="panel-body" align="left" style="font-size: small;overflow:hidden">
-                                      <p>1.- Preguntas de opcion multiple, empezar respuestas con [ ]
-                                          Marcar respuestas correctas [x]</p>
-                                      <p>2.- Preguntas de opcion unica, empezar respuestas con ()
-                                          Marcar respuesta correcta (x)</p>
-                                      <p>3.- Preguntas directas, encerrar respuestas en signos = =</p>
-                                      <p>4.- Se puede incluir una pista en cada pregunta.
-                                          La pista se encierra entre doble {  }</p>
-                                  </div>
-                              </div>
-                          </div>
+                    </div>
+                    <div class="myeditor" id="editor1" name="">
 
-                          <div class="myeditor" id="editor1">
-Pregunta de opcion multiple encerrada entre > < con Enter entre respuestas
-Marcar respuesta correcta con (x)
-Ejemplo
->> Equipos que han sido campeones del mundo <<
-[x] Brasil
-[]Mexico
-[x]Argentina
-{ { Hints entre llaves } }
-Pregunta de solo una respuesta ()
->> Presidente actual de Mexico <<
-(x) Enrique pena Nieto
-() George Bush
-() Fidel Castro
-Pregunta de texto directa
->>Pais de Norte America<<
-=USA=
-=usa=
-=Estados Unidos de Norteamerica=
-                          </div>
-                      </div>
-                  </form>
+                    </div>
               </div>
+              <div class="tab-pane fade in active" id="info-tab">
 
-
-              <div class="tab-pane fade" id="info-tab">
-                  <div class="container-fluid">
                       <form id="formadetailq" class="form-group" onsubmit="return false">
                         <div class="form-group">
                            <label for="idquiz">ID</label>
@@ -147,33 +105,9 @@ Pregunta de texto directa
 
                         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
                   </form>
-              </div>
-          </div>
-        <br>
-        <div class="container-fluid" id="formadetaildiv" style="margin-left: 3%">
-            <form id="formadetailtab" onsubmit="return false">{% csrf_token %}
-            <div style="float:left;width: 45%;">
 
-            </div>
-            <div style="margin-left: 50%; width: 50%">
-                </div>
-                </form>
-            </div><br>
-            <br>
+          </div>
         </div>
         <div class="form-group" align="center">
 
@@ -182,7 +116,7 @@ Pregunta de texto directa
             <a href="/activitybuilder" class="btn btn-secondary active" role="button" aria-pressed="true">Cancel</a>
 
         </div>
-    </div>
+
 </div>
 
  <div class="modal fade" id="modalquiz">
@@ -244,7 +178,7 @@ $(function(){
     editor.setShowPrintMargin(false);
 
     var ace_content_editor = ace.edit('ace_content_editor');
-    ace_content_editor.setTheme("ace/theme/dawn");
+    ace_content_editor.setTheme("ace/theme/twilight");
     ace_content_editor.getSession().setMode('ace/mode/html');
     ace_content_editor.renderer.setShowGutter(false);
     ace_content_editor.setShowPrintMargin(false);
@@ -367,14 +301,14 @@ function get_activity(id,type){
 //loads the data of activity in forms for user to update
 function load_quizdata(obj){
     $.each(obj[0], function(key, value){
-        $('#formadetailtab [name='+key+']').val(value);
         $('#formadetailq [name='+key+']').val(value);
         if (key == 'content'){
-            var editor = ace.edit('editor1');
-            editor.setValue(value,1)
+            var ace_content_editor = ace.edit('ace_content_editor');
+            ace_content_editor.setValue(value,1)
         }
         else if (key == 'quiz_as_text'){
-            console.log(value);
+            var editor = ace.edit('editor1');
+            editor.setValue(value,1)
         }
         else if (key == 'tags'){
             $('#tagsquiz').val("");
@@ -556,24 +490,30 @@ function submit_quiz(){
     var editor = ace.edit('editor1');
     var  QuizAsText = editor.getValue();
     var QuizAsObject = analize(QuizAsText);
+
     console.log(QuizAsObject);
     // Also check is less or equal to length
-    if ($("#satisfy").val() == ""){
+   var satisfyAtLeast = $("#satisfy").val();
+
+    if ( !( isNaN(satisfyAtLeast) || satisfyAtLeast>= 0) )
+    {
         $("#satisfy").val(QuizAsObject.length);
     }
 
+
+
     var detail = $('#formadetailq').serializeArray();
-    var detailtab = $("#formadetailtab").serializeArray();
-    detail = detail.concat(detailtab);
+
     var questions = {
         name: 'questions',
         value: QuizAsObject
     };
     detail.push(questions);
 
+    var ace_content_editor = ace.edit('ace_content_editor');
     var content = {
             name: 'content',
-            value: QuizAsText
+            value: ace_content_editor.getValue()
         };
     detail.push(content);
 
@@ -584,7 +524,7 @@ function submit_quiz(){
     detail.push(quiz_as_text);
 
     var data = indexdata(detail);
-    console.log(data);
+
     $.ajax({
         type: 'post',
         url: '/upload_activity',

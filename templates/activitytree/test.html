@@ -2,8 +2,8 @@
 
 {% block content %}
 
-    <div class = "row">
-        <div class="col-md-8 col-md-offset-2 col-sm-12">
+<div class = "row">
+  <div class="col-md-8 col-md-offset-2 col-sm-12">
 
     <form id="learning_activity_form"    role="form"  action="{{ uri_id }}{{ uri }}" method="POST" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
 
@@ -22,10 +22,11 @@
             {% elif attempts_left   == 0 %}
                 <div class="alert alert-danger" role="alert"> Ya no tienes más intentos </div>
             {% endif %}
+
         {% endif %}
 
 
-        {{ content.intro|safe }}
+        {{ content.content|safe }}
 
 
     {% if feedback %}
@@ -41,7 +42,6 @@
                  {% if q.interaction == 'choiceInteraction' %}
                     <div class="checkbox{{ q.inline|yesno:"-inline,," }}">
                         <label>
-
                             <input type="checkbox" value="option_{{ forloop.counter0 }}" name="{{q.id}}" {{ o.1|yesno:"checked,," }}  />
                             {{ o.0 }}
                         </label>
@@ -56,12 +56,13 @@
                      </div>
                  {% endif %}
                 {% endfor %}
+
                 {% if q.feedback.correct %}
 
                 {% else %}
                     {% if q.hints|length != 0 %}
-                    <a class="hint-btn" id="tools-{{ q.id }}" style="font-size: large"><i class="fa fa-comments" aria-hidden="true"></i> Una pista </a><br>
-                    <div class="alert alert-info" id="div-{{ q.id }}" style="display:none;font-size: large;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif">
+                    <a class="hint-btn" id="tools-{{ q.id }}" ><i class="fa fa-comments" aria-hidden="true"></i> Una pista </a><br>
+                    <div class="alert alert-info" id="div-{{ q.id }}" style="display:none;">
                         <em>
                         {% for hint in q.hints %}
                             {{ hint }}<br>
