@@ -49,8 +49,8 @@
 
 
         <ul id="main_tab" class="nav nav-tabs">
-          <li class="nav-item"><a class="nav-link active" href="#instrucciones" data-toggle="tab">Actividad</a></li>
-          <li class="nav-item" ><a class="nav-link" href="#results" data-toggle="tab">Consola</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#instrucciones" data-toggle="tab">Instrucciones</a></li>
+          <li class="nav-item" ><a class="nav-link" href="#results" data-toggle="tab">Resultados</a></li>
         </ul>
 
         <!-- Tab panes -->
@@ -124,18 +124,24 @@
      <script src="{{ STATIC_URL }}app/scripts/main.js"></script>
 
     <script id="success_template" type="x-tmpl-mustache">
-        <div class='alert alert-success alert-dismissible' role='alert'>
-          <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-            <span aria-hidden='true'>&times;</span></button>
+        <div class='alert alert-success' role='alert'>
+          <h4 class="alert-heading">¡Bien hecho!</h4>
                 <p>
-                       <strong>!Felicidades!</strong> Tu código pasó todas las pruebas.</p>
+                       Tu código pasó todas las pruebas.
                [[#in_path]]
-                <p>
+
                     <button class='btn btn-success btn-sm nav_next ' type='button'> Continuar al siguiente ejercicio</button>
-                </p>
                 [[/in_path]]
+                </p>
+
+
         </div>
     </script>
+
+    <div class="alert alert-success" role="alert">
+
+
+
 
 
     <script type="text/javascript" charset="utf-8">
