@@ -501,9 +501,9 @@ def path_activity(request,path_id, uri):
                                       {
                                    'XML_NAV':XML,
                                    'children': requested_activity.get_children(),
-                                   'uri':requested_activity.learning_activity.uri,
                                    'uri_id':'/%s'% requested_activity.learning_activity.id,
-                                          'current_site': get_current_site(request),
+                                    'uri': requested_activity.learning_activity.uri,
+                                    'current_site': get_current_site(request),
                                    'content':content,
                                    'root':requested_activity.learning_activity.get_root().uri,
                                    'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
@@ -696,6 +696,7 @@ def path_program(request,path_id, uri):
                                                                     'activity_uri':requested_activity.learning_activity.uri,
                                                                     'uri_id':'%s'% requested_activity.learning_activity.id,
                                                                     'uri':requested_activity.learning_activity.uri,
+                                                                    'current_site': get_current_site(request),
                                                                     'breadcrumbs':breadcrumbs,
                                                                     'root':requested_activity.learning_activity.get_root().uri,
                                                                     'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
@@ -721,6 +722,7 @@ def program(request, uri):
 
         return render_to_response(template, {           'program_quiz':program_quiz,
                                                         'activity_uri':request.path,
+                                                        'current_site': get_current_site(request),
                                                         'breadcrumbs':None,
                                                         'root':None,
                                                         'XML_NAV':None
