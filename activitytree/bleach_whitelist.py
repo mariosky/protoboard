@@ -11,5 +11,4 @@ attrs = {
  'img': ['alt'],
  'div': ['role'],
  'button':['type','data-toggle','data-target','aria-expanded','aria-controls']
-
 }
