@@ -8,7 +8,7 @@ from django.template.response import TemplateResponse
 from django.db.models import Avg, Count
 from django.db import IntegrityError
 from django.db import transaction
-
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.conf import settings
@@ -486,6 +486,7 @@ def path_activity(request,path_id, uri):
                                    'uri':requested_activity.learning_activity.uri,
                                    'uri_id':requested_activity.learning_activity.id,
                                    'video':activity_content,
+                                   'current_site':get_current_site(request),
 
                                    'breadcrumbs':breadcrumbs,
                                    'root':requested_activity.learning_activity.get_root().uri,
@@ -502,6 +503,7 @@ def path_activity(request,path_id, uri):
                                    'children': requested_activity.get_children(),
                                    'uri':requested_activity.learning_activity.uri,
                                    'uri_id':'/%s'% requested_activity.learning_activity.id,
+                                          'current_site': get_current_site(request),
                                    'content':content,
                                    'root':requested_activity.learning_activity.get_root().uri,
                                    'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
@@ -512,6 +514,7 @@ def path_activity(request,path_id, uri):
 
                                   {'XML_NAV':XML,
                                    'uri':requested_activity.learning_activity.uri,
+                                   'current_site': get_current_site(request),
                                    'uri_id':'/%s'% requested_activity.learning_activity.id,
                                    'content':content,
                                    'root':requested_activity.learning_activity.get_root().uri,
@@ -557,6 +560,7 @@ def activity(request, uri=None):
                                    'uri':uri,
                                    'content':content,
                                    'breadcrumbs':None,
+                                   'current_site': get_current_site(request),
                                    },
                                     context_instance=RequestContext(request))
 
