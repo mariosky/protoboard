@@ -66,13 +66,18 @@
           </div>
           <div class="tab-pane" id="results">
                   <div class="card">
-                      <div id="result_alert">
-
+                      <div class="card-header">
+                        Pruebas Unitarias
                       </div>
+
                       <div id="result_panel_body" class="card-block">
 
                       </div>
                    </div>
+                  <div id="result_alert">
+
+                  </div>
+
                     <div class="card">
                       <div class="card-header">
                         Consola
@@ -319,7 +324,7 @@ $(document).ready(function() {
 
             Mustache.tags = ['[[', ']]'];
             success_template = $('#success_template').html();
-            fail_template = $('#success_template').html();
+            fail_template = $('#fail_template').html();
             Mustache.parse(success_template);
             Mustache.parse(fail_template);
 
