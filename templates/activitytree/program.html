@@ -344,8 +344,8 @@ $(document).ready(function() {
                             number_of_tries=0;
 
                         $("#result_panel").removeClass("panel-danger").removeClass("panel-success").addClass("panel-info");
-                        $("#result_panel_body").html("");
-                        $("#editor_alert").clear();
+                        $("#result_panel_body").empty();
+                        $("#editor_alert").empty();
                         $("#result_panel_heading").html("Esperando resultados...");
                         poll();
 
