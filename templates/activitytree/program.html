@@ -420,7 +420,7 @@ $(document).ready(function() {
 
                         else if (result.result == "Success")
                         {
-                           $("#result_panel_heading").clear();
+                           $("#result_panel_heading").empty();
                            $("#result_panel").removeClass("panel-info").removeClass("panel-danger").addClass("panel-success");
                            $("#editor_alert").html( Mustache.render(success_template,
                                    {
