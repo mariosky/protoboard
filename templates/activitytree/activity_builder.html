@@ -192,7 +192,7 @@
                                             <div class="form-group">
 
                                         <label for="image_url">URL de Ímagen</label>
-                                        <input type="text" class="form-control" id="image_url" name="image_url">
+                                        <input type="url" class="form-control" id="image_url" name="image_url">
                                          <small class="form-text text-muted"> Puedes especificar una imagen externa que describa al recurso.
                                              Debes tener derechos sobre la ímagen. Puedes utilizar servicios como: imageshack.us o Amazon S3.
 
@@ -234,102 +234,124 @@
                 </div>
             <div class="modal-body">
                 <ul class="nav nav-tabs">
-                    <li class="nav-item"> <a class="nav-link active" href="#mainv"  data-toggle="tab">Main</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="#detailv"  data-toggle="tab">Detail</a></li>
+                    <li class="nav-item"> <a class="nav-link active" href="#mainv"  data-toggle="tab">Principal</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="#detailv"  data-toggle="tab">Detalle</a></li>
                 </ul>
                 <br>
                 <div class="tab-content">
                     <div class="tab-pane fade in active" id="mainv">
-                        <div class="container-fluid">
+
                             <form id="formaVideo" >{% csrf_token %}
-                                <div class="form-group">
-                                    <label for="title">Display Name</label>
-                                    <input type="text" class="form-control" id="titleVideo" name="title"  required="true"><br>
-                                    <label for="descriptionvideo">Description</label>
-                                    <textarea class="form-control" id="descriptionvideo" name="description" rows="3">
-                                    </textarea>
-                                    <label for="tagsvideo">Tags</label>
-                                    <input class="form-control input-optional" id="tagsvideo" name="tags"><br>
+                                 <div class="form-group">
+                                    <label for="title">Nombre</label>
+                                    <input type="text" class="form-control" id="titleVideo" name="title"  required="true"  placeholder="Nombre del material didáctico">
+                                 </div>
+                                 <div class="form-group">
+                                    <label for="descriptionvideo">Descripción</label>
+                                    <textarea class="form-control" id="descriptionvideo" name="description" placeholder="Agrega una breve descripción del material." rows="3"></textarea>
+                                 </div>
+                                 <div class="form-group">
+                                    <label for="tagsvideo">Hashtags</label>
+                                    <input class="form-control input-optional" id="tagsvideo" name="tags">
+                                   <small id="tagsHelp" class="form-text text-muted">Los #tags nos ayudan a clasificar el material, agrega varios. Ejemplos:
+                                        #java #arreglos #avanzado, #apache-hadoop #big-data. Se crean con la tecla tab. </small>
+                                 </div>
+
                                     <input type="hidden" id="type" name="type" value="video">
                                     <input type="hidden" id="author" name="author" value="{{ user.email }}">
                                     <input type="hidden" id="youtube_id" name="youtube_id">
-                                    <label for="url">URL Video</label>
-                                    <input type="text" id="url" name="url" class="form-control" placeholder="URL Video"><br>
-                                    <div class="form-inline" align="center" style="padding: 5px">
+                                 <div class="form-group">
+                                        <label for="url">URL Video</label>
+                                        <input type="url" id="url" name="url" class="form-control" placeholder="https://www.youtube.com/watch?v=eJeMplo">
+                                        <small id="tagsHelp" class="form-text text-muted">Inserta la URL del video en youtube que deseas presentar. </small>
+                                 </div>
+                                 <div class="form-inline">
                                     <div class="form-group">
                                         <label for="startSeconds" class="">Start Seconds</label>
-                                        <input type="text" class="form-control input-optional" id="startSeconds" name="startSeconds" style="width: 30%">
+                                        <input type="number" min="0" class="form-control input-optional" id="startSeconds" name="startSeconds" style="width: 30%">
                                     </div>
 
                                         <div class="form-group">
                                             <label for="endSeconds" class="">End Seconds</label>
-                                            <input type="text" class="form-control input-optional" id="endSeconds" name="endSeconds" style="width: 30%">
+                                            <input type="number"  min="1" class="form-control input-optional" id="endSeconds" name="endSeconds" style="width: 30%">
                                         </div>
-                                    </div><br>
 
-                                    <div id="ytVideo" align="center">
-                                    </div>
                                  </div>
+                                <small class="form-text text-muted">Puedes indicar en que segundo inicie y termine el video. </small>
+                                    <div id="ytVideo" align="center">
+                                       <small class="form-text text-muted">El video se mostará aquí. </small>
+                                    </div>
                             </form>
                         </div>
-                    </div>
+
 
                     <div class="tab-pane fade" id="detailv">
-                    <div class="container-fluid">
+
                         <div class="row">
-                            <div class="col-md-8 col-md-offset-2">
+                            <div class="col-md-12 ">
                                 <form id="formadetailv" style="align-content: center">
                                     <div class="form-group" >
                                         <label for="idvideo">ID</label>
                                         <input type="text" readonly="readonly" class="form-control" id="idvideo" name="_id">
-
-                                      </div>
+                                        <small class="form-text text-muted"> Este es el identificador interno del material didáctico. Se asigna automáticamente. </small>
+                                    </div>
                                     <div class="form-group">
-                                        <label for="rightsvideo">Rights</label>
-                                        <input type="text" class="form-control" id="rightsvideo" name="rights">
+                                        <label for="rightsvideo">Licencia</label>
+                                        <input type="text" class="form-control" id="rightsvideo" name="rights" value="Attribution-ShareAlike 4.0 International">
+                                          <small class="form-text text-muted"> Especifica el tipo de licencia del material. En caso de que estés utilizando algún material
+                                            que no hayas hecho tu, debes indicar la Licencia original. Te sugerimos una licencia que permite a otros utilizar libremente
+                                            tu apotación para hacer nuevos trabajos. Puedes elegir como tu propia licencia en:
+                                                <a href="https://creativecommons.org/choose/">https://creativecommons.org/choose/</a> </small>
                                     </div>
-                                        <div class="form-group">
-                                          <label for="externalvideo">External URL</label>
+                                    <div class="form-group">
+                                          <label for="externalvideo">URL Externo</label>
                                         <input type="text" class="form-control" id="externalvideo" name="external_url">
+                                        <small class="form-text text-muted"> Puedes incluir aquí una dirección externa referente al material original.</small>
                                     </div>
-                                        <div class="form-group">
-                                         <label for="publishervideo">Publisher</label>
+                                    <div class="form-group">
+                                         <label for="publishervideo">Autor</label>
                                         <input type="text" class="form-control" id="publishervideo" name="publisher">
+                                        <small class="form-text text-muted"> Nombre del autor o entidad responsable del material.</small>
                                     </div>
-                                        <div class="form-group">
-                                        <label for="iconvideo">Icon</label>
+                                    <div class="form-group">
+                                        <label for="iconvideo">Ícono</label>
                                         <select id="iconvideo" name="icon" >
-                                            <option value="coffee">Coffee</option>
-                                            <option value="file">File</option>
-                                            <option value="youtube-play" selected>Youtube</option>
-                                            <option value="puzzle-piece">Puzzle</option>
+                                               <option value="coffee">Tasa de Café</option>
+                                                <option value="file" selected>Archivo</option>
+                                                <option value="youtube-play">Youtube</option>
+                                                <option value="puzzle-piece">Pieza de Rompecabezas</option>
                                         </select>
+                                        <small class="form-text text-muted"> Elige el ícono que acompañará al nombre del recurso.</small>
                                     </div>
-                                        <div class="form-group">
+                                    <div class="form-group">
                                         <label for="levelvideo">Level</label>
                                         <select id="levelvideo" name="level">
-                                            <option value="principiante">Principiante</option>
-                                            <option value="intermedio">Intermedio</option>
-                                            <option value="avanzado">Avanzado</option>
+                                            <option value="principiante">Básico</option>
+                                                <option value="intermedio">Intermedio</option>
+                                                <option value="avanzado">Avanzado</option>
                                         </select>
+                                        <small class="form-text text-muted"> Esta es una etiqueta que puede servir para filtrar el tipo de material por niveles. </small>
                                     </div>
-                                        <div class="form-group">
-                                        <label for="image_url">Image</label>
+                                    <div class="form-group">
+                                        <label for="image_url">URL de Ímagen</label>
                                         <input type="text" class="form-control" id="image_url" name="image_url">
+                                        <small class="form-text text-muted"> Puedes especificar una imagen externa que describa al recurso.
+                                             Debes tener derechos sobre la ímagen. Puedes utilizar servicios como: imageshack.us o Amazon S3.
 
+                                         </small>
                                     </div>
 
                                 </form>
                             </div>
                         </div>
-                    </div>
+
                 </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <div class="form-group" align="center">
-                    <button id="_videoActivity" type="submit" class="btn btn-primary">Submit</button>
-                    <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                    <button id="_videoActivity" type="submit" class="btn btn-primary">Enviar</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-default">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -348,12 +370,12 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-          <h1>Processing...</h1>
+          <h1>Procesando...</h1>
       </div>
       <div class="modal-body">
         <div class="progress">
           <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-            <span class="sr-only">40% Complete (success)</span>
+            <span class="sr-only">40% Completo </span>
           </div>
         </div>
       </div>
@@ -464,7 +486,7 @@
      <li class="page-item" data-page='[[prevPage]]'>
       <a class="page-link" href="#" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
-        <span class="sr-only">Previous</span>
+        <span class="sr-only">Previo</span>
       </a>
     </li>
 
@@ -484,7 +506,7 @@
     <li class="page-item" data-page=[[nextPage]]>
       <a class="page-link" href="#" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
-        <span class="sr-only">Next</span>
+        <span class="sr-only">Siguiente</span>
       </a>
     </li>
 

@@ -49,19 +49,16 @@
 <div class="card">
 <div class="card-block">
 
-  <h6 class="card-title"> <i class="fa fa-[[icon]]"> </i> <a href="[[id]]">[[title]]</a> </h6>
+  <h6 class="card-title"> <i class="fa fa-[[icon]] text-muted"> </i> <a href="[[id]]">[[title]]</a>   </h6>
 
 
 
   <p class="card-text"> [[description]]</p>
 
-   [[#has_tags]]
-    <i class="fa fa-tags"></i>
-        [[/has_tags]]
 
               [[#tags]]
               [[#.]]
-              <span class="label label-info"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">#[[.]]</a></span>
+              <span class="label label-primary"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">#[[.]]</a></span>
               [[/.]]
               [[^.]]
               [[/.]]
@@ -69,10 +66,7 @@
 </div>
 
 
-        <div class="card-footer">
-                <button type="button" value="[[id]]" onclick='copyToClipboard("[[id]]")' data-toggle="" data-target="#"  data-href="[[id]]" class="btn btn-secondary   editBtn"><i class="fa fa-clipboard clipBtn"></i> </button>
 
-        </div>
 </div>
 </script>
 
@@ -168,7 +162,8 @@ function buscar(query){
                             lang:value.lang,
                             level:value.level,
                             type:value.type,
-                            tags:value.tags});
+                            tags:value.tags,
+                            has_tags:(value.tags.length > 0)});
                         $("#actividades").append(rendered);
                     }
                 });
@@ -205,17 +200,17 @@ var on_click = function(){
     }
 
 
-
-
-
-
-
     //when copytoclipboard button is clicked, a message is displayed to user
-    function copyToClipboard(text) {
+copyToClipboard  = function(text){
         window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
         }
 
    });
+
+
+
+
+
 
     </script>
 
