@@ -56,24 +56,33 @@
         <!-- Tab panes -->
         <div class="tab-content">
           <div class="tab-pane active" id="instrucciones">
-                <div id="info_panel" class="panel panel-info">
+                <div id="info_panel">
 
-                    <div id="info_panel_body" class="panel-body">
+                    <div id="info_panel_body">
                        {{ program_quiz.instructions|safe }}
                     </div>
                 </div>
 
           </div>
           <div class="tab-pane" id="results">
-             <div id="result_panel" class="panel panel-info">
-                <div id="result_panel_heading"  class="panel-heading"> </div>
+                  <div class="card">
+                      <div id="result_panel_heading"  class="card-header">
 
-                    <div id="result_panel_body" class="panel-body">
+                      </div>
+                      <div id="editor_alert">
+
+                      </div>
+                      <div id="result_panel_body" class="card-block">
+
+                      </div>
+                   </div>
+                <div id="result_panel" class="panel panel-info">
+                    <div  class="panel-heading"> </div>
+
+                    <div lass="panel-body">
 
                     </div>
-                <div id="editor_alert">
 
-                </div>
              </div>
 
           </div>
