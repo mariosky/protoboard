@@ -44,7 +44,7 @@
 
 <div class="row">
 
-<div class="col-md-5">
+    <div class="col-md-5">
                 <!-- Nav tabs -->
 
 
@@ -124,13 +124,9 @@
         </div>
 
         </div>
-    </div>
-
-
-
-
-
 </div>
+
+
 {% if rating_totals %}
             <div class="row">
                  <div class="col-md-6 col-md-offset-3 m-b-1 m-t-1">
@@ -143,8 +139,6 @@
                                             ({{ rating_totals.rating__avg|floatformat:2 }}/5)
                                             {% endif %}
                                             {{ rating_totals.rating__count }} voto(s).
-
-
 
                                         </p>
                                   </div>
@@ -219,6 +213,8 @@ var disqus_config = function () {
 </script>
 
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
     <script src="{{ STATIC_URL }}app/scripts/main.js"></script>
 
 

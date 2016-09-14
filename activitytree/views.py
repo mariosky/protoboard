@@ -549,6 +549,7 @@ def activity(request, uri=None):
                                   {'XML_NAV':None,
                                    'uri':uri,
                                    'video':activity_content,
+                                   'current_site': get_current_site(request),
                                    'breadcrumbs':None },
                                     context_instance=RequestContext(request))
 
