@@ -40,8 +40,8 @@
                               </li>
 
                           <form class="form-inline pull-right" role="search" onsubmit="return false">
-                            <input class="form-control" type="text" placeholder="Search by Title or #Tag" name="srch-term" id="txtname">
-                            <button class="btn btn-outline-success" type="submit">Search</button>
+                            <input class="form-control" type="search" placeholder="Titulo o #Tag" name="srch-term" id="txtname" >
+                            <button class="btn btn-outline-success" type="submit">Buscar</button>
                           </form>
 
                            </ul>
@@ -77,15 +77,15 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" align="center" style="font-size: large">
-                Alert <i class="fa fa-exclamation-circle"></i>
+                Cuidado <i class="fa fa-exclamation-circle"></i>
             </div>
             <div class="modal-body" align="center">
-               <h5> Message <p class="debug-url"></p> </h5>
+               <h5> Mensaje <p class="debug-url"></p> </h5>
             </div>
             <div class="modal-footer" >
                 <div class="form-group" align="center">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-danger btn-ok">Delete</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <a class="btn btn-danger btn-ok">Borrar</a>
                 </div>
             </div>
         </div>
@@ -101,8 +101,8 @@
             </div>
             <div class="modal-body">
                 <ul class="nav nav-tabs">
-                    <li class="nav-item"> <a class="nav-link active" href="#main"  data-toggle="tab">Main</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="#detail"  data-toggle="tab">Detail</a></li>
+                    <li class="nav-item"> <a class="nav-link active" href="#main"  data-toggle="tab">Principal</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="#detail"  data-toggle="tab">Detalle</a></li>
                 </ul>
                 <br>
                 <div class="tab-content">
@@ -110,68 +110,94 @@
                         <div class="container-fluid">
                             <form id="formahtml" >{% csrf_token %}
                                 <div class="form-group">
-                                    <label for="title">Display Name</label>
-                                    <input type="text" class="form-control" id="titleHtml" name="title"  required="true">
-                                    <label for="descriptionhtml">Description</label>
-                                    <textarea class="form-control" id="descriptionhtml" name="description" rows="3"></textarea>
-                                    <label for="tagshtml">Tags:</label><br>
-                                    <input class="form-control" id="tagshtml" name="tags"  placeholder="Create tags with tab">
-                                    <br>
+                                    <label for="title">Nombre </label>
+                                    <input type="text" class="form-control" id="titleHtml" name="title"  placeholder="Nombre del material didáctico" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="descriptionhtml">Descripción</label>
+                                    <textarea class="form-control" id="descriptionhtml" name="description" rows="3" placeholder="Agrega una breve descripción del material."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tagshtml">Hashtags:</label>
+                                    <input class="form-control" id="tagshtml" name="tags"  placeholder="Crea los hashtags con la tecla Tab">
+                                    <small id="tagsHelp" class="form-text text-muted">Los #tags nos ayudan a clasificar el material, agrega varios. Ejemplos:
+                                        #java #arreglos #avanzado, #apache-hadoop #big-data. Se crean con la tecla tab. </small>
+                                </div>
                                     <input type="hidden" id="type" name="type" value="text">
                                     <input type="hidden" id="author" name="author" value="{{ user.email }}">
-                                    <label for="content">Content</label>
+                                <div class="form-group">
+
+                                    <label for="content">Contenido HTML</label>
                                     <tinytext name="content" id="content"></tinytext>
+                                    <small id="contentHelp" class="form-text text-muted"> Se utiliza la hoja de estilo de bootstrap 4. </small>
+
                                 </div>
+
+
                             </form>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="detail">
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col-md-8 col-md-offset-2">
+                                <div class="col-md-12">
                                     <form id="formadetail" style="align-content: center">
                                         <div class="form-group" >
                                             <label for="idhtml">ID</label>
                                             <input type="text" readonly="readonly" class="form-control" id="idhtml" name="_id">
+                                             <small class="form-text text-muted"> Este es el identificador interno del material didáctico. Se asigna automáticamente. </small>
                                          </div>
                                         <div class="form-group">
-                                         <label for="rightshtml">Rights</label>
-                                            <input type="text" class="form-control" id="rightshtml" name="rights">
+                                         <label for="rightshtml">Licencia</label>
+                                            <input type="text" class="form-control" id="rightshtml" name="rights" value="Attribution-ShareAlike 4.0 International">
+                                            <small class="form-text text-muted"> Especifica el tipo de licencia del material. En caso de que estés utilizando algún material
+                                            que no hayas hecho tu, debes indicar la Licencia original. Te sugerimos una licencia que permite a otros utilizar libremente
+                                            tu apotación para hacer nuevos trabajos. Puedes elegir como tu propia licencia en:
+                                                <a href="https://creativecommons.org/choose/">https://creativecommons.org/choose/</a> </small>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="externalhtml">External URL</label>
-                                            <input type="text" class="form-control" id="externalhtml" name="external_url">
+                                            <label for="externalhtml">URL Externo</label>
+                                            <input type="url" class="form-control" id="externalhtml" name="external_url">
+                                            <small class="form-text text-muted"> Puedes incluir aquí una dirección externa referente al material original.</small>
                                         </div>
 
                                         <div class="form-group">
-                                             <label for="publisherhtml">Publisher</label>
+                                             <label for="publisherhtml">Autor</label>
                                             <input type="text" class="form-control" id="publisherhtml" name="publisher">
+                                             <small class="form-text text-muted"> Nombre del autor o entidad responsable del material.</small>
                                         </div>
 
                                         <div class="form-group">
-                                             <label for="iconhtml">Icon</label>
-                                            <select id="iconhtml" name="icon" >
-                                                <option value="coffee">Coffee</option>
-                                                <option value="file" selected>File</option>
+                                             <label for="iconhtml">Ícono</label>
+                                             <select id="iconhtml" name="icon" >
+                                                <option value="coffee">Tasa de Café</option>
+                                                <option value="file" selected>Archivo</option>
                                                 <option value="youtube-play">Youtube</option>
-                                                <option value="puzzle-piece">Puzzle</option>
+                                                <option value="puzzle-piece">Pieza de Rompecabezas</option>
                                             </select>
+                                             <small class="form-text text-muted"> Elige el ícono que acompañará al nombre del recurso.</small>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="levelhtml">Level</label>
+                                            <label for="levelhtml">Nivel</label>
                                             <select id="levelhtml" name="level">
-                                                <option value="principiante">Principiante</option>
+                                                <option value="principiante">Básico</option>
                                                 <option value="intermedio">Intermedio</option>
                                                 <option value="avanzado">Avanzado</option>
                                             </select>
+                                           <small class="form-text text-muted"> Esta es una etiqueta que puede servir para filtrar el tipo de material por niveles. </small>
                                         </div>
 
                                             <div class="form-group">
 
-                                        <label for="image_url">Image</label>
+                                        <label for="image_url">URL de Ímagen</label>
                                         <input type="text" class="form-control" id="image_url" name="image_url">
+                                         <small class="form-text text-muted"> Puedes especificar una imagen externa que describa al recurso.
+                                             Debes tener derechos sobre la ímagen. Puedes utilizar servicios como: imageshack.us o Amazon S3.
+
+                                         </small>
+
                                             </div>
 
 
@@ -189,8 +215,8 @@
             </div>
             <div class="modal-footer">
             <div class="form-group" align="center">
-                <button id="_htmlActivity" type="submit" class="btn btn-primary">Submit</button>
-                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                <button id="_htmlActivity" type="submit" class="btn btn-primary">Enviar</button>
+                <button type="button" data-dismiss="modal" class="btn btn-default">Cancelar</button>
             </div>
         </div>
         </div>
