@@ -65,29 +65,36 @@
 
           </div>
           <div class="tab-pane" id="results">
+            <div class="row">
+                <div class="col-md-12 m-t-1">
+
                   <div class="card">
                       <div class="card-header">
-                        Pruebas Unitarias
+                        Pruebas Unitarias:
                       </div>
 
                       <div id="result_panel_body" class="card-block">
 
                       </div>
                    </div>
+              </div>
+            </div>
                   <div id="result_alert">
 
                   </div>
-
+            <div class="row">
+                <div class="col-md-12 m-t-1">
                     <div class="card">
                       <div class="card-header">
-                        Consola
+                        Se imprimió en la consola:
                       </div>
                       <div id="consola" class="card-block">
 
                       </div>
 
                    </div>
-
+                </div>
+            </div>
 
           </div>
         </div>
@@ -217,7 +224,7 @@ var disqus_config = function () {
 
     <script id="success_template" type="x-tmpl-mustache">
         <div class='alert alert-success' role='alert'>
-          <h4 class="alert-heading">¡Bien hecho!</h4>
+          <h5 class="alert-heading">¡Bien hecho!</h5>
                 <p>
                        Tu código pasó todas las pruebas.
                [[#in_path]]
@@ -232,7 +239,7 @@ var disqus_config = function () {
 
     <script id="fail_template" type="x-tmpl-mustache">
         <div class='alert alert-danger' role='alert'>
-          <h4 class="alert-heading">Algo anda mal</h4>
+          <h5 class="alert-heading">Algo anda mal</h5>
                 <p>
                        Tu código no pasó todas las pruebas.
                 </p>
