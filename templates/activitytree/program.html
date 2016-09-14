@@ -71,6 +71,9 @@
                     <div id="result_panel_body" class="panel-body">
 
                     </div>
+                <div id="editor_alert">
+
+                </div>
              </div>
 
           </div>
@@ -84,9 +87,7 @@
             <h6 id="program_header" class="card-header">{{program_quiz.title}}</h6>
 
 
-            <div id="editor_alert">
 
-                </div>
 
              <div class="panel-body">{% csrf_token %}
                 <div id="editor">{{program_quiz.initial_code}}</div>
@@ -419,7 +420,7 @@ $(document).ready(function() {
                         else if (result.result == "Success")
                         {
                            $("#result_panel").removeClass("panel-info").removeClass("panel-danger").addClass("panel-success");
-                           $("#result_panel").append( Mustache.render(success_template,
+                           $("#editor_alert").html( Mustache.render(success_template,
                                    {
                                        in_path:in_path
 
