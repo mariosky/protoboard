@@ -66,24 +66,23 @@
           </div>
           <div class="tab-pane" id="results">
                   <div class="card">
-                      <div id="result_panel_heading"  class="card-header">
-
-                      </div>
-                      <div id="editor_alert">
+                      <div id="result_alert">
 
                       </div>
                       <div id="result_panel_body" class="card-block">
 
                       </div>
                    </div>
-                <div id="result_panel" class="panel panel-info">
-                    <div  class="panel-heading"> </div>
+                    <div class="card">
+                      <div class="card-header">
+                        Consola
+                      </div>
+                      <div id="consola" class="card-block">
 
-                    <div lass="panel-body">
+                      </div>
 
-                    </div>
+                   </div>
 
-             </div>
 
           </div>
         </div>
@@ -208,8 +207,8 @@ var disqus_config = function () {
 </script>
 
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <script src="{{ STATIC_URL }}app/scripts/main.js"></script>
 
-     <script src="{{ STATIC_URL }}app/scripts/main.js"></script>
 
     <script id="success_template" type="x-tmpl-mustache">
         <div class='alert alert-success' role='alert'>
@@ -226,7 +225,14 @@ var disqus_config = function () {
         </div>
     </script>
 
-
+    <script id="fail_template" type="x-tmpl-mustache">
+        <div class='alert alert-danger' role='alert'>
+          <h4 class="alert-heading">Algo anda mal</h4>
+                <p>
+                       Tu código no pasó todas las pruebas.
+                </p>
+        </div>
+    </script>
 
 
 
@@ -313,7 +319,9 @@ $(document).ready(function() {
 
             Mustache.tags = ['[[', ']]'];
             success_template = $('#success_template').html();
+            fail_template = $('#success_template').html();
             Mustache.parse(success_template);
+            Mustache.parse(fail_template);
 
 
 
@@ -352,10 +360,9 @@ $(document).ready(function() {
                             task_id =data.id;
                             number_of_tries=0;
 
-                        $("#result_panel").removeClass("panel-danger").removeClass("panel-success").addClass("panel-info");
                         $("#result_panel_body").empty();
-                        $("#editor_alert").empty();
-                        $("#result_panel_heading").html("Esperando resultados...");
+                        $("#result_alert").empty();
+                        $("#result_alert").html("Esperando resultados...");
                         poll();
 
                         },
@@ -416,8 +423,12 @@ $(document).ready(function() {
                         var result = data.result;
                         if (result.result == "Failure")
                         {
-                          $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
-                          $("#result_panel_heading").html("No pasó las pruebas");
+
+                            $("#result_alert").html( Mustache.render(fail_template,
+                                   {
+                                       in_path:in_path
+
+                                   }));
 
 
                        }
@@ -429,9 +440,9 @@ $(document).ready(function() {
 
                         else if (result.result == "Success")
                         {
-                           $("#result_panel_heading").empty();
-                           $("#result_panel").removeClass("panel-info").removeClass("panel-danger").addClass("panel-success");
-                           $("#editor_alert").html( Mustache.render(success_template,
+
+
+                           $("#result_alert").html( Mustache.render(success_template,
                                    {
                                        in_path:in_path
 
@@ -449,8 +460,8 @@ $(document).ready(function() {
 
                         if (typeof result.stdout != 'undefined'  &&  result.stdout != "\n" )
                         {
-                          $( "#result_panel_body").append("<p> Se imprimió en la consola:</p>" );
-                          $("<pre></pre>").text(result.stdout).appendTo("#result_panel_body");
+
+                          $("<pre></pre>").text(result.stdout).appendTo("#consola");
                          // $( "#result_panel_body").append("<code>"+ result.stdout +"</code>" );
                         }
                         //for (var i=0; i<info_list.length; i++){
