@@ -46,7 +46,10 @@
 
 
 <script id="activities_template" type="x-tmpl-mustache">
-<div class="card">
+    <div class="card">
+        [[#image_url]]
+            <img class="card-img-top center-block img-fluid" src="[[image_url]]" alt="[[title]]">
+        [[/image_url]]
 <div class="card-block">
 
   <h6 class="card-title"> <i class="fa fa-[[icon]] text-muted"> </i> <a href="[[id]]">[[title]]</a>   </h6>
@@ -127,6 +130,7 @@
 
 
 function buscar(query){
+        var MONGO_PAGE_SIZE = 20;
         $.ajax({
         type: 'POST',
         url: '/search_prueba',
@@ -163,12 +167,13 @@ function buscar(query){
                             level:value.level,
                             type:value.type,
                             tags:value.tags,
+                            image_url: value.image_url || "" ,
                             has_tags:(value.tags.length > 0)});
                         $("#actividades").append(rendered);
                     }
                 });
 
-                renderPaginator( query['page']+1, Math.floor((count + 10 -1)/10), 10, on_click );
+                renderPaginator( query['page']+1, Math.floor((count + MONGO_PAGE_SIZE -1)/MONGO_PAGE_SIZE), MONGO_PAGE_SIZE, on_click );
                 $('#actividades').val(data);
 
             }
