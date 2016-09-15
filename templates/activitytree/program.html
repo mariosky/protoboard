@@ -51,6 +51,13 @@
         <ul id="main_tab" class="nav nav-tabs">
           <li class="nav-item"><a class="nav-link active" href="#instrucciones" data-toggle="tab">Instrucciones</a></li>
           <li class="nav-item" ><a class="nav-link" href="#results" data-toggle="tab">Resultados</a></li>
+           {% if uri %}
+            <li class="nav-item" ><a class="nav-link text-muted" href="/build_program?id={{uri}}">Ver código</a></li>
+           {% elif activity_uri %}
+            <li class="nav-item" ><a class="nav-link text-muted" href="/build_program?id={{activity_uri}}"">Ver código</a></li>
+        {% endif %}
+
+
         </ul>
 
         <!-- Tab panes -->

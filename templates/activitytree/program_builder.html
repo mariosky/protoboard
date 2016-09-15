@@ -606,7 +606,7 @@ HTML Content
         $.ajax({
             type: 'get',
             url: '/get_id',
-            crossDomain: false, // obviates need for sameOrigin test
+            crossDomain: false, // obviates need for same origin test
             beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type)) {
                 var csrftoken = getCookie('csrftoken');

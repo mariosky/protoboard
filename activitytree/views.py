@@ -1426,18 +1426,24 @@ def delActivity(request): #view that receives user and id of activity to be dele
 @login_required
 def get_activity(request):
     if request.method == 'GET':
+        # We first get the Activity
         _id = request.GET['_id']
-        user = request.GET['user']
-        type = request.GET['type']
-        try:
-            message = Activity.get_activity(_id, user)
-            json_docs = [doc for doc in message]
-            #if type == 'prog':
-            #    return HttpResponseRedirect('/build_program', {'data': json.dumps(json_docs)})
 
-            return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
+        try:
+            mongo_answer = Activity.get_activity(_id)
+            activity = mongo_answer[0]
+            if activity['author']== request.user.email:
+                # Its yours you can edit
+                pass
+            else:
+                #Read only
+                activity['readonly']=True
+
+            return HttpResponse(json.dumps([activity]), content_type='application/javascript')
+
         except Exception as e:
             return HttpResponse(e)
+
     else:
         actividad = json.loads(request.body)
         _id = actividad['_id']
