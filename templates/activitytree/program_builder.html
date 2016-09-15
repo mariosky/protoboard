@@ -10,23 +10,23 @@
 
   #instructionsEditor{
 
-        height: 700px;
+        height: 900px;
         width: 200;
 
     }
 
   #initialCodeEditor{
-        height: 700px;
+        height: 900px;
         width: 200;
     }
 
   #UnitTestEditor {
-      height: 700px;
+      height: 900px;
       width: 200;
     }
 
   #correctCodeEditor{
-        height: 700px;
+        height: 900px;
         width: 200;
     }
 
@@ -35,7 +35,7 @@
 
 
     #HTMLEditor{
-        height: 700px;
+        height: 900px;
         width: 200;
     }
 
@@ -69,12 +69,12 @@
 
   <ul class="nav nav-tabs" id="tab-menu">
       <ul class="nav nav-tabs">
-        <li class="nav-item"> <a class="nav-link active" href="#instructions" id="instructions-id" data-toggle="tab">Instructions</a></li>
-        <li class="nav-item"> <a class="nav-link " href="#initial-code" id="initial-code-id" data-toggle="tab">Initial Code</a></li>
-        <li class="nav-item"> <a class="nav-link" href="#test" id="testid" data-toggle="tab">Unit Test</a></li>
-        <li class="nav-item"> <a class="nav-link" href="#correct-code" id="correct-code-id" data-toggle="tab">Correct Code</a></li>
+        <li class="nav-item"> <a class="nav-link active" href="#instructions" id="instructions-id" data-toggle="tab">Instrucciones del ejercicio</a></li>
+        <li class="nav-item"> <a class="nav-link " href="#initial-code" id="initial-code-id" data-toggle="tab">Código inicial</a></li>
+        <li class="nav-item"> <a class="nav-link" href="#test" id="testid" data-toggle="tab">Prueba Unitaria</a></li>
+        <li class="nav-item"> <a class="nav-link" href="#correct-code" id="correct-code-id" data-toggle="tab">Una solución</a></li>
         <li class="nav-item"> <a class="nav-link" href="#htmltab" id="htmla" data-toggle="tab">HTML</a></li>
-        <li class="nav-item"><button value="Help" class="btn btn-info" id="helpbtn">Help</button></li>
+        <li class="nav-item"><button value="Help" class="btn btn-info" id="helpbtn">Ayuda</button></li>
       </ul>
 
   </ul>
@@ -87,7 +87,7 @@
     <div class="tab-pane fade in active" id="instructions" >
         <div style="width: 100%">
             <div class="myHTMLeditor" id="instructionsEditor" style="border:3px solid lightgrey">
-                En este lugar se pondrán las Instrucciones
+
             </div>
 
         </div>
@@ -99,7 +99,7 @@
         <div style="width: 100%">
 
             <div class="myeditor" id="initialCodeEditor" style="border:3px solid lightgrey">
-            El punto de partida para el estudiante.
+
             </div>
         </div>
     </div>
@@ -110,9 +110,7 @@
         <div style="width: 100%" >
 
          <div class="myeditor" id="UnitTestEditor" style="border:3px solid lightgrey">
-function foo(items) { UnitTestEditor
-Unit test;
-return x;}
+
            </div>
          </div>
     </div>
@@ -124,7 +122,7 @@ correct-Code
         <div class="tab-pane fade" id="correct-code" >
             <div style="width: 100%">
                 <div class="myeditor" id="correctCodeEditor" style="border:3px solid lightgrey">
-                Correct
+
                </div>
 
            </div>
@@ -141,7 +139,7 @@ htmltab
 
                         </div>
                         <div id="jquery-body" class="panel-body">
-                           Jquey
+                           JQuery
 
                         </div>
                     </div>
@@ -165,17 +163,24 @@ HTML Content
 <div class="col-md-3">
 
             <form id="formadetailp" onsubmit="return false">
-                <label for="idprog">ID</label>
+                 <div class="form-group">
+                 <label for="idprog">ID</label>
                 <input type="text" readonly="readonly" class="form-control" id="idprog" name="_id">
-                <label for="displayprog">Display Name</label>
+                 </div>
+                <div class="form-group">
+                 <label for="displayprog">Nombre</label>
                 <input type="text" id="displayprog" name="title" class="form-control">
-                <label for="descriptionprog">Description </label>
+                 </div>
+                <div class="form-group">
+                 <label for="descriptionprog">Descripción </label>
                 <textarea class="form-control" id="descriptionprog" name="description" rows="3" ></textarea>
-
-                <label for="tagsprog">Tags</label>
+                 </div>
+                <div class="form-group">
+                  <label for="tagsprog">Hashtags</label>
                 <input class="form-control" id="tagsprog" name="tags">
-
-                <label for="txtLang">Choose programming language</label>
+                 </div>
+                <div class="form-group">
+                 <label for="txtLang">Lenguaje de programación</label>
                 <select id="txtLang" name="lang" class="form-control">
                     <option value="python">Python</option>
                     <option value="javascript">Javascript</option>
@@ -183,41 +188,72 @@ HTML Content
                     <option value="java">Java</option>
                     <option value="jquery">Jquery</option>
                 </select>
-                <div class="form-group" id="test-buttons" align="center">
+                 </div>
+                                <div class="form-group" id="test-buttons" align="center">
                     <input type="button" id="probarProg" class="btn btn-primary" value="Test">
                     <input type="button" id="refreshHtml" class="btn btn-default" value="Refresh HTML">
                 </div>
 
-
-
-                <label for="rightsprog">Rights</label>
-                <input type="hidden" name="type" value="prog">
-                <input type="hidden" name="author" value="{{ user.email }}">
-                <input type="text" class="form-control" id="rightsprog" name="rights">
-                <label for="externalprog">External URL</label>
+                <div class="form-group">
+                  <label for="rightsprog">Licencia</label>
+                  <input type="text" class="form-control" id="rightsprog" name="rights">
+                  <small class="form-text text-muted"> Especifica el tipo de licencia del material. En caso de que estés utilizando algún material
+                                            que no hayas hecho tu, debes indicar la Licencia original. Te sugerimos una licencia que permite a otros utilizar libremente
+                                            tu apotación para hacer nuevos trabajos. Puedes elegir como tu propia licencia en:
+                                                <a href="https://creativecommons.org/choose/">https://creativecommons.org/choose/</a> </small>
+                 </div>
+                <div class="form-group">
+                 <label for="externalprog">URL Externo</label>
                 <input type="text" class="form-control" id="externalprog" name="external_url">
-                <label for="publisherprog">Publisher</label>
-                <input type="text" class="form-control" id="publisherprog" name="publisher"><br>
-                <label for="iconprog">Icon</label>
+                     <small class="form-text text-muted"> Puedes incluir aquí una dirección externa referente al material original.</small>
+                 </div>
+
+                <div class="form-group">
+                <label for="publisherprog">Autor</label>
+                <input type="text" class="form-control" id="publisherprog" name="publisher">
+                <small class="form-text text-muted"> Nombre del autor o entidad responsable del material.</small>
+                 </div>
+
+                <div class="form-group">
+                   <label for="iconprog">Ícono</label>
                 <select id="iconprog" name="icon" >
-                    <option value="coffee">Coffee</option>
-                    <option value="file">File</option>
-                    <option value="youtube-play">Youtube</option>
-                    <option value="puzzle-piece">Puzzle</option>
+             <option value="coffee">Tasa de Café</option>
+                                                <option value="file" selected>Archivo</option>
+                                                <option value="youtube-play">Youtube</option>
+                                                <option value="puzzle-piece">Pieza de Rompecabezas</option>
                 </select>
-                <label for="levelprog">Level</label>
+                    <small class="form-text text-muted"> Elige el ícono que acompañará al nombre del recurso.</small>
+                 </div>
+
+                 <div class="form-group">
+                <label for="levelprog">Nivel</label>
                 <select id="levelprog" name="level">
                     <option value="principiante">Principiante</option>
                     <option value="intermedio">Intermedio</option>
                     <option value="avanzado">Avanzado</option>
-                </select><br>
+                </select>
+                      <small class="form-text text-muted"> Esta es una etiqueta que puede servir para filtrar el tipo de material por niveles. </small>
+                 </div>
+                <div class="form-group">
+                                        <label for="image_url">URL de Ímagen</label>
+                                        <input type="text" class="form-control" id="image_url" name="image_url">
+                                        <small class="form-text text-muted"> Puedes especificar una imagen externa que describa al recurso.
+                                             Debes tener derechos sobre la ímagen. Puedes utilizar servicios como: imageshack.us o Amazon S3.
+
+                                         </small>
+                                    </div>
+                <input type="hidden" name="type" value="prog">
+                <input type="hidden" name="author" value="{{ user.email }}">
+
+
+
 
         </form>
 
 
     <div class="form-group" align="center">
-        <input type="submit" class="btn btn-warning" id="submitProg" value="Save Activity">
-        <input type="button" class="btn btn-danger" id="cancelProg" value="Cancel">
+        <input type="submit" class="btn btn-warning" id="submitProg" value="Guardar">
+        <input type="button" class="btn btn-danger" id="cancelProg" value="Cancelar">
     </div>
 </div>
 

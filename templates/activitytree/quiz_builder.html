@@ -31,12 +31,13 @@
 
 {% block content %}
 
-<div class="container-fluid">
+ <div class = "row">
+        <div class="col-md-8 col-md-offset-2 col-sm-12">
 
 
         <ul class="nav nav-tabs">
               <li class="nav-item"> <a class="nav-link " href="#preview-tab"  data-toggle="tab">Quiz</a></li>
-              <li class="nav-item"> <a class="nav-link active" href="#info-tab"  data-toggle="tab">Detail</a></li>
+              <li class="nav-item"> <a class="nav-link active" href="#info-tab"  data-toggle="tab">Detalle</a></li>
         </ul>
           <div class="tab-content">
               <div class="tab-pane" id="preview-tab">
@@ -53,78 +54,98 @@
                         <div class="form-group">
                            <label for="idquiz">ID</label>
                            <input type="text" readonly="readonly" class="form-control" id="idquiz" name="_id">
+                           <small class="form-text text-muted"> Este es el identificador interno del material didáctico. Se asigna automáticamente. </small>
                         </div>
                         <div class="form-group">
-                            <label for="displayquiz">Display Name</label>
-                            <input type="text" id="displayquiz" name="title" class="form-control">
+                            <label for="displayquiz">Nombre</label>
+                            <input type="text" id="displayquiz" name="title" class="form-control" placeholder="Nombre del material didáctico">
                         </div>
                         <div class="form-group">
-                            <label for="tagsquiz">Tags</label>
+                            <label for="tagsquiz">Hashtags</label>
                             <input class="form-control" id="tagsquiz" name="tags">
+                            <small id="tagsHelp" class="form-text text-muted">Los #tags nos ayudan a clasificar el material, agrega varios. Ejemplos:
+                                        #java #arreglos #avanzado, #apache-hadoop #big-data. Se crean con la tecla tab. </small>
                         </div>
                         <div class="form-group">
-                            <label for="satisfy">Satisfy at least</label>
-                            <input type="text" class="form-control" id="satisfy" name="satisfied_at_least">
+                            <label for="satisfy">Mínimo número de aciertos</label>
+                            <input type="number" min="1" class="form-control" id="satisfy" name="satisfied_at_least">
+                            <small class="form-text text-muted">Número mínimo de aciertos para aprobar el examen. Si no se indica
+                            ningún valor deberán contestarse todas las preguntas correctamente.</small>
                         </div>
                         <div class="form-group">
-                            <label for="rightsquiz">Rights</label>
+                            <label for="rightsquiz">Licencia</label>
                             <input type="text" class="form-control" id="rightsquiz" name="rights">
+                            <small class="form-text text-muted"> Especifica el tipo de licencia del material. En caso de que estés utilizando algún material
+                                            que no hayas hecho tu, debes indicar la Licencia original. Te sugerimos una licencia que permite a otros utilizar libremente
+                                            tu apotación para hacer nuevos trabajos. Puedes elegir como tu propia licencia en:
+                                                <a href="https://creativecommons.org/choose/">https://creativecommons.org/choose/</a> </small>
                         </div>
                         <div class="form-group">
-                            <label for="descriptionquiz">Description</label>
-                            <textarea class="form-control" id="descriptionquiz" name="description" rows="3" ></textarea>
+                            <label for="descriptionquiz">Descripción</label>
+                            <textarea class="form-control" id="descriptionquiz" name="description"
+                                      rows="3" placeholder="Agrega una breve descripción del material." ></textarea>
                         </div>
                         <div class="form-group">
-                          <label for="externalquiz">External URL</label>
+                          <label for="externalquiz">URL Externo</label>
                           <input type="text" class="form-control" id="externalquiz" name="external_url">
+                                <small class="form-text text-muted"> Puedes incluir aquí una dirección externa referente al material original.</small>
                         </div>
                         <div class="form-group">
-                            <label for="publisherquiz">Publisher</label>
-                          <input type="text" class="form-control" id="publisherquiz" name="publisher"><br>
+                            <label for="publisherquiz">Autor</label>
+                          <input type="text" class="form-control" id="publisherquiz" name="publisher">
+                           <small class="form-text text-muted"> Nombre del autor o entidad responsable del material.</small>
                         </div>
                         <div class="form-group">
-                            <label for="iconquiz">Icon</label>
+                            <label for="iconquiz">Ícono</label>
                           <select id="iconquiz" name="icon" >
-                              <option value="coffee">Coffee</option>
-                              <option value="file">File</option>
-                              <option value="youtube-play">Youtube</option>
-                              <option value="puzzle-piece">Puzzle</option>
+                                <option value="coffee">Tasa de Café</option>
+                                <option value="file" selected>Archivo</option>
+                                <option value="youtube-play">Youtube</option>
+                                <option value="puzzle-piece">Pieza de Rompecabezas</option>
                           </select>
+                          <small class="form-text text-muted"> Elige el ícono que acompañará al nombre del recurso.</small>
                         </div>
                         <div class="form-group">
-                              <label for="levelquiz">Level</label>
-                          <select id="levelquiz" name="level">
-                              <option value="principiante">Principiante</option>
+                              <label for="levelquiz">Nivel</label>
+                            <select id="levelquiz" name="level">
+                              <option value="principiante">Básico</option>
                               <option value="intermedio">Intermedio</option>
                               <option value="avanzado">Avanzado</option>
-                          </select>
+                            </select>
+                            <small class="form-text text-muted"> Esta es una etiqueta que puede servir para filtrar el tipo de material por niveles. </small>
                         </div>
+
                         <div class="form-group">
-                            <input type="hidden" name="type" value="quiz">
-                          <input type="hidden" name="author" value="{{ user.email }}">
-
+                                        <label for="image_url">URL de Ímagen</label>
+                                        <input type="text" class="form-control" id="image_url" name="image_url">
+                                        <small class="form-text text-muted"> Puedes especificar una imagen externa que describa al recurso.
+                                             Debes tener derechos sobre la ímagen. Puedes utilizar servicios como: imageshack.us o Amazon S3.
+                         </small>
                         </div>
-
+                         <div class="form-group">
+                            <input type="hidden" name="type" value="quiz">
+                            <input type="hidden" name="author" value="{{ user.email }}">
+                        </div>
                   </form>
 
           </div>
         </div>
         <div class="form-group" align="center">
 
-            <a id="preview" class="btn btn-primary active" role="button" aria-pressed="true">Preview </a>
-             <button type="button" class="btn btn-primary" id="submitquiz">Submit</button>
-            <a href="/activitybuilder" class="btn btn-secondary active" role="button" aria-pressed="true">Cancel</a>
+            <a id="preview" class="btn btn-primary active" role="button" aria-pressed="true">Vista previa </a>
+             <button type="button" class="btn btn-primary" id="submitquiz">Enviar</button>
+            <a href="/activitybuilder" class="btn btn-secondary active" role="button" aria-pressed="true">Cancelar</a>
 
         </div>
 
-</div>
+
 
  <div class="modal fade" id="modalquiz">
   <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Add Quiz</h4>
+        <h4 class="modal-title">Agregar Quiz</h4>
       </div>
       <div class="modal-body">
 
@@ -148,7 +169,8 @@
     </div>
   </div>
 </div>
-
+  </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
