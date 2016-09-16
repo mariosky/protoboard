@@ -623,6 +623,15 @@ HTML Content
                     window.location.href = "http://localhost:8000/activitybuilder";
                 }
                 else{
+                    var activity = obj[0];
+                    if (activity.readonly){
+                        $("#submitProg").prop( "disabled", true);
+                        $("#cancelProg").prop( "disabled", true);
+                        alert("Te encuentas en modo de solo lectura. Puedes ver el código fuente del ejercicio," +
+                                " pero solo el autor puede modificar este recurso educativo.");
+                    }
+
+
                     load_progdata(obj)
                 }
 

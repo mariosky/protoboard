@@ -1437,7 +1437,8 @@ def get_activity(request):
                 pass
             else:
                 #Read only
-                activity['readonly']=True
+                print "Read only"
+                activity['readonly']= 'readonly'
 
             return HttpResponse(json.dumps([activity]), content_type='application/javascript')
 
