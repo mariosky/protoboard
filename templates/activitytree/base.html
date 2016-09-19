@@ -205,7 +205,7 @@
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>
-    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+
     <!-- <script src="{{ STATIC_URL }}app/scripts/jquery.min.js"></script>-->
    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://59f98194dea4857a8142e998b76bddcb34d137dc.googledrive.com/host/0B4KIaVIuZK2JbVBkdTd3ak5WN2M/tag-it.js" type="text/javascript" charset="utf-8"></script>
@@ -217,10 +217,11 @@
     <script type="text/javascript" src="https://b072a7493b24d80848609d1f4876edab240dff84.googledrive.com/host/0B4KIaVIuZK2JUEZmX0ZxQWgwb0k/jquery.oembed.js"></script>
     <script  type="text/javascript" src="{{MEDIA_URL}}js/jquery.raty.js"></script>
 
-    <script>tinymce.init({ selector:'tinytext', height:"220", automatic_uploads:true, plugins: "image link code", toolbar:" undo redo| styleselect | bold italic | alignleft aligncenter alignright | link image | code " })</script>
-
  <!-- endbuild -->
 
+  {% block scripts %}
+
+  {% endblock scripts %}
 <!-- build:js scripts/main.js -->
 
 
@@ -345,9 +346,6 @@
 
 
 
-  {% block scripts %}
-
-  {% endblock scripts %}
 
 
 

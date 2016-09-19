@@ -29,7 +29,7 @@
                        <a class="card-link" href="/{{c.root.id }}{{c.root.uri }}">
                            <h5 class="card-title">{{c.root.name}}</h5>
                        </a>
-                        <p class="card-text">{{ c.short_description|safe }}</p>
+                        <p class="card-text">{{ c.short_description}}</p>
                                   <ul class="course-listing-bar">
                               <li><small> Instructor:   <a href="#"  class="card-link">  {{ c.root.authorlearningactivity_set.all.0.user.get_full_name }} </a></small></li>
 

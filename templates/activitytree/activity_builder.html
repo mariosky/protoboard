@@ -389,6 +389,8 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script>tinymce.init({ selector:'tinytext', height:"220", automatic_uploads:true, plugins: "image link code", toolbar:" undo redo| styleselect | bold italic | alignleft aligncenter alignright | link image | code " })</script>
 
 <script id="activities_template" type="x-tmpl-mustache">
 

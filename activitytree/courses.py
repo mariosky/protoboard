@@ -77,7 +77,7 @@ def add_precondition(rule):
     return rule
 
 
-def create_empty_course(url,user, name ='New Course', short_description=""):
+def create_empty_course(url,user, name ='New Course', short_description="", is_private=False):
         learning_activity = LearningActivity(
         parent =  None,
         root   =  None,
@@ -87,7 +87,7 @@ def create_empty_course(url,user, name ='New Course', short_description=""):
         uri = '/activity/'+url)
         learning_activity.save()
 
-        course = Course(short_description=short_description, root=learning_activity)
+        course = Course(short_description=short_description, root=learning_activity, private=is_private)
         course.save()
 
         auth = AuthorLearningActivity(user=user, learning_activity=learning_activity )

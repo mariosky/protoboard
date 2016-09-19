@@ -10,7 +10,7 @@
 }
 
 
-    #editor1 {
+    #courseDescHTML {
 
         height: 340px;
         width: 200;
@@ -85,8 +85,11 @@
 {% endblock content %}
 
 {% block scripts %}
-<script src="http://gdriv.es/proto/bootstrap-timepicker3.min.js" type="text/javascript"></script>
- <script async="" src="{{ STATIC_URL }}app/scripts/FileSaver.min.js"/>
+    <script src="http://gdriv.es/proto/bootstrap-timepicker3.min.js" type="text/javascript"></script>
+    <script async="" src="{{ STATIC_URL }}app/scripts/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/javascript.js" type="text/javascript" charset="utf-8"></script>
 
 <script id="activities_template" type="x-tmpl-mustache">
          <div class="panel panel-default container-fluid" style="width:500px">
@@ -744,9 +747,27 @@ function get_course() {
 
 
 
-        containerEdit('{{ course_id }}');
+        updateCourse('{{ course_id }}');
 
     });
+
+
+   function updateCourse( course_id ){
+
+        var editor;
+        $('.myeditor').each(function(){
+            editor = ace.edit(this.id);
+            editor.setTheme("ace/theme/dawn");
+            editor.getSession().setMode('ace/mode/python');
+            editor.setShowPrintMargin(false);
+        });
+
+        var courseDescHTML = ace.edit("courseDescHTML");
+
+       $('#modalUpdateCourse').modal();
+   }
+
+
 
 
 
@@ -1346,119 +1367,6 @@ var on_click = function(){
         query.page =  (pagenum - 1);
         buscar(query);
     }
-
-
-/*
-
-  //change action for search textbox, determines if the input is a tag or just a title search
-  $("body").on('change', "#txtname", function(){
-      $("#data").empty();
-      var query = {};
-      var name = $(this).val();
-      var exp_tags = /S*#(?:\[[^\]]+\]|\S+)/;
-      if (exp_tags.test(name)){
-          var texto = name.split(/\s+/g);
-          tags = [];
-          title = [];
-          for(var i=0;i<texto.length;i++){
-              if(texto[i].match(exp_tags)){
-                  tags.push(texto[i].replace('#',''))
-              }
-              else{
-                  title.push(texto[i])
-              }
-          }
-          title = title.join(" ");
-          if (title != "" && tags.length != 0){
-              query['title'] = {'title': {'$regex': title, '$options': 'i'}};
-              query['tags'] = {'tags': {'$all': tags}};
-          }
-          else if (tags.length != 0 && title == ""){
-              query['tags'] = {'tags': {'$all': tags}};
-              delete query['title']
-          }
-          else if (tags.length == 0 && title != ""){
-              query['title'] = {'title': {'$regex': title, '$options': 'i'}};
-              delete query['tags']
-          }
-          else{
-              delete query['title'];
-              delete query['tags']
-          }
-          buscar(query)
-      }
-      else {
-          query['title'] = {'title': {'$regex': $("#txtname").val(), '$options': 'i'}};
-          delete query['tags'];
-          buscar(query)
-      }
-
-  });
-
-  $("body").on("hidden.bs.modal", '#modalSearch' ,function(){
-            $("#txtname").val('');
-            $("#data").empty()
-        });
-
-  //ajax function that sends query to server and display results to user
-  function buscar(tipo){
-        $.ajax({
-        type: 'POST',
-        url: '/search_prueba',
-        crossDomain: false, // obviates need for sameOrigin test
-        beforeSend: function(xhr, settings) {
-                    if (!csrfSafeMethod(settings.type)) {
-                        var csrftoken = getCookie('csrftoken');
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
-                },
-
-        data: JSON.stringify(tipo),
-        success: function (data) {
-            var obj = jQuery.parseJSON( data );
-            if (obj == "null" || obj[0].count == 0){
-                $("#data").append('<h3 style="color:lightgray">No hay actividades</h3><br>');
-                count = 0
-            }
-            else{
-                Mustache.tags = ['[[', ']]'];
-                var activities_template = $('#activities_template').html();
-                Mustache.parse(activities_template);
-                $.each(obj, function( index, value ) {
-                if (value.count){
-                        var count = value.count
-                    }
-                    else{
-                        rendered = Mustache.render(activities_template, {
-                            title: value.title,
-                            id: value._id,
-                            icon:value.icon,
-                            description: value.description,
-                            lang:value.lang,
-                            level:value.level,
-                            type:value.type,
-                            tags:value.tags});
-                        $("#data").append(rendered);
-                    }
-
-            });
-
-            $('#data').val(data);
-            }
-
-        },
-        error: function(data) {
-            console.log("Error");
-        }
-    });
-    }
-*/
-
-
-
-
-
-
 
     function copyUri(id,title,description){
         learning_activities[container_id].name = title;
@@ -2084,6 +1992,88 @@ TO DO: Reuse mustache  templates
 </div><!-- /.modal -->
 
 
+
+   <div class="modal fade" id="modalUpdateCourse">
+    <div class="modal-dialog">
+        <div class="modal-content">
+             <form action="/course-builder/" method="post">{% csrf_token %}
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Actualizar curso</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"> <a class="nav-link active" href="#main"  data-toggle="tab">Principal</a></li>
+                        <li class="nav-item"> <a class="nav-link" href="#detail"  data-toggle="tab">Página HTML</a></li>
+                    </ul>
+                <br>
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="main">
+                    <input type="hidden" name="action" value="update"/>
+                    <input type="hidden" name="course_id" value="{{course_id}}"/>
+
+                    <div class="form-group">
+                        <label for="courseURI">Identificador del curso</label>
+                        <input type="text" name="course_uri" class="form-control" id="courseURI" placeholder="nombre-del-curso" required pattern="[A-Za-z0-9._-\/]+" value="/{{course.root.id }}{{course.root.uri }}">
+
+
+                        <small class="form-text text-muted"> Debes incluir un identificador del curso, éste
+                         será parte de la dirección con la que los usarios accederán al curso. Solo debe incluir números, letras y guiones. No espacios.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseName">Nombre</label>
+                        <input type="text" name="course_name" class="form-control" id="courseName" required placeholder="" value="{{ course.root.name }}">
+                        <small class="form-text text-muted"> Este es el nombre que se utilizará para anunciar al curso, puede contener espacios y otros
+                            caracteres.</small>
+                    </div>
+                     <div class="form-group">
+                        <label for="courseDesc">Descripción</label>
+                        <textarea class="form-control" id="courseDesc" name="course_short_description" placeholder="" rows="3">{{course.short_description}}</textarea>
+                        <small class="form-text text-muted"> Agrega una breve descripción del material. Aparecera cuando se muestre al curso en los listados.</small>
+                     </div>
+                    <div class="form-group">
+                                        <label for="image_url">URL de Ímagen</label>
+                                        <input type="text" class="form-control" id="image_url" name="image_url" value="{{ course.root.image }}">
+                                        <small class="form-text text-muted"> Puedes especificar una imagen externa que describa al recurso.
+                                             Debes tener derechos sobre la ímagen. Puedes utilizar servicios como: imageshack.us o Amazon S3.
+
+                                         </small>
+                                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            {% if course.private %}
+                            <label> <input id="containerIsVisible" type="checkbox" checked name="private"> Privado </label>
+                            {% else %}
+                             <label> <input id="containerIsVisible" type="checkbox"  name="private"> Privado </label>
+                            {% endif %}
+                        </div>
+                        <small class="form-text text-muted"> Selecciona la opción <strong>Privado</strong> cuando deses limitar quien puede inscribirse al
+                             curso. No aparecerá en el listado de cursos.</small>
+                    </div>
+
+                    </div>
+                     <div class="tab-pane fade" id="detail">
+
+                    <div class="myeditor" id="courseDescHTML" >
+
+                    </div>
+                     <textarea class="form-control" name="html_description" ></textarea>
+                         {{ course.html_description|safe }}
+                        </div>
+                    </div>
+
+                </div><!-- /.modal-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button id="submitCourseBtn" type="submit" class="btn btn-primary">Actualizar curso</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal
 {% endblock scripts %}
 
 

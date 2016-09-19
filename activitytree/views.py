@@ -141,17 +141,15 @@ def my_enrolled_courses(request, status = 'incomplete'): #view that determines i
 
 
 def course(request,course_id= None):
-    #course_id is the root activty of the course
-    print request.user
-
     # Must have credentials
     if request.user.is_authenticated() and request.user != 'AnonymousUser' :
+
         #POST:
         # Add or Delete a New Course
         if request.method == 'POST':
+
             # IF course_id then a DELETE
             if course_id:
-
                 #Get course and delete only if the user or staff
                 mycourse = None
                 if not request.user.is_superuser:
@@ -163,15 +161,33 @@ def course(request,course_id= None):
 
                 return HttpResponseRedirect(reverse('my_courses'))
 
-            # IF course_uri IS a CREATE
-            if 'course_uri' in request.POST:
+            # IF course_uri IS a CREATE or UPDATE
 
-                course_id, course_uri = create_empty_course(request.POST['course_uri'], request.user,request.POST['course_name'],
-                                               request.POST['course_short_description'])
+            if 'course_uri' in request.POST and 'action' in request.POST :
+                print request.POST
+
+                is_private = 'private' in request.POST
+                if request.POST['action'] == 'create':
+                    course_id, course_uri = create_empty_course(request.POST['course_uri'], request.user,request.POST['course_name'],
+                                               request.POST['course_short_description'], is_private)
+                    return HttpResponseRedirect(reverse('course', args=[course_id]))
+
+                elif request.POST['action'] == 'update' and 'course_id' in request.POST:
+                    print "UPDATE"
+
+                    mycourse = get_object_or_404(Course, root_id= request.POST['course_id'], root__authorlearningactivity__user=request.user)
+                    mycourse.course_short_description = request.POST['course_short_description']
+                    mycourse.course_short_description = request.POST['course_short_description']
+
+                    return HttpResponseRedirect(reverse('course', args=[request.POST['course_id']]))
+
+
 
                 return HttpResponseRedirect(reverse('course', args=[course_id]))
+
+
             else:
-                return HttpResponseNotFound('<h1>Course ID not Found in request</h1>')
+                return HttpResponseNotFound(u'<h1>Falta información para enviarse a la petición</h1>')
         #GET:
         #Edit course
 
@@ -180,7 +196,10 @@ def course(request,course_id= None):
                 #Is yours or you are staff?
                 mycourse = None
                 if not request.user.is_superuser:
-                    mycourse = get_object_or_404(LearningActivity, pk=course_id,  authorlearningactivity__user = request.user )
+                    mycourse = get_object_or_404(Course, root_id=course_id,  root__authorlearningactivity__user = request.user )
+
+
+
 
                 if (mycourse or request.user.is_superuser):
                     return render_to_response('activitytree/course_builder.html',
