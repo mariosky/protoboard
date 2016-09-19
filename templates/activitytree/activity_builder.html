@@ -600,7 +600,6 @@ var on_click = function(){
         var query =  load_query( "#txtname" ,{ page:pagenum - 1, type: {'type': {'$in':['text','video','quiz','prog']}}, author: {'author': '{{user.email}}'} });
     buscar(query);
 
-       // buscar({ page:pagenum - 1, type: {'type': {'$in':['text','video','quiz','prog']}}, author: {'author': '{{user.email}}'}});
     }
 
 
@@ -793,19 +792,7 @@ function load_dataQuiz(id){
                 return false
             }
         });
-        //generates id(uri) of html activity using title provided by user
-        /*$('#titleHtml').on('change', function(){
-            var id = '/activity/' + this.value.replace(/ /g, '_');
-            check(id);
-            $('#idhtml').val(id)
-        });
-        //generates id(uri) of video activity using title provided by user
-        $('#titleVideo').on('change', function(){
-            var id = '/activity/video/' + this.value.replace(/ /g, '_');
-            check(id);
-            $('#idvideo').val(id);
-        });
-        */
+
         //resets forms such as html and video when modal closes
         $(".modal").on("hidden.bs.modal", function(){
             $("#tagshtml").tagit("removeAll");
