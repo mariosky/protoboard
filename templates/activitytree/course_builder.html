@@ -12,8 +12,8 @@
 
     #courseDescHTML {
 
-        height: 340px;
-        width: 200;
+        height: 600px;
+        width: ;
 
 
     }
@@ -145,11 +145,11 @@
   </button>
   <div class="dropdown-menu">
 
-      <button type="button" class="dropdown-item clickable   containerEditBtn"><i class="fa fa-cog clickable containerEditBtn"></i> Ajustes</button>
+      <button type="button" class="dropdown-item clickable   containerEditBtn">Ajustes</button>
      <button type="button" class="dropdown-item clickable   activityEditBtn">Ajustes avanzados</button>
      <button type="button" class="dropdown-item clickable   containerPrecondition">Reglas de precondición</button>
-     <button type="button" class="dropdown-item clickable   containerFromUntil"><i class="fa fa-calendar  clickable  containerFromUnti"></i> Fechas</button>
-     <button type="button" class="dropdown-item danger  clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i> Borrar</button>
+     <button type="button" class="dropdown-item clickable   containerFromUntil"> Fechas</button>
+     <button type="button" class="dropdown-item danger  text-danger clickable  deleteBtn"> Borrar</button>
   </div>
 </div>
 
@@ -754,15 +754,21 @@ function get_course() {
 
    function updateCourse( course_id ){
 
-        var editor;
-        $('.myeditor').each(function(){
-            editor = ace.edit(this.id);
-            editor.setTheme("ace/theme/dawn");
-            editor.getSession().setMode('ace/mode/python');
-            editor.setShowPrintMargin(false);
-        });
 
-        var courseDescHTML = ace.edit("courseDescHTML");
+
+
+       var courseDescHTML = ace.edit("courseDescHTML");
+
+            courseDescHTML.setTheme("ace/theme/dawn");
+            courseDescHTML.getSession().setMode('ace/mode/html');
+            courseDescHTML.setShowPrintMargin(false);
+
+       var textarea = $('textarea[name="html_description"]').hide();
+            courseDescHTML.getSession().setValue(textarea.val());
+            courseDescHTML.getSession().on('change', function() {
+                textarea.val(courseDescHTML.getSession().getValue());
+            });
+
 
        $('#modalUpdateCourse').modal();
    }
@@ -1994,7 +2000,7 @@ TO DO: Reuse mustache  templates
 
 
    <div class="modal fade" id="modalUpdateCourse">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
              <form action="/course-builder/" method="post">{% csrf_token %}
                 <div class="modal-header">
@@ -2016,7 +2022,7 @@ TO DO: Reuse mustache  templates
 
                     <div class="form-group">
                         <label for="courseURI">Identificador del curso</label>
-                        <input type="text" name="course_uri" class="form-control" id="courseURI" placeholder="nombre-del-curso" required pattern="[A-Za-z0-9._-\/]+" value="/{{course.root.id }}{{course.root.uri }}">
+                        <input type="text" name="course_uri" class="form-control" id="courseURI" placeholder="nombre-del-curso" required pattern="[A-Za-z0-9\/._-]+" value="/{{course.root.id }}{{course.root.uri }}">
 
 
                         <small class="form-text text-muted"> Debes incluir un identificador del curso, éste
@@ -2035,13 +2041,13 @@ TO DO: Reuse mustache  templates
                         <small class="form-text text-muted"> Agrega una breve descripción del material. Aparecera cuando se muestre al curso en los listados.</small>
                      </div>
                     <div class="form-group">
-                                        <label for="image_url">URL de Ímagen</label>
-                                        <input type="text" class="form-control" id="image_url" name="image_url" value="{{ course.root.image }}">
-                                        <small class="form-text text-muted"> Puedes especificar una imagen externa que describa al recurso.
-                                             Debes tener derechos sobre la ímagen. Puedes utilizar servicios como: imageshack.us o Amazon S3.
+                        <label for="image_url">URL de Ímagen</label>
+                        <input type="url" class="form-control" id="image_url" name="image_url" value="{{ course.root.image }}">
+                        <small class="form-text text-muted"> Puedes especificar una imagen externa que describa al recurso.
+                             Debes tener derechos sobre la ímagen. Puedes utilizar servicios como: imageshack.us o Amazon S3.
 
-                                         </small>
-                                    </div>
+                         </small>
+                    </div>
                     <div class="form-group">
                         <div class="checkbox">
                             {% if course.private %}
@@ -2056,12 +2062,12 @@ TO DO: Reuse mustache  templates
 
                     </div>
                      <div class="tab-pane fade" id="detail">
-
+                    <textarea class="form-control" name="html_description">{{course.html_description|safe}}</textarea>
                     <div class="myeditor" id="courseDescHTML" >
 
                     </div>
-                     <textarea class="form-control" name="html_description" ></textarea>
-                         {{ course.html_description|safe }}
+
+
                         </div>
                     </div>
 

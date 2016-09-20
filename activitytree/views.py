@@ -140,20 +140,46 @@ def my_enrolled_courses(request, status = 'incomplete'): #view that determines i
         return HttpResponseRedirect('/login/?next=%s' % request.path)
 
 
-def course(request,course_id= None):
+def course_info(request,course_id):
     # Must have credentials
-    if request.user.is_authenticated() and request.user != 'AnonymousUser' :
+    if request.method == 'GET':
+        mycourse = get_object_or_404(Course, root_id=course_id)
+        if request.user.is_authenticated() and request.user != 'AnonymousUser' :
+            #Are yoy taking this course?
+            #Are the instructor?
 
-        #POST:
+            return render_to_response('activitytree/course_info.html',
+                { 'course_id':course_id, 'course':mycourse
+                },
+                context_instance=RequestContext(request))
+        else:
+            #Genearal AnonymousUser info
+            return render_to_response('activitytree/course_info.html',
+                              {'course_id': course_id, 'course': mycourse
+                               },
+                              context_instance=RequestContext(request))
+
+    else:
+        return HttpResponseNotFound('<h1>HTTP METHOD IS NOT VALID</h1>')
+
+
+
+
+def course(request, course_id=None):
+    # Must have credentials
+    if request.user.is_authenticated() and request.user != 'AnonymousUser':
+
+        # POST:
         # Add or Delete a New Course
         if request.method == 'POST':
 
             # IF course_id then a DELETE
             if course_id:
-                #Get course and delete only if the user or staff
+                # Get course and delete only if the user or staff
                 mycourse = None
                 if not request.user.is_superuser:
-                    mycourse = get_object_or_404(LearningActivity, pk=course_id,  authorlearningactivity__user = request.user )
+                    mycourse = get_object_or_404(LearningActivity, pk=course_id,
+                                                 authorlearningactivity__user=request.user)
 
                 if (mycourse or request.user.is_superuser):
                     LearningActivity.objects.filter(root=course_id).delete()
@@ -163,58 +189,57 @@ def course(request,course_id= None):
 
             # IF course_uri IS a CREATE or UPDATE
 
-            if 'course_uri' in request.POST and 'action' in request.POST :
+            if 'course_uri' in request.POST and 'action' in request.POST:
                 print request.POST
 
                 is_private = 'private' in request.POST
                 if request.POST['action'] == 'create':
-                    course_id, course_uri = create_empty_course(request.POST['course_uri'], request.user,request.POST['course_name'],
-                                               request.POST['course_short_description'], is_private)
+                    course_id, course_uri = create_empty_course(request.POST['course_uri'], request.user,
+                                                                request.POST['course_name'],
+                                                                request.POST['course_short_description'],
+                                                                is_private)
                     return HttpResponseRedirect(reverse('course', args=[course_id]))
 
                 elif request.POST['action'] == 'update' and 'course_id' in request.POST:
                     print "UPDATE"
 
-                    mycourse = get_object_or_404(Course, root_id= request.POST['course_id'], root__authorlearningactivity__user=request.user)
-                    mycourse.course_short_description = request.POST['course_short_description']
-                    mycourse.course_short_description = request.POST['course_short_description']
+                    mycourse = get_object_or_404(Course, root_id=request.POST['course_id'],
+                                                 root__authorlearningactivity__user=request.user)
+                    mycourse.short_description = request.POST['course_short_description']
+                    mycourse.html_description = request.POST['html_description']
+                    mycourse.save()
+                    mycourse.root.image = request.POST['image_url']
+                    mycourse.root.name = request.POST['course_name']
+                    mycourse.root.save()
 
                     return HttpResponseRedirect(reverse('course', args=[request.POST['course_id']]))
-
-
 
                 return HttpResponseRedirect(reverse('course', args=[course_id]))
 
 
             else:
                 return HttpResponseNotFound(u'<h1>Falta información para enviarse a la petición</h1>')
-        #GET:
-        #Edit course
+        # GET:
+        # Edit course
 
         elif request.method == 'GET':
-            if course_id :
-                #Is yours or you are staff?
+            if course_id:
+                # Is yours or you are staff?
                 mycourse = None
                 if not request.user.is_superuser:
-                    mycourse = get_object_or_404(Course, root_id=course_id,  root__authorlearningactivity__user = request.user )
-
-
-
+                    mycourse = get_object_or_404(Course, root_id=course_id,
+                                                 root__authorlearningactivity__user=request.user)
 
                 if (mycourse or request.user.is_superuser):
                     return render_to_response('activitytree/course_builder.html',
-                    { 'course_id':course_id, 'course':mycourse
-                    },
-                        context_instance=RequestContext(request))
+                                              {'course_id': course_id, 'course': mycourse
+                                               },
+                                              context_instance=RequestContext(request))
             else:
                 return HttpResponseNotFound('<h1>Course ID not Found</h1>')
     else:
-        #please log in
+        # please log in
         return HttpResponseRedirect('/login/?next=%s' % request.path)
-
-
-
-
 
 
 #@csrf_exempt

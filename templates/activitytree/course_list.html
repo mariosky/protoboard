@@ -9,24 +9,20 @@
 
 
         <h3>Cursos</h3>
-
-
-
-
-
          <div class="card-columns">
 
                 {% for c in courses %}
 
                 <div class="card">
-                    <a class="card-link" href="/{{c.root.id }}{{c.root.uri }}">
+                    <a class="card-link" href="/course_info/{{c.root.id }}">
+
                        {% if c.root.image %}
                            <img class="card-img-top center-block img-fluid" src="{{ c.root.image }}" alt="Card image cap">
                       {% endif %}
                     </a>
 
                       <div class="card-block">
-                       <a class="card-link" href="/{{c.root.id }}{{c.root.uri }}">
+                       <a class="card-link" href="/course_info/{{c.root.id }}">
                            <h5 class="card-title">{{c.root.name}}</h5>
                        </a>
                         <p class="card-text">{{ c.short_description}}</p>
@@ -35,16 +31,8 @@
 
                             </ul>
                       </div>
-
                 </div>
-
             {% endfor %}
-
-
-
-
-
-
             </div>
 
 
@@ -65,52 +53,7 @@
 
 </script>
 
-<script id="activities_template" type="x-tmpl-mustache">
 
-
-<div class="card card-block">
-   <p class="card-text"><small class="text-muted">Video</small>
-                 [[#lang]]
-              <span class="label label-success"><a href="/search/?lang=[[lang]]" style="color:#FFFFFF">[[lang]]</a></span>
-              [[/lang]]
-              [[^lang]]
-              [[/lang]]
-   </p>
-  <h6 class="card-title"> <a class="media-heading" href="[[uri]]" role="button"><i class="fa fa-[[icon]]"></i> [[title]] &raquo;</a> </h6>
-  <p class="card-text"> [[description]]</p>
-  <p>
-            {% comment %}
-              [[#type]]
-              <span class="label label-info"><a href="/search/?type=[[type]]" style="color:#FFFFFF">[[type]]</a></span>
-              [[/type]]
-              [[^type]]
-              [[/type]]
-            {% endcomment %}
-              [[#lang]]
-              <span class="label label-success"><a href="/search/?lang=[[lang]]" style="color:#FFFFFF">[[lang]]</a></span>
-              [[/lang]]
-              [[^lang]]
-              [[/lang]]
-
-              [[#level]]
-              <span class="label label-default"><a href="/search/?level=[[level]]" style="color:#FFFFFF">[[level]]</a></span>
-              [[/level]]
-              [[^level]]
-              [[/level]]
-
-              [[#tags]]
-              [[#.]]
-              <span class="label label-info"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">[[.]]</a></span>
-              [[/.]]
-              [[^.]]
-              [[/.]]
-              [[/tags]]
-  </p>
-
-</div>
-
-
-</script>
 
 
 
