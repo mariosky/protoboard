@@ -55,7 +55,7 @@
 
               <h3 class="display-4">{{course.root.name}}</h3>
         <p class="lead">{{course.short_description}}</p>
-        <p><a class="btn btn-success btn-lg" href="#" role="button"> Tomar el curso &raquo;</a></p>
+        <p><a class="btn btn-success btn-lg" href="/{{course.root.id }}{{course.root.uri }}" role="button"> Tomar el curso &raquo;</a></p>
                  <p class="lead" >
                    Instructor:    {{ course.root.authorlearningactivity_set.all.0.user.get_full_name }}
                  </p>
