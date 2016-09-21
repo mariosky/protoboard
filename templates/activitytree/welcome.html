@@ -91,7 +91,7 @@
 
 @media (min-width: 62em) {
   .featurette-heading {
-    margin-top: 7rem;
+    margin-top: 2rem;
   }
 }
 
@@ -127,9 +127,8 @@
           <img class="second-slide" src="{{ MEDIA_URL }}images/computer-1209641_960_720.jpg" alt="Second slide">
           <div class="container">
             <div class="carousel-caption">
-              <h1> Aprende lenguajes de programación de manera interactiva. </h1>
-              <p> Inscribete a alguno de los cursos de python, javascript, c# entre otros. Ya que domines alguno
-                  te toca agregar nuevos recursos educativos.</p>
+              <h1> Aprende a programar de manera interactiva. </h1>
+              <p> Inscribete a alguno de los cursos de python, javascript y c# entre otros. </p>
               <p><a class="btn btn-lg btn-primary" href="/courses/" role="button">Ir a los Cursos</a></p>
             </div>
           </div>
@@ -139,7 +138,7 @@
           <div class="container">
             <div class="carousel-caption text-xs-right">
               <h1>Crea tus propios recursos educativos, lecciones o cursos.</h1>
-              <p> Selecciona recursos educativos de la biblioteca y organizalos en una ruta que tu defines, crea cursos
+              <p> Selecciona recursos educativos de la biblioteca y organizalos. Crea cursos
                   tutoriales o ejercicios.</p>
               <p><a class="btn btn-lg btn-primary" href="/instructor/" role="button">Sé un instructor</a></p>
             </div>
@@ -156,33 +155,29 @@
       </a>
     </div><!-- /.carousel -->
 
+    <row>
 
+        <div class="col-md-8  col-md-offset-2 col-sm-12">
+            <h5>Los recursos educativos más recientes: </h5>
+           <div class="card-deck-wrapper">
+               <div id='activities' class="card-columns">
 
-       <div class="row">
+              </div>
+           </div>
+        </div>
+    </row>
 
-       <div class="col-md-8  col-md-offset-2 col-sm-12">
-             <form class="form" role="search" onsubmit="return false">
-                <div class="input-group">
-                    <input id="txtname" class="form-control" type="text" placeholder="Busca en la biblioteca" name="srch-term" >
-                   <span class="input-group-btn">
-               <button class="btn  btn-secondary" type="submit">Search</button>
-                        </span>
-                </div>
-
-             </form>
-
-       </div>
-   </div>
-       <div class="row">
+    <div class="row">
 
        <div class="col-md-8  col-md-offset-2 col-sm-12 m-t-2">
+           <h5>Hashtags populares:</h5>
+
            <h5>
-            Algunos hash tags:
-            <span class="label label-primary">#python</span>
-            <span class="label label-primary">#javascript</span>
-            <span class="label label-primary">#ejercicio</span>
-            <span class="label label-primary">#csharp</span>
-            <span class="label label-primary">#csharp</span>
+            <a href="/search/?tag=java"> <span class="label label-primary"> #java </span></a>
+            <a href="/search/?tag=python"><span class="label label-primary"> #python </span></a>
+            <a href="/search/?tag=principiante"> <span class="label label-primary">#principiante </span></a>
+            <a href="/search/?tag=principiante"> <span class="label label-primary">#ejercicio </span></a>
+            <a href="/search/?tag=javascript"> <span class="label label-primary">#javascript </span></a>
            </h5>
        </div>
    </div>
@@ -202,8 +197,14 @@
 
       <div class="row featurette">
         <div class="col-md-7 push-md-5">
-          <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
-          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+          <h2 class="featurette-heading"> En <code>codigo.uno</code>  se promueve el uso de recursos
+              educativos abiertos. <span class="text-muted"> Libres para estudiantes y educadores.</span></h2>
+          <p class="lead"> La (OCDE) define a los REA como: "materiales digitalizados ofrecidos libres y abiertos
+              a educadores, estudiantes y autodidactas para su uso y reutilización en la enseñanza, el aprendizaje,
+              y la investigación. REA incluye contenidos de aprendizaje, herramientas
+              de software para desarrollar, utilizar y distribuir contenidos y recursos de implementación, como
+              las licencias abiertas" <small>
+                  <a href="https://es.wikipedia.org/wiki/Recursos_educativos_abiertos">wikipedia</a></small> </p>
         </div>
         <div class="col-md-5 pull-md-7">
           <img class="featurette-image img-fluid m-x-auto" src="{{ MEDIA_URL }}images/Logotipo_Global_Recursos_Educacionais_Abiertos_(REA).svg" alt="Logo de Recursos Educacionales Abiertos">
@@ -213,82 +214,22 @@
     <hr class="featurette-divider">
       <div class="row featurette">
         <div class="col-md-7">
-          <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It'll blow your mind.</span></h2>
-          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+          <h2 class="featurette-heading">Participa y aprende en el proceso. <span class="text-muted"> Ayudanos a mejorar el material, es de todos.</span></h2>
+          <p class="lead"> Es muy importante tú retroalimentación. Este es un proyecto que va iniciando, con tu ayuda mejoraremos el
+              contenido, el software y la manera de colaborar.
+          </p>
         </div>
         <div class="col-md-5">
-          <img class="featurette-image img-fluid m-x-auto" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+          <img class="featurette-image img-fluid m-x-auto" src="{{ MEDIA_URL }}images/hacker-1569744_640.jpg" alt="Voluntarios">
         </div>
       </div>
 
-      <hr class="featurette-divider">
+<hr class="featurette-divider">
 
-      <div class="row featurette">
-        <div class="col-md-7">
-          <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
-          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-        </div>
-        <div class="col-md-5">
-          <img class="featurette-image img-fluid m-x-auto" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
-        </div>
-      </div>
+<p class="pull-xs-right"><a href="#"> Hacia arriba</a></p>
 
-      <hr class="featurette-divider">
+ </div>
 
-
-
-
-          <!-- Three columns of text below the carousel -->
-      <div class="row">
-        <div class="col-lg-4">
-          <img class="img-circle" src="{{ MEDIA_URL }}images/book.png" alt="Generic placeholder image" width="140" height="140">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
-          <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-          <img class="img-circle" src="{{ MEDIA_URL }}images/geometry-1452990_1280.jpg" alt="Generic placeholder image" width="140" height="140">
-          <h2>Heading</h2>
-          <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
-          <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-          <img class="img-circle" src="{{ MEDIA_URL }}images/Logotipo_Global_Recursos_Educacionais_Abiertos_(REA).svg" alt="Generic placeholder image" width="140" height="140">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-      </div><!-- /.row -->
-
-
-    <div class="container">
-
-
-
-    <h3>Biblioteca </h3>
-
-    <div class="col-md-12">
-       <div class="card-deck-wrapper">
-           <div id='activities' class="card-columns">
-
-          </div>
-       </div>
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </div> <!-- /container -->
 {% endblock content %}
 
 
@@ -342,20 +283,10 @@
 </script>
 
 <script id="activities_template" type="x-tmpl-mustache">
-
 <div class="card card-block">
-
-
-
-  <h6 class="card-title">
-
-              <i class="fa fa-[[icon]]"> </i> <a href="[[uri]]">[[title]]</a>
-
-
-             </h6>
-
-
-
+        <h6 class="card-title">
+            <i class="fa fa-[[icon]]"> </i> <a href="[[uri]]">[[title]]</a>
+        </h6>
   <p class="card-text"> [[description]]</p>
    [[#has_tags]]
    <i class="fa fa-tags"></i>
@@ -371,7 +302,6 @@
 
 
 </div>
-
 </script>
 
 

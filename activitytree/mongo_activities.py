@@ -30,6 +30,12 @@ class Activity:
     def get_by_user(user, page):
         return _activities_collection.find({'author': user}, { '_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1}).sort("$natural", pymongo.DESCENDING).limit(5).skip(page)
 
+    @staticmethod
+    def get_new():
+        return _activities_collection.find({'type': {'$ne': 'quiz'}},
+                                           {'_id': 1, 'title': 1, 'tags': 1, 'lang': 1, 'type': 1, 'description': 1,
+                                            'icon': 1, 'level': 1}).sort("$natural", pymongo.DESCENDING).limit(5)
+
 
     @staticmethod
     def get_title(title):

@@ -74,10 +74,10 @@
         <div class="bg-inverse p-a-1">
             <div class="list-group">
 
-              <a href="/courses" class="list-group-item">Cursos</a>
-              <a href="/search" class="list-group-item">Biblioteca</a>
-              <a href="/student" class="list-group-item">Estudiante</a>
-              <a href="/instructor" class="list-group-item">Instructor</a>
+              <a href="/courses" class="list-group-item active">Cursos</a>
+              <a href="/search" class="list-group-item active">Biblioteca</a>
+              <a href="/student" class="list-group-item active">Estudiante</a>
+              <a href="/instructor" class="list-group-item active">Instructor</a>
               {% if user.is_authenticated %}
                       {% if XML_NAV %}
                         <a href="{{ root_id }}{{root}}" class="list-group-item">Curso</a>
@@ -351,11 +351,9 @@
 
 
 
-
-
 <footer class="footer">
     <div class="container">
-        <p class="pull-xs-right"><a href="#">De regreso a arriba</a></p>
+
 <span class="text-muted">
         El contenido de los cursos es: <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> y
             otras licencias abiertas.
