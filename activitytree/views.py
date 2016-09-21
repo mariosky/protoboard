@@ -1467,7 +1467,6 @@ def delActivity(request): #view that receives user and id of activity to be dele
             return HttpResponse(e)
 
 
-@login_required
 def get_activity(request):
     if request.method == 'GET':
         # We first get the Activity
@@ -1476,13 +1475,12 @@ def get_activity(request):
         try:
             mongo_answer = Activity.get_activity(_id)
             activity = mongo_answer[0]
-            if activity['author']== request.user.email:
-                # Its yours you can edit
-                pass
-            else:
-                #Read only
-                print "Read only"
-                activity['readonly']= 'readonly'
+
+            #Are you  AnonymousUser?
+
+            if request.user == 'AnonymousUser' or not hasattr(request.user,'email')  or activity['author'] != request.user.email:
+                # Its not yours, you can have it read_only
+                activity['readonly'] = 'readonly'
 
             return HttpResponse(json.dumps([activity]), content_type='application/javascript')
 

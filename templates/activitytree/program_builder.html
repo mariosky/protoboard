@@ -629,7 +629,7 @@ HTML Content
             success: function (data){
                 var obj = jQuery.parseJSON(data);
                 if (jQuery.isEmptyObject(obj)){
-                    alert("No puedes modificar esta actividad");
+                    alert("No se encontró esta actividad");
                     window.location.href = "http://localhost:8000/activitybuilder";
                 }
                 else{
