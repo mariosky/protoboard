@@ -206,7 +206,7 @@ def course(request, course_id=None):
                     mycourse = get_object_or_404(Course, root_id=request.POST['course_id'],
                                                  root__authorlearningactivity__user=request.user)
                     mycourse.short_description = request.POST['course_short_description']
-                    mycourse.html_description = request.POST['html_description']
+                    mycourse.html_description =  bleach.clean(request.POST['html_description'], tags=all_tags, attributes=attrs)
                     mycourse.save()
                     mycourse.root.image = request.POST['image_url']
                     mycourse.root.name = request.POST['course_name']
