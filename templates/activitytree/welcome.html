@@ -128,7 +128,7 @@
           <div class="container">
             <div class="carousel-caption">
               <h1> Aprende a programar de manera interactiva. </h1>
-              <p> Inscribete a alguno de los cursos de python, javascript y c# entre otros. </p>
+              <p> Inscribete a alguno de los cursos o lecciones de python, javascript, c# y otros. </p>
               <p><a class="btn btn-lg btn-primary" href="/courses/" role="button">Ir a los Cursos</a></p>
             </div>
           </div>
@@ -159,10 +159,9 @@
 
         <div class="col-md-8  col-md-offset-2 col-sm-12">
             <h5>Los recursos educativos más recientes: </h5>
-           <div class="card-deck-wrapper">
-               <div id='activities' class="card-columns">
+        <!-- <div class="card-deck-wrapper"> -->
+            <div id='activities' class="card-group">
 
-              </div>
            </div>
         </div>
     </row>
@@ -196,9 +195,9 @@
       <hr class="featurette-divider">
      <div class="row featurette">
         <div class="col-md-7">
-          <h2 class="featurette-heading">Cursos interactivos. <span class="text-muted">Programa los ejercicios directamente
+          <h2 class="featurette-heading">Ejercicios interactivos. <span class="text-muted">Escibr los programas directamente
               en el navegador.</span></h2>
-          <p class="lead">Al practicar lo visto en clase inmediatamente tienes una mejor retención y te surgen dudas más rápidamente.</p>
+          <p class="lead">Al practicar lo que haz visto inmediatamente tienes una mejor retención y te surgen más dudas (eso es bueno).</p>
         </div>
         <div class="col-md-5">
           <img class="featurette-image img-fluid m-x-auto" src="{{ MEDIA_URL }}images/Interactive.png" alt="Generic placeholder image">
@@ -209,9 +208,9 @@
 
       <div class="row featurette">
         <div class="col-md-7 col-md-offset-3">
-          <h2 class="featurette-heading"> Más ejercicios si lo requieres. <span class="text-muted"> Dependiendo de tu desempeño.</span></h2>
-          <p class="lead">El instructor te sugiere nuevos ejercicios y actividades de acuerdo a tus resultados. Tal vez hace
-              falta reforzar esa instrucción que aún te falla.</p>
+          <h2 class="featurette-heading"> Más actividades si asi lo requieres. <span class="text-muted"> Dependiendo de tu desempeño.</span></h2>
+          <p class="lead">El instructor te puede sugerir nuevos ejercicios y actividades de acuerdo a tus resultados. Tal vez te hace
+              falta reforzar esa instrucción que te falla.</p>
         </div>
 
       </div>
@@ -298,7 +297,9 @@
                     level:value.level,
                     type:value.type,
                     tags:value.tags,
-                    has_tags:(value.tags.length > 0)
+                    has_tags:(value.tags.length > 0),
+                    image_url: value.image_url || ""
+
                 });
 
                 $("#activities").append(rendered);
@@ -315,28 +316,29 @@
 
 </script>
 
+
 <script id="activities_template" type="x-tmpl-mustache">
-<div class="card card-block">
-        <h6 class="card-title">
-            <i class="fa fa-[[icon]]"> </i> <a href="[[uri]]">[[title]]</a>
-        </h6>
-  <p class="card-text"> [[description]]</p>
-   [[#has_tags]]
-   <i class="fa fa-tags"></i>
-   [[/has_tags]]
+    <div class="card">
+        [[#image_url]]
+            <img class="card-img-top center-block img-fluid" src="[[image_url]]" alt="[[title]]">
+        [[/image_url]]
+<div class="card-block">
+
+<h6 class="card-title"> <i class="fa fa-[[icon]] text-muted"> </i> <a href="[[uri]]">[[title]]</a>   </h6>
+
+
+
+<p class="card-text"> [[description]]</p>
+
 
               [[#tags]]
               [[#.]]
-              <span class="label label-info"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">#[[.]]</a></span>
+              <span class="label label-primary"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">#[[.]]</a></span>
               [[/.]]
               [[^.]]
               [[/.]]
-              [[/tags]]
-
-
+        [[/tags]]
 </div>
+
 </script>
-
-
-
 {% endblock scripts %}
