@@ -296,7 +296,7 @@
                     title: value.title,
                     uri: value._id,
                     icon:value.icon,
-                    description: value.description,
+                    description: truncate.apply(value.description, [160, true]) ,
                     lang:value.lang,
                     level:value.level,
                     type:value.type,
