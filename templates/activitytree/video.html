@@ -5,6 +5,7 @@
 
    <div class = "row">
        <div class="col-md-10 col-md-offset-1">
+           <h4>{{ video.title }}</h4>
                 <div class="video-player">
                     <div id="player">
 
@@ -60,11 +61,16 @@
     {% endif %}
 
     <row>
-    <div class="col-md-12 ">
+    <div class="col-md-6  m-b-1 col-md-offset-1">
                <div class="card ">
-               <div class="card-header"> {{ video.title }}  </div>
+               <div class="card-header"> Acerca de este recurso  </div>
                <div class="card-block ">
-                        {{ video.content|safe }}
+                    <p class="card-text">{{ video.content|safe }}</p>
+                   <p class="card-text">Autor: <a href="{{ external_url }}" class="card-link">{{video.publisher}}</a> </p>
+
+                    <p class="card-text"><small class="text-muted">Licencia: {{ video.rights }}</small></p>
+
+
                 </div>
                 </div>
 
