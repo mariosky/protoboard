@@ -47,7 +47,6 @@ from eval_code.RedisCola import Cola, Task
 
 from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event,LearningActivityRating
 from activitytree.interaction_handler import SimpleSequencing
-from activitytree.activities import multi_device_activities
 from activitytree.models import FacebookSession, GoogleSession,UserProfile
 from courses import get_activity_tree, update_course_from_json, create_empty_course, upload_course_from_json
 
@@ -1607,12 +1606,6 @@ def logout_view(request):
     return HttpResponseRedirect('/')
 
 
-def update_pool(uri):
-    if uri:
-        if uri in multi_device_activities:
-            for device in multi_device_activities[uri]:
-
-                redis_service.set(device["dispositivo"],{"url":ip_couch + device["url"] ,"estado":device["estado"],"tipo":device["tipo"]} )
 
 
 
