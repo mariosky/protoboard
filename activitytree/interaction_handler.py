@@ -277,7 +277,7 @@ class SimpleSequencing(object):
             n.description, n.image, n.uri, n.lom, n.root_id,
             n.pre_condition_rule,
             n.choice_exit, n.attempt_limit, n.available_from,
-            n.available_until, n.is_container, n.is_visible, n.order_in_container, n.rules
+            n.available_until, n.is_container, n.is_visible, n.order_in_container, n.rules,n.rollup_rule,n.rollup_progress
     FROM activitytree_learningactivity AS n
     WHERE n.id = %s
         UNION ALL
@@ -285,7 +285,7 @@ class SimpleSequencing(object):
          c.description, c.image, c.uri, c.lom, c.root_id,
             c.pre_condition_rule,
             c.choice_exit, c.attempt_limit, c.available_from,
-            c.available_until, c.is_container, c.is_visible, c.order_in_container, c.rules
+            c.available_until, c.is_container, c.is_visible, c.order_in_container, c.rules,c.rollup_rule,c.rollup_progress
     FROM nodes_cte AS p, activitytree_learningactivity AS c
     WHERE c.parent_id = p.id
     )

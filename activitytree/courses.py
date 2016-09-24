@@ -119,7 +119,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
             root.description =activity['learning_activity']['description']
             root.image = activity['learning_activity']['image']
             root.rules = activity['learning_activity']['rules'] or ""
-            root.pre_condition_rule =add_precondition(activity['learning_activity']['rules']) or ""
+            root.pre_condition_rule = add_precondition(activity['learning_activity']['rules']) or ""
             root.rollup_rule  = ('rollup_rule' in activity['learning_activity'] and  activity['learning_activity']['rollup_rule']) or ""
             root.save()
 
@@ -266,5 +266,5 @@ def get_activity_tree(id):
     ss = SimpleSequencing()
     tree = ss.sql_activity_tree(id)
     result = activity_tree(None,tree)
-    print result
+    print 'get',result
     return result
