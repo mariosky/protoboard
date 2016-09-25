@@ -207,6 +207,8 @@ class UserLearningActivity(models.Model):
             return None #raise Exception: expecting a status value
     
     def eval_rollup_rule(self, r):
+
+        #We parse the rule
         try:
             rule = self.parse_rollup_rule(r)
         except:
@@ -229,8 +231,14 @@ class UserLearningActivity(models.Model):
 
         cursor.execute(query)
         r = cursor.fetchone()
+
+        #count: How many are completed?
+        #total: How many are needed?
+
         count , total = r
-        
+
+        #We decide according to rule
+
         if rule['rule_type'] == 'quantifier':
             if rule['quantifier'] == 'All':
                 if count == total:
@@ -261,7 +269,7 @@ class UserLearningActivity(models.Model):
                         return None
                 else:
                     return None
-        
+
         self.progress_status = consequent_status
 
         super(UserLearningActivity, self).save()

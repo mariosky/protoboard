@@ -300,8 +300,10 @@
       this.uri =  uri;
       this.lom = null;
       this.pre_condition_rule  =  null;
-      this.choice_exit = true;
+
       this.rollup_rule = "completed IF All completed";
+
+      this.choice_exit = !is_container ;  //If is container defaults to false, any other true
 
       this.attempt_limit = 100;
       this.rollup_progress = true;

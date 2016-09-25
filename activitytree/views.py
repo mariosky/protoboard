@@ -520,8 +520,6 @@ def path_activity(request,path_id, uri):
         else:
             content = ""
 
-        update_pool(requested_activity.learning_activity.uri)
-
         if (requested_activity.learning_activity.uri).split('/')[2] =='video':
             return render_to_response('activitytree/video.html',
 
