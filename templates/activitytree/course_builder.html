@@ -91,6 +91,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/javascript.js" type="text/javascript" charset="utf-8"></script>
 
+
+/*
+ *  Search result template:
+ *  Shown when a user searches an educational resource to add
+ *  to a learning activity.
+ *
+ /
+
 <script id="activities_template" type="x-tmpl-mustache">
          <div class="panel panel-default container-fluid" style="width:500px">
             <div class="panel-heading row">
@@ -131,58 +139,56 @@
 
 
 
+/*
+ *  Container row template:
+ *  A container node in the activity tree
+ *
+ /
 <script id="container_template" type="x-tmpl-mustache">
-
-        <li id="[[ container_id  ]]"  data-module="container">
-
-
-          <div>
-
-<div class="btn-group">
- <button type="button" class="btn btn-secondary dropdown-toggle clickable" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-     <span class="container_name"> [[container_name]]</span>
-
-  </button>
-  <div class="dropdown-menu">
-
-      <button type="button" class="dropdown-item clickable   containerEditBtn">Ajustes</button>
-     <button type="button" class="dropdown-item clickable   activityEditBtn">Ajustes avanzados</button>
-     <button type="button" class="dropdown-item clickable   containerPrecondition">Reglas de precondición</button>
-     <button type="button" class="dropdown-item clickable   containerRollup"> Regla de Rollup</button>
-     <button type="button" class="dropdown-item danger  text-danger clickable  deleteBtn"> Borrar</button>
-  </div>
-</div>
-
-      </div>
-
-
-
- </li>
-
+<li id="[[ container_id  ]]"  data-module="container">
+    <div>
+        <div class="btn-group">
+         <button type="button" class="btn btn-secondary dropdown-toggle clickable" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             <span class="container_name"> [[container_name]]</span>
+          </button>
+          <div class="dropdown-menu">
+             <button type="button" class="dropdown-item clickable   containerEditBtn">Ajustes</button>
+             <button type="button" class="dropdown-item clickable   activityEditBtn">Ajustes avanzados</button>
+             <button type="button" class="dropdown-item clickable   containerPrecondition">Reglas de precondición</button>
+             <button type="button" class="dropdown-item clickable   containerRollup"> Regla de Rollup</button>
+             <button type="button" class="dropdown-item danger  text-danger clickable  deleteBtn"> Borrar</button>
+          </div>
+         </div>
+    </div>
+</li>
 </script>
 
 
+
+/*
+ *  Learning Activity row template:
+ *  A learning activity node in the activity tree
+ *
+ /
+
 <script id="activity_template" type="x-tmpl-mustache">
-
  <li id="[[ activity_id  ]]"  data-module="activity" class="activity">
-<div>
+    <div>
+        <div class="btn-group">
+         <button type="button" class="btn btn-primary dropdown-toggle clickable" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-file"></i> <span class="container_name">[[activity_name]] </span>
+          </button>
+          <div class="dropdown-menu">
 
-<div class="btn-group">
- <button type="button" class="btn btn-primary dropdown-toggle clickable" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <i class="fa fa-file"></i> <span class="container_name">[[activity_name]] </span>
-  </button>
-  <div class="dropdown-menu">
-
-     <button type="button" class="dropdown-item clickable   containerSearch"><i class="fa fa-search  clickable  containerSearch"></i> Buscar actividad</button>
-     <button type="button" class="dropdown-item clickable   containerEditBtn"><i class="fa fa-cog clickable containerEditBtn"></i> Ajustes</button>
-     <button type="button" class="dropdown-item clickable   activityEditBtn">Ajustes avanzados</button>
-     <button type="button" class="dropdown-item clickable   containerPrecondition">Reglas de precondición</button>
-     <button type="button" class="dropdown-item clickable   containerRollup"><i class="fa fa-calendar  clickable  modalRollup"></i> Regla de Rollup</button>
-     <button type="button" class="dropdown-item danger  clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i> Borrar</button>
-  </div>
-</div>
-
-</div>
+             <button type="button" class="dropdown-item clickable   containerSearch"><i class="fa fa-search  clickable  containerSearch"></i> Buscar actividad</button>
+             <button type="button" class="dropdown-item clickable   containerEditBtn"><i class="fa fa-cog clickable containerEditBtn"></i> Ajustes</button>
+             <button type="button" class="dropdown-item clickable   activityEditBtn">Ajustes avanzados</button>
+             <button type="button" class="dropdown-item clickable   containerPrecondition">Reglas de precondición</button>
+             <button type="button" class="dropdown-item clickable   containerRollup"><i class="fa fa-calendar  clickable  modalRollup"></i> Regla de Rollup</button>
+             <button type="button" class="dropdown-item danger  clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i> Borrar</button>
+          </div>
+        </div>
+    </div>
  </li>
 
 </script>
@@ -220,7 +226,7 @@
 </script>
 
 
-<!-- endbuild -->
+<!--
 
 <script>
 
@@ -238,12 +244,11 @@
         },
     };
 })();
-
-
-
 </script>
+TO DELTE -->
 
- <script src="{{ STATIC_URL }}app/scripts/main.js"></script>
+
+<script src="{{ STATIC_URL }}app/scripts/main.js"></script>
 
 <script type="text/javascript">
   $(function()
@@ -340,7 +345,9 @@
 
 
 
-
+/*
+Main Save Changes
+ */
     $('#saveChangesBtn').on('click', function(){
         var tree = tree_to_json( '#sTree2');
 
@@ -370,6 +377,11 @@
 
 
     });
+
+
+/*
+    Activity Tree to JSON
+*/
 
   function tree_to_json(id_selector){
 
@@ -438,7 +450,7 @@
 function get_course() {
 
 
-              //Wait.show();
+
 
               $.ajax(   {
                     url: '/get_course',
@@ -466,7 +478,7 @@ function get_course() {
                             traverse(data);
                             update_ruleselect();
 
-                           // Wait.hide();
+
 
 
 
@@ -474,7 +486,7 @@ function get_course() {
                         },
                     error: function(jqXHR, textStatus, errorThrown) {
 
-                        Wait.hide();
+
 
                         }
                     });
@@ -671,13 +683,21 @@ function get_course() {
     });
 
 
+
+
   $('body').on('click', '.activityEditBtn', function(){
 
+    //Get container Id
     var container_id  = $( this).parentsUntil('li').parent().attr("id");
 
+    //Get learning activity object
     var learning_activity = learning_activities[container_id];
 
+
+    //Setup MODAL
+
     $('#activityURI').val(container_id);
+
     $('#maxAttempts').val(learning_activity.attempt_limit);
 
     if (learning_activity.choice_exit)
@@ -799,7 +819,7 @@ function get_course() {
       $('#changeURI').val(learning_activity.uri);
 
 
-      $('#container_image').attr("src",learning_activity.uri);
+
 
       if (learning_activity.is_visible)
       {
@@ -1545,38 +1565,30 @@ TO DO: Reuse mustache  templates
 
       <div class="modal-body">
         <div class="form-group">
+          <label for="changeURI">ID Actividad de Aprendizaje</label>
           <input type="text" class="form-control hidden" id="containerId" placeholder="" required pattern="https?://.+" disabled>
         </div>
 
         <div class="form-group">
-          <label for="changeURI">URL</label>
+          <label for="changeURI">URL Recurso Educativo</label>
           <input type="text" class="form-control" id="changeURI" placeholder="" required pattern="https?://.+" >
         </div>
 
         <div class="form-group">
-          <label for="containerName">Display Name</label>
+          <label for="containerName">Nombre de la Actividad</label>
           <input type="text" class="form-control" id="containerName" placeholder="Container Name">
         </div>
 
 
         <div class="form-group">
-          <label for="containerDescription">Description</label>
+          <label for="containerDescription">Descripción</label>
           <textarea class="form-control" id="containerDescription" rows="3"></textarea>
         </div>
         <div class="form-group">
-          <label for="containerImage">Image URL</label>
+          <label for="containerImage">URL de la imagen </label>
           <input type="url" class="form-control" id="containerImage" placeholder="" required pattern="https?://.+">
 
         </div>
-        <div class="row">
-
-          <img id="container_image" src="" alt="..." class="img-rounded fixed-small center-block">
-
-        </div>
-
-
-
-
 
         <div class="form-group">
           <div class="checkbox">
@@ -1584,7 +1596,45 @@ TO DO: Reuse mustache  templates
           </div>
         </div>
 
-      </div><!-- /.modal-body -->
+        <div class="form-group">
+          <label for="containerRollupRule">Regla de Rollup </label>
+          <textarea class="form-control" id="containerRollupRule" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <div class="checkbox">
+            <label> <input id="rollupProgressCb" type="checkbox"> ¿Propagar el Avance? </label>
+          </div>
+        </div>
+
+          <div class="form-group">
+          <div class="checkbox">
+            <label> <input id="activityExitCb" type="checkbox"> ¿Considerar terminada la actividad al salir?   </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="maxAttempts">Máximo número de intentos</label>
+          <input type="url" class="form-control" id="maxAttempts" placeholder="" required pattern="https?://.+" >
+        </div>
+
+        <div class="form-group">
+          <label for="available-from">Disponible desde</label>
+          <div id ="available-from" class="input-group date">
+            <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="available-until">Disponible hasta</label>
+          <div id ="available-until" class="input-group date">
+            <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+          </div>
+        </div>
+
+
+
+      </div><!-- EDIT CONTAINER  .modal-body -->
 
 
       <div class="modal-footer">
