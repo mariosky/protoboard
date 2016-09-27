@@ -662,7 +662,7 @@ function get_course() {
     $('body').on('click', '.containerEditBtn', function(){
 
         var container_id  = $( this).parentsUntil('li').parent().attr("id");
-
+        console.log('.containerEditBtn'+'click'+container_id);
         containerEdit(container_id);
 
     });
@@ -1248,6 +1248,7 @@ var on_click = function(){
     }
 
     function copyUri(id,title,description){
+        console.log(id);
         learning_activities[container_id].name = title;
         learning_activities[container_id].uri = id;
         learning_activities[container_id].description = description;
@@ -1369,7 +1370,7 @@ activities_template
 COPY PASTE FROM search.html
 TO DO: Reuse mustache  templates
 -->
-  <script id="searched_activities_template" type="x-tmpl-mustache">
+<script id="searched_activities_template" type="x-tmpl-mustache">
 <div class="card">
 <div class="card-block">
 
