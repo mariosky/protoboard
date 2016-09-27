@@ -153,9 +153,7 @@
           </button>
           <div class="dropdown-menu">
              <button type="button" class="dropdown-item clickable   containerEditBtn">Ajustes</button>
-             <button type="button" class="dropdown-item clickable   activityEditBtn">Ajustes avanzados</button>
              <button type="button" class="dropdown-item clickable   containerPrecondition">Reglas de precondición</button>
-             <button type="button" class="dropdown-item clickable   containerRollup"> Regla de Rollup</button>
              <button type="button" class="dropdown-item danger  text-danger clickable  deleteBtn"> Borrar</button>
           </div>
          </div>
@@ -182,9 +180,7 @@
 
              <button type="button" class="dropdown-item clickable   containerSearch"><i class="fa fa-search  clickable  containerSearch"></i> Buscar actividad</button>
              <button type="button" class="dropdown-item clickable   containerEditBtn"><i class="fa fa-cog clickable containerEditBtn"></i> Ajustes</button>
-             <button type="button" class="dropdown-item clickable   activityEditBtn">Ajustes avanzados</button>
              <button type="button" class="dropdown-item clickable   containerPrecondition">Reglas de precondición</button>
-             <button type="button" class="dropdown-item clickable   containerRollup"><i class="fa fa-calendar  clickable  modalRollup"></i> Regla de Rollup</button>
              <button type="button" class="dropdown-item danger  clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i> Borrar</button>
           </div>
         </div>
@@ -284,11 +280,8 @@
       this.uri =  uri;
       this.lom = null;
       this.pre_condition_rule  =  null;
-
       this.rollup_rule = "completed IF All completed";
-
       this.choice_exit = !is_container ;  //If is container defaults to false, any other true
-
       this.attempt_limit = 100;
       this.rollup_progress = true;
       this.available_from =  null;
@@ -305,7 +298,6 @@
       learning_activities = [];
       rules_activities = [];
 
-      //alert( {{ course_id }} );
 
       get_course();
 
@@ -664,73 +656,6 @@ function get_course() {
 
 
 
-  $('body').on('click', '.activityEditBtn', function(){
-
-    //Get container Id
-    var container_id  = $( this).parentsUntil('li').parent().attr("id");
-
-    //Get learning activity object
-    var learning_activity = learning_activities[container_id];
-
-
-    //Setup MODAL
-
-    $('#activityURI').val(container_id);
-
-    $('#maxAttempts').val(learning_activity.attempt_limit);
-
-    if (learning_activity.choice_exit)
-      {
-
-        $('#activityExitCb').prop("checked",true);
-
-      }
-      else{
-        $('#activityExitCb').prop("checked",false);
-      }
-
-
-
-    $('#activityRollupProgressCb').val(learning_activity.secondary_text);
-
-
-
-    $('#modalActivity').modal();
-
-  });
-
-  $('body').on('click','#saveActivityBtn',function (e) {
-    var container_id  = $('#activityURI').val();
-
-
-    learning_activities[container_id].attempt_limit = $('#maxAttempts').val();
-
-
-
-    if ( $('#activityRollupProgressCb').prop("checked") == true)
-    {
-      learning_activities[container_id].rollup_progress = true;
-    }
-    else
-    {
-      learning_activities[container_id].rollup_progress = false;
-    }
-
-    if ( $('#activityExitCb').prop("checked") == true)
-    {
-      learning_activities[container_id].choice_exit = true;
-    }
-    else
-    {
-      learning_activities[container_id].choice_exit = false;
-    }
-
-
-
-    $('#modalActivity').modal('hide');
-
-
-  });
 
 
 
@@ -784,31 +709,57 @@ function get_course() {
 
       if (learning_activity.is_container == true)
       {
-        $("#modalContainer").find(".modal-title").text("Edit Container");
+        $("#modalContainer").find(".modal-title").text("Editar Contenedor");
       }
       else{
-        $("#modalContainer").find(".modal-title").text("Edit Activity");
+        $("#modalContainer").find(".modal-title").text("Editar Actividad de Aprendizaje");
 
       }
 
-      $('#containerName').val(learning_activity.name);
-      $('#containerDescription').val(learning_activity.description);
-      $('#containerImage').val(learning_activity.image);
-      $('#containerId').val(container_id);
-      $('#changeURI').val(learning_activity.uri);
+      $('#name').val(learning_activity.name);
+      $('#nescription').val(learning_activity.description);
+      $('#image').val(learning_activity.image);
+      $('#Id').val(container_id);
+      $('#URI').val(learning_activity.uri);
+      $('#rollupRule').val(learning_activity.rollup_rule );
+        if (learning_activity.rollup_progress)
+        {
 
+          $('#rollupProgressCb').prop("checked",true);
 
+        }
+        else{
+
+          $('#rollupProgressCb').prop("checked",false);
+        }
+
+        $('#maxAttempts').val(learning_activity.attempt_limit);
+
+       if (learning_activity.choice_exit)
+      {
+
+        $('#activityExitCb').prop("checked",true);
+
+      }
+      else{
+        $('#activityExitCb').prop("checked",false);
+      }
 
 
       if (learning_activity.is_visible)
       {
 
-        $('#containerIsVisible').prop("checked",true);
+        $('#isVisible').prop("checked",true);
 
       }
       else{
-        $('#containerIsVisible').prop("checked",false);
+        $('#isVisible').prop("checked",false);
       }
+
+    //$('#available-from').val(learning_activity.available_from);
+    //$('#available-until').val(learning_activity.available_until);
+
+
 
       $('#modalContainer').modal();
 
@@ -817,17 +768,17 @@ function get_course() {
 
 
  $('body').on('submit','#formaContainerEdit',function (e) {
-    e.preventDefault();window.alert("Éxito");
-    //submit via ajax
-    // submit with AJAX
-      var container_id  = $('#containerId').val();
-      learning_activities[container_id].name = $('#containerName').val();
-      learning_activities[container_id].description=$('#containerDescription').val();
-      learning_activities[container_id].image=$('#containerImage').val();
-      learning_activities[container_id].uri =  $('#changeURI').val();
-      learning_activities[container_id].available_from = $('#containerName').val();
-      learning_activities[container_id].available_until =  $('#containerSecondaryText').val();
-      learning_activities[container_id].rollup_rule = $('#containerRollupRule').val();
+    e.preventDefault();
+
+      var container_id  = $('#Id').val();
+      learning_activities[container_id].name = $('#name').val();
+      learning_activities[container_id].description=$('#description').val();
+      learning_activities[container_id].image=$('#image').val();
+      learning_activities[container_id].uri =  $('#URI').val();
+      //learning_activities[container_id].available_from = $('#available-from').val();
+      //learning_activities[container_id].available_until =  $('#available-until').val();
+      learning_activities[container_id].rollup_rule = $('#rollupRule').val();
+
 
         if ( $('#rollupProgressCb').prop("checked") == true)
         {
@@ -838,7 +789,7 @@ function get_course() {
       learning_activities[container_id].rollup_progress = false;
         }
 
-        if ( $('#containerIsVisible').prop("checked") == true)
+        if ( $('#isVisible').prop("checked") == true)
         {
       learning_activities[container_id].is_visible = true;
         }
@@ -868,100 +819,9 @@ function get_course() {
 
  });
 
-/*
-    $('body').on('click','#saveContainerEditBtn',function (e) {
-   var validator = $("#comment_form").validate();
-
-   if (validator.form()) {
-       window.alert("Éxito");
-        // submit with AJAX
-          var container_id  = $('#containerId').val();
-      learning_activities[container_id].name = $('#containerName').val();
-      learning_activities[container_id].description=$('#containerDescription').val();
-      learning_activities[container_id].image=$('#containerImage').val();
-      learning_activities[container_id].uri =  $('#changeURI').val();
-      $('#modalContainer').modal('hide');
 
 
-    }
 
-    window.alert("Falló");
-
-      if ( $('#containerIsVisible').prop("checked") == true)
-      {
-        learning_activities[container_id].is_visible = true;
-      }
-      else
-      {
-        learning_activities[container_id].is_visible = false;
-      }
-
-      if   ('{{ course_id }}' == container_id ) //is root container ?
-      {
-            $("#course-title").html(learning_activities[container_id].name + '  <small>'+ learning_activities[container_id].uri  + '</small>'        );
-      }
-      else
-      {
-
-      var escaped_container_id = "#" + container_id.replace( "/", "\\/" );
-
-      $(escaped_container_id).find('.container_name').first().text(learning_activities[container_id].name);
-
-      }
-      update_ruleselect();
-
-     // $('#modalContainer').modal('hide');
-
-    });
-
-
-*/
-
-  $('body').on('click', '.containerFromUntil', function(){
-
-
-    var container_id  = $( this).parentsUntil('li').parent().attr("id");
-    var learning_activity = learning_activities[container_id];
-
-
-    $('#available-from').val(learning_activity.available_from);
-    $('#available-until').val(learning_activity.available_until);
-    $('#FromUntilURI').val(container_id);
-
-
-    $('#available-from').datepicker({
-      autoclose: true
-    });
-    $('#available-until').datepicker({
-      autoclose: true
-    });
-
-    if (learning_activity.is_container == true)
-    {
-      $("#modalFromUntil").find(".modal-title").text("Edit Container");
-    }
-    else{
-      $("#modalFromUntil").find(".modal-title").text("Edit Activity");
-
-    }
-
-
-    $('#modalFromUntil').modal();
-
-
-  });
-
-
-  $('body').on('click','#saveFromUntilBtn',function (e) {
-
-    var container_id  = $('#FromUntilURI').val();
-    learning_activities[container_id].available_from = $('#containerName').val();
-    learning_activities[container_id].available_until =  $('#containerSecondaryText').val();
-
-    $('#modalFromUntil').modal('hide');
-
-
-  });
 
 
   $('body').on('click', '.containerPrecondition', function(){
@@ -1007,59 +867,6 @@ function get_course() {
 
   });
 
-
-  $('body').on('click', '.containerRollup', function(){
-
-
-    var container_id  = $( this).parentsUntil('li').parent().attr("id");
-    var learning_activity = learning_activities[container_id];
-    $('#containerRollupRule').val(learning_activity.rollup_rule );
-    $('#rollupURI').val(container_id);
-
-    if (learning_activity.is_container == true)
-    {
-      $("#modalRollup").find(".modal-title").text("Edit Container");
-    }
-    else{
-      $("#modalRollup").find(".modal-title").text("Edit Activity");
-
-    }
-
-    if (learning_activity.rollup_progress)
-    {
-
-      $('#rollupProgressCb').prop("checked",true);
-
-    }
-    else{
-
-      $('#rollupProgressCb').prop("checked",false);
-    }
-
-
-    $('#modalRollup').modal()
-
-
-  });
-
-
-  $('body').on('click','#saveRollupBtn',function (e) {
-
-    var container_id  = $('#rollupURI').val();
-    learning_activities[container_id].rollup_rule = $('#containerRollupRule').val();
-
-    if ( $('#rollupProgressCb').prop("checked") == true)
-    {
-      learning_activities[container_id].rollup_progress = true;
-    }
-    else
-    {
-      learning_activities[container_id].rollup_progress = false;
-    }
-        $('#modalRollup').modal('hide');
-
-
-  });
 
   $('body').on('click', '#courseDeleteBtn', function(){
 
@@ -1612,42 +1419,42 @@ TO DO: Reuse mustache  templates
 
       <div class="modal-body">
         <div class="form-group">
-          <label for="changeURI">ID Actividad de Aprendizaje</label>
-          <input type="number" class="form-control hidden" id="containerId" placeholder="" disabled>
+          <label for="Id">ID Actividad de Aprendizaje</label>
+          <input type="number" class="form-control hidden" id="Id" placeholder="" disabled>
         </div>
 
         <div class="form-group">
-          <label for="changeURI">URL Recurso Educativo</label>
-          <input type="text" class="form-control" id="changeURI" placeholder="" required pattern="^[\/a-zA-Z0-9._-]+$" >
+          <label for="URI">URL Recurso Educativo</label>
+          <input type="text" class="form-control" id="URI" placeholder="" required pattern="^[\/a-zA-Z0-9._-]+$" >
         </div>
 
         <div class="form-group">
-          <label for="containerName">Nombre de la Actividad</label>
-          <input type="text" class="form-control" id="containerName" placeholder="Container Name">
+          <label for="name">Nombre de la Actividad</label>
+          <input type="text" class="form-control" id="name" placeholder="Container Name">
         </div>
 
 
         <div class="form-group">
-          <label for="containerDescription">Descripción</label>
-          <textarea class="form-control" id="containerDescription" rows="3"></textarea>
+          <label for="description">Descripción</label>
+          <textarea class="form-control" id="description" rows="3"></textarea>
         </div>
         <div class="form-group">
-          <label for="containerImage">URL de la imagen </label>
-          <input type="url" class="form-control" id="containerImage" placeholder="" required pattern="https?://.+">
+          <label for="image">URL de la imagen </label>
+          <input type="url" class="form-control" id="image" placeholder=""  pattern="https?://.+">
 
         </div>
 
         <div class="form-group">
           <div class="checkbox">
-            <label> <input id="containerIsVisible" type="checkbox"> Visible </label>
+            <label> <input id="isVisible" type="checkbox"> Visible </label>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="containerRollupRule">Regla de Rollup </label>
+          <label for="rollupRule">Regla de Rollup </label>
           <small class="form-text text-muted"> <code> (completed | incomplete)   IF ( (All|Any|None) | ( (AT LEAST) (number) (PERCENT | COUNT) ) )
                (completed | incomplete ) </code>  </small>
-          <input type="text"  required class="form-control" id="containerRollupRule" pattern="(completed|incomplete)\s*IF\s*((All|Any|None)|((AT LEAST)\s[0-9]+\s(PERCENT|COUNT)))\s*(completed|incomplete)" >
+          <input type="text"  required class="form-control" id="rollupRule" pattern="(completed|incomplete)\s*IF\s*((All|Any|None)|((AT LEAST)\s[0-9]+\s(PERCENT|COUNT)))\s*(completed|incomplete)" >
 
             <small>Esta regla especifíca como se considerará el progreso de los contenedores con respecto los elementos que contiene.</small>
         </div>
@@ -1677,15 +1484,15 @@ TO DO: Reuse mustache  templates
 
         <div class="form-group">
           <label for="available-from">Disponible desde</label>
-          <div id ="available-from" class="input-group date">
-            <input type="datetime-local" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+          <div  class="input-group date">
+            <input  id ="available-from" type="datetime-local" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
           </div>
         </div>
 
         <div class="form-group">
           <label for="available-until">Disponible hasta</label>
-          <div id ="available-until" class="input-group date">
-            <input type="datetime-local" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+          <div class="input-group date">
+            <input  id ="available-until"  type="datetime-local" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
           </div>
         </div>
         </div>
@@ -1742,143 +1549,6 @@ TO DO: Reuse mustache  templates
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="modal fade" id="modalFromUntil">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Editar Contenedor</h4>
-      </div>
-
-
-      <div class="modal-body">
-
-        <div class="form-group">
-
-          <input type="url" class="form-control hidden" id="FromUntilURI" placeholder="" required pattern="https?://.+" disabled>
-        </div>
-
-
-        <div class="form-group">
-          <label for="available-from">Disponible desde</label>
-          <div id ="available-from" class="input-group date">
-            <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-          </div>
-        </div>
-
-
-
-
-        <div class="form-group">
-          <label for="available-until">Disponible hasta</label>
-          <div id ="available-until" class="input-group date">
-            <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-          </div>
-        </div>
-
-      </div><!-- /.modal-body -->
-
-
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-        <button id="saveFromUntilBtn" type="button" class="btn btn-primary">Guardar los cambios</button>
-      </div>
-
-
-
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-<div class="modal fade" id="modalRollup">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Editar Contenedor</h4>
-      </div>
-
-
-      <div class="modal-body">
-        <div class="form-group">
-
-          <input type="url" class="form-control hidden" id="rollupURI" placeholder="" required pattern="https?://.+" disabled>
-        </div>
-
-        <div class="form-group">
-          <label for="containerRollupRule">Regla de Rollup</label>
-          <textarea class="form-control" id="containerRollupRule" rows="3"></textarea>
-        </div>
-
-        <div class="form-group">
-          <div class="checkbox">
-            <label> <input id="rollupProgressCb" type="checkbox"> Rollup el avance </label>
-          </div>
-        </div>
-
-      </div><!-- /.modal-body -->
-
-
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        <button id="saveRollupBtn" type="button" class="btn btn-primary">Guardar los cambios</button>
-      </div>
-
-
-
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
-<div class="modal fade" id="modalActivity">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Edit Activity</h4>
-      </div>
-
-
-      <div class="modal-body">
-        <div class="form-group">
-
-          <input type="url" class="form-control hidden" id="activityURI" placeholder="" required pattern="https?://.+" disabled>
-        </div>
-
-        <div class="form-group">
-          <label for="maxAttempts">Attempt Limit</label>
-          <input type="url" class="form-control" id="maxAttempts" placeholder="" required pattern="https?://.+" >
-        </div>
-
-
-        <div class="form-group">
-          <div class="checkbox">
-            <label> <input id="activityRollupProgressCb" type="checkbox"> Rollup Progress </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="checkbox">
-            <label> <input id="activityExitCb" type="checkbox"> Choice Exit   </label>
-          </div>
-        </div>
-
-
-      </div><!-- /.modal-body -->
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button id="saveActivityBtn" type="button" class="btn btn-primary">Save changes</button>
-      </div>
-
-
-
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
  <div class="modal fade" id="modalDeleteCourse">
   <div class="modal-dialog">
