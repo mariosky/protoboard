@@ -91,13 +91,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/javascript.js" type="text/javascript" charset="utf-8"></script>
 
+<!--
 
-/*
- *  Search result template:
- *  Shown when a user searches an educational resource to add
- *  to a learning activity.
- *
- /
+ Search result template:
+ Shown when a user searches an educational resource to add
+ to a learning activity.
+
+-->
 
 <script id="activities_template" type="x-tmpl-mustache">
          <div class="panel panel-default container-fluid" style="width:500px">
@@ -139,11 +139,11 @@
 
 
 
-/*
- *  Container row template:
- *  A container node in the activity tree
- *
- /
+<!--
+  Container row template:
+  A container node in the activity tree
+ -->
+
 <script id="container_template" type="x-tmpl-mustache">
 <li id="[[ container_id  ]]"  data-module="container">
     <div>
@@ -165,11 +165,11 @@
 
 
 
-/*
- *  Learning Activity row template:
- *  A learning activity node in the activity tree
- *
- /
+<!--
+   Learning Activity row template:
+   A learning activity node in the activity tree
+
+ -->
 
 <script id="activity_template" type="x-tmpl-mustache">
  <li id="[[ activity_id  ]]"  data-module="activity" class="activity">
@@ -225,27 +225,6 @@
 
 </script>
 
-
-<!--
-
-<script>
-
-     Mustache.tags = ['[[', ']]'];
-
-    var Wait;
-    Wait = Wait || (function () {
-    var pleaseWaitDiv = $('<div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false"><div class="modal-header"><h1>Processing...</h1></div><div class="modal-body"><div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div></div></div>');
-    return {
-        show: function() {
-            pleaseWaitDiv.modal();
-        },
-        hide: function () {
-            pleaseWaitDiv.modal('hide');
-        },
-    };
-})();
-</script>
-TO DELTE -->
 
 
 <script src="{{ STATIC_URL }}app/scripts/main.js"></script>
@@ -835,14 +814,78 @@ function get_course() {
 
     }
 
-    $('body').on('click','#saveContainerEditBtn',function (e) {
 
+
+ $('body').on('submit','#formaContainerEdit',function (e) {
+    e.preventDefault();window.alert("Éxito");
+    //submit via ajax
+    // submit with AJAX
       var container_id  = $('#containerId').val();
       learning_activities[container_id].name = $('#containerName').val();
       learning_activities[container_id].description=$('#containerDescription').val();
       learning_activities[container_id].image=$('#containerImage').val();
       learning_activities[container_id].uri =  $('#changeURI').val();
+      learning_activities[container_id].available_from = $('#containerName').val();
+      learning_activities[container_id].available_until =  $('#containerSecondaryText').val();
+      learning_activities[container_id].rollup_rule = $('#containerRollupRule').val();
 
+        if ( $('#rollupProgressCb').prop("checked") == true)
+        {
+      learning_activities[container_id].rollup_progress = true;
+        }
+        else
+        {
+      learning_activities[container_id].rollup_progress = false;
+        }
+
+        if ( $('#containerIsVisible').prop("checked") == true)
+        {
+      learning_activities[container_id].is_visible = true;
+        }
+        else
+        {
+      learning_activities[container_id].is_visible = false;
+        }
+
+      if   ('{{ course_id }}' == container_id ) //is root container ?
+      {
+            $("#course-title").html(learning_activities[container_id].name + '  <small>'+ learning_activities[container_id].uri  + '</small>'        );
+      }
+      else
+      {
+
+      var escaped_container_id = "#" + container_id.replace( "/", "\\/" );
+
+      $(escaped_container_id).find('.container_name').first().text(learning_activities[container_id].name);
+
+      }
+
+
+
+     update_ruleselect();
+    $('#modalContainer').modal('hide');
+
+
+ });
+
+/*
+    $('body').on('click','#saveContainerEditBtn',function (e) {
+   var validator = $("#comment_form").validate();
+
+   if (validator.form()) {
+       window.alert("Éxito");
+        // submit with AJAX
+          var container_id  = $('#containerId').val();
+      learning_activities[container_id].name = $('#containerName').val();
+      learning_activities[container_id].description=$('#containerDescription').val();
+      learning_activities[container_id].image=$('#containerImage').val();
+      learning_activities[container_id].uri =  $('#changeURI').val();
+      $('#modalContainer').modal('hide');
+
+
+    }
+
+    window.alert("Falló");
 
       if ( $('#containerIsVisible').prop("checked") == true)
       {
@@ -866,12 +909,13 @@ function get_course() {
 
       }
       update_ruleselect();
-      $('#modalContainer').modal('hide');
+
+     // $('#modalContainer').modal('hide');
 
     });
 
 
-
+*/
 
   $('body').on('click', '.containerFromUntil', function(){
 
@@ -1555,8 +1599,11 @@ TO DO: Reuse mustache  templates
 
 
 <div class="modal fade" id="modalContainer">
-  <div class="modal-dialog">
+  <div class="modal-dialog  modal-lg">
     <div class="modal-content">
+
+           <form id="formaContainerEdit" onsubmit="return false">
+
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Edit Container</h4>
@@ -1566,12 +1613,12 @@ TO DO: Reuse mustache  templates
       <div class="modal-body">
         <div class="form-group">
           <label for="changeURI">ID Actividad de Aprendizaje</label>
-          <input type="text" class="form-control hidden" id="containerId" placeholder="" required pattern="https?://.+" disabled>
+          <input type="number" class="form-control hidden" id="containerId" placeholder="" disabled>
         </div>
 
         <div class="form-group">
           <label for="changeURI">URL Recurso Educativo</label>
-          <input type="text" class="form-control" id="changeURI" placeholder="" required pattern="https?://.+" >
+          <input type="text" class="form-control" id="changeURI" placeholder="" required pattern="^[\/a-zA-Z0-9._-]+$" >
         </div>
 
         <div class="form-group">
@@ -1598,49 +1645,60 @@ TO DO: Reuse mustache  templates
 
         <div class="form-group">
           <label for="containerRollupRule">Regla de Rollup </label>
-          <textarea class="form-control" id="containerRollupRule" rows="2"></textarea>
+          <small class="form-text text-muted"> <code> (completed | incomplete)   IF ( (All|Any|None) | ( (AT LEAST) (number) (PERCENT | COUNT) ) )
+               (completed | incomplete ) </code>  </small>
+          <input type="text"  required class="form-control" id="containerRollupRule" pattern="(completed|incomplete)\s*IF\s*((All|Any|None)|((AT LEAST)\s[0-9]+\s(PERCENT|COUNT)))\s*(completed|incomplete)" >
+
+            <small>Esta regla especifíca como se considerará el progreso de los contenedores con respecto los elementos que contiene.</small>
         </div>
 
         <div class="form-group">
           <div class="checkbox">
             <label> <input id="rollupProgressCb" type="checkbox"> ¿Propagar el Avance? </label>
+            <small>Esta regla especifica si el elemento se considerará en la regla de Rollup superior.</small>
           </div>
         </div>
 
           <div class="form-group">
           <div class="checkbox">
             <label> <input id="activityExitCb" type="checkbox"> ¿Considerar terminada la actividad al salir?   </label>
+            <small> Indicará si la actividad se considerará como completa cuando el usuario navege a otra actividad.
+             </small>
           </div>
         </div>
 
         <div class="form-group">
           <label for="maxAttempts">Máximo número de intentos</label>
-          <input type="url" class="form-control" id="maxAttempts" placeholder="" required pattern="https?://.+" >
+          <input type="number"   class="form-control" id="maxAttempts" placeholder="" >
         </div>
+
+        <div class="form-inline">
+
 
         <div class="form-group">
           <label for="available-from">Disponible desde</label>
           <div id ="available-from" class="input-group date">
-            <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+            <input type="datetime-local" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
           </div>
         </div>
 
         <div class="form-group">
           <label for="available-until">Disponible hasta</label>
           <div id ="available-until" class="input-group date">
-            <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+            <input type="datetime-local" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
           </div>
         </div>
-
+        </div>
 
 
       </div><!-- EDIT CONTAINER  .modal-body -->
 
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button id="saveContainerEditBtn" type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <button id="saveContainerEditBtn" type="submit" class="btn btn-primary">Guardar los cambios</button>
       </div>
+               </form>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -1650,7 +1708,7 @@ TO DO: Reuse mustache  templates
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Edit Container</h4>
+        <h4 class="modal-title">Editar Contenedor</h4>
       </div>
 
 
@@ -1658,11 +1716,11 @@ TO DO: Reuse mustache  templates
 
         <div class="form-group">
 
-          <input type="url" class="form-control hidden" id="PreconditionURI" placeholder="" required pattern="https?://.+" disabled>
+          <input type="url" class="form-control hidden" id="PreconditionURI" placeholder="" required pattern="[\/a-zA-Z0-9._-]+" >
         </div>
 
         <div class="form-group">
-            <label for="editor1">Precondition Rule</label>
+            <label for="editor1">Regla de precondición</label>
             <div class="myeditor" id="editor1">
 
             </div>
@@ -1675,10 +1733,10 @@ TO DO: Reuse mustache  templates
 
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button id="savePreconditionBtn" type="button" class="btn btn-primary">Save changes</button>
+        <button id="savePreconditionBtn" type="submit" class="btn btn-primary">Save changes</button>
       </div>
 
-
+        </form>
 
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
