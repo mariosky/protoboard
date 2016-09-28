@@ -721,6 +721,7 @@ function get_course() {
       $('#name').val(learning_activity.name);
       $('#description').val(learning_activity.description);
       $('#image').val(learning_activity.image);
+      $('#maxAttempts').val(learning_activity.attempt_limit);
       $('#Id').val(container_id);
       $('#URI').val(learning_activity.uri);
       $('#rollupRule').val(learning_activity.rollup_rule );
@@ -780,6 +781,7 @@ function get_course() {
       //learning_activities[container_id].available_from = $('#available-from').val();
       //learning_activities[container_id].available_until =  $('#available-until').val();
       learning_activities[container_id].rollup_rule = $('#rollupRule').val();
+      learning_activities[container_id].attempt_limit = $('#maxAttempts').val();
 
 
         if ( $('#rollupProgressCb').prop("checked") == true)
