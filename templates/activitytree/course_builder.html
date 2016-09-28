@@ -707,6 +707,8 @@ function get_course() {
     {
       var learning_activity = learning_activities[container_id];
 
+        console.log(learning_activity);
+
       if (learning_activity.is_container == true)
       {
         $("#modalContainer").find(".modal-title").text("Editar Contenedor");
@@ -1421,7 +1423,7 @@ TO DO: Reuse mustache  templates
       <div class="modal-body">
         <div class="form-group">
           <label for="Id">ID Actividad de Aprendizaje</label>
-          <input type="number" class="form-control hidden" id="Id" placeholder="" disabled>
+          <input type="text" class="form-control hidden" id="Id" placeholder="" disabled>
         </div>
 
         <div class="form-group">
