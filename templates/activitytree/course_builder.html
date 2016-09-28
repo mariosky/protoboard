@@ -791,6 +791,16 @@ function get_course() {
       learning_activities[container_id].rollup_progress = false;
         }
 
+        if ( $('#activityExitCb').prop("checked") == true)
+        {
+      learning_activities[container_id].choice_exit = true;
+        }
+        else
+        {
+      learning_activities[container_id].choice_exit = false;
+        }
+
+
         if ( $('#isVisible').prop("checked") == true)
         {
       learning_activities[container_id].is_visible = true;
