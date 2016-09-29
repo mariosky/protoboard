@@ -332,11 +332,9 @@ class SimpleSequencing(object):
         children.sort(key=lambda x: x['order_in_container'])
         if children:
             for activity in children:
-                print activity['name']
-                print "activity_precondition_before_rule",activity['pre_condition']
+
                 exec(activity['pre_condition_rule'])
                 activity['pre_condition_rule']=""
-                print activity['name'],"activity_precondition_after_rule", activity['pre_condition']
 
                 #Add the activities to the xml_tree with the new precondition
 
