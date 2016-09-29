@@ -353,6 +353,9 @@ class SimpleSequencing(object):
                 elif activity['num_attempts'] >=  int(activity['attempt_limit']) and int(activity['attempt_limit']) < 100:
                     activity['pre_condition'] = 'disabled'
 
+                elif activity['pre_condition']  == 'disabled':
+                    ET.SubElement(xml_tree, 'item', self.xml_row(activity))
+                    continue
 
                 # Recursevly call get nav attaching the current activity to the
                 # xml_tree we are constructing
