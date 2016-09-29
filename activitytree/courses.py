@@ -184,7 +184,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
         learning_activity.choice_exit = activity['learning_activity']['choice_exit']
         learning_activity.rules = activity['learning_activity']['rules'] or ""
         learning_activity.rollup_progress= ('rollup_progress' in activity['learning_activity'] and activity['learning_activity']['rollup_progress']) or ""
-        print activity['learning_activity']['name'],activity['learning_activity']['choice_exit']
+        print activity['learning_activity']['name'].encode('utf-8'),activity['learning_activity']['choice_exit']
         learning_activity.save()
 
     if 'children' in activity:

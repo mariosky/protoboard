@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #!/usr/bin/env python
 
 from activitytree.models import ActivityTree, UserLearningActivity
@@ -331,11 +332,9 @@ class SimpleSequencing(object):
         children.sort(key=lambda x: x['order_in_container'])
         if children:
             for activity in children:
-                print activity['name']
-                print "activity_precondition_before_rule",activity['pre_condition']
+
                 exec(activity['pre_condition_rule'])
                 activity['pre_condition_rule']=""
-                print activity['name'],"activity_precondition_after_rule", activity['pre_condition']
 
                 #Add the activities to the xml_tree with the new precondition
 
@@ -354,6 +353,9 @@ class SimpleSequencing(object):
                 elif activity['num_attempts'] >=  int(activity['attempt_limit']) and int(activity['attempt_limit']) < 100:
                     activity['pre_condition'] = 'disabled'
 
+                elif activity['pre_condition']  == 'disabled':
+                    ET.SubElement(xml_tree, 'item', self.xml_row(activity))
+                    continue
 
                 # Recursevly call get nav attaching the current activity to the
                 # xml_tree we are constructing
