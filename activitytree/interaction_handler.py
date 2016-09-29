@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 
-from activitytree.models import ActivityTree, UserLearningActivity
+from activitytree.models import ActivityTree, UserLearningActivity, User
 from django.utils import timezone
 import xml.etree.ElementTree as ET
 
@@ -54,6 +54,7 @@ class NotAllowed(Error):
 class SimpleSequencing(object):
     def __init__(self):
         self.RECORDS = {}
+        self.USER = None
     def set_current(self, ula):
         atree = ula.get_atree()
 
@@ -265,8 +266,10 @@ class SimpleSequencing(object):
                 print recs
             finally:
                 cur.close()
+
         for record in recs:
             self.RECORDS[ record["id"]] = dict(record)
+        self.USER = User.objects.get(pk=user_id)
 
 
 
@@ -370,6 +373,15 @@ class SimpleSequencing(object):
             if uri == v["uri"]:
                 return v[attr]
         return None
+
+    def get_user_attr(self,attr):
+        if hasattr(self.USER, attr):
+            return getattr(self.USER, attr)
+        elif hasattr(self.USER, 'learningstyleinventory'):
+            return getattr(self.USER.learningstyleinventory, attr)
+        else:
+            return None
+
 
     def get_nav(self,root):
         self.RECORDS = {}

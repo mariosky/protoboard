@@ -41,20 +41,34 @@ def add_precondition(rule):
         if 'conditions' in rule:
             try:
                 rule = ast.literal_eval(rule)
-                if len(rule['conditions']) > 0:
+                if rule['conditions']:
                     string = ''
                     first = True
                     for elem in rule['conditions']:
-                        if first and (elem['option'] == 'num_attempts' or elem['option'] == 'objective_measure'):
-                            first = False
-                            string += "if self.get_attr('{0}','{1}') {2} {3}".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
-                        elif first:
-                            first = False
-                            string += "if self.get_attr('{0}','{1}') {2} '{3}'".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
-                        elif elem['option'] == 'num_attempts' or elem['option'] == 'objective_measure':
-                            string += " and self.get_attr('{0}','{1}') {2} {3}".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
+                        if 'user' in elem:
+
+                            if first:
+                                first = False
+                                string += "if self.get_user_attr('{0}') {1} {2}".format(elem['option'],
+                                                                                 elem['operator'], elem['value'])
+                            else:
+                                string += "and self.get_user_attr('{0}') {1} {2}".format(elem['option'],
+                                                                                elem['operator'], elem['value'])
+
                         else:
-                            string += " and self.get_attr('{0}','{1}') {2} '{3}'".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
+                            if first and (elem['option'] == 'num_attempts' or elem['option'] == 'objective_measure'):
+                                first = False
+                                string += "if self.get_attr('{0}','{1}') {2} {3}".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
+                            elif first:
+                                first = False
+                                string += "if self.get_attr('{0}','{1}') {2} '{3}'".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
+                            elif elem['option'] == 'num_attempts' or elem['option'] == 'objective_measure':
+                                string += " and self.get_attr('{0}','{1}') {2} {3}".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
+                            else:
+                                string += " and self.get_attr('{0}','{1}') {2} '{3}'".format(elem['uri'], elem['option'], elem['operator'], elem['value'])
+
+
+
                     else:
                         if 'precondition' in rule:
                             string += ":\n" \

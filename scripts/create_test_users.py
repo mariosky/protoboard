@@ -47,3 +47,5 @@ for e in estudiantes:
     lsu.save()
     print e[0], e[1]
 
+
+
