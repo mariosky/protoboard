@@ -1,13 +1,6 @@
 {% extends "activitytree/base.html" %}
 
 
-
-
-
-
-
-
-
 {% block content %}
 
    <div class="row">
@@ -16,7 +9,7 @@
            <h3>Biblioteca <small><a href="/activitybuilder"> agrega más recursos</a> </small> </h3>
              <form class="form" role="search" onsubmit="return false">
                 <div class="input-group">
-                    <input id="txtname" class="form-control" type="text" placeholder="Search by Title or #Tag" name="srch-term" >
+                    <input id="txtname" class="form-control" type="text" placeholder="Buscar por titulo o  #hashtag" name="srch-term" >
                    <span class="input-group-btn">
                <button class="btn  btn-secondary" type="submit">Search</button>
                         </span>
@@ -118,20 +111,14 @@
 </script>
  <script src="{{ STATIC_URL }}app/scripts/main.js"></script>
 <script type="text/javascript">
-
-
-
-
-
     $(function(){
         //if parameter is submitted on url, gets the value and send it to loadifurl function, if not, loads all activities in db
-
         loadURI("#txtname" );
         var query = { page:0, type: {'type': {'$in':['text','video','quiz','prog']} } };
         query = load_query("#txtname",query);
         $("#actividades").empty();
         buscar(query);
-        console.log("buscar - new");
+
 
 
 
@@ -212,11 +199,6 @@ var on_click = function(){
         buscar(query);
     }
 
-
-    //when copytoclipboard button is clicked, a message is displayed to user
-copyToClipboard  = function(text){
-        window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
-        }
 
    });
 
