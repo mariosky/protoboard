@@ -269,7 +269,7 @@
           </p>
         </div>
         <div class="col-md-5">
-          <img class="featurette-image img-fluid m-x-auto" src="{{ MEDIA_URL }}images/hacker-1569744_640.jpg" alt="Voluntarios">
+          <img class="featurette-image img-fluid m-x-auto" src="{{MEDIA_URL}}images/hacker-1569744_640.jpg" alt="Voluntarios">
         </div>
       </div>
 
@@ -309,7 +309,7 @@
                     title: value.title,
                     uri: value._id,
                     icon:value.icon,
-                    description: truncate.apply(value.description, [160, true]) ,
+                    description: truncate.apply(value.description, [160, true]),
                     lang:value.lang,
                     level:value.level,
                     type:value.type,

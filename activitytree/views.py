@@ -23,7 +23,6 @@ from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
 
-
 import logging
 import xml.etree.ElementTree as ET
 import uuid
@@ -38,54 +37,54 @@ from pymongo import MongoClient
 
 import redis
 import bleach
-from bleach_whitelist import all_tags,attrs
+from bleach_whitelist import all_tags, attrs
 
 from backends import AuthAlreadyAssociated, google_query_me, facebook_query_me
 from mongo_activities import Activity
 
 from eval_code.RedisCola import Cola, Task
 
-from activitytree.models import Course,ActivityTree,UserLearningActivity, LearningActivity, ULA_Event,LearningActivityRating
+from activitytree.models import Course, ActivityTree, UserLearningActivity, LearningActivity, ULA_Event, \
+    LearningActivityRating
 from activitytree.interaction_handler import SimpleSequencing
-from activitytree.models import FacebookSession, GoogleSession,UserProfile
+from activitytree.models import FacebookSession, GoogleSession, UserProfile
 from courses import get_activity_tree, update_course_from_json, create_empty_course, upload_course_from_json
 
-ip_couch = "http://127.0.0.1:5984"
-redis_service = redis.Redis("127.0.0.1")
 logger = logging.getLogger(__name__)
+
 
 def welcome(request):
     courses = Course.objects.all()
 
-    if request.user.is_authenticated() and request.user != 'AnonymousUser' :
-         return render_to_response('activitytree/welcome.html',
-            {'courses':courses
-                #, 'plus_scope':plus_scope,'plus_id':plus_id
-            },
-                context_instance=RequestContext(request))
+    if request.user.is_authenticated() and request.user != 'AnonymousUser':
+        return render_to_response('activitytree/welcome.html',
+                                  {'courses': courses
+                                   # , 'plus_scope':plus_scope,'plus_id':plus_id
+                                   },
+                                  context_instance=RequestContext(request))
     else:
         return render_to_response('activitytree/welcome.html',
-            {'user_name':None,'courses':courses
-                #,'plus_scope':plus_scope,'plus_id':plus_id
-                 },
-                context_instance=RequestContext(request))
+                                  {'user_name': None, 'courses': courses
+                                   # ,'plus_scope':plus_scope,'plus_id':plus_id
+                                   },
+                                  context_instance=RequestContext(request))
+
 
 def course_list(request):
     courses = Course.objects.all()
 
-    if request.user.is_authenticated() and request.user != 'AnonymousUser' :
-         return render_to_response('activitytree/course_list.html',
-            {'courses':courses
-                #, 'plus_scope':plus_scope,'plus_id':plus_id
-            },
-                context_instance=RequestContext(request))
+    if request.user.is_authenticated() and request.user != 'AnonymousUser':
+        return render_to_response('activitytree/course_list.html',
+                                  {'courses': courses
+                                   # , 'plus_scope':plus_scope,'plus_id':plus_id
+                                   },
+                                  context_instance=RequestContext(request))
     else:
         return render_to_response('activitytree/course_list.html',
-            {'user_name':None,'courses':courses
-                #,'plus_scope':plus_scope,'plus_id':plus_id
-                 },
-                context_instance=RequestContext(request))
-
+                                  {'user_name': None, 'courses': courses
+                                   # ,'plus_scope':plus_scope,'plus_id':plus_id
+                                   },
+                                  context_instance=RequestContext(request))
 
 
 def instructor(request):
@@ -115,53 +114,56 @@ def student(request):
     else:
         return HttpResponseRedirect('/login/?next=%s' % request.path)
 
+
 def my_courses(request):
-    if request.user.is_authenticated() and request.user != 'AnonymousUser' :
-         courses = LearningActivity.objects.filter(authorlearningactivity__user = request.user, root= None )
+    if request.user.is_authenticated() and request.user != 'AnonymousUser':
+        courses = LearningActivity.objects.filter(authorlearningactivity__user=request.user, root=None)
 
-         return render_to_response('activitytree/instructor_home.html',
-                                   {'courses':courses
-                #, 'plus_scope':plus_scope,'plus_id':plus_id
-            },
-                                   context_instance=RequestContext(request))
-    else:
-        return HttpResponseRedirect('/login/?next=%s' % request.path)
-
-
-def my_enrolled_courses(request, status = 'incomplete'): #view that determines if user has unfinished courses, and returns the courses
-    if request.user.is_authenticated() and request.user != 'AnonymousUser' :
-
-        courses = Course.objects.filter(root__userlearningactivity__user=request.user, root__userlearningactivity__progress_status=status)
-        return render_to_response('activitytree/my_enrolled_courses.html',
-                                  {'courses': courses, 'status':status},
+        return render_to_response('activitytree/instructor_home.html',
+                                  {'courses': courses
+                                   # , 'plus_scope':plus_scope,'plus_id':plus_id
+                                   },
                                   context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/login/?next=%s' % request.path)
 
 
-def course_info(request,course_id):
+def my_enrolled_courses(request,
+                        status='incomplete'):
+    """view that determines if user has unfinished courses, and returns the courses"""
+
+    if request.user.is_authenticated() and request.user != 'AnonymousUser':
+
+        courses = Course.objects.filter(root__userlearningactivity__user=request.user,
+                                        root__userlearningactivity__progress_status=status)
+        return render_to_response('activitytree/my_enrolled_courses.html',
+                                  {'courses': courses, 'status': status},
+                                  context_instance=RequestContext(request))
+    else:
+        return HttpResponseRedirect('/login/?next=%s' % request.path)
+
+
+def course_info(request, course_id):
     # Must have credentials
     if request.method == 'GET':
         mycourse = get_object_or_404(Course, root_id=course_id)
-        if request.user.is_authenticated() and request.user != 'AnonymousUser' :
-            #Are yoy taking this course?
-            #Are the instructor?
+        if request.user.is_authenticated() and request.user != 'AnonymousUser':
+            # Are yoy taking this course?
+            # Are the instructor?
 
             return render_to_response('activitytree/course_info.html',
-                { 'course_id':course_id, 'course':mycourse
-                },
-                context_instance=RequestContext(request))
+                                      {'course_id': course_id, 'course': mycourse
+                                       },
+                                      context_instance=RequestContext(request))
         else:
-            #Genearal AnonymousUser info
+            # Genearal AnonymousUser info
             return render_to_response('activitytree/course_info.html',
-                              {'course_id': course_id, 'course': mycourse
-                               },
-                              context_instance=RequestContext(request))
+                                      {'course_id': course_id, 'course': mycourse
+                                       },
+                                      context_instance=RequestContext(request))
 
     else:
         return HttpResponseNotFound('<h1>HTTP METHOD IS NOT VALID</h1>')
-
-
 
 
 def course(request, course_id=None):
@@ -205,7 +207,8 @@ def course(request, course_id=None):
                     mycourse = get_object_or_404(Course, root_id=request.POST['course_id'],
                                                  root__authorlearningactivity__user=request.user)
                     mycourse.short_description = request.POST['course_short_description']
-                    mycourse.html_description =  bleach.clean(request.POST['html_description'], tags=all_tags, attributes=attrs)
+                    mycourse.html_description = bleach.clean(request.POST['html_description'], tags=all_tags,
+                                                             attributes=attrs)
                     mycourse.save()
                     mycourse.root.image = request.POST['image_url']
                     mycourse.root.name = request.POST['course_name']
@@ -241,9 +244,9 @@ def course(request, course_id=None):
         return HttpResponseRedirect('/login/?next=%s' % request.path)
 
 
-#@csrf_exempt
+# @csrf_exempt
 @login_required()
-def upload_activity(request): #view that receives activity data and saves it to database
+def upload_activity(request):  # view that receives activity data and saves it to database
     if request.is_ajax():
         if request.method == 'POST':
             actividad = json.loads(request.body)
@@ -251,54 +254,56 @@ def upload_activity(request): #view that receives activity data and saves it to 
             db = client.protoboard_database
             activities_collection = db.activities_collection
 
-
-
             if actividad['type'] == 'video':
                 try:
                     if not actividad['_id']:
                         ## Is a new activity Generate a Global ID
                         actividad['_id'] = '/activity/video/' + str(uuid.uuid1())
                     actividad['content'] = actividad['description']
-                    message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=True)
+                    message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']},
+                                                           actividad, upsert=True)
                     return HttpResponse(json.dumps(message))
                 except pymongo.errors.DuplicateKeyError, e:
                     if e.code == 11000:
-                        return HttpResponse(json.dumps({'message':'Duplicated'}))
+                        return HttpResponse(json.dumps({'message': 'Duplicated'}))
             elif actividad['type'] == 'text':
                 try:
                     if not actividad['_id']:
                         ## Is a new activity Generate a Global ID
-                        actividad['_id'] = '/activity/' +  str(uuid.uuid1())
-                    message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=True)
+                        actividad['_id'] = '/activity/' + str(uuid.uuid1())
+                    message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']},
+                                                           actividad, upsert=True)
                     return HttpResponse(json.dumps(message))
                 except pymongo.errors.DuplicateKeyError, e:
                     if e.code == 11000:
-                        return HttpResponse(json.dumps({'message':'Duplicated'}))
+                        return HttpResponse(json.dumps({'message': 'Duplicated'}))
             elif actividad['type'] == 'quiz':
                 try:
                     if not actividad['_id']:
                         ## Is a new activity Generate a Global ID
-                        actividad['_id'] = '/test/' +  str(uuid.uuid1())
+                        actividad['_id'] = '/test/' + str(uuid.uuid1())
 
-                    message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=True)
+                    message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']},
+                                                           actividad, upsert=True)
                     return HttpResponse(json.dumps(message))
                 except pymongo.errors.DuplicateKeyError, e:
                     if e.code == 11000:
-                        return HttpResponse(json.dumps({'message':'Duplicated'}))
+                        return HttpResponse(json.dumps({'message': 'Duplicated'}))
             elif actividad['type'] == 'prog':
                 try:
                     if not actividad['_id']:
                         ## Is a new activity Generate a Global ID
-                        actividad['_id'] = '/program/' +  str(uuid.uuid1())
+                        actividad['_id'] = '/program/' + str(uuid.uuid1())
                     ## We need to clean the HTML to be rendered to users
-                    actividad['instructions'] = bleach.clean(actividad['instructions'],tags=all_tags,attributes=attrs)
+                    actividad['instructions'] = bleach.clean(actividad['instructions'], tags=all_tags, attributes=attrs)
                     actividad['HTML_code'] = bleach.clean(actividad['HTML_code'], tags=all_tags, attributes=attrs)
 
-                    message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']}, actividad, upsert=True)
+                    message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']},
+                                                           actividad, upsert=True)
                     return HttpResponse(json.dumps(message))
                 except pymongo.errors.DuplicateKeyError, e:
                     if e.code == 11000:
-                        return HttpResponse(json.dumps({'message':'Duplicated'}))
+                        return HttpResponse(json.dumps({'message': 'Duplicated'}))
             else:
                 "Tipo de actividad no existe"
         elif request.method == 'GET':
@@ -310,8 +315,8 @@ def upload_activity(request): #view that receives activity data and saves it to 
 def build_quiz(request):
     if request.method == 'POST':
         return HttpResponse('Error')
-    #GET:
-    #Edit course
+    # GET:
+    # Edit course
     elif request.method == 'GET':
         return render_to_response('activitytree/quiz_builder.html', context_instance=RequestContext(request))
     else:
@@ -350,7 +355,7 @@ def activity_builder(request):
         return HttpResponseNotFound('<h1>Course ID not Found</h1>')
 
 
-def dashboard(request,path_id):
+def dashboard(request, path_id):
     if request.user.is_authenticated():
         if request.method == 'GET':
 
@@ -360,55 +365,54 @@ def dashboard(request,path_id):
             # Gets the Learning Activity object from uri
             requested_activity = None
             try:
-                requested_activity = UserLearningActivity.objects.get(learning_activity__id = path_id ,user = request.user )
+                requested_activity = UserLearningActivity.objects.get(learning_activity__id=path_id, user=request.user)
             except (ObjectDoesNotExist, IndexError) as e:
                 requested_activity = None
-
 
             if not requested_activity:
                 return HttpResponseNotFound('<h1>Activity not found</h1>')
 
             # Gets the root of the User Learning Activity
-            root = UserLearningActivity.objects.get(learning_activity_id = path_id ,user = request.user )
+            root = UserLearningActivity.objects.get(learning_activity_id=path_id, user=request.user)
 
-                # Exits last activity, and sets requested activity as current
-                # if choice_exit consider complete
+            # Exits last activity, and sets requested activity as current
+            # if choice_exit consider complete
 
-            print 'root' ,root.learning_activity.uri
+            print 'root', root.learning_activity.uri
             _XML = s.get_nav(root)
-            #Escape for javascript
-            XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')        #navegation_tree = s.nav_to_html(nav)
+            # Escape for javascript
+            XML = ET.tostring(_XML, 'utf-8').replace('"', r'\"')  # navegation_tree = s.nav_to_html(nav)
 
-            return render_to_response('activitytree/dashboard.html', {'XML_NAV':XML,
-                                    'children': requested_activity.get_children(),
-                                    'uri':root.learning_activity.uri,
-                                    'root':root.learning_activity.uri ,
-                                                                      'root_id':'/%s'% (root.learning_activity.id,)
+            return render_to_response('activitytree/dashboard.html', {'XML_NAV': XML,
+                                                                      'children': requested_activity.get_children(),
+                                                                      'uri': root.learning_activity.uri,
+                                                                      'root': root.learning_activity.uri,
+                                                                      'root_id': '/%s' % (root.learning_activity.id,)
 
-                                                                    },
+                                                                      },
                                       context_instance=RequestContext(request))
 
 
 @csrf_protect
 def course_view(request):
-    if request.user.is_authenticated() and request.user != 'AnonymousUser' and request.method == 'POST' :
-        rpc=json.loads(request.body)
+    if request.user.is_authenticated() and request.user != 'AnonymousUser' and request.method == 'POST':
+        rpc = json.loads(request.body)
 
-        if rpc["method"]=='post_course':
-            update_course_from_json(json_tree= rpc['params'][0], user= request.user)
-            result= {"result":"added" , "error": None, "id": 1}
+        if rpc["method"] == 'post_course':
+            update_course_from_json(json_tree=rpc['params'][0], user=request.user)
+            result = {"result": "added", "error": None, "id": 1}
             return HttpResponse(json.dumps(result), content_type='application/javascript')
 
-        elif rpc["method"]=='get_course':
-            rpc=json.loads(request.body)
-            course = get_activity_tree( rpc['params'][0])
+        elif rpc["method"] == 'get_course':
+            rpc = json.loads(request.body)
+            course = get_activity_tree(rpc['params'][0])
             return HttpResponse(json.dumps(course), content_type='application/javascript')
     else:
-        result= {"result":"added" , "error": "Error", "id": 1}
+        result = {"result": "added", "error": "Error", "id": 1}
         return HttpResponse(json.dumps(result), content_type='application/javascript')
 
 
-def path_activity(request,path_id, uri):
+def path_activity(request, path_id, uri):
     learning_activity = None
     try:
         learning_activity = LearningActivity.objects.get(pk=path_id)
@@ -416,153 +420,154 @@ def path_activity(request,path_id, uri):
         return HttpResponseNotFound('<h1>Learning Activity not found</h1>')
 
     if request.user.is_authenticated():
-        root=None
+        root = None
         s = SimpleSequencing()
         requested_activity = None
 
         if request.method == 'GET':
             try:
-                requested_activity = UserLearningActivity.objects.get(learning_activity__id = path_id ,user = request.user )
+                requested_activity = UserLearningActivity.objects.get(learning_activity__id=path_id, user=request.user)
             except (ObjectDoesNotExist, IndexError) as e:
                 requested_activity = None
 
-
             # The requested_activity was NOT FOUND
-            if not requested_activity: # The requested_activity was not found
-            # Maybe a
-            # 'start' REQUEST?
-            #    if 'nav' in request.GET and request.GET['nav'] == 'start':
+            if not requested_activity:  # The requested_activity was not found
+                # Maybe a
+                # 'start' REQUEST?
+                #    if 'nav' in request.GET and request.GET['nav'] == 'start':
                 if learning_activity and learning_activity.root is None:
-                    s.assignActivityTree(request.user,learning_activity)
-                    requested_activity = UserLearningActivity.objects.get(learning_activity__id = path_id ,user = request.user)
-                    _set_current(request,requested_activity, requested_activity, s)
-                    return HttpResponseRedirect( '/%s%s'% (path_id , uri))
-                #If is not a root learning activity then sorry, not found
+                    s.assignActivityTree(request.user, learning_activity)
+                    requested_activity = UserLearningActivity.objects.get(learning_activity__id=path_id,
+                                                                          user=request.user)
+                    _set_current(request, requested_activity, requested_activity, s)
+                    return HttpResponseRedirect('/%s%s' % (path_id, uri))
+                # If is not a root learning activity then sorry, not found
                 else:
                     return HttpResponseNotFound('<h1>Activity not found</h1>')
-            #Else NOT FOUND
-                #else:
-                #    return HttpResponseNotFound('<h1>Activity not found</h1>')
+                    # Else NOT FOUND
+                    # else:
+                    #    return HttpResponseNotFound('<h1>Activity not found</h1>')
 
             # We have a valid requested_activity, lets handle OTHER NAVIGATION REQUEST
 
-            #Get root of activity tree
-            root = UserLearningActivity.objects.filter(learning_activity = requested_activity.learning_activity.get_root(),
-                                                       user = request.user )[0]
+            # Get root of activity tree
+            root = \
+            UserLearningActivity.objects.filter(learning_activity=requested_activity.learning_activity.get_root(),
+                                                user=request.user)[0]
             # 'continue' REQUEST?
             if requested_activity.is_root() and 'nav' in request.GET and request.GET['nav'] == 'continue':
                 current_activity = s.get_current(requested_activity)
                 if current_activity:
                     requested_activity = current_activity
-                    return HttpResponseRedirect(  '/%s%s'% (requested_activity.learning_activity.id, requested_activity.learning_activity.uri))
+                    return HttpResponseRedirect(
+                        '/%s%s' % (requested_activity.learning_activity.id, requested_activity.learning_activity.uri))
                 else:
-                    _set_current(request,requested_activity, root, s, progress_status=None)
-            #Else is a
+                    _set_current(request, requested_activity, root, s, progress_status=None)
+            # Else is a
             # 'choice' REQUEST
             else:
-                _set_current(request,requested_activity, root, s)
+                _set_current(request, requested_activity, root, s)
 
         if request.method == 'POST' and 'nav_event' in request.POST:
-            #Get root of activity tree
+            # Get root of activity tree
             root = None
             try:
-                root = UserLearningActivity.objects.get(learning_activity__id = path_id ,user = request.user )
+                root = UserLearningActivity.objects.get(learning_activity__id=path_id, user=request.user)
             except (ObjectDoesNotExist, IndexError) as e:
                 root = None
-
 
             if not root or not root.is_root():
                 return HttpResponseNotFound('<h1>Activity not found</h1>')
 
             current_activity = s.get_current(root)
 
-
             if current_activity.learning_activity.choice_exit:
-                progress_status='completed'
+                progress_status = 'completed'
             else:
                 progress_status = None
 
+
+            next_uri = None
             # 'next' REQUEST
             if request.POST['nav_event'] == 'next':
                 # Go TO NEXT ACTIVITY
-                s.exit( current_activity, progress_status = progress_status)
+                s.exit(current_activity, progress_status=progress_status)
                 next_uri = s.get_next(root, current_activity)
 
             # 'prev' REQUEST
             elif request.POST['nav_event'] == 'prev':
                 # Go TO PREV ACTIVITY
-                s.exit( current_activity, progress_status = progress_status)
+                s.exit(current_activity, progress_status=progress_status)
                 next_uri = s.get_prev(root, current_activity)
 
-            #No more activities ?
+            # No more activities ?
             if next_uri is None:
-
-                return HttpResponseRedirect( '/%s%s'% (root.learning_activity.id , root.learning_activity.uri))
+                return HttpResponseRedirect('/%s%s' % (root.learning_activity.id, root.learning_activity.uri))
 
             else:
-                next_activity = UserLearningActivity.objects.get(learning_activity__id = next_uri ,user = request.user )
-                return HttpResponseRedirect( '/%s%s'% (next_activity.learning_activity.id,next_activity.learning_activity.uri))
-
+                next_activity = UserLearningActivity.objects.get(learning_activity__id=next_uri, user=request.user)
+                return HttpResponseRedirect(
+                    '/%s%s' % (next_activity.learning_activity.id, next_activity.learning_activity.uri))
 
         _XML = s.get_nav(root)
-        #Escape for javascript
-        XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
+        # Escape for javascript
+        XML = ET.tostring(_XML, 'utf-8').replace('"', r'\"')
 
         breadcrumbs = s.get_current_path(requested_activity)
 
-        rating_totals = LearningActivityRating.objects.filter(learning_activity__uri=requested_activity.learning_activity.uri).aggregate(Count('rating'), Avg('rating'))
+        rating_totals = LearningActivityRating.objects.filter(
+            learning_activity__uri=requested_activity.learning_activity.uri).aggregate(Count('rating'), Avg('rating'))
 
         activity_content = Activity.get(requested_activity.learning_activity.uri)
-
 
         if activity_content and 'content' in activity_content:
             content = activity_content['content']
         else:
             content = ""
 
-        if (requested_activity.learning_activity.uri).split('/')[2] =='video':
+        if (requested_activity.learning_activity.uri).split('/')[2] == 'video':
             return render_to_response('activitytree/video.html',
 
-                                  {'XML_NAV':XML,
-                                   'uri':requested_activity.learning_activity.uri,
-                                   'uri_id':requested_activity.learning_activity.id,
-                                   'video':activity_content,
-                                   'current_site':get_current_site(request),
+                                      {'XML_NAV': XML,
+                                       'uri': requested_activity.learning_activity.uri,
+                                       'uri_id': requested_activity.learning_activity.id,
+                                       'video': activity_content,
+                                       'current_site': get_current_site(request),
 
-                                   'breadcrumbs':breadcrumbs,
-                                   'root':requested_activity.learning_activity.get_root().uri,
-                                   'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
-                                    'rating_totals':rating_totals },
-                                    context_instance=RequestContext(request))
+                                       'breadcrumbs': breadcrumbs,
+                                       'root': requested_activity.learning_activity.get_root().uri,
+                                       'root_id': '/%s' % requested_activity.learning_activity.get_root().id,
+                                       'rating_totals': rating_totals},
+                                      context_instance=RequestContext(request))
 
         elif requested_activity.learning_activity.is_container:
 
             return render_to_response('activitytree/container_list.html',
 
                                       {
-                                   'XML_NAV':XML,
-                                   'children': requested_activity.get_children(),
-                                   'uri_id':'/%s'% requested_activity.learning_activity.id,
-                                    'uri': requested_activity.learning_activity.uri,
-                                    'current_site': get_current_site(request),
-                                   'content':content,
-                                   'root':requested_activity.learning_activity.get_root().uri,
-                                   'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
-                                   'breadcrumbs':breadcrumbs},
+                                          'XML_NAV': XML,
+                                          'children': requested_activity.get_children(),
+                                          'uri_id': '/%s' % requested_activity.learning_activity.id,
+                                          'uri': requested_activity.learning_activity.uri,
+                                          'current_site': get_current_site(request),
+                                          'content': content,
+                                          'root': requested_activity.learning_activity.get_root().uri,
+                                          'root_id': '/%s' % requested_activity.learning_activity.get_root().id,
+                                          'breadcrumbs': breadcrumbs},
                                       context_instance=RequestContext(request))
         else:
             return render_to_response('activitytree/activity.html',
 
-                                  {'XML_NAV':XML,
-                                   'uri':requested_activity.learning_activity.uri,
-                                   'current_site': get_current_site(request),
-                                   'uri_id':'/%s'% requested_activity.learning_activity.id,
-                                   'content':content,
-                                   'root':requested_activity.learning_activity.get_root().uri,
-                                   'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
-                                   'breadcrumbs':breadcrumbs,
-                                    'rating_totals':rating_totals},
-                                    context_instance=RequestContext(request))
+                                      {'XML_NAV': XML,
+                                       'uri': requested_activity.learning_activity.uri,
+                                       'current_site': get_current_site(request),
+                                       'uri_id': '/%s' % requested_activity.learning_activity.id,
+                                       'content': content,
+                                       'root': requested_activity.learning_activity.get_root().uri,
+                                       'root_id': '/%s' % requested_activity.learning_activity.get_root().id,
+                                       'breadcrumbs': breadcrumbs,
+                                       'rating_totals': rating_totals},
+                                      context_instance=RequestContext(request))
 
     else:
         return HttpResponseRedirect('/login/?next=%s' % request.path)
@@ -582,149 +587,151 @@ def activity(request, uri=None):
         else:
             content = ""
 
-
-        if (uri).split('/')[1] =='video':
+        if (uri).split('/')[1] == 'video':
 
             return render_to_response('activitytree/video.html',
 
-                                  {'XML_NAV':None,
-                                   'uri':uri,
-                                   'video':activity_content,
-                                   'current_site': get_current_site(request),
-                                   'breadcrumbs':None },
-                                    context_instance=RequestContext(request))
+                                      {'XML_NAV': None,
+                                       'uri': uri,
+                                       'video': activity_content,
+                                       'current_site': get_current_site(request),
+                                       'breadcrumbs': None},
+                                      context_instance=RequestContext(request))
 
 
         else:
             return render_to_response('activitytree/activity.html',
 
-                                  {'XML_NAV':None,
-                                   'uri':uri,
-                                   'content':content,
-                                   'breadcrumbs':None,
-                                   'current_site': get_current_site(request),
-                                   },
-                                    context_instance=RequestContext(request))
+                                      {'XML_NAV': None,
+                                       'uri': uri,
+                                       'content': content,
+                                       'breadcrumbs': None,
+                                       'current_site': get_current_site(request),
+                                       },
+                                      context_instance=RequestContext(request))
 
 
-        # Do something for anonymous users.    
+            # Do something for anonymous users.
 
-def path_test(request,path_id, uri):
 
+def path_test(request, path_id, uri):
     if request.user.is_authenticated():
         s = SimpleSequencing()
         try:
-            requested_activity = UserLearningActivity.objects.get(learning_activity__id = path_id ,user = request.user )
+            requested_activity = UserLearningActivity.objects.get(learning_activity__id=path_id, user=request.user)
         except ObjectDoesNotExist as e:
             return HttpResponseNotFound('<h1>Learning Activity not found</h1>')
 
         root = None
 
         try:
-            root = UserLearningActivity.objects.get(learning_activity = requested_activity.learning_activity.get_root() ,user = request.user )
+            root = UserLearningActivity.objects.get(learning_activity=requested_activity.learning_activity.get_root(),
+                                                    user=request.user)
         except (ObjectDoesNotExist, IndexError) as e:
-                return HttpResponseNotFound('<h1>Path not found</h1>')
+            return HttpResponseNotFound('<h1>Path not found</h1>')
 
         feedback = None
-        #IF 100 attempts there is really no limit
+        # IF 100 attempts there is really no limit
         if requested_activity.learning_activity.attempt_limit < 100:
-            attempts_left = requested_activity.learning_activity.attempt_limit-requested_activity.num_attempts
+            attempts_left = requested_activity.learning_activity.attempt_limit - requested_activity.num_attempts
         else:
             attempts_left = 100
 
         if request.method == 'GET':
             # Exits last activity, and sets requested activity as current
             # if choice_exit consider complete
-            _set_current(request,requested_activity, root, s, progress_status=None)
+            _set_current(request, requested_activity, root, s, progress_status=None)
 
         elif request.method == 'POST':
-            if 'check' in request.POST and attempts_left :
+            if 'check' in request.POST and attempts_left:
 
-                    quiz = Activity.get(requested_activity.learning_activity.uri)
+                quiz = Activity.get(requested_activity.learning_activity.uri)
 
-                    feedback = _check_quiz(request.POST, quiz)
-                    # Updates the current Learning Activity
-                    objective_measure = float(feedback['total_correct'])/len(quiz['questions'])*100
-                    if feedback['total_correct'] >= int(quiz['satisfied_at_least']):
-                        progress_status='completed'
-                    else:
-                        progress_status='incomplete'
+                feedback = _check_quiz(request.POST, quiz)
+                # Updates the current Learning Activity
+                objective_measure = float(feedback['total_correct']) / len(quiz['questions']) * 100
+                if feedback['total_correct'] >= int(quiz['satisfied_at_least']):
+                    progress_status = 'completed'
+                else:
+                    progress_status = 'incomplete'
 
-                    s.update(requested_activity, progress_status = progress_status, attempt=True, objective_measure=objective_measure)
-                    # IF 100 attempts there is really no limit
-                    if requested_activity.learning_activity.attempt_limit < 100:
-                        attempts_left-=1
+                s.update(requested_activity, progress_status=progress_status, attempt=True,
+                         objective_measure=objective_measure)
+                # IF 100 attempts there is really no limit
+                if requested_activity.learning_activity.attempt_limit < 100:
+                    attempts_left -= 1
 
 
-       # Gets the current navegation tree as HTML
+                    # Gets the current navegation tree as HTML
 
         _XML = s.get_nav(root)
-        #Escape for javascript
-        XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')        #navegation_tree = s.nav_to_html(nav)
-        rating_totals = LearningActivityRating.objects.filter(learning_activity__uri=requested_activity.learning_activity.uri).aggregate(Count('rating'), Avg('rating'))
+        # Escape for javascript
+        XML = ET.tostring(_XML, 'utf-8').replace('"', r'\"')  # navegation_tree = s.nav_to_html(nav)
+        rating_totals = LearningActivityRating.objects.filter(
+            learning_activity__uri=requested_activity.learning_activity.uri).aggregate(Count('rating'), Avg('rating'))
 
         breadcrumbs = s.get_current_path(requested_activity)
-
-
 
         test = Activity.get(requested_activity.learning_activity.uri)
         if feedback:
             for q in test['questions']:
                 if q['id'] in feedback:
                     q['feedback'] = feedback[q['id']]
-                    if q['interaction']  in ['choiceInteraction','simpleChoice']:
-                        q['feedback_options'] = zip(q['options'], feedback[q['id']]['user_answer'], feedback[q['id']]['checked'])
+                    if q['interaction'] in ['choiceInteraction', 'simpleChoice']:
+                        q['feedback_options'] = zip(q['options'], feedback[q['id']]['user_answer'],
+                                                    feedback[q['id']]['checked'])
 
-        return render_to_response('activitytree/'+(requested_activity.learning_activity.uri).split('/')[1]+'.html',
-                                  {'XML_NAV':XML,
-                                   'uri':requested_activity.learning_activity.uri,
-                                   'content':test,
-                                   'feedback':feedback,
-                                   'breadcrumbs':breadcrumbs,
-                                   'uri_id':'/%s'% requested_activity.learning_activity.id,
+        return render_to_response('activitytree/' + (requested_activity.learning_activity.uri).split('/')[1] + '.html',
+                                  {'XML_NAV': XML,
+                                   'uri': requested_activity.learning_activity.uri,
+                                   'content': test,
+                                   'feedback': feedback,
+                                   'breadcrumbs': breadcrumbs,
+                                   'uri_id': '/%s' % requested_activity.learning_activity.id,
 
+                                   'attempt_limit': requested_activity.learning_activity.attempt_limit,
+                                   'num_attempts': requested_activity.num_attempts,
+                                   'attempts_left': attempts_left,
+                                   'root_id': '/%s' % requested_activity.learning_activity.get_root().id,
 
-                                   'attempt_limit':requested_activity.learning_activity.attempt_limit,
-                                  'num_attempts': requested_activity.num_attempts,
-                                   'attempts_left':attempts_left ,
-                                   'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
+                                   'root': requested_activity.learning_activity.get_root().uri},
 
-                                    'root':requested_activity.learning_activity.get_root().uri},
-
-                                    context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
     else:
 
         return HttpResponseRedirect('/login/?next=%s' % request.path)
         # Do something for anonymous users.
 
 
-def path_program(request,path_id, uri):
+def path_program(request, path_id, uri):
     if request.user.is_authenticated():
         s = SimpleSequencing()
         try:
-            requested_activity = UserLearningActivity.objects.get(learning_activity__id = path_id ,user = request.user )
+            requested_activity = UserLearningActivity.objects.get(learning_activity__id=path_id, user=request.user)
         except ObjectDoesNotExist as e:
             return HttpResponseNotFound('<h1>Learning Activity not found</h1>')
         root = None
         try:
-            root = UserLearningActivity.objects.get(learning_activity = requested_activity.learning_activity.get_root() ,user = request.user )
+            root = UserLearningActivity.objects.get(learning_activity=requested_activity.learning_activity.get_root(),
+                                                    user=request.user)
         except (ObjectDoesNotExist, IndexError) as e:
-                return HttpResponseNotFound('<h1>Path not found</h1>')
+            return HttpResponseNotFound('<h1>Path not found</h1>')
 
         if request.method == 'GET':
             # Exits last activity, and sets requested activity as current
             # if choice_exit consider complete
-            _set_current(request,requested_activity, root, s)
+            _set_current(request, requested_activity, root, s)
 
         # Gets the current navegation tree as XML
         _XML = s.get_nav(root)
-        #Escape for javascript
-        XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
+        # Escape for javascript
+        XML = ET.tostring(_XML, 'utf-8').replace('"', r'\"')
 
         breadcrumbs = s.get_current_path(requested_activity)
         program_quiz = Activity.get(requested_activity.learning_activity.uri)
 
-        rating_totals = LearningActivityRating.objects.filter(learning_activity__uri=requested_activity.learning_activity.uri).aggregate(Count('rating'), Avg('rating'))
+        rating_totals = LearningActivityRating.objects.filter(
+            learning_activity__uri=requested_activity.learning_activity.uri).aggregate(Count('rating'), Avg('rating'))
 
         ## TO DO:
         ## The activity was not found
@@ -734,17 +741,17 @@ def path_program(request,path_id, uri):
         else:
             template = 'activitytree/program.html'
 
-        return render_to_response(template, {'program_quiz':program_quiz,
-                                                                    'activity_uri':requested_activity.learning_activity.uri,
-                                                                    'uri_id':'%s'% requested_activity.learning_activity.id,
-                                                                    'uri':requested_activity.learning_activity.uri,
-                                                                    'current_site': get_current_site(request),
-                                                                    'breadcrumbs':breadcrumbs,
-                                                                    'root':requested_activity.learning_activity.get_root().uri,
-                                                                    'root_id':'/%s'% requested_activity.learning_activity.get_root().id,
-                                                                    'XML_NAV':XML, 'rating_totals':rating_totals
-                                                                    },
-                                      context_instance=RequestContext(request))
+        return render_to_response(template, {'program_quiz': program_quiz,
+                                             'activity_uri': requested_activity.learning_activity.uri,
+                                             'uri_id': '%s' % requested_activity.learning_activity.id,
+                                             'uri': requested_activity.learning_activity.uri,
+                                             'current_site': get_current_site(request),
+                                             'breadcrumbs': breadcrumbs,
+                                             'root': requested_activity.learning_activity.get_root().uri,
+                                             'root_id': '/%s' % requested_activity.learning_activity.get_root().id,
+                                             'XML_NAV': XML, 'rating_totals': rating_totals
+                                             },
+                                  context_instance=RequestContext(request))
 
     else:
         return HttpResponseRedirect('/login/?next=%s' % request.path)
@@ -752,7 +759,6 @@ def path_program(request,path_id, uri):
 
 @transaction.atomic
 def program(request, uri):
-
     program_quiz = Activity.get(request.path)
 
     if program_quiz:
@@ -762,14 +768,14 @@ def program(request, uri):
         else:
             template = 'activitytree/program.html'
 
-        return render_to_response(template, {           'program_quiz':program_quiz,
-                                                        'activity_uri':request.path,
-                                                        'current_site': get_current_site(request),
-                                                        'breadcrumbs':None,
-                                                        'root':None,
-                                                        'XML_NAV':None
-                                                        },
-                          context_instance=RequestContext(request))
+        return render_to_response(template, {'program_quiz': program_quiz,
+                                             'activity_uri': request.path,
+                                             'current_site': get_current_site(request),
+                                             'breadcrumbs': None,
+                                             'root': None,
+                                             'XML_NAV': None
+                                             },
+                                  context_instance=RequestContext(request))
     else:
 
         return HttpResponseNotFound('<h1>Activity not found</h1>')
@@ -777,19 +783,18 @@ def program(request, uri):
 
 @transaction.atomic
 def test(request, uri):
-
     quiz = Activity.get(request.path)
     if quiz:
 
         template = 'activitytree/test.html'
         return render_to_response(template, {
-                                                        'content': quiz,
-                                                        'activity_uri':request.path,
-                                                        'breadcrumbs':None,
-                                                        'root':None,
-                                                        'XML_NAV':None
-                                                        },
-                          context_instance=RequestContext(request))
+            'content': quiz,
+            'activity_uri': request.path,
+            'breadcrumbs': None,
+            'root': None,
+            'XML_NAV': None
+        },
+                                  context_instance=RequestContext(request))
 
     else:
 
@@ -805,7 +810,7 @@ def test_program(request):
             unit_test = data['unit_test']
             correct_code = data['correct_code']
             try:
-                logger.error("REDIS:"+os.environ['REDIS_HOST'])
+                logger.error("REDIS:" + os.environ['REDIS_HOST'])
                 server = Cola(data['lang'])
                 task = {"id": None, "method": "exec", "params": {"code": correct_code, "test": unit_test}}
                 logger.error(task)
@@ -821,14 +826,12 @@ def test_program(request):
 
 @csrf_protect
 def execute_queue(request):
-    #logger.error("VIEW execute_queue")
+    # logger.error("VIEW execute_queue")
     if request.method == 'POST':
-        rpc=json.loads(request.body)
+        rpc = json.loads(request.body)
         import os
 
-
-        logger.error("REDIS:"+os.environ['REDIS_HOST'])
-
+        logger.error("REDIS:" + os.environ['REDIS_HOST'])
 
         code = rpc["params"][0]
         activity_uri = rpc["method"]
@@ -844,50 +847,49 @@ def execute_queue(request):
         if request.user.is_authenticated() and 'id' in rpc:
             ula = None
             try:
-                ula = UserLearningActivity.objects.get(learning_activity__id=rpc["id"], user=request.user )
+                ula = UserLearningActivity.objects.get(learning_activity__id=rpc["id"], user=request.user)
 
                 s = SimpleSequencing()
                 s.update(ula)
                 ## Mouse Dynamics
-                event = ULA_Event.objects.create(ULA=ula,context=rpc)
+                event = ULA_Event.objects.create(ULA=ula, context=rpc)
                 event.save()
             except ObjectDoesNotExist:
-                #Assume is a non assigned program
+                # Assume is a non assigned program
 
                 pass
 
-        rpc['task_id']=task_id
+        rpc['task_id'] = task_id
 
-        result= {"result":"added" , "error": None, "id": task_id}
+        result = {"result": "added", "error": None, "id": task_id}
         return HttpResponse(json.dumps(result), content_type='application/javascript')
 
 
 @csrf_protect
 def javascript_result(request):
     if request.method == 'POST':
-        rpc=json.loads(request.body)
+        rpc = json.loads(request.body)
 
         code = rpc["params"][0]
         activity_uri = rpc["method"]
         program_test = Activity.get(activity_uri)
 
-
         if request.user.is_authenticated() and 'id' in rpc:
             ula = None
             try:
-                ula = UserLearningActivity.objects.get(learning_activity__id=rpc["id"], user=request.user )
+                ula = UserLearningActivity.objects.get(learning_activity__id=rpc["id"], user=request.user)
 
                 s = SimpleSequencing()
                 if rpc['result'] == 'Success':
-                    s.update(ula, progress_status='completed', objective_measure=30,attempt=True)
+                    s.update(ula, progress_status='completed', objective_measure=30, attempt=True)
                 else:
-                    s.update(ula,attempt=True)
-                #s.update(ula)
+                    s.update(ula, attempt=True)
+                # s.update(ula)
                 ## Mouse Dynamics
-                event = ULA_Event.objects.create(ULA=ula,context=rpc)
+                event = ULA_Event.objects.create(ULA=ula, context=rpc)
                 event.save()
             except ObjectDoesNotExist:
-                #Assume is a non assigned program
+                # Assume is a non assigned program
                 pass
 
         return HttpResponse(json.dumps({}), content_type='application/javascript')
@@ -896,9 +898,9 @@ def javascript_result(request):
 @csrf_protect
 def get_result(request):
     if request.method == 'POST':
-        rpc=json.loads(request.body)
-        #We only need the Task identifier
-        #TO DO:
+        rpc = json.loads(request.body)
+        # We only need the Task identifier
+        # TO DO:
         # No ID, Task Not Found
         task_id = rpc["id"]
         t = Task(id=task_id)
@@ -911,32 +913,33 @@ def get_result(request):
 
             if t.result:
                 print t.result
-                string_json=""
+                string_json = ""
                 try:
-                    string_json = json.loads( t.result[0])
+                    string_json = json.loads(t.result[0])
                 except Exception, e:
                     print "string_json exception", e
 
                 if request.user.is_authenticated():
                     try:
-                        ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["params"][0], user=request.user)
+                        ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["params"][0],
+                                                               user=request.user)
                         s = SimpleSequencing()
 
                         if string_json['result'] == 'Success':
-                            s.update(ula, progress_status='completed', objective_measure=30,attempt=True)
+                            s.update(ula, progress_status='completed', objective_measure=30, attempt=True)
 
                         else:
-                            s.update(ula,attempt=True)
+                            s.update(ula, attempt=True)
                     except Exception, e:
                         print "update ULA", e
 
-                result = json.dumps({'result':string_json, 'outcome': t.result[1]})
-                return HttpResponse(result , content_type='application/javascript')
+                result = json.dumps({'result': string_json, 'outcome': t.result[1]})
+                return HttpResponse(result, content_type='application/javascript')
 
             else:
-                return HttpResponse(json.dumps({'outcome':-1}) , content_type='application/javascript')
+                return HttpResponse(json.dumps({'outcome': -1}), content_type='application/javascript')
         else:
-            return HttpResponse(json.dumps({'outcome':-1}) , content_type='application/javascript')
+            return HttpResponse(json.dumps({'outcome': -1}), content_type='application/javascript')
 
 
 def _get_learning_activity(uri):
@@ -957,26 +960,25 @@ def _get_ula(request, uri):
 
     # Let's get the requested user learning activity
     try:
-        requested_activity = UserLearningActivity.objects.filter(learning_activity__uri = uri ,user = request.user )[0]
+        requested_activity = UserLearningActivity.objects.filter(learning_activity__uri=uri, user=request.user)[0]
     except (ObjectDoesNotExist, IndexError) as e:
-        #User does not have a tracking activity tree
-        #If the requested activity is the root of a tree
-        #register the user to it
+        # User does not have a tracking activity tree
+        # If the requested activity is the root of a tree
+        # register the user to it
         return None
     return requested_activity
 
 
-def _set_current(request,requested_activity, root, s, progress_status=None):
+def _set_current(request, requested_activity, root, s, progress_status=None):
     # Sets the requested  Learning Activity as current
 
-    atree = ActivityTree.objects.get(user=request.user,root_activity=root.learning_activity.get_root())
+    atree = ActivityTree.objects.get(user=request.user, root_activity=root.learning_activity.get_root())
 
     # Exits last activty
     if atree.current_activity:
         if request.method == 'GET' and atree.current_activity.learning_activity.choice_exit:
-
-            progress_status='completed'
-        s.exit( atree.current_activity, progress_status=progress_status)
+            progress_status = 'completed'
+        s.exit(atree.current_activity, progress_status=progress_status)
     s.set_current(requested_activity)
 
 
@@ -989,10 +991,10 @@ def _check_quiz(post_dict, quiz):
         interaction = q['interaction']
         checked[id] = {}
 
-        if interaction in ['choiceInteraction','simpleChoice']:
+        if interaction in ['choiceInteraction', 'simpleChoice']:
             if unicode(id) in answerDict:
                 user = answerDict[unicode(id)]
-                user_index = [ int(a.split("_")[-1]) for a in user]
+                user_index = [int(a.split("_")[-1]) for a in user]
                 user_answer = [int(i in user_index) for i in range(len(answer))]
 
                 if answer == user_answer:
@@ -1000,18 +1002,19 @@ def _check_quiz(post_dict, quiz):
                 else:
                     checked[id]['correct'] = 0
 
-                checked[id]['checked'] = [ (user_answer[i]==answer[i]) and (answer[i]==1) for i in range(len(answer))]
-                checked[id]['user_answer']  = user_answer
+                checked[id]['checked'] = [(user_answer[i] == answer[i]) and (answer[i] == 1) for i in
+                                          range(len(answer))]
+                checked[id]['user_answer'] = user_answer
             else:
                 checked[id]['correct'] = 0
                 checked[id]['checked'] = [False for _ in range(len(answer))]
-                checked[id]['user_answer']  = [0 for _ in range(len(answer))]
+                checked[id]['user_answer'] = [0 for _ in range(len(answer))]
         elif interaction in ['textEntryInteraction']:
             if unicode(id) in answerDict:
                 user_answer = answerDict[unicode(id)][0]
                 checked[id]['user_answer'] = user_answer
 
-                if user_answer in answer :
+                if user_answer in answer:
                     checked[id]['correct'] = 1
                 else:
                     checked[id]['correct'] = 0
@@ -1029,10 +1032,10 @@ def _check_survey(post_dict, quiz):
         interaction = q['interaction']
         checked[id] = {}
 
-        if interaction in ['choiceInteraction','simpleChoice']:
+        if interaction in ['choiceInteraction', 'simpleChoice']:
             if unicode(id) in answerDict:
                 user = answerDict[unicode(id)]
-                user_index = [ int(a.split("_")[-1]) for a in user]
+                user_index = [int(a.split("_")[-1]) for a in user]
                 user_answer = [int(i in user_index) for i in range(len(answer))]
 
                 if 1 in user_answer:
@@ -1040,18 +1043,19 @@ def _check_survey(post_dict, quiz):
                 else:
                     checked[id]['correct'] = 0
 
-                checked[id]['checked'] = [ (user_answer[i]==answer[i]) and (answer[i]==1) for i in range(len(answer))]
-                checked[id]['user_answer']  = user_answer
+                checked[id]['checked'] = [(user_answer[i] == answer[i]) and (answer[i] == 1) for i in
+                                          range(len(answer))]
+                checked[id]['user_answer'] = user_answer
             else:
                 checked[id]['correct'] = 0
                 checked[id]['checked'] = [False for _ in range(len(answer))]
-                checked[id]['user_answer']  = [0 for _ in range(len(answer))]
+                checked[id]['user_answer'] = [0 for _ in range(len(answer))]
         elif interaction in ['textEntryInteraction']:
             if unicode(id) in answerDict:
                 user_answer = answerDict[unicode(id)][0]
                 checked[id]['user_answer'] = user_answer
 
-                if True :
+                if True:
                     checked[id]['correct'] = 1
                 else:
                     checked[id]['correct'] = 0
@@ -1060,15 +1064,13 @@ def _check_survey(post_dict, quiz):
     return checked
 
 
-def login_view(request,template_name='registration/login.html',  redirect_field_name=REDIRECT_FIELD_NAME):
+def login_view(request, template_name='registration/login.html', redirect_field_name=REDIRECT_FIELD_NAME):
     context = {}
-
 
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
-
 
         if user is not None:
             if user.is_active:
@@ -1080,7 +1082,7 @@ def login_view(request,template_name='registration/login.html',  redirect_field_
                     return HttpResponseRedirect('/')
 
 
-                # Redirect to a success page.
+                    # Redirect to a success page.
             else:
 
                 context['errors'] = 'User is locked'
@@ -1088,7 +1090,7 @@ def login_view(request,template_name='registration/login.html',  redirect_field_
         else:
             context['errors'] = 'Invalid Login'
 
-        return TemplateResponse(request, template_name,context, current_app=None)
+        return TemplateResponse(request, template_name, context, current_app=None)
 
     else:
         if 'next' in request.GET:
@@ -1097,18 +1099,19 @@ def login_view(request,template_name='registration/login.html',  redirect_field_
             request.session['after_login'] = request.GET['next']
             context['GOOGLE_APP_ID'] = settings.GOOGLE_APP_ID
 
-        return TemplateResponse(request, template_name,context ,current_app=None)
+        return TemplateResponse(request, template_name, context, current_app=None)
 
 
 def ajax_vote(request, type, uri):
     activity_uri = request.path[len('/ajax_vote'):]
     if request.user.is_authenticated():
         if request.method == 'POST':
-            activity = UserLearningActivity.objects.filter(learning_activity__uri = activity_uri ,user = request.user )[0]
+            activity = UserLearningActivity.objects.filter(learning_activity__uri=activity_uri, user=request.user)[0]
             activity.user_rating = int(request.POST['rate'])
             activity.save()
 
-        vals = UserLearningActivity.objects.filter(learning_activity__uri = activity_uri).aggregate(Avg('user_rating'),Count('user_rating'))
+        vals = UserLearningActivity.objects.filter(learning_activity__uri=activity_uri).aggregate(Avg('user_rating'),
+                                                                                                  Count('user_rating'))
         response_data = {'avg': vals['user_rating__avg'], 'votes': vals['user_rating__count']}
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
@@ -1120,49 +1123,49 @@ def facebook_get_login(request):
     state = request.session.session_key
 
     if 'next' in request.GET:
-        request.session['after_login']=request.GET['next']
+        request.session['after_login'] = request.GET['next']
 
-    #Ask for access_token, with email,public_profile,user_friends permitions
-    #First we construct the petition
+    # Ask for access_token, with email,public_profile,user_friends permitions
+    # First we construct the petition
     url = """https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&state=%s&scope=%s""" % \
-              (settings.FACEBOOK_APP_ID ,settings.FACEBOOK_REDIRECT_URL,
-               state,"email,public_profile,user_friends"
-                )
-    #We redirect to facebook
+          (settings.FACEBOOK_APP_ID, settings.FACEBOOK_REDIRECT_URL,
+           state, "email,public_profile,user_friends"
+           )
+    # We redirect to facebook
     return HttpResponseRedirect(url)
 
 
 def facebook_login(request):
-    #We recieve the answer
+    # We recieve the answer
     # If an error
     if 'error' in request.GET:
         return HttpResponseRedirect('/')
     # If not an error get the access code and state variable
     code = request.GET['code']
 
-    #We could later validate if state is the same
+    # We could later validate if state is the same
     UID = request.GET['state']
 
-    #With the code and our credentials we can now get the access token
-    args = { "client_id" : settings.FACEBOOK_APP_ID,
-             "redirect_uri" : settings.FACEBOOK_REDIRECT_URL ,
-             "client_secret" : settings.FACEBOOK_APP_SECRET,
-             "code" : code }
+    # With the code and our credentials we can now get the access token
+    args = {"client_id": settings.FACEBOOK_APP_ID,
+            "redirect_uri": settings.FACEBOOK_REDIRECT_URL,
+            "client_secret": settings.FACEBOOK_APP_SECRET,
+            "code": code}
 
     # We get the access token
-    response = urllib.urlopen( "https://graph.facebook.com/oauth/access_token?" + urllib.urlencode(args))
+    response = urllib.urlopen("https://graph.facebook.com/oauth/access_token?" + urllib.urlencode(args))
 
     access_token_response = urlparse.parse_qs(response.read())
     print access_token_response
 
     if request.user.is_authenticated():
         # LINK ACCOUNT
-        profile = facebook_query_me(access_token_response['access_token'][0],'email')
+        profile = facebook_query_me(access_token_response['access_token'][0], 'email')
 
         # Facebook account must:
         # 1. Have a validated email in its Profile
         # 2. Not be assigned to another account
-        if 'email' not in profile or profile['email'] != request.user.email :
+        if 'email' not in profile or profile['email'] != request.user.email:
             if 'email' not in profile:
                 print 'NotValidEmail'
                 con = RequestContext(request)
@@ -1179,7 +1182,7 @@ def facebook_login(request):
                     con['AuthAlreadyAssociated'] = True
                     return TemplateResponse(request, template='activitytree/me.html', context=con)
                 except auth_models.User.DoesNotExist, e:
-                    #This is Good carry on
+                    # This is Good carry on
                     pass
 
         user_profile, created = UserProfile.objects.get_or_create(user=request.user)
@@ -1187,17 +1190,18 @@ def facebook_login(request):
         try:
             user_profile.save()
         except IntegrityError:
-            con=RequestContext(request)
+            con = RequestContext(request)
             con['IntegrityError'] = True
-            return TemplateResponse(request, template='activitytree/me.html',context=con )
+            return TemplateResponse(request, template='activitytree/me.html', context=con)
 
-        #Renew or create facebook session
+        # Renew or create facebook session
         try:
             FacebookSession.objects.get(user=request.user).delete()
         except FacebookSession.DoesNotExist, e:
             pass
 
-        facebook_session = FacebookSession.objects.get_or_create(access_token=access_token_response['access_token'][0])[0]
+        facebook_session = FacebookSession.objects.get_or_create(access_token=access_token_response['access_token'][0])[
+            0]
 
         facebook_session.uid = profile['id']
         facebook_session.expires = access_token_response["expires"][0]
@@ -1210,14 +1214,12 @@ def facebook_login(request):
         auth_status = None
         user = None
         try:
-            user = authenticate(app="facebook",**access_token_response)
+            user = authenticate(app="facebook", **access_token_response)
         except AuthAlreadyAssociated:
-            con=RequestContext(request)
+            con = RequestContext(request)
             con['AuthAlreadyAssociated'] = True
-            return TemplateResponse(request, template='registration/login.html',context=con )
-            #return HttpResponse(json.dumps({"success":False, "error":'AuthAlreadyAssociated' , "after_login":"/"}), content_type='application/javascript')
-
-
+            return TemplateResponse(request, template='registration/login.html', context=con)
+            # return HttpResponse(json.dumps({"success":False, "error":'AuthAlreadyAssociated' , "after_login":"/"}), content_type='application/javascript')
 
         auth_status = None
         if user:
@@ -1238,10 +1240,9 @@ def facebook_login(request):
 @login_required
 def unlink_facebook(request):
     facebook_session = FacebookSession.objects.get(user=request.user)
-    params =  urllib.urlencode( {'access_token':facebook_session.access_token})
+    params = urllib.urlencode({'access_token': facebook_session.access_token})
 
     import httplib
-
 
     conn = httplib.HTTPSConnection('graph.facebook.com')
     conn.request('DELETE', '/me/permissions', params)
@@ -1268,19 +1269,18 @@ def unlink_google(request):
         google_session = GoogleSession.objects.get(user=request.user)
     except GoogleSession.DoesNotExist, e:
         print "Account does not exists"
-        #There is no account any way
+        # There is no account any way
         return HttpResponseRedirect('/me')
 
-
     url = 'https://accounts.google.com/o/oauth2/revoke'
-    params = {'token':google_session.access_token}
+    params = {'token': google_session.access_token}
 
     url += '?' + urllib.urlencode(params)
     print url
 
     f = urllib.urlopen(url)
-    if f.code in [200,400]:
-        #DELETE Google Profile
+    if f.code in [200, 400]:
+        # DELETE Google Profile
         try:
             GoogleSession.objects.get(user=request.user).delete()
         except GoogleSession.DoesNotExist, e:
@@ -1291,72 +1291,72 @@ def unlink_google(request):
         user_profile.save()
         return HttpResponseRedirect('/me')
     else:
-        #TO DO: Display Error
+        # TO DO: Display Error
         print f.code
         return HttpResponseRedirect('/me')
 
 
 def google_callback(request):
-    #We recieve the answer
+    # We recieve the answer
     # If an error
     json_code = json.loads(request.body)
     code = json_code['code']
 
-    #With the code and our credentials we can now get the access token
+    # With the code and our credentials we can now get the access token
     args = urllib.urlencode(
-             { "client_id" : settings.GOOGLE_APP_ID,
-             "redirect_uri" : settings.GOOGLE_REDIRECT_URL ,
-             "client_secret" : settings.GOOGLE_APP_SECRET,
-             "code" : code,
-             "grant_type":"authorization_code"})
-
-
+        {"client_id": settings.GOOGLE_APP_ID,
+         "redirect_uri": settings.GOOGLE_REDIRECT_URL,
+         "client_secret": settings.GOOGLE_APP_SECRET,
+         "code": code,
+         "grant_type": "authorization_code"})
 
     # We get the access token
-    response = urllib.urlopen( "https://www.googleapis.com/oauth2/v3/token", args)
-
+    response = urllib.urlopen("https://www.googleapis.com/oauth2/v3/token", args)
 
     access_token_response = json.loads(response.read())
     user = None
     try:
-        user = authenticate(app="google",**access_token_response)
+        user = authenticate(app="google", **access_token_response)
     except AuthAlreadyAssociated:
-        return HttpResponse(json.dumps({"success":False, "error":'AuthAlreadyAssociated' , "after_login":"/"}), content_type='application/javascript')
+        return HttpResponse(json.dumps({"success": False, "error": 'AuthAlreadyAssociated', "after_login": "/"}),
+                            content_type='application/javascript')
 
     if user:
         if user.is_active:
             login(request, user)
             if 'after_login' in request.session:
-                return HttpResponse(json.dumps({"success":True , "error": None, "after_login":request.session['after_login']}), content_type='application/javascript')
+                return HttpResponse(
+                    json.dumps({"success": True, "error": None, "after_login": request.session['after_login']}),
+                    content_type='application/javascript')
 
-            return HttpResponse(json.dumps({"success":True , "error": None, "after_login":"/"}), content_type='application/javascript')
+            return HttpResponse(json.dumps({"success": True, "error": None, "after_login": "/"}),
+                                content_type='application/javascript')
         else:
-            return HttpResponse(json.dumps({"success":False, "error": "UserInactive", "after_login":"/"}), content_type='application/javascript')
+            return HttpResponse(json.dumps({"success": False, "error": "UserInactive", "after_login": "/"}),
+                                content_type='application/javascript')
 
     else:
-        return HttpResponse(json.dumps({"success":False, "error": "ProfileNotFound", "after_login":"/"}), content_type='application/javascript')
+        return HttpResponse(json.dumps({"success": False, "error": "ProfileNotFound", "after_login": "/"}),
+                            content_type='application/javascript')
 
 
 @login_required
 def google_link(request):
-    #We recieve the answer
+    # We recieve the answer
     # If an error
     json_code = json.loads(request.body)
     code = json_code['code']
 
-    #With the code and our credentials we can now get the access token
+    # With the code and our credentials we can now get the access token
     args = urllib.urlencode(
-             { "client_id" : settings.GOOGLE_APP_ID,
-             "redirect_uri" : settings.GOOGLE_REDIRECT_URL ,
-             "client_secret" : settings.GOOGLE_APP_SECRET,
-             "code" : code,
-             "grant_type":"authorization_code"})
-
-
+        {"client_id": settings.GOOGLE_APP_ID,
+         "redirect_uri": settings.GOOGLE_REDIRECT_URL,
+         "client_secret": settings.GOOGLE_APP_SECRET,
+         "code": code,
+         "grant_type": "authorization_code"})
 
     # We get the access token
-    response = urllib.urlopen( "https://www.googleapis.com/oauth2/v3/token", args)
-
+    response = urllib.urlopen("https://www.googleapis.com/oauth2/v3/token", args)
 
     access_token_response = json.loads(response.read())
 
@@ -1367,7 +1367,8 @@ def google_link(request):
     # 2. Not be assigned to another account
     if email is None:
         print 'IntegrityError'
-        return HttpResponse(json.dumps({"success":False , "error": 'IntegrityError'} ), content_type='application/javascript')
+        return HttpResponse(json.dumps({"success": False, "error": 'IntegrityError'}),
+                            content_type='application/javascript')
     if email != request.user.email:
         # Its  assigned to someone?
         try:
@@ -1383,21 +1384,20 @@ def google_link(request):
             # This is Good carry on
             pass
 
-
-
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
     user_profile.google_uid = profile['id']
     try:
         user_profile.save()
     except IntegrityError:
-        return HttpResponse(json.dumps({"success":False , "error": 'IntegrityError'} ), content_type='application/javascript')
+        return HttpResponse(json.dumps({"success": False, "error": 'IntegrityError'}),
+                            content_type='application/javascript')
 
-    google_session, created = GoogleSession.objects.get_or_create(access_token=access_token_response, user = request.user)
+    google_session, created = GoogleSession.objects.get_or_create(access_token=access_token_response, user=request.user)
     google_session.expires_in = access_token_response['expires_in']
     google_session.refresh_token = access_token_response['id_token']
     google_session.save()
 
-    return HttpResponse(json.dumps({"success":True , "error": None} ), content_type='application/javascript')
+    return HttpResponse(json.dumps({"success": True, "error": None}), content_type='application/javascript')
 
 
 def get_activities(request):
@@ -1407,21 +1407,23 @@ def get_activities(request):
 
 
 @login_required
-def my_activities(request): #view used by activity_builder, returns all activities by user
+def my_activities(request):  # view used by activity_builder, returns all activities by user
     client = MongoClient(settings.MONGO_DB)
     db = client.protoboard_database
     activities_collection = db.activities_collection
     user = request.GET['user']
     page = int(request.GET['page'])
     activities = Activity.get_by_user(user, page)
-    count = activities_collection.find({'author': user}, { '_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1}).sort("$natural", pymongo.DESCENDING).count()
+    count = activities_collection.find({'author': user},
+                                       {'_id': 1, 'title': 1, 'lang': 1, 'type': 1, 'description': 1, 'icon': 1,
+                                        'level': 1, 'tags': 1}).sort("$natural", pymongo.DESCENDING).count()
     count = {'count': count}
     json_docs = [doc for doc in activities]
     json_docs.append(count)
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 
 
-def search_prueba(request): #view used by search, receives page and query and returns count of docs and activities
+def search_prueba(request):  # view used by search, receives page and query and returns count of docs and activities
     MONGO_PAGE_SIZE = 20
     client = MongoClient(settings.MONGO_DB)
     db = client.protoboard_database
@@ -1438,22 +1440,29 @@ def search_prueba(request): #view used by search, receives page and query and re
         message = "null"
         return HttpResponse(json.dumps(message), content_type='application/javascript')
     else:
-        activities = activities_collection.find({'$and': query}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1,'image_url':1}).sort("$natural", pymongo.DESCENDING).limit(MONGO_PAGE_SIZE).skip(page *MONGO_PAGE_SIZE)
-        count = activities_collection.find({'$and': query}, {'_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1, 'image_url':1}).sort("$natural", pymongo.DESCENDING).count()
+        activities = activities_collection.find({'$and': query},
+                                                {'_id': 1, 'title': 1, 'lang': 1, 'type': 1, 'description': 1,
+                                                 'icon': 1, 'level': 1, 'tags': 1, 'image_url': 1}).sort("$natural",
+                                                                                                         pymongo.DESCENDING).limit(
+            MONGO_PAGE_SIZE).skip(page * MONGO_PAGE_SIZE)
+        count = activities_collection.find({'$and': query},
+                                           {'_id': 1, 'title': 1, 'lang': 1, 'type': 1, 'description': 1, 'icon': 1,
+                                            'level': 1, 'tags': 1, 'image_url': 1}).sort("$natural",
+                                                                                         pymongo.DESCENDING).count()
         count = {'count': count}
         json_docs = [doc for doc in activities]
         json_docs.append(count)
         return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 
 
-def check_activity(request): #view that checks if activity id already exists
+def check_activity(request):  # view that checks if activity id already exists
     actividad = Activity.get_title(request.GET['valor'])
     json_docs = [doc for doc in actividad]
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 
 
 @login_required
-def delActivity(request): #view that receives user and id of activity to be deleted
+def delActivity(request):  # view that receives user and id of activity to be deleted
     if request.method == 'POST':
         user = request.POST['user']
         _id = request.POST['_id']
@@ -1473,9 +1482,10 @@ def get_activity(request):
             mongo_answer = Activity.get_activity(_id)
             activity = mongo_answer[0]
 
-            #Are you  AnonymousUser?
+            # Are you  AnonymousUser?
 
-            if request.user == 'AnonymousUser' or not hasattr(request.user,'email')  or activity['author'] != request.user.email:
+            if request.user == 'AnonymousUser' or not hasattr(request.user, 'email') or activity[
+                'author'] != request.user.email:
                 # Its not yours, you can have it read_only
                 activity['readonly'] = 'readonly'
 
@@ -1497,18 +1507,18 @@ def get_activity(request):
             return HttpResponse(e)
 
 
-
 @login_required
-def users(request,user_id=None,course_id=None,):
+def users(request, user_id=None, course_id=None, ):
     if user_id == None or user_id == "":
         users = User.objects.all()
 
-        return render_to_response ('activitytree/users.html',{'users':users} ,context_instance=RequestContext(request))
+        return render_to_response('activitytree/users.html', {'users': users}, context_instance=RequestContext(request))
     elif course_id == None or course_id == "":
         user = User.objects.get(pk=user_id)
         cursos = user.activitytree_set.all()
 
-        return render_to_response ('activitytree/user.html',{'user':user, 'cursos':user} ,context_instance=RequestContext(request))
+        return render_to_response('activitytree/user.html', {'user': user, 'cursos': user},
+                                  context_instance=RequestContext(request))
 
     else:
         user = User.objects.get(pk=user_id)
@@ -1516,19 +1526,22 @@ def users(request,user_id=None,course_id=None,):
         root = None
 
         try:
-                root = UserLearningActivity.objects.get(learning_activity__id = course_id ,user = user_id )
+            root = UserLearningActivity.objects.get(learning_activity__id=course_id, user=user_id)
         except (ObjectDoesNotExist, IndexError) as e:
-                root = None
+            root = None
         _XML = s.get_nav(root)
-        #Escape for javascript
-        XML=ET.tostring(_XML,'utf-8').replace('"', r'\"')
-        return render_to_response ('activitytree/dashboard.html',{'user':user, 'XML_NAV':XML} ,context_instance=RequestContext(request))
+        # Escape for javascript
+        XML = ET.tostring(_XML, 'utf-8').replace('"', r'\"')
+        return render_to_response('activitytree/dashboard.html', {'user': user, 'XML_NAV': XML},
+                                  context_instance=RequestContext(request))
 
 
 @login_required
 def me(request):
     if request.method == 'GET':
-        return render_to_response ('activitytree/me.html',{'FACEBOOK_APP_ID':settings.FACEBOOK_APP_ID,'GOOGLE_APP_ID': settings.GOOGLE_APP_ID },context_instance=RequestContext(request))
+        return render_to_response('activitytree/me.html', {'FACEBOOK_APP_ID': settings.FACEBOOK_APP_ID,
+                                                           'GOOGLE_APP_ID': settings.GOOGLE_APP_ID},
+                                  context_instance=RequestContext(request))
     if request.method == 'POST':
         try:
             print(request.POST["username"])
@@ -1539,26 +1552,20 @@ def me(request):
 
         except:
             print("err")
-            return JsonResponse({"error": True} )
+            return JsonResponse({"error": True})
 
-            
-
-
-        return JsonResponse({"success":True , "error": None} )
-
+        return JsonResponse({"success": True, "error": None})
 
 
 @csrf_exempt
 def upload_course(request):
     if request.method == 'POST':
-        #We need a Course ID
-        if request.POST and 'course_id' in request.POST :
-
+        # We need a Course ID
+        if request.POST and 'course_id' in request.POST:
 
             json_course = request.FILES['fileToUpload'].read()
 
-
-            upload_course_from_json(json_course,request.POST['course_id'] ,request.user)
+            upload_course_from_json(json_course, request.POST['course_id'], request.user)
             request.FILES['fileToUpload'].close()
 
             result = {"result": "added", "error": None, "id": None}
@@ -1567,7 +1574,7 @@ def upload_course(request):
 
 
         else:
-            #We can create a NEW empty course?
+            # We can create a NEW empty course?
             result = {"result": "error", "error": "No course id supplied", "id": None}
             return HttpResponse(json.dumps(result), content_type='application/javascript')
     else:
@@ -1576,24 +1583,18 @@ def upload_course(request):
         return HttpResponse(json.dumps(result), content_type='application/javascript')
 
 
-
-
-
 @csrf_protect
 def rate_object(request):
     if request.method == 'POST':
         print json.loads(request.body)
-        vote=json.loads(request.body)
-        la = LearningActivity.objects.get(uri=vote["uri"] )
+        vote = json.loads(request.body)
+        la = LearningActivity.objects.get(uri=vote["uri"])
 
-
-        rating = LearningActivityRating(user=request.user,learning_activity=la,rating= vote["rating"], context=0)
+        rating = LearningActivityRating(user=request.user, learning_activity=la, rating=vote["rating"], context=0)
         rating.save()
 
-        result= {"result":"added" , "error": None, "id": None}
+        result = {"result": "added", "error": None, "id": None}
         return HttpResponse(json.dumps(result), content_type='application/javascript')
-
-
 
 
 @login_required
@@ -1602,10 +1603,3 @@ def logout_view(request):
     # back to the homepage.
     logout(request)
     return HttpResponseRedirect('/')
-
-
-
-
-
-
-
