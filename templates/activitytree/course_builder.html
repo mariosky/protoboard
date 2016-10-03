@@ -343,31 +343,26 @@ Main Save Changes
 
 
          function traverse(jsonObj) {
-           if( typeof jsonObj == "object" ) {
-              $.each(jsonObj, function(k,v) {
+           if( typeof jsonObj == "object" ) $.each(jsonObj, function (k, v) {
 
-                if (typeof k == "number" && typeof v == "object")
-                {
-                  traverse(v);
-                }
-                if ( k == "id")
-                {
-                  jsonObj.learning_activity = learning_activities[v];
-                  jsonObj.learning_activity.order_in_container = order++;
+               if (typeof k == "number" && typeof v == "object") {
+                   traverse(v);
+               }
+               if (k == "id") {
+                   jsonObj.learning_activity = learning_activities[v];
+                   jsonObj.learning_activity.order_in_container = order++;
 
-                }
+               }
 
 
-                if ( k == "children" && typeof v == "object")
-                {
-                  traverse(v);
+               if (k == "children" && typeof v == "object") {
+                   traverse(v);
 
-                }
-              });
-              }
+               }
+           });
               else
               {
-                return;
+
                 // jsonOb is a number or string
               }
            }
