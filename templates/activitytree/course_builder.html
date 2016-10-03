@@ -171,15 +171,14 @@
 
 
 <script id="rules_template" type="x-tmpl-mustache">
-
             <div class="inline" id="rule" container="[[container_id]]">
 
                 [[#condiciones]]
 
                 <div id="[[id]]" style="border-bottom:2px dashed #EEEEEE;padding-bottom:2%;margin-bottom:2.5%;margin-left:3%;margin-top:2.5%;text-align:left;margin-right:3%">
-                [[#user]]<b> User </b> [[/user]] [[^user]] <b> [[act_name]] </b> [[/user]]<em> has [[option_txt]]</em> <b>[[operator_txt]]</b> [[value]] </span>
+                [[#user]]<b> User </b> [[/user]] [[^user]] <b> [[act_name]] </b> [[/user]] <code>HAS</code>  <em> [[option_txt]]</em> <b>[[operator_txt]]</b> [[value]] </span>
 
-                <button type="button" condition-id="[[id]]" class="btn btn-danger deleteRuleBtn" style="float:right;margin-left:5px">Remove</button>
+                <button type="button" condition-id="[[id]]" class="btn btn-danger  btn-sm deleteRuleBtn" style="float:right;margin-left:5px">Borrar</button>
                 </div>
                 [[/condiciones]]
 
@@ -187,13 +186,13 @@
                 <div class="form-inline" id="then-condition">
                     <div>
                     <br>
-                        <label for="precondition-select"><em>Then</em> <b>Pre-Condition</b> is:  </label>
+                        <label for="precondition-select"> <code>THEN</code>  precondición <code>IS</code>  </label>
                         <select id="precondition-select" class="form-control selectThen" container="[[container_id]]" style="width:25%">
                             <option value=""></option>
-                            <option value="skip">Skip</option>
-                            <option value="stopForwardTraversal">Stop Forward Traversal</option>
-                            <option value="disabled">Disabled</option>
-                            <option value="enabled">Enabled</option>
+                            <option value="skip">Saltar</option>
+                            <option value="stopForwardTraversal"> Detener navegación</option>
+                            <option value="disabled">Deshabilitar</option>
+                            <option value="enabled">Habilitar</option>
                         </select>
                     </div>
                 </div><br>
@@ -922,20 +921,7 @@ function get_course() {
       $("#deleteAllbtn").prop("disabled", true);
   });
 
-  body.on('click','#usertab', function(){
-      $("#userdiv").slideToggle('fast',function(){
-      })
-  });
 
-  body.on('click','#activitytab', function(){
-      $("#activitydiv").slideToggle('fast',function(){
-      })
-  });
-
-  body.on('click','#contexttab', function(){
-      $("#contextdiv").slideToggle('fast',function(){
-      })
-  });
 
   body.on('change', "#activity-options", function(){
       if ($(this).val() == "progress_status"){
@@ -1655,99 +1641,138 @@ TO DO: Reuse mustache  templates
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Rule Builder</h4>
+                    <h4 class="modal-title">Regla de precondición</h4>
                 </div>
-                <div id="rulebuilder" align="center">
-                        <div class="well well-sm" style="border: hidden">
-                            <a class="panel-title" id="activitytab">Activity<span class="caret"></span></a>
+
+                  <div class="row">
+                    <div class="col-md-8 col-md-offset-2 m-t-2" >
+
+
+                 <ul class="nav nav-tabs">
+                    <li class="nav-item"> <a class="nav-link active" href="#activity-tab"  data-toggle="tab">Actividad</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="#user-tab"  data-toggle="tab">Usuario</a></li>
+                     <li class="nav-item"> <a class="nav-link" href="#context-tab"  data-toggle="tab">Contexto</a></li>
+                </ul>
+
+
+                   <div class="tab-content">
+                    <div class="tab-pane fade in active" id="activity-tab">
+
+
+
                             <input type="hidden" id="container_rule_id" value="">
-                            <div id="activitydiv"><br>
-                                <label for="activity-select">Activity</label>
+
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="form-inline">
+                                        <label for="activity-select"><code>IF</code></label>
                                 <select id="activity-select" class="form-control selection" style="width:20%">
 
-                                </select><br>
+                                </select> <code>HAS</code>
+
+                                </div>
+
                                 <div class="form-inline">
-                                    <select class="form-control selection" id="activity-options" style="width:20%">
-                                        <option value="num_attempts">Attempts</option>
-                                        <option value="progress_status">Progress</option>
-                                        <option value="objective_measure">Objective Measure</option>
+                                    <select class="form-control selection" id="activity-options" style="width:30%">
+                                        <option value="num_attempts">número de intentos</option>
+                                        <option value="progress_status">progreso</option>
+                                        <option value="objective_measure">calificación</option>
                                     </select>
 
                                     <select class="form-control selection" id="activity-operators" style="width:20%">
-                                        <option value="==">Equals</option>
-                                        <option value=">">More than</option>
-                                        <option value="<">Less than</option>
-                                        <option value="!=">Different than</option>
+                                        <option value="==">igual a</option>
+                                        <option value=">">mayor que </option>
+                                        <option value="<">menor que</option>
+                                        <option value="!=">diferente de</option>
                                     </select>
 
-                                    <input type="text" class="form-control" id="activity-txt" placeholder="Value" style="width:20%">
+                                    <input type="text" class="form-control" id="activity-txt" placeholder="Valor" style="width:20%">
 
                                     <select class="form-control selection" id="activity-value-select" style="display:none;width:20%">
-                                        <option value="completed">Completed</option>
-                                        <option value="incomplete">Incomplete</option>
+                                        <option value="completed">completo</option>
+                                        <option value="incomplete">incompleto</option>
                                     </select>
 
-                                    <input type="button" id="activity-submit" class="form-control btn-primary submit-Btn" value="Add Rule">
+                                    <input type="button" id="activity-submit" class="form-control btn-primary submit-Btn" value="Agregar">
                                 </div>
-                            </div><br>
+
+
+
+                            </div>
+
                         </div>
-                    <div class="well well-sm">
-                            <a class="panel-title" id="usertab">User<span class="caret"></span></a>
-                            <div id="userdiv" style="display:none"><br>
-                                <div class="form-inline">
+
+
+                    </div>
+                    <div class="tab-pane" id="user-tab">
+                        <div class="card">
+                            <div class="card-block">
+                          <div class="form-inline">
+                              <label for="user-options"><code>IF</code> Usuario <code>HAS/IS</code></label>
+                              </div>
+
+
+                                    <div class="form-inline">
                                     <select class="form-control selection" id="user-options" style="width:20%">
-                                        <option value="level">Level</option>
-                                        <option value="points">Points</option>
-                                        <option value="experience">Experience</option>
+                                        <option value="level">nivel</option>
+                                        <option value="points">puntos</option>
+                                        <option value="experience">experiencia</option>
                                         <option value="visual">visual</option>
                                         <option value="aural">aural</option>
-                                        <option value="physical">physical</option>
-                                        <option value="logical">logical</option>
+                                        <option value="physical">físico</option>
+                                        <option value="logical">lógico</option>
                                         <option value="social">social</option>
-                                        <option value="solitary">solitary</option>
+                                        <option value="solitary">solitario</option>
 
                                     </select>
 
+
                                     <select class="form-control selection" id="user-operators" style="width:20%">
-                                        <option value="==">Equals</option>
-                                        <option value=">">More than</option>
-                                        <option value="<">Less than</option>
-                                        <option value="!=">Different than</option>
+                                        <option value="==">igual a</option>
+                                        <option value=">">mayor que</option>
+                                        <option value="<">menor que</option>
+                                        <option value="!=">diferente de</option>
                                     </select>
 
                                     <input type="text" class="form-control" id="user-txt" placeholder="Value" style="width:20%">
 
-                                    <input type="button" id="user-submit" class="form-control btn-primary submit-Btn" value="Add Rule">
+                                    <input type="button" id="user-submit" class="form-control btn-primary submit-Btn" value="Agregar">
                                 </div>
-                            </div><br>
+                             </div>
+                             </div>
+
+
                     </div>
-
-                    <div class="well well-sm" style="border: hidden">
-                            <a class="panel-title" id="contexttab">Context<span class="caret"></span></a>
-                            <div id="contextdiv" style="display:none"><br>
-                                <div class="form-inline">
+                    <div class="tab-pane" id="context-tab">
+                        <div class="card">
+                            <div class="card-block">
+                            <div class="form-inline">
+                                      <label for="context-options"><code>IF</code></label>
                                     <select class="form-control selection" id="context-options" style="width:20%">
-                                        <option value="device">Device</option>
-                                        <option value="place">Place</option>
-                                        <option value="time">Time</option>
-                                        <option value="dayof">Day of Week</option>
+                                        <option value="device">dispositivo</option>
+                                        <option value="place">lugar</option>
+                                        <option value="time">hora</option>
+                                        <option value="dayof">día de la semana</option>
                                     </select>
+                            </div>
 
+
+                                    <div class="form-inline">
                                     <select class="form-control selection" id="context-operators" disabled style="width:20%">
-                                        <option value="==">Equals</option>
-                                        <option value=">">More than</option>
-                                        <option value="<">Less than</option>
-                                        <option value="!=">Different than</option>
+                                        <option value="==">igual a</option>
+                                        <option value=">">mayor que</option>
+                                        <option value="<">menor que</option>
+                                        <option value="!=">diferene</option>
                                     </select>
 
                                     <select class="form-control selection" id="context-value-select" style="display:none;width:20%">
-                                        <option value="monday">Monday</option>
-                                        <option value="tuesday">Tuesday</option>
-                                        <option value="wednesday">Wednesday</option>
-                                        <option value="thursday">Thursday</option>
-                                        <option value="friday">Friday</option>
-                                        <option value="saturday">Saturday</option>
-                                        <option value="sunday">Sunday</option>
+                                        <option value="monday">lunes</option>
+                                        <option value="tuesday">martes</option>
+                                        <option value="wednesday">miércoles</option>
+                                        <option value="thursday">jueves</option>
+                                        <option value="friday">viernes</option>
+                                        <option value="saturday">sábado</option>
+                                        <option value="sunday">domingo</option>
                                     </select>
 
                                     <div id="contextime" class="input-group bootstrap-timepicker timepicker" style="width:20%;display:none">
@@ -1755,23 +1780,56 @@ TO DO: Reuse mustache  templates
                                         <span class="input-group-addon"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
                                     </div>
 
-                                    <input type="text" class="form-control" id="context-txt" placeholder="Value" style="width:20%">
+                                    <input type="text" class="form-control" id="context-txt" placeholder="Valor" style="width:20%">
 
-                                    <input type="button" id="context-submit" class="form-control btn-primary submit-Btn" value="Add Rule">
+                                    <input type="button" id="context-submit" class="form-control btn-primary submit-Btn" value="Agregar">
                                 </div>
-                            </div><br>
-                    </div>
-                    <div id="rules-display" class="panel panel-default" style="width:90%">
-                        <div class="panel-heading" style="padding:15px 15px !important;"><span style="position: relative;left:40px;font-size: medium">Conditions</span>  <button class="btn btn-danger" disabled type="button" id="deleteAllbtn" style="float:right;position: relative;top:-5px">Delete All</button>  </div>
-                        <div id="rules-body" class="panel-body">
 
+                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer" id="rulebuilder-footer">
-                        <input type="button" class="btn btn-primary" id="save-rules" value="Save Rules">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                         </div>
+                   </div>
+                         </div>
+                       </div>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 m-t-2" >
+                        <div class="card">
+                            <div class="card-header">
+                                Regla
+                            </div>
+                            <div class="card-block">
+                                <p class="card-text">
+                                   <code>IF</code>
+                                </p>
+                                <!--
+                                    <a class="btn btn-danger btn-sm" href="#"  id="deleteAllbtn">Borrar todas las condiciones</a>
+                                -->
+                            <div id="rules-body" >
+
+                            </div>
+
+                            </div>
+
+
+
+
+
+
+
+
+                </div>
+
                     </div>
                 </div>
+
+
+
+
+
+                    <div class="modal-footer" id="rulebuilder-footer">
+                        <input type="button" class="btn btn-primary" id="save-rules" value="Guardar">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                    </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
@@ -1785,13 +1843,13 @@ TO DO: Reuse mustache  templates
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title">Upload Course</h4>
+        <h4 class="modal-title">Subir curso</h4>
       </div>
       <div class="modal-body">
 
   <form id="uploadForm" enctype="multipart/form-data" method="post" action="upload" accept-charset="UTF-8">
   <div class="form-group">
-    <label for="formGroupExampleInput">Select a File to Upload</label>
+    <label for="formGroupExampleInput">Selecciona el archivo</label>
     <input type="file" name="fileToUpload" class="form-control" id="fileToUpload" onchange="fileSelected()">
   </div>
     <div id="fileName"></div>
@@ -1803,8 +1861,8 @@ TO DO: Reuse mustache  templates
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="uploadFileBtn" type="button" class="btn btn-primary" onclick="uploadFile()" disabled >Upload</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button id="uploadFileBtn" type="button" class="btn btn-primary" onclick="uploadFile()" disabled >Subir</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -1854,7 +1912,7 @@ TO DO: Reuse mustache  templates
                         <small class="form-text text-muted"> Agrega una breve descripción del material. Aparecera cuando se muestre al curso en los listados.</small>
                      </div>
                     <div class="form-group">
-                        <label for="image_url">URL de Ímagen</label>
+                        <label for="image_url">URL de ímagen</label>
                         <input type="url" class="form-control" id="image_url" name="image_url" value="{{ course.root.image }}">
                         <small class="form-text text-muted"> Puedes especificar una imagen externa que describa al recurso.
                              Debes tener derechos sobre la ímagen. Puedes utilizar servicios como: imageshack.us o Amazon S3.
