@@ -45,14 +45,13 @@ def add_precondition(rule):
                     string = ''
                     first = True
                     for elem in rule['conditions']:
-                        if 'user' in elem:
-
+                        if 'user' in elem or 'context' in elem:
                             if first:
                                 first = False
                                 string += "if self.get_user_attr('{0}') {1} {2}".format(elem['option'],
                                                                                  elem['operator'], elem['value'])
                             else:
-                                string += "and self.get_user_attr('{0}') {1} {2}".format(elem['option'],
+                                string += " and self.get_user_attr('{0}') {1} {2}".format(elem['option'],
                                                                                 elem['operator'], elem['value'])
 
                         else:
