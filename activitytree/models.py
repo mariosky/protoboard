@@ -1,9 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 from FIS import Text_Verbal
 # Create your models here.
 
+
+def get_timezone():
+    return getattr(settings, 'TIME_ZONE', 'UTC')
 
 ###
 # MODELS
@@ -22,8 +26,9 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, unique=True)
     facebook_uid = models.DecimalField(unique=True, null=True,max_digits=25, decimal_places=0)
     google_uid = models.DecimalField(unique=True, null=True,max_digits=25, decimal_places=0)
-
-
+    timezone = models.CharField(max_length=30, default=get_timezone)
+    reputation = models.PositiveSmallIntegerField(default=80)
+    experience = models.PositiveSmallIntegerField(default=100)
 
 
 class LearningActivity(models.Model):

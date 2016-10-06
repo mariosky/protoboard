@@ -13,6 +13,11 @@ _client = MongoClient(settings.MONGO_DB)
 _db = _client.protoboard_database
 _activities_collection = _db.activities_collection
 
+
+
+
+
+
 class Activity:
     @staticmethod
     def get(uri):
@@ -51,3 +56,4 @@ class Activity:
             return _activities_collection.find({'_id': _id})
         else:
             return _activities_collection.find({'_id': _id, 'author': user})
+

@@ -9,15 +9,213 @@
 <row>
 
            <div class="col-sm-3">
-
-                <img src="{% gravatar_url user.email 150 %}"  class="text-center" alt="Generic placeholder thumbnail">
+           <h3>Perfil básico</h3>
+           <div class="row">
+            <div class="col-md-6 col-sm-12">
+                          <img src="{% gravatar_url user.email 150 %}"  class="text-center" alt="Generic placeholder thumbnail">
             <h4 class="text-lowercase text-left">{{ user.first_name }} {{ user.last_name }}</h4>
             <p class="text-lowercase text-left">  <span class="text-muted">{{ user.email }}</span></p>
 
-              <a   href="http://gravatar.com" class="btn btn-block btn-secondary"> <i class="fa fa-camera"></i> Cambia tu foto de perfil </a>
+              <a   href="http://gravatar.com" class="btn btn-block btn-secondary"> <i class="fa fa-camera"></i> Cambia tu foto  </a>
+            </div>
+                   <div class="col-md-6 col-sm-12">
+                    <h4>
+                        Reputación: 100
+
+                    </h4>
+            </div>
+           </div>
+
+
     <hr/>
 
-    <form >
+
+
+    {% comment %}
+    Posibles excepciones
+
+    {% endcomment %}
+
+
+
+<form  id="login_form">
+  <div class="form-group">
+  <label for="username">Usuario</label>
+  <input type="text" class="form-control" id="username" name="username"
+           value="{{ user.username }}" placeholder="Usuario" readonly>
+
+  </div>
+  <div class="form-group">
+  <label for="username">Nombre</label>
+    <input type="text" class="form-control" id="first_name" name="first_name"
+           value="{{  user.first_name }}" placeholder="Nombre">
+  </div>
+    <div class="form-group">
+  <label for="username">Apellido</label>
+    <input type="text" class="form-control" id="last_name" name="last_name"
+           value="{{  user.last_name }}" placeholder="Apellido">
+  </div>
+  <div class="form-group">
+  <label for="exampleInputEmail1">Correo electrónico</label>
+  <input type="text" class="form-control" id="exampleInputEmail1" name="email"
+           value="{{ user.email }}"  readonly>
+  </div>
+
+
+  <button id="form-submit" type="submit" class="btn btn-primary"> Actualizar nombre</button>
+
+   <hr>
+<div class="alert alert-info" role="alert">
+      <strong>Versión de Prueba:</strong> Por el momento no es posible modificar el correo ni el nombre de usuario de una cuenta.
+      La foto del perfil solo la puedes cambiar en Gravatar o usar Facebook o GPlus.
+
+
+
+
+  </div>
+
+</form>
+
+
+
+            </div>
+
+    <div class="col-sm-6">
+{% comment %}
+Mensajes de error
+{% endcomment %}
+
+    {% if IntegrityError %}
+
+        <div class='alert alert-danger alert-dismissable'>
+            <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+            <p>Tu cuenta ya está ligada a un perfil existente. Si es tuyo ingresa con la otra cuenta.</p>
+            <p>Si no recuerdas la cuenta puedes <a href='/password_reset/'> restablecer tu perfil. </a> Ya en tu perfil puedes asociar de nuevo otras cuentas.</p>
+        </div>
+
+    {% endif %}
+    {% if DifferentEMAIL %}
+
+    <div class='alert alert-danger alert-dismissable'>
+        <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+        <p>El correo de la cuenta que desas enlazar debe coincidir con el correo de la cuenta actual.</p>
+        <p>Para evitar conflictos entre cuentas, por el momento no es posible enlazar esta cuenta.</p>
+    </div>
+
+    {% endif %}
+
+        <h3> Configuración avanzada </h3>
+        <p class="lead">
+            Esta información le permite a los autores hacer cursos a tu medida.
+        </p>
+
+        <div class="card ">
+          <div class="card-header">  Zona Horaria  </div>
+               <div class="card-block ">
+                  <h4 class="text-success">
+                      {% localtime on %}
+                            {{ time}}
+                      {% endlocaltime %}
+                  </h4>
+
+                    <p class="card-text"><small class="text-muted"> Esta es la hora que reporta tu navegador.</small></p>
+
+                    <p class="card-text"><small class="text-muted"> Esta es la zona horaria que guardamos en tuperfil.</small></p>
+
+                <a id="timezone-save" href="#" class="btn btn-secondary">Guardar</a>
+           </div>
+      </div>
+
+    <div class="card ">
+          <div class="card-header">  Estilo de aprendizaje  </div>
+           <div class="card-block ">
+            <div class="form-group row">
+                  <label for="example-number-input" class="col-xs-2 col-form-label">Visual</label>
+                  <div class="col-xs-4">
+                    <input class="form-control" type="number" value="42" id="example-number-input">
+                  </div>
+                  <div class="col-xs-6">
+                    <progress class="progress progress-success" value="25" max="100"></progress>
+                  </div>
+            </div>
+            <div class="form-group row">
+                  <label for="example-number-input" class="col-xs-2 col-form-label">Verbal</label>
+                  <div class="col-xs-4">
+                    <input class="form-control" type="number" value="42" id="example-number-input">
+                  </div>
+                  <div class="col-xs-6">
+                    <progress class="progress progress-success" value="25" max="100">Aural</progress>
+                  </div>
+            </div>
+            <div class="form-group row">
+                  <label for="example-number-input" class="col-xs-2 col-form-label">Lógico</label>
+                  <div class="col-xs-4">
+                    <input class="form-control" type="number" value="42" id="example-number-input">
+                  </div>
+                  <div class="col-xs-6">
+                    <progress class="progress progress-success" value="25" max="100"></progress>
+                  </div>
+            </div>
+            <div class="form-group row">
+                  <label for="example-number-input" class="col-xs-2 col-form-label">Físico</label>
+                  <div class="col-xs-4">
+                    <input class="form-control" type="number" value="42" id="example-number-input">
+                  </div>
+                  <div class="col-xs-6">
+                    <progress class="progress progress-success" value="25" max="100"></progress>
+                  </div>
+            </div>
+            <div class="form-group row">
+                  <label for="example-number-input" class="col-xs-2 col-form-label">Social</label>
+                  <div class="col-xs-4">
+                    <input class="form-control" type="number" value="42" id="example-number-input">
+                  </div>
+                  <div class="col-xs-6">
+                    <progress class="progress progress-success" value="25" max="100"></progress>
+                  </div>
+            </div>
+            <div class="form-group row">
+                  <label for="example-number-input" class="col-xs-2 col-form-label">Solitario</label>
+                  <div class="col-xs-4">
+                    <input class="form-control" type="number" value="42" id="example-number-input">
+                  </div>
+                  <div class="col-xs-6">
+                    <progress class="progress progress-success" value="25" max="100"></progress>
+                  </div>
+            </div>
+
+            <a id="learning-style-save" href="#" class="btn btn-secondary">Guardar</a>
+
+           </div>
+           </div>
+
+           <div class="card ">
+                <div class="card-header">  Experiencia en programación </div>
+                <div class="card-block">
+
+                   <div class="form-group row">
+                        <label for="example-number-input" class="col-xs-6 col-form-label">¿Como te consideras en programación?</label>
+                        <div class="col-xs-6">
+                         <select class="form-control form-control">
+                                <option>no sé nada</option>
+                                <option>principiante</option>
+                                <option>intermedio</option>
+                                <option>avanzado</option>
+                                <option>experto</option>
+                        </select>
+                        </div>
+
+                    </div>
+               <a id="timezone-save" href="#" class="btn btn-secondary">Guardar</a>
+               </div>
+
+           </div>
+   </div>
+
+
+            <div class="col-sm-3">
+            <h3>Opciones de inicio de sesión</h3>
+ <form >
 
 
         {% comment %}
@@ -83,76 +281,6 @@
                <a  href="/password_change/" class="btn btn-block btn-danger"> Cambiar contraseña</a>
 
     </form>
-            </div>
-
-            <div class="col-sm-9">
-              <div class="alert alert-info" role="alert">
-      <strong>Versión de Prueba:</strong> Por el momento no es posible modificar el correo ni el nombre de usuario de una cuenta.
-      La foto del perfil solo la puedes cambiar en Gravatar o usar Facebook o GPlus.
-                  {% localtime on %}
-    {{ time|timezone:"America/Los_Angeles" }}
-                      {{ time|localtime }}
-{% endlocaltime %}
-
-{% localtime off %}
-    {{ time }}
-{% endlocaltime %}
-
-  </div>
-
-    {% comment %}
-    Posibles excepciones
-
-    {% endcomment %}
-
-{% if IntegrityError %}
-
-<div class='alert alert-danger alert-dismissable'>
-    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-    <p>Tu cuenta ya está ligada a un perfil existente. Si es tuyo ingresa con la otra cuenta.</p>
-    <p>Si no recuerdas la cuenta puedes <a href='/password_reset/'> restablecer tu perfil. </a> Ya en tu perfil puedes asociar de nuevo otras cuentas.</p>
-</div>
-
-{% endif %}
-{% if DifferentEMAIL %}
-
-<div class='alert alert-danger alert-dismissable'>
-    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-    <p>El correo de la cuenta que desas enlazar debe coincidir con el correo de la cuenta actual.</p>
-    <p>Para evitar conflictos entre cuentas, por el momento no es posible enlazar esta cuenta.</p>
-</div>
-
-{% endif %}
-
-<form  id="login_form">
-  <div class="form-group">
-  <label for="username">Usuario</label>
-  <input type="text" class="form-control" id="username" name="username"
-           value="{{ user.username }}" placeholder="Usuario" readonly>
-
-  </div>
-  <div class="form-group">
-  <label for="username">Nombre</label>
-    <input type="text" class="form-control" id="first_name" name="first_name"
-           value="{{  user.first_name }}" placeholder="Nombre">
-  </div>
-    <div class="form-group">
-  <label for="username">Apellido</label>
-    <input type="text" class="form-control" id="last_name" name="last_name"
-           value="{{  user.last_name }}" placeholder="Apellido">
-  </div>
-  <div class="form-group">
-  <label for="exampleInputEmail1">Correo electrónico</label>
-  <input type="text" class="form-control" id="exampleInputEmail1" name="email"
-           value="{{ user.email }}"  readonly>
-
-
-  </div>
-
-  <button id="form-submit" type="submit" class="btn btn-primary"> Actualizar </button>
-
-
-</form>
 
 
 
