@@ -22,6 +22,8 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
+
 
 import logging
 import xml.etree.ElementTree as ET
@@ -1540,7 +1542,7 @@ def users(request, user_id=None, course_id=None, ):
 def me(request):
     if request.method == 'GET':
         return render_to_response('activitytree/me.html', {'FACEBOOK_APP_ID': settings.FACEBOOK_APP_ID,
-                                                           'GOOGLE_APP_ID': settings.GOOGLE_APP_ID,'_time':time.now()},
+                                                           'GOOGLE_APP_ID': settings.GOOGLE_APP_ID,'time':timezone.now()},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
         try:
