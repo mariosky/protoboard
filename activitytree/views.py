@@ -1540,7 +1540,7 @@ def users(request, user_id=None, course_id=None, ):
 def me(request):
     if request.method == 'GET':
         return render_to_response('activitytree/me.html', {'FACEBOOK_APP_ID': settings.FACEBOOK_APP_ID,
-                                                           'GOOGLE_APP_ID': settings.GOOGLE_APP_ID},
+                                                           'GOOGLE_APP_ID': settings.GOOGLE_APP_ID,'_time':time.now()},
                                   context_instance=RequestContext(request))
     if request.method == 'POST':
         try:
