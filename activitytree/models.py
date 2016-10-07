@@ -291,7 +291,7 @@ class UserLearningActivity(models.Model):
 class Course(models.Model):
     short_description = models.TextField()
     image = models.ImageField(upload_to='courses', blank=True)
-    private = models.BooleanField(blank=False)
+    private = models.BooleanField(blank=False, default=False)
     html_description = models.TextField(blank=True)
     root = models.OneToOneField('LearningActivity')
     start_date = models.DateField(auto_now=True)
