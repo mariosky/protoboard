@@ -245,6 +245,28 @@ def course(request, course_id=None):
         # please log in
         return HttpResponseRedirect('/login/?next=%s' % request.path)
 
+@login_required()
+def profile(request):
+    if request.is_ajax():
+        if request.method == 'POST':
+            pass
+
+        elif request.method == 'GET':
+
+            try:
+                request.user.userprofile
+                return HttpResponse(json.dumps({"result": "found",
+                                                "tz":request.user.userprofile.timezone,
+                                                "experience":request.user.userprofile.experience,
+                                                "error": None}), content_type='application/javascript')
+
+            except ObjectDoesNotExist:
+                return HttpResponse(json.dumps( {"result": "not_found", "error": None}), content_type='application/javascript')
+
+
+
+
+
 
 # @csrf_exempt
 @login_required()

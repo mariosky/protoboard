@@ -120,7 +120,11 @@ Mensajes de error
 
                     <p class="card-text"><small class="text-muted"> Esta es la hora que reporta tu navegador.</small></p>
 
-                    <p class="card-text"><small class="text-muted"> Esta es la zona horaria que guardamos en tuperfil.</small></p>
+                     <h4 id="current-time-zone" class="text-success">
+
+                    </h4>
+                    <p class="card-text"><small class="text-muted"> Esta es la zona horaria que guardaremos en
+                        tu perfil. No te preocupes si no se imprime tu ciudad exactamente, es solo la zona horaria.</small></p>
 
                 <a id="timezone-save" href="#" class="btn btn-secondary">Guardar</a>
            </div>
@@ -297,7 +301,7 @@ Mensajes de error
 {% endblock content %}
 
 {% block scripts %}
-
+ <script src="{{ STATIC_URL }}app/scripts/jstz.min.js"></script>
 <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
   </script>
 
@@ -349,10 +353,43 @@ Mensajes de error
     }
 
 
+
 //
 // When READY
 //
  $( document ).ready(function() {
+
+
+     var timezone = jstz.determine();
+     console.log(timezone.name()) ;
+     $("#current-time-zone").empty();
+     $("#current-time-zone").html(timezone.name());
+
+
+
+      $.ajaxSetup({
+                //crossDomain: false, // obviates need for sameOrigin test
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+
+
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+
+     $.ajax({
+      type: 'GET',
+      url: '/me/profile',
+
+      contentType: 'application/json',
+      success: function(result) {
+          console.log(result);
+
+                }
+      });
+
 
 
 
@@ -417,9 +454,6 @@ Mensajes de error
   });
 
    $('#unlink-login-facebook').click(function(){
-
-
-
 
    });
 
