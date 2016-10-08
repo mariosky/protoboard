@@ -26,7 +26,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, unique=True)
     facebook_uid = models.DecimalField(unique=True, null=True,max_digits=25, decimal_places=0)
     google_uid = models.DecimalField(unique=True, null=True,max_digits=25, decimal_places=0)
-    timezone = models.CharField(max_length=30, default=get_timezone)
+    timezone = models.CharField(max_length=30, null=True)
     reputation = models.PositiveSmallIntegerField(default=80)
     experience = models.PositiveSmallIntegerField(default=100)
 

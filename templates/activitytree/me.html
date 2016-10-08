@@ -112,20 +112,24 @@ Mensajes de error
         <div class="card ">
           <div class="card-header">  Zona Horaria  </div>
                <div class="card-block ">
-                  <h4 class="text-success">
-                      {% localtime on %}
-                            {{ time}}
-                      {% endlocaltime %}
-                  </h4>
+                  <p class="card-text">
+                    Si guardas tu zona horaria permitirás a los autores ofrecerte recursos didácticos de acuerdo
+                    a tu horario y día de la semana.
+                  </p>
 
-                    <p class="card-text"><small class="text-muted"> Esta es la hora que reporta tu navegador.</small></p>
 
-                     <h4 id="current-time-zone" class="text-success">
+
+                     <h4 id="saved-time-zone" class="text-success">
 
                     </h4>
-                    <p class="card-text"><small class="text-muted"> Esta es la zona horaria que guardaremos en
-                        tu perfil. No te preocupes si no se imprime tu ciudad exactamente, es solo la zona horaria.</small></p>
 
+                    <p class="card-text"><small class="text-muted"> Esta es la zona horaria guardada actualmente en
+                        tu perfil. No te preocupes si no se imprime tu ciudad exactamente, es solo la zona horaria.</small></p>
+                    <h4 id="current-time-zone" class="text-muted">
+
+                    </h4>
+                    <p class="card-text"><small class="text-muted"> Esta es la zona horaria que reporta tu navegador.
+                      Si deseas actualizar tu perfil presiona Guardar.  </small></p>
                 <a id="timezone-save" href="#" class="btn btn-secondary">Guardar</a>
            </div>
       </div>
@@ -379,18 +383,32 @@ Mensajes de error
                 }
             });
 
-     $.ajax({
-      type: 'GET',
-      url: '/me/profile',
+     $.get( '/me/profile', function(data) {
 
-      contentType: 'application/json',
-      success: function(result) {
-          console.log(result);
+          if (data.result == 'found' && data.tz !== null )
+          {
 
+            $('#saved-time-zone').html(data.tz);
+          }
+         else
+          {
+            $('#saved-time-zone').html("Sin información");
+          }
+      }).error(function (data ){
+          $('#saved-time-zone').html("Error al recuperar la información");
+     });
+
+  $("#timezone-save").on("click", function( event ) {
+       $.post('/me/profile', JSON.stringify({ tz:timezone.name()}),
+
+               function(data) {
+                  $("#saved-time-zone").html(data.tz);
                 }
-      });
+
+      );
 
 
+  });
 
 
  $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
@@ -426,6 +444,8 @@ Mensajes de error
     });
 
   });
+
+
 
 
   $( "#login_form" ).on( "submit", function( event ) {

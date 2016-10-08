@@ -249,19 +249,33 @@ def course(request, course_id=None):
 def profile(request):
     if request.is_ajax():
         if request.method == 'POST':
-            pass
+
+            data = json.loads(request.body)
+
+            if hasattr(request.user, 'userprofile'):
+                print data, data['tz']
+                request.user.userprofile.timezone = data['tz']
+                request.user.userprofile.save()
+                request.user.save()
+            else:
+                user_profile = UserProfile(timezone=data['tz'],user=request.user)
+                user_profile.save()
+            print data, data['tz']
+            return HttpResponse(json.dumps({"result": "success", "tz":data['tz'], "error": None}), content_type='application/json')
 
         elif request.method == 'GET':
 
             try:
+
                 request.user.userprofile
                 return HttpResponse(json.dumps({"result": "found",
                                                 "tz":request.user.userprofile.timezone,
                                                 "experience":request.user.userprofile.experience,
-                                                "error": None}), content_type='application/javascript')
+                                                "reputation":request.user.userprofile.reputation
+                                                }), content_type='application/json')
 
             except ObjectDoesNotExist:
-                return HttpResponse(json.dumps( {"result": "not_found", "error": None}), content_type='application/javascript')
+                return HttpResponse(json.dumps( {"result": "not_found", "error": None}), content_type='application/json')
 
 
 
