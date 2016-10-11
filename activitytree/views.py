@@ -246,22 +246,32 @@ def course(request, course_id=None):
         return HttpResponseRedirect('/login/?next=%s' % request.path)
 
 @login_required()
-def profile(request):
+def profile_tz(request):
     if request.is_ajax():
         if request.method == 'POST':
 
             data = json.loads(request.body)
+            print data
 
-            if hasattr(request.user, 'userprofile'):
-                print data, data['tz']
-                request.user.userprofile.timezone = data['tz']
-                request.user.userprofile.save()
-                request.user.save()
-            else:
-                user_profile = UserProfile(timezone=data['tz'],user=request.user)
-                user_profile.save()
-            print data, data['tz']
-            return HttpResponse(json.dumps({"result": "success", "tz":data['tz'], "error": None}), content_type='application/json')
+            if data['method'] == 'upsert':
+                if hasattr(request.user, 'userprofile'):
+                    request.user.userprofile.timezone = data['tz']
+                    request.user.userprofile.save()
+                    request.user.save()
+                else:
+                    user_profile = UserProfile(timezone=data['tz'],user=request.user)
+                    user_profile.save()
+                return HttpResponse(json.dumps({"result": "success", "tz":data['tz'], "error": None}), content_type='application/json')
+            elif data['method'] == 'delete':
+                if hasattr(request.user, 'userprofile'):
+                    request.user.userprofile.timezone = None
+                    request.user.userprofile.save()
+                    request.user.save()
+                # Else dont bother
+                return HttpResponse(json.dumps({"result": "success", "error": None}),
+                                    content_type='application/json')
+
+
 
         elif request.method == 'GET':
 

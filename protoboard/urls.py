@@ -42,7 +42,7 @@ urlpatterns = patterns('',
 
       (r'^get_result$','activitytree.views.get_result'),
       (r'^me$','activitytree.views.me'),
-      (r'^me/profile$', 'activitytree.views.profile'),
+      (r'^me/profile/tz$', 'activitytree.views.profile_tz'),
       (r'^users/(?P<user_id>[0-9]*)(\/*)(?P<course_id>[0-9]*)$','activitytree.views.users'),
 
       url(r'^course-builder/(?P<course_id>([\w+](\/*)(-*))+)$','activitytree.views.course',name="course"),
