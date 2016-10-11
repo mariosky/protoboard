@@ -270,27 +270,112 @@ def profile_tz(request):
                 # Else dont bother
                 return HttpResponse(json.dumps({"result": "success", "error": None}),
                                     content_type='application/json')
-
-
-
         elif request.method == 'GET':
-
             try:
-
                 request.user.userprofile
                 return HttpResponse(json.dumps({"result": "found",
                                                 "tz":request.user.userprofile.timezone,
                                                 "experience":request.user.userprofile.experience,
                                                 "reputation":request.user.userprofile.reputation
                                                 }), content_type='application/json')
-
             except ObjectDoesNotExist:
                 return HttpResponse(json.dumps( {"result": "not_found", "error": None}), content_type='application/json')
 
+@login_required()
+def profile_experience(request):
+    if request.is_ajax():
+        if request.method == 'POST':
 
+            data = json.loads(request.body)
+            print data
 
+            if data['method'] == 'upsert':
+                if hasattr(request.user, 'userprofile'):
+                    request.user.userprofile.experience = data['experience']
+                    request.user.userprofile.save()
+                    request.user.save()
+                else:
+                    user_profile = UserProfile(timezone=data['experience'], user=request.user)
+                    user_profile.save()
+                return HttpResponse(json.dumps({"result": "success", "experience": data['experience'], "error": None}),
+                                    content_type='application/json')
+            elif data['method'] == 'delete':
+                if hasattr(request.user, 'userprofile'):
+                    request.user.userprofile.experience = None
+                    request.user.userprofile.save()
+                    request.user.save()
+                # Else dont bother
+                return HttpResponse(json.dumps({"result": "success", "error": None}),
+                                    content_type='application/json')
+        elif request.method == 'GET':
+            try:
+                request.user.userprofile
+                return HttpResponse(json.dumps({"result": "found",
+                                                "tz": request.user.userprofile.timezone,
+                                                "experience": request.user.userprofile.experience,
+                                                "reputation": request.user.userprofile.reputation
+                                                }), content_type='application/json')
+            except ObjectDoesNotExist:
+                return HttpResponse(json.dumps({"result": "not_found", "error": None}),
+                                    content_type='application/json')
 
+@login_required()
+def profile_learning_style(request):
+    if request.is_ajax():
+        if request.method == 'POST':
 
+            data = json.loads(request.body)
+            print data
+
+            if data['method'] == 'upsert':
+                if hasattr(request.user, 'learningstyleinventory'):
+                    request.user.learningstyleinventory.visual = data['visual']
+                    request.user.learningstyleinventory.verbal = data['verbal']
+                    request.user.learningstyleinventory.aural = data['aural']
+                    request.user.learningstyleinventory.physical = data['physical']
+                    request.user.learningstyleinventory.logical = data['logical']
+                    request.user.learningstyleinventory.social = data['social']
+                    request.user.learningstyleinventory.solitary = data['solitary']
+                    request.user.learningstyleinventory.save()
+                    request.user.save()
+                else:
+                    user_learningstyleinventory = LearningStyleInventory(visual=data['visual'],
+                                               verbal=data['verbal'],
+                                               aural = data['aural'],
+                                               physical=data['physical'],
+                                               logical=data['logical'],
+                                               social=data['social'],
+                                               solitary=data['solitary'],
+                                               user=request.user)
+                    user_learningstyleinventory.save()
+                return HttpResponse(
+                    json.dumps({"result": "success",  "error": None}),
+                    content_type='application/json')
+            elif data['method'] == 'delete':
+                if hasattr(request.user, 'learningstyleinventory'):
+                    # Delete record
+                    # Else dont bother
+                    pass
+                return HttpResponse(json.dumps({"result": "success", "error": None}),
+                                    content_type='application/json')
+        elif request.method == 'GET':
+            try:
+                request.user.learningstyleinventory
+                return HttpResponse(json.dumps({"result": "found",
+                                                "visual":request.user.visual,
+                                                "verbal" : request.user.verbal,
+                                                "aural" : request.user.aural,
+                                                "physical" : request.user.physical,
+                                                "logical" :request.user.logical,
+                                                "social" : request.user.social,
+                                                "solitary" : request.user.solitary,
+                                                "tz": request.user.userprofile.timezone,
+                                                "experience": request.user.userprofile.experience,
+                                                "reputation": request.user.userprofile.reputation
+                                                }), content_type='application/json')
+            except ObjectDoesNotExist:
+                return HttpResponse(json.dumps({"result": "not_found", "error": None}),
+                                    content_type='application/json')
 
 # @csrf_exempt
 @login_required()
