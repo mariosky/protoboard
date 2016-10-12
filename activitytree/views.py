@@ -47,7 +47,7 @@ from mongo_activities import Activity
 from eval_code.RedisCola import Cola, Task
 
 from activitytree.models import Course, ActivityTree, UserLearningActivity, LearningActivity, ULA_Event, \
-    LearningActivityRating
+    LearningActivityRating, LearningStyleInventory
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.models import FacebookSession, GoogleSession, UserProfile
 from courses import get_activity_tree, update_course_from_json, create_empty_course, upload_course_from_json
@@ -362,16 +362,13 @@ def profile_learning_style(request):
             try:
                 request.user.learningstyleinventory
                 return HttpResponse(json.dumps({"result": "found",
-                                                "visual":request.user.visual,
-                                                "verbal" : request.user.verbal,
-                                                "aural" : request.user.aural,
-                                                "physical" : request.user.physical,
-                                                "logical" :request.user.logical,
-                                                "social" : request.user.social,
-                                                "solitary" : request.user.solitary,
-                                                "tz": request.user.userprofile.timezone,
-                                                "experience": request.user.userprofile.experience,
-                                                "reputation": request.user.userprofile.reputation
+                                                "visual":request.user.learningstyleinventory.visual,
+                                                "verbal" : request.user.learningstyleinventory.verbal,
+                                                "aural" : request.user.learningstyleinventory.aural,
+                                                "physical" : request.user.learningstyleinventory.physical,
+                                                "logical" :request.user.learningstyleinventory.logical,
+                                                "social" : request.user.learningstyleinventory.social,
+                                                "solitary" : request.user.learningstyleinventory.solitary
                                                 }), content_type='application/json')
             except ObjectDoesNotExist:
                 return HttpResponse(json.dumps({"result": "not_found", "error": None}),
