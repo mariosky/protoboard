@@ -311,7 +311,6 @@ def profile_experience(request):
             try:
                 request.user.userprofile
                 return HttpResponse(json.dumps({"result": "found",
-                                                "tz": request.user.userprofile.timezone,
                                                 "experience": request.user.userprofile.experience,
                                                 "reputation": request.user.userprofile.reputation
                                                 }), content_type='application/json')

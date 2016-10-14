@@ -214,17 +214,18 @@ Mensajes de error
                    <div class="form-group row">
                         <label for="example-number-input" class="col-xs-6 col-form-label">¿Como te consideras en programación?</label>
                         <div class="col-xs-6">
-                         <select class="form-control form-control">
-                                <option>no sé nada</option>
-                                <option>principiante</option>
-                                <option>intermedio</option>
-                                <option>avanzado</option>
-                                <option>experto</option>
+                         <select id="experience-list" class="form-control form-control">
+                                <option value="0">no utilizar</option>
+                                <option value="1">principiante</option>
+                                <option value="2">intermedio</option>
+                                <option value="3">avanzado</option>
+                                <option value="4">experto</option>
+
                         </select>
                         </div>
 
                     </div>
-               <a id="timezone-save" href="#" class="btn btn-secondary">Guardar</a>
+
                </div>
 
            </div>
@@ -396,15 +397,27 @@ Mensajes de error
 
      $.get( '/me/profile/tz', function(data) {
 
-          if (data.result == 'found' && data.tz !== null )
-          {
+         if (data.result == 'found')
+         {
+              if (data.tz !== null )
+              {
+                 $('#saved-time-zone').html(data.tz);
+              }
 
-            $('#saved-time-zone').html(data.tz);
-          }
+             if (data.experience !== null )
+              {
+                 $('#experience-list').val(data.experience);
+              }
+
+
+         }
          else
           {
-            $('#saved-time-zone').html("Sin información");
+              $('#saved-time-zone').html("Sin información");
+
           }
+
+
       }).error(function (data ){
           $('#saved-time-zone').html("Error al recuperar la información");
      });
@@ -452,10 +465,6 @@ Mensajes de error
             });
 
 
-
-
-
-
              $("#learning-style-delete").on("click", function (event) {
                   $.post('/me/profile/learning_style', JSON.stringify({method: 'delete'}),
 
@@ -480,7 +489,17 @@ Mensajes de error
                   );
               });
 
+              $('body').on("change","#expirience-list", function (event) {
 
+                             console.log("changed");
+
+                  $.post('/me/profile/experience', JSON.stringify({experience: $("#experience-list").selected(), method: 'upsert'}),
+
+                          function (data) {
+                             console.log(data);
+                          }
+                  );
+              });
 
               $("#timezone-delete").on("click", function (event) {
                   $.post('/me/profile/tz', JSON.stringify({method: 'delete'}),
