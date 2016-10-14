@@ -126,29 +126,31 @@ Mensajes de error
                     </h4>
                     <p class="card-text"><small class="text-muted"> Esta es la zona horaria que reporta tu navegador.
                       Si deseas actualizar tu perfil presiona Guardar.  </small></p>
-                <a id="timezone-save" href="#" class="btn btn-secondary">Guardar</a> <a id="timezone-delete" href="#" class="btn btn-secondary">No utilizar</a>
+                <a id="timezone-save" class="btn btn-primary">Guardar</a> <a id="timezone-delete"  class="btn btn-secondary">No utilizar</a>
            </div>
       </div>
 
     <div class="card ">
-          <div class="card-header">  Estilo de aprendizaje  </div>
+           <div class="card-header">  Estilo de aprendizaje  </div>
            <div class="card-block ">
-            <div class="form-group row">
-                  <label for="example-number-input" class="col-xs-2 col-form-label">Visual</label>
-                  <div class="col-xs-4">
-                    <input class="form-control ls" type="number" value="0" id="ls-visual" max="25" min="0">
-                  </div>
-                  <div class="col-xs-6">
-                    <progress id="ps-visual" class="progress progress-success" value="0" max="25"></progress>
-                  </div>
-            </div>
+           <form id="learning-style-form" onsubmit="return false">
+           <div class="form-group row">
+           <label for="example-number-input" class="col-xs-2 col-form-label">Visual</label>
+           <div class="col-xs-4">
+           <input class="form-control ls" type="number" value="0" id="ls-visual" max="25" min="0">
+           </div>
+           <div class="col-xs-6">
+           <progress id="ps-visual" class="progress progress-success ls-bar" value="0" max="25"></progress>
+           </div>
+           </div>
+
             <div class="form-group row">
                   <label for="example-number-input" class="col-xs-2 col-form-label">Verbal</label>
                   <div class="col-xs-4">
                     <input class="form-control ls" type="number" value="0" id="ls-verbal" max="25" min="0">
                   </div>
                   <div class="col-xs-6">
-                    <progress id="ps-verbal" class="progress progress-success" value="0" max="25">Aural</progress>
+                    <progress id="ps-verbal" class="progress progress-success ls-bar" value="0" max="25">Aural</progress>
                   </div>
             </div>
             <div class="form-group row">
@@ -157,7 +159,7 @@ Mensajes de error
                     <input class="form-control ls" type="number" value="0" id="ls-aural" max="25" min="0">
                   </div>
                   <div class="col-xs-6">
-                    <progress id="ps-aural" class="progress progress-success" value="0" max="25">Aural</progress>
+                    <progress id="ps-aural" class="progress progress-success ls-bar" value="0" max="25">Aural</progress>
                   </div>
             </div>
             <div class="form-group row">
@@ -166,7 +168,7 @@ Mensajes de error
                     <input class="form-control ls" type="number" value="0" id="ls-logical" max="25" min="0">
                   </div>
                   <div class="col-xs-6">
-                    <progress id="ps-logical" class="progress progress-success" value="0" max="25"></progress>
+                    <progress id="ps-logical" class="progress progress-success ls-bar" value="0" max="25"></progress>
                   </div>
             </div>
             <div class="form-group row">
@@ -175,7 +177,7 @@ Mensajes de error
                     <input class="form-control ls" type="number" value="0" id="ls-physical" max="25" min="0">
                   </div>
                   <div class="col-xs-6">
-                    <progress id="ps-physical" class="progress progress-success" value="0" max="25"></progress>
+                    <progress id="ps-physical" class="progress progress-success ls-bar" value="0" max="25"></progress>
                   </div>
             </div>
             <div class="form-group row">
@@ -184,7 +186,7 @@ Mensajes de error
                     <input class="form-control ls" type="number" value="0" id="ls-social" max="25" min="0">
                   </div>
                   <div class="col-xs-6">
-                    <progress id="ps-social" class="progress progress-success" value="0" max="25"></progress>
+                    <progress id="ps-social" class="progress progress-success ls-bar" value="0" max="25"></progress>
                   </div>
             </div>
             <div class="form-group row">
@@ -193,12 +195,14 @@ Mensajes de error
                     <input class="form-control ls" type="number" value="0" id="ls-solitary" max="25" min="0">
                   </div>
                   <div class="col-xs-6">
-                    <progress id="ps-solitary" class="progress progress-success" value="0" max="25"></progress>
+                    <progress id="ps-solitary" class="progress progress-success ls-bar" value="0" max="25"></progress>
                   </div>
             </div>
 
-            <a id="learning-style-save" href="#" class="btn btn-secondary">Guardar</a>
-            <a id="timezone-delete" href="#" class="btn btn-secondary">No utilizar</a>
+            <button  type="submit" class="btn btn-primary">Guardar</button>
+             <button id="learning-style-delete"  class="btn btn-secondary">No utilizar</button>
+
+            </form>
 
            </div>
            </div>
@@ -369,6 +373,8 @@ Mensajes de error
 //
  $( document ).ready(function() {
 
+
+
      var timezone = jstz.determine();
      console.log(timezone.name()) ;
      $("#current-time-zone").empty();
@@ -418,9 +424,11 @@ Mensajes de error
                   alert("Error al recuperar la información");
               });
 
+    $('body').on('submit','#learning-style-form',function (e) {
 
-              $("#learning-style-save").on("click", function (event) {
+                  e.preventDefault();
                   var data = {};
+
                   $(".ls").each(function () {
                     data[$( this ).attr("id").substring(3)]= $( this ).val();
                     });
@@ -432,13 +440,34 @@ Mensajes de error
                   $.post('/me/profile/learning_style', JSON.stringify(data),
 
                       function (data) {
-                          alert("saved");
-                      }
-              );
 
+                           $(".ls").each(function () {
+                             console.log("ps-" + $( this ).attr("id").substring(3));
+                            $( "#ps-" + $( this ).attr("id").substring(3)).val(  $( this ).val()  );
+                             });
+
+
+                      });
+
+            });
+
+
+
+
+
+
+             $("#learning-style-delete").on("click", function (event) {
+                  $.post('/me/profile/learning_style', JSON.stringify({method: 'delete'}),
+
+                          function (data) {
+                               $(".ls").each(function () {
+                            $( this ).val(0);
+                    });
+                                $(".ls-bar").each(function () {
+                            $( this ).val(0);
+                    });
+                          });
               });
-
-
 
 
 
@@ -452,14 +481,6 @@ Mensajes de error
               });
 
 
-              $("#timezone-save").on("click", function (event) {
-                  $.post('/me/profile/tz', JSON.stringify({tz: timezone.name(), method: 'upsert'}),
-
-                          function (data) {
-                              $("#saved-time-zone").html(data.tz);
-                          }
-                  );
-              });
 
               $("#timezone-delete").on("click", function (event) {
                   $.post('/me/profile/tz', JSON.stringify({method: 'delete'}),

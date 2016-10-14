@@ -355,6 +355,8 @@ def profile_learning_style(request):
                 if hasattr(request.user, 'learningstyleinventory'):
                     # Delete record
                     # Else dont bother
+                    request.user.learningstyleinventory.delete()
+
                     pass
                 return HttpResponse(json.dumps({"result": "success", "error": None}),
                                     content_type='application/json')
