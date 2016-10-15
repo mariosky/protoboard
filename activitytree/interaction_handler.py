@@ -2,10 +2,12 @@
 #!/usr/bin/env python
 
 from activitytree.models import ActivityTree, UserLearningActivity, User
-from django.utils import timezone
 import xml.etree.ElementTree as ET
 
 from django.db import connection
+from django.utils import timezone
+import pytz
+
 
 import datetime
 from lxml import etree
@@ -52,9 +54,10 @@ class NotAllowed(Error):
 
 
 class SimpleSequencing(object):
-    def __init__(self):
+    def __init__(self, context=None):
         self.RECORDS = {}
         self.USER = None
+        self.context=context
     def set_current(self, ula):
         atree = ula.get_atree()
 
@@ -375,6 +378,7 @@ class SimpleSequencing(object):
         return None
 
     def get_user_attr(self,attr):
+        print self.context,attr
         if hasattr(self.USER, attr):
             return getattr(self.USER, attr)
         if hasattr(self.USER, 'learningstyleinventory'):
@@ -383,8 +387,16 @@ class SimpleSequencing(object):
         if hasattr(self.USER, 'userprofile'):
             if hasattr(self.USER.userprofile, attr):
                 return getattr(self.USER.userprofile, attr)
+        if attr == 'time':
+            if 'time_zone' in self.context:
+                server = timezone.now()
+                user_tz = pytz.timezone(self.context['time_zone' ])
+                print server.astimezone(user_tz).strftime("%H:%M:%S")
+                return server.astimezone(user_tz).strftime("%H:%M:%S")
+
 
         return None
+
 
 
     def get_nav(self,root):

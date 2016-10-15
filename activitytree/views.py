@@ -552,7 +552,11 @@ def path_activity(request, path_id, uri):
 
     if request.user.is_authenticated():
         root = None
-        s = SimpleSequencing()
+        context = {}
+        if hasattr(request.user,"userprofile"):
+            context['time_zone']=request.user.userprofile.timezone
+        s = SimpleSequencing(context=context)
+
         requested_activity = None
 
         if request.method == 'GET':
