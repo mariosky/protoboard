@@ -377,10 +377,14 @@ class SimpleSequencing(object):
     def get_user_attr(self,attr):
         if hasattr(self.USER, attr):
             return getattr(self.USER, attr)
-        elif hasattr(self.USER, 'learningstyleinventory'):
-            return getattr(self.USER.learningstyleinventory, attr)
-        else:
-            return None
+        if hasattr(self.USER, 'learningstyleinventory'):
+            if hasattr(self.USER.learningstyleinventory, attr):
+                return getattr(self.USER.learningstyleinventory, attr)
+        if hasattr(self.USER, 'userprofile'):
+            if hasattr(self.USER.userprofile, attr):
+                return getattr(self.USER.userprofile, attr)
+
+        return None
 
 
     def get_nav(self,root):

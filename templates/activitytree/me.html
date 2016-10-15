@@ -219,6 +219,8 @@ Mensajes de error
 
 
             <h3>Opciones de inicio de sesión</h3>
+
+                <form id="link-accounts-form">
  {% if IntegrityError %}
 
         <div class='alert alert-danger alert-dismissable'>
@@ -237,8 +239,6 @@ Mensajes de error
     </div>
 
     {% endif %}
-
-                <form >
 
 
         {% comment %}
@@ -596,7 +596,7 @@ Mensajes de error
                                   // Handle or verify the server response.
                                   if (!result.success) {   //alert("Error: "+result.error)
                                       if (result.error == 'AuthAlreadyAssociated') {
-                                          $('#login_form').prepend("<div class='alert alert-danger alert-dismissable'>" +
+                                          $('#link-accounts-form').prepend("<div class='alert alert-danger alert-dismissable'>" +
                                                   "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>" +
                                                   "<p>El correo electrónico de esa cuenta ya está ligado a un perfil existente. Si es tuyo ingresa con la otra cuenta.</p>  " +
                                                   "<p>Si no recuerdas la cuenta puedes <a href='/password_reset/'> restablecer tu contraseña. </a> Ya en tu perfil, puedes conectar o desconectar otras cuentas.</p>"
@@ -604,18 +604,18 @@ Mensajes de error
                                       }
 
                                       if (result.error == 'IntegrityError') {
-                                          $('#login_form').prepend("<div class='alert alert-danger alert-dismissable'>" +
+                                          $('#link-accounts-form').prepend("<div class='alert alert-danger alert-dismissable'>" +
                                                   "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>" +
                                                   "<p>El correo electrónico de tu cuenta está ligado a un perfil existente. Si es tuyo ingresa con la otra cuenta.</p>  " +
                                                   "<p>Si no recuerdas la cuenta puedes <a href='/password_reset/'> restablecer tu perfil. </a> Ya en tu perfil puedes asociar de nuevo otras cuentas.</p>"
                                                   + "</div>");
                                       }
                                       if (result.error == 'ProfileNotFound') {
-                                          $('#login_form').prepend("<p>Inténtalo de nuevo, el usuario y contraseña no coinciden.</p>");
+                                          $('#link-accounts-form').prepend("<p>Inténtalo de nuevo, el usuario y contraseña no coinciden.</p>");
                                       }
 
                                       if (result.error == 'DifferentEMAIL') {
-                                          $('#login_form').prepend("<div class='alert alert-danger alert-dismissable'>" +
+                                          $('#link-accounts-form').prepend("<div class='alert alert-danger alert-dismissable'>" +
                                                   "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>" +
                                                   "<p>El correo de la cuenta que desas enlazar debe coincidir con el correo de la cuenta actual.</p></div>");
 

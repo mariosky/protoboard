@@ -46,7 +46,8 @@ def add_precondition(rule):
                     first = True
                     for elem in rule['conditions']:
                         if 'user' in elem or 'context' in elem:
-                            if first and elem['option'] in ( 'level','points','experience'):
+                            if first and elem['option'] in ( 'level','points','experience','visual','aural','verbal',
+                                                             'physical','logical','social','solitary'):
                                 first = False
                                 string += "if self.get_user_attr('{0}') {1} {2}".format(elem['option'],
                                                                                  elem['operator'], elem['value'])
@@ -55,7 +56,8 @@ def add_precondition(rule):
                                 string += "if self.get_user_attr('{0}') {1} '{2}'".format(elem['option'],
                                                                                  elem['operator'], elem['value'])
 
-                            elif elem['option'] in ( 'level','points','experience'  ):
+                            elif elem['option'] in ( 'level','points','experience','visual','aural','verbal',
+                                                             'physical','logical','social','solitary'):
                                 string += " and self.get_user_attr('{0}') {1} {2}".format(elem['option'],
                                                                                 elem['operator'], elem['value'])
                             else:
