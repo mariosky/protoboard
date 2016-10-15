@@ -81,24 +81,7 @@
 Mensajes de error
 {% endcomment %}
 
-    {% if IntegrityError %}
 
-        <div class='alert alert-danger alert-dismissable'>
-            <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-            <p>Tu cuenta ya está ligada a un perfil existente. Si es tuyo ingresa con la otra cuenta.</p>
-            <p>Si no recuerdas la cuenta puedes <a href='/password_reset/'> restablecer tu perfil. </a> Ya en tu perfil puedes asociar de nuevo otras cuentas.</p>
-        </div>
-
-    {% endif %}
-    {% if DifferentEMAIL %}
-
-    <div class='alert alert-danger alert-dismissable'>
-        <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-        <p>El correo de la cuenta que desas enlazar debe coincidir con el correo de la cuenta actual.</p>
-        <p>Para evitar conflictos entre cuentas, por el momento no es posible enlazar esta cuenta.</p>
-    </div>
-
-    {% endif %}
 
         <h3> Configuración avanzada </h3>
         <p class="lead">
@@ -233,13 +216,36 @@ Mensajes de error
 
 
             <div class="col-sm-3">
+
+
             <h3>Opciones de inicio de sesión</h3>
- <form >
+ {% if IntegrityError %}
+
+        <div class='alert alert-danger alert-dismissable'>
+            <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+            <p>Lo sentimos, tu cuenta ya está ligada a un perfil existente. Si es tuyo ingresa con la otra cuenta.</p>
+            <p>Si no recuerdas la cuenta puedes <a href='/password_reset/'> restablecer tu perfil. </a> Ya en tu perfil puedes asociar de nuevo otras cuentas.</p>
+        </div>
+
+    {% endif %}
+    {% if DifferentEMAIL %}
+
+    <div class='alert alert-danger alert-dismissable'>
+        <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+        <p>El correo de la cuenta que desas enlazar debe coincidir con el correo de la cuenta actual.</p>
+        <p>Para evitar conflictos entre cuentas, por el momento no es posible enlazar esta cuenta.</p>
+    </div>
+
+    {% endif %}
+
+                <form >
 
 
         {% comment %}
         Si tenemos una cuenta ligada a Facebbok deberá de existir la facebook_uid
         {% endcomment %}
+
+
                    {% if user.userprofile.facebook_uid  %}
                <div class="card ">
                <div class="card-header"> <i class="fa fa-facebook"></i> Facebook </a>   </div>
@@ -489,11 +495,11 @@ Mensajes de error
                   );
               });
 
-              $('body').on("change","#expirience-list", function (event) {
+              $('body').on("change","#experience-list", function (event) {
 
-                             console.log("changed");
+                             console.log($("#experience-list").val());
 
-                  $.post('/me/profile/experience', JSON.stringify({experience: $("#experience-list").selected(), method: 'upsert'}),
+                  $.post('/me/profile/experience', JSON.stringify({experience: $("#experience-list").val(), method: 'upsert'}),
 
                           function (data) {
                              console.log(data);

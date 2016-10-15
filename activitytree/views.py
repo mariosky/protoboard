@@ -295,7 +295,7 @@ def profile_experience(request):
                     request.user.userprofile.save()
                     request.user.save()
                 else:
-                    user_profile = UserProfile(timezone=data['experience'], user=request.user)
+                    user_profile = UserProfile(experience=data['experience'], user=request.user)
                     user_profile.save()
                 return HttpResponse(json.dumps({"result": "success", "experience": data['experience'], "error": None}),
                                     content_type='application/json')
@@ -1346,11 +1346,12 @@ def facebook_login(request):
         user = None
         try:
             user = authenticate(app="facebook", **access_token_response)
-        except AuthAlreadyAssociated:
+        except (AuthAlreadyAssociated, IntegrityError):
             con = RequestContext(request)
             con['AuthAlreadyAssociated'] = True
             return TemplateResponse(request, template='registration/login.html', context=con)
             # return HttpResponse(json.dumps({"success":False, "error":'AuthAlreadyAssociated' , "after_login":"/"}), content_type='application/javascript')
+
 
         auth_status = None
         if user:
