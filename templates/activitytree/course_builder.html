@@ -906,21 +906,9 @@ function get_course() {
       $("#modalSearch").modal()
   });
 
-//rule builder modal options
-  $(document).ready(function(){
-      $(window).load(function() {
-          $('#context-time').timepicker({
-              minuteStep: 1,
-              secondStep: 5,
-              showInputs: false,
-              showSeconds: true,
-              showMeridian: false
-          });
-      });
 
-  });
 
-  var body = $('body');
+ var body = $('body');
 
   body.on('hidden.bs.modal', '#modal-rulebuilder', function(){
       rules = '';
@@ -1798,7 +1786,7 @@ TO DO: Reuse mustache  templates
                                     </select>
 
                                     <div id="contextime" class="input-group bootstrap-timepicker timepicker" style="width:40%;display:none">
-                                        <input id="context-time" type="time" value="12:00 PM" class="form-control input-small">
+                                        <input id="context-time" type="time" value="12:00:00" class="form-control input-small">
                                         <span class="input-group-addon"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
                                     </div>
 
