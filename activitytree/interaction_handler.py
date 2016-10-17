@@ -387,15 +387,14 @@ class SimpleSequencing(object):
         if hasattr(self.USER, 'userprofile'):
             if hasattr(self.USER.userprofile, attr):
                 return getattr(self.USER.userprofile, attr)
-        if attr == 'time':
-            if 'time_zone' in self.context:
-                server = timezone.now()
-                user_tz = pytz.timezone(self.context['time_zone' ])
-                print server.astimezone(user_tz).strftime("%H:%M:%S")
-                return server.astimezone(user_tz).strftime("%H:%M:%S")
-
-
         return None
+
+    def get_time_condition(self, opertator, time_value):
+        if 'time_zone' in self.context:
+            server = timezone.now()
+            user_tz = pytz.timezone(self.context['time_zone'])
+            print server.astimezone(user_tz).strftime("%H:%M:%S"),opertator,time_value
+            return server.astimezone(user_tz).strftime("%H:%M:%S")
 
 
 

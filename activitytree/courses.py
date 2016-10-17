@@ -46,38 +46,48 @@ def add_precondition(rule):
                     first = True
                     for elem in rule['conditions']:
                         if 'user' in elem or 'context' in elem:
-                            if first and elem['option'] in ( 'level','points','experience','visual','aural','verbal',
-                                                             'physical','logical','social','solitary'):
+                            if first:
                                 first = False
-                                string += "if self.get_user_attr('{0}') {1} {2}".format(elem['option'],
-                                                                                 elem['operator'], elem['value'])
-                            elif first:
-                                first = False
-                                string += "if self.get_user_attr('{0}') {1} '{2}'".format(elem['option'],
-                                                                                 elem['operator'], elem['value'])
+                                if elem['option'] in ( 'level','points','experience','visual','aural','verbal',
+                                                                 'physical','logical','social','solitary'):
+                                    string += "if self.get_user_attr('{0}') {1} {2}".format(elem['option'],
+                                                                                     elem['operator'], elem['value'])
+                                elif elem['option']  == "time":
+                                    string += "if self.get_time_condition('{0}','{1}','{2}')".format(elem['option'],
+                                                                             elem['operator'],  elem['value'])
+                                else:
+                                    string += "if self.get_user_attr('{0}') {1} '{2}'".format(elem['option'],
+                                                                                     elem['operator'], elem['value'])
+                            else:
 
-                            elif elem['option'] in ( 'level','points','experience','visual','aural','verbal',
-                                                             'physical','logical','social','solitary'):
-                                string += " and self.get_user_attr('{0}') {1} {2}".format(elem['option'],
-                                                                                elem['operator'], elem['value'])
-                            else:
-                                string += " and self.get_user_attr('{0}') {1} '{2}'".format(elem['option'],
-                                                                                  elem['operator'], elem['value'])
-                        else:
-                            if first and (elem['option'] == 'num_attempts' or elem['option'] == 'objective_measure'):
-                                first = False
-                                string += "if self.get_attr('{0}','{1}') {2} {3}".format(elem['uri'],
-                                                                        elem['option'],elem['operator'], elem['value'])
-                            elif first:
-                                first = False
-                                string += "if self.get_attr('{0}','{1}') {2} '{3}'".format(elem['uri'], elem['option'],
-                                                                                       elem['operator'], elem['value'])
-                            elif elem['option'] == 'num_attempts' or elem['option'] == 'objective_measure':
-                                string += " and self.get_attr('{0}','{1}') {2} {3}".format(elem['uri'], elem['option'],
+                                if elem['option'] in ( 'level','points','experience','visual','aural','verbal',
+                                                                 'physical','logical','social','solitary'):
+                                    string += " and self.get_user_attr('{0}') {1} {2}".format(elem['option'],
+                                                                                    elem['operator'], elem['value'])
+                                elif elem['option'] == "time":
+                                    string += " and self.get_time_condition('{0}','{1}','{2}')".format(elem['option'],
+                                                                                   elem['operator'], elem['value'])
+                                else:
+                                    string += " and self.get_user_attr('{0}') {1} '{2}'".format(elem['option'],
                                                                                       elem['operator'], elem['value'])
+                        else:
+                            if first:
+                                first = False
+                                if  (elem['option'] == 'num_attempts' or elem['option'] == 'objective_measure'):
+
+                                    string += "if self.get_attr('{0}','{1}') {2} {3}".format(elem['uri'],
+                                                                            elem['option'],elem['operator'], elem['value'])
+                                else :
+                                    string += "if self.get_attr('{0}','{1}') {2} '{3}'".format(elem['uri'], elem['option'],
+                                                                                        elem['operator'], elem['value'])
                             else:
-                                string += " and self.get_attr('{0}','{1}') {2} '{3}'".format(elem['uri'],
-                                                                       elem['option'], elem['operator'], elem['value'])
+
+                                if elem['option'] == 'num_attempts' or elem['option'] == 'objective_measure':
+                                    string += " and self.get_attr('{0}','{1}') {2} {3}".format(elem['uri'], elem['option'],
+                                                                                          elem['operator'], elem['value'])
+                                else:
+                                    string += " and self.get_attr('{0}','{1}') {2} '{3}'".format(elem['uri'],
+                                                                           elem['option'], elem['operator'], elem['value'])
 
 
 
