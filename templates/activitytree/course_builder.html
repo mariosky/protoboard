@@ -175,8 +175,25 @@
 
                 [[#condiciones]]
 
+
+
                 <div id="[[id]]" style="border-bottom:2px dashed #EEEEEE;padding-bottom:2%;margin-bottom:2.5%;margin-left:3%;margin-top:2.5%;text-align:left;margin-right:3%">
-                [[#user]]<b> User </b> [[/user]] [[^user]] <b> [[act_name]] </b> [[/user]] <code>HAS</code>  <em> [[option_txt]]</em> <b>[[operator_txt]]</b> [[value]] </span>
+
+                [[#user]]
+                         <b> User </b> <code>HAS</code>  <em> [[option_txt]]</em> <b>[[operator_txt]]</b> [[value]] </span>
+                [[/user]]
+
+                [[#context]]
+                         <b> Context</b> <code>HAS</code>  <em> [[option_txt]]</em> <b>[[operator_txt]]</b> [[value]] </span>
+                [[/context]]
+
+
+
+                [[#activity]]
+                         <b> [[act_name]] </b>  <code>HAS</code>  <em> [[option_txt]]</em> <b>[[operator_txt]]</b> [[value]] </span>
+                [[/activity]]
+
+
 
                 <button type="button" condition-id="[[id]]" class="btn btn-danger  btn-sm deleteRuleBtn" style="float:right;margin-left:5px">Borrar</button>
                 </div>
@@ -990,6 +1007,7 @@ function get_course() {
       var activity_id=$("#activity-select").val();
       var container_id= $("#container_rule_id").val();
       if (btntype == 'activity'){
+          var activity = true;
           var option = $('#activity-options').val();
           var option_txt = $('#activity-options option:selected').html();
           var operator = $("#activity-operators").val();
@@ -1069,12 +1087,17 @@ function get_course() {
       var id = Math.random().toString(36).substr(2, 5);
       var condition = {'id':id,'uri':uri, 'act_name':act_name ,'option':option,'option_txt':option_txt,'operator':operator,'operator_txt':operator_text,'value':value};
       $("#rule").remove();
+
       if (user == true){
           condition['user']='true'
       }
       else if (context == true){
           condition['context'] = 'true'
       }
+      else if (activity == true){
+          condition['activity'] = 'true'
+      }
+
       conditions.push(condition);
       populate_conditions(rules, container_id);
       $("#deleteAllbtn").prop("disabled",false);
