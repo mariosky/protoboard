@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 from django.db import connection
 from django.utils import timezone
 import pytz
-
+import operator
 
 import datetime
 from lxml import etree
@@ -389,12 +389,27 @@ class SimpleSequencing(object):
                 return getattr(self.USER.userprofile, attr)
         return None
 
-    def get_time_condition(self, opertator, time_value):
-        if 'time_zone' in self.context:
+    def get_time_condition(self, oper, time_value):
+        print self.context
+        operators = {'<':operator.lt,'>':operator.gt,'<=':operator.le,'>=':operator.ge,'==':operator.eq,'!=':operator.ne}
+        if 'time_zone' in self.context and self.context['time_zone'] is not None :
+
             server = timezone.now()
             user_tz = pytz.timezone(self.context['time_zone'])
-            print server.astimezone(user_tz).strftime("%H:%M:%S"),opertator,time_value
-            return server.astimezone(user_tz).strftime("%H:%M:%S")
+            print server.astimezone(user_tz).strftime("%H:%M"), time_value
+            return   operators[oper](server.astimezone(user_tz).strftime("%H:%M"), time_value )
+        else:
+            return False
+
+    def get_day_of_week(self):
+
+        if 'time_zone' in self.context and self.context['time_zone'] is not None:
+            server = timezone.now()
+            user_tz = pytz.timezone(self.context['time_zone'])
+            print server.astimezone(user_tz).strftime("%A")
+            return server.astimezone(user_tz).strftime("%A")
+        else:
+            return None
 
 
 

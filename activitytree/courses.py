@@ -28,33 +28,37 @@ def update_course_from_json( json_tree, user):
 
 def upload_course_from_json( json_tree,course_id, user):
     activity_tree = json.loads(json_tree)[0]
-    print "upload_course_from_json",activity_tree['id']
     activity_tree['id'] = course_id
-    print activity_tree['id'], course_id
-    print "final",activity_tree
     _traverse_upload(activity_tree, root=None, user=user)
 
 
 def add_precondition(rule):
+
     if rule is not None:
         rule = rule.encode('ascii','ignore')
+        print 'tha rule:', rule
         if 'conditions' in rule:
             try:
                 rule = ast.literal_eval(rule)
+                print 'tha dict rule:', rule
                 if rule['conditions']:
                     string = ''
                     first = True
                     for elem in rule['conditions']:
+
                         if 'user' in elem or 'context' in elem:
+
                             if first:
                                 first = False
                                 if elem['option'] in ( 'level','points','experience','visual','aural','verbal',
                                                                  'physical','logical','social','solitary'):
                                     string += "if self.get_user_attr('{0}') {1} {2}".format(elem['option'],
                                                                                      elem['operator'], elem['value'])
-                                elif elem['option']  == "time":
-                                    string += "if self.get_time_condition('{0}','{1}','{2}')".format(elem['option'],
-                                                                             elem['operator'],  elem['value'])
+                                elif elem['option']  == 'time':
+                                    string += "if self.get_time_condition('{0}','{1}')".format(elem['operator'],  elem['value'])
+                                elif elem['option'] == 'dayof':
+                                    string += "if self.get_day_of_week() {0} '{1}'".format(elem['operator'],
+                                                                                               elem['value'])
                                 else:
                                     string += "if self.get_user_attr('{0}') {1} '{2}'".format(elem['option'],
                                                                                      elem['operator'], elem['value'])
@@ -64,9 +68,12 @@ def add_precondition(rule):
                                                                  'physical','logical','social','solitary'):
                                     string += " and self.get_user_attr('{0}') {1} {2}".format(elem['option'],
                                                                                     elem['operator'], elem['value'])
-                                elif elem['option'] == "time":
-                                    string += " and self.get_time_condition('{0}','{1}','{2}')".format(elem['option'],
+                                elif elem['option'] == 'time':
+                                    string += " and self.get_time_condition('{0}','{1}')".format(
                                                                                    elem['operator'], elem['value'])
+                                elif elem['option'] == 'dayof':
+                                    string += "and self.get_day_of_week() {0} '{1}'".format(elem['operator'],
+                                                                                           elem['value'])
                                 else:
                                     string += " and self.get_user_attr('{0}') {1} '{2}'".format(elem['option'],
                                                                                       elem['operator'], elem['value'])
@@ -89,19 +96,16 @@ def add_precondition(rule):
                                     string += " and self.get_attr('{0}','{1}') {2} '{3}'".format(elem['uri'],
                                                                            elem['option'], elem['operator'], elem['value'])
 
-
-
+                    if 'precondition' in rule:
+                        string += ":\n" \
+                                "    activity['pre_condition'] = '{0}'\n" \
+                                "else:\n" \
+                                "    activity['pre_condition'] = ''".format(rule['precondition'])
                     else:
-                        if 'precondition' in rule:
-                            string += ":\n" \
-                                    "    activity['pre_condition'] = '{0}'\n" \
-                                    "else:\n" \
-                                    "    activity['pre_condition'] = ''".format(rule['precondition'])
-                        else:
-                            string += ":\n" \
-                                    "    activity['pre_condition'] = ''\n" \
-                                    "else:\n" \
-                                    "    activity['pre_condition'] = ''"
+                        string += ":\n" \
+                                "    activity['pre_condition'] = ''\n" \
+                                "else:\n" \
+                                "    activity['pre_condition'] = ''"
                     return string
                 else:
                     pass
