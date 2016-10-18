@@ -1558,7 +1558,7 @@ def my_activities(request):  # view used by activity_builder, returns all activi
     json_docs.append(count)
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 
-
+@csrf_exempt
 def search_prueba(request):  # view used by search, receives page and query and returns count of docs and activities
     MONGO_PAGE_SIZE = 20
     client = MongoClient(settings.MONGO_DB)
