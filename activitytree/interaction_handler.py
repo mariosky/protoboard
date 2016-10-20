@@ -402,11 +402,13 @@ class SimpleSequencing(object):
             return False
 
     def get_day_of_week(self):
+        print self.context
 
         if 'time_zone' in self.context and self.context['time_zone'] is not None:
             server = timezone.now()
             user_tz = pytz.timezone(self.context['time_zone'])
             print server.astimezone(user_tz).strftime("%A")
+
             return server.astimezone(user_tz).strftime("%A")
         else:
             return None

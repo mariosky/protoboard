@@ -238,6 +238,7 @@ class UserLearningActivity(models.Model):
         r = cursor.fetchone()
 
         #count: How many are completed?
+
         #total: How many are needed?
 
         count , total = r

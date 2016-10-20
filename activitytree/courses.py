@@ -98,14 +98,21 @@ def add_precondition(rule):
 
                     if 'precondition' in rule:
                         string += ":\n" \
-                                "    activity['pre_condition'] = '{0}'\n" \
-                                "else:\n" \
-                                "    activity['pre_condition'] = ''".format(rule['precondition'])
+                                "    activity['pre_condition'] = '{0}'".format(rule['precondition'])
                     else:
                         string += ":\n" \
-                                "    activity['pre_condition'] = ''\n" \
+                                "    activity['pre_condition'] = ''"
+
+                    if 'else' in rule:
+                        string +=  "\n" \
+                                "else:\n" \
+                                "    activity['pre_condition'] = '{0}'".format(rule['else'])
+                    else:
+                        string += "\n" \
                                 "else:\n" \
                                 "    activity['pre_condition'] = ''"
+
+
                     return string
                 else:
                     pass
