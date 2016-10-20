@@ -923,8 +923,9 @@ function get_course() {
       rules = '';
       conditions = [];
       $('.selection').prop('selectedIndex',0);
-      $('#activity-txt, #context-txt').show();
-      $('#activity-value-select, #context-value-select, #contextime').hide();
+      $('#activity-txt, #context-txt').hide();
+
+      $('#activity-value-select, #context-value-select, #contextime').show();
       $("#context-operators").prop('disabled', true);
       $("#activity-operators").prop('disabled', false);
       $("#deleteAllbtn").prop("disabled", true);
@@ -1767,12 +1768,14 @@ TO DO: Reuse mustache  templates
                                         <option value="Sunday">domingo</option>
                                     </select>
 
-                                    <div id="contextime" class="input-group bootstrap-timepicker timepicker" style="width:40%;display:none">
+                                    <div id="contextime" class="input-group bootstrap-timepicker timepicker" style="width:40%">
                                         <input id="context-time" type="time" value="12:00:00" class="form-control input-small">
                                         <span class="input-group-addon"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
                                     </div>
-
-                                    <input type="text" class="form-control" id="context-txt" placeholder="Valor" style="width:20%">
+                                     <!--
+                                     Display depending on selection.
+                                        -->
+                                    <input type="text" class="form-control" id="context-txt" placeholder="Valor" style="width:20%;display: none">
 
                                     <input type="button" id="context-submit" class="form-control btn-primary submit-Btn" value="Agregar">
                                 </div>
