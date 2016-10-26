@@ -94,7 +94,7 @@ class LearningActivity(models.Model):
 from decimal import Decimal
 class UserLearningActivity(models.Model):
     user = models.ForeignKey(User)
-    learning_activity = models.ForeignKey(to ='LearningActivity')
+    learning_activity = models.ForeignKey(to ='LearningActivity', on_delete=models.CASCADE)
     pre_condition = models.CharField(max_length=32,default = "",blank=True)
     recommendation_value = models.PositiveSmallIntegerField(null=True, default = 0)
     progress_status = models.CharField(max_length=16,default = "incomplete",blank=True)
@@ -294,14 +294,14 @@ class Course(models.Model):
     image = models.ImageField(upload_to='courses', blank=True)
     private = models.BooleanField(blank=False, default=False)
     html_description = models.TextField(blank=True)
-    root = models.OneToOneField('LearningActivity')
+    root = models.OneToOneField('LearningActivity', on_delete=models.CASCADE)
     start_date = models.DateField(auto_now=True)
 
 
 
 class ActivityTree(models.Model):
     user = models.ForeignKey(User)
-    root_activity = models.ForeignKey(to ='LearningActivity',related_name = 'activity_tree')
+    root_activity = models.ForeignKey(to ='LearningActivity',related_name = 'activity_tree', on_delete=models.CASCADE)
     current_activity =  models.ForeignKey(to ='UserLearningActivity',related_name = 'current_in', null = True ,default=None)
     class Meta:
         unique_together = ("user", "root_activity")
