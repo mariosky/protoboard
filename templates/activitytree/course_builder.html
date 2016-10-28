@@ -81,7 +81,7 @@
                     <ul class="nav navbar-nav">
                      <li class="nav-item"> <button id="newContainerBtn" class="btn btn-primary">Nuevo Contenedor</button></li>
                      <li class="nav-item"> <button id="newActivityBtn" class="btn btn-primary">Nueva Actividad</button></li>
-                     <li class="nav-item"> <button id="saveChangesBtn" class="btn btn-primary">Guardar </button></li>
+                     <li class="nav-item"> <button id="saveChangesBtn"  autocomplete="off" class="btn btn-primary" data-loading-text="Guardando..." >Guardar </button></li>
                      <li class="nav-item"> <button id="exportBtn" class="btn btn-primary">Exportar a un archivo </button></li>
                      <li class="nav-item"> <button id="uploadBtn" class="btn btn-primary">Importar desde un archivo</button></li>
                     </ul>
@@ -325,6 +325,9 @@
 Main Save Changes
  */
     $('#saveChangesBtn').on('click', function(){
+
+        var $btn = $(this).prop('disabled', true);
+
         var tree = tree_to_json( '#sTree2');
 
 
@@ -334,20 +337,28 @@ Main Save Changes
                     type: "POST",
                     crossDomain: false, // obviates need for sameOrigin test
                     beforeSend: function(xhr, settings) {
+
+
+
                     if (!csrfSafeMethod(settings.type)) {
+
                         var csrftoken = getCookie('csrftoken');
                         xhr.setRequestHeader("X-CSRFToken", csrftoken);
                     }
+
+
                     },
                     contentType: "application/json",
                     data: JSON.stringify({"jsonrpc": "2.0", "method": "post_course", "params": [tree],
                     "id": 1 }),
                     dataType: "json",
                     success: function(data, textStatus, jqXHR) {
+                        $("#saveChangesBtn").prop('disabled', false);
                         alert('Changes are Saved');
                         get_course();
                         },
                     error: function(jqXHR, textStatus, errorThrown) {
+                        $("#saveChangesBtn").prop('disabled', false);
                         }
                     });
 
