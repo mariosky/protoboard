@@ -29,22 +29,37 @@ print con
 
 cur = con.cursor()
 
-cur.execute("""CREATE OR REPLACE VIEW activitytree_ula_vw AS
+try:
+    cur.execute("""CREATE OR REPLACE VIEW activitytree_ula_vw AS
  SELECT ul.user_id, ul.learning_activity_id, ul.pre_condition, ul.progress_status, ul.objective_status, ul.objective_measure, la.parent_id, la.rollup_progress,  la.name
    FROM activitytree_learningactivity la
    JOIN activitytree_userlearningactivity ul ON la.id = ul.learning_activity_id;""")
+except Exception as e:
+    print e.message
+    print """CREATE OR REPLACE VIEW activitytree_ula_vw """
 
 
-cur.execute( """ALTER TABLE activitytree_ula_vw OWNER TO %s;""" % settings.DATABASES['default']['USER'])
+try:
+    cur.execute( """ALTER TABLE activitytree_ula_vw OWNER TO %s;""" % settings.DATABASES['default']['USER'])
+except Exception as e:
+    print e.message
+    print """Error on: ALTER TABLE activitytree_ula_vw OWNER TO """
 
-cur.execute("""ALTER TABLE auth_user
-  ADD CONSTRAINT auth_user_email_key UNIQUE(email);
-COMMENT ON CONSTRAINT auth_user_email_key ON auth_user IS 'Unique email ';""")
 
+try:
+    cur.execute("""ALTER TABLE auth_user
+      ADD CONSTRAINT auth_user_email_key UNIQUE(email);
+      COMMENT ON CONSTRAINT auth_user_email_key ON auth_user IS 'Unique email ';""")
+except Exception as e:
+    print e.message
+    print """Error on: ADD CONSTRAINT auth_user_email_key UNIQUE"""
 
-
-cur.execute("""UPDATE django_site
+try:
+    cur.execute("""UPDATE django_site
    SET domain=%s, name=%s where id=1;""",(SITE_ID,SITE_ID))
+except Exception as e:
+    print e.message
+    print """Error on: UPDATE django_site"""
 
 
 con.commit()
