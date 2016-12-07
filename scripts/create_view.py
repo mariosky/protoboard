@@ -7,18 +7,6 @@ from django.conf import settings
 from django.core.wsgi import get_wsgi_application
 
 
-
-SITE_ID =""
-
-
-
-
-if len(sys.argv) == 2:
-    SITE_ID = sys.argv[1]
-else:
-    print "You need to send the Site Id as a parameter."
-    exit()
-
 print "####### DJANGO SETTINGS"
 os.environ['DJANGO_SETTINGS_MODULE'] = "protoboard.settings"
 application = get_wsgi_application()
@@ -54,12 +42,6 @@ except Exception as e:
     print e.message
     print """Error on: ADD CONSTRAINT auth_user_email_key UNIQUE"""
 
-try:
-    cur.execute("""UPDATE django_site
-   SET domain=%s, name=%s where id=1;""",(SITE_ID,SITE_ID))
-except Exception as e:
-    print e.message
-    print """Error on: UPDATE django_site"""
 
 
 con.commit()
