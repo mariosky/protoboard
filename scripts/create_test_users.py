@@ -34,8 +34,7 @@ estudiantes = [
 ('daniel',      '1234', 9, 8,15,11,13,14,13),
 ('jorge',           '1234',17,12,14,17,19,18,14),
 ('mike',             '1234',15,16,17,18,18,13,11),
-('luis',            '1234',11, 7,11,10,11,12, 6),
-('anguiano.ae22@hotmail.com',       '1234',12,10,12,13,10,18,10)]
+('luis',            '1234',11, 7,11,10,11,12, 6)]
 
 for e in estudiantes:
     User.objects.filter(username=e[0]).delete()

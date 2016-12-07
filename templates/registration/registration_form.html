@@ -39,7 +39,7 @@
                 <div class="form-group has-danger">
                  <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
 
-                 <input type="text" maxlength="30" class="form-control required  form-control-danger" id="{{ form.email.id_for_label }}"     value="{{ form.email.value|default_if_none:"" }}"  name="email" aria-describedby="emailHelpBlock">
+                 <input type="text" maxlength="256" class="form-control required  form-control-danger" id="{{ form.email.id_for_label }}"     value="{{ form.email.value|default_if_none:"" }}"  name="email" aria-describedby="emailHelpBlock">
                  </input>
                  <div class="form-control-feedback">{{  form.email.errors}}</div>
                  <small class="form-text text-muted"> {{ form.email.help_text }}</small>
@@ -48,7 +48,7 @@
               {% else %}
                 <div class="form-group">
                  <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
-                <input type="text" maxlength="30" class="form-control required has-danger" id="{{ form.email.id_for_label }}"  value="{{ form.email.value|default_if_none:"" }}"    name="email" aria-describedby="emailHelpBlock">
+                <input type="text" maxlength="256" class="form-control required has-danger" id="{{ form.email.id_for_label }}"  value="{{ form.email.value|default_if_none:"" }}"    name="email" aria-describedby="emailHelpBlock">
                 <small id="emailHelpBlock" class="form-text text-muted">
                       {{ form.email.help_text }}
                 </small>
