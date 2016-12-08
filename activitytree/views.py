@@ -975,9 +975,16 @@ def execute_queue(request):
         server = Cola(program_test['lang'])
 
         task = {"id": None, "method": "exec", "params": {"code": code, "test": unit_test}}
-        logger.error(task)
-        task_id = server.enqueue(**task)
-        logger.error(task_id)
+        logger.debug(task)
+        task_id = None
+        try:
+            task_id = server.enqueue(**task)
+        except Exception:
+            result = {"result": "added", "error": "Server Not Found", "id": task_id,"success": False}
+            return HttpResponse(json.dumps(result), content_type='application/javascript', status=503)
+
+
+        logger.debug(task_id)
 
         if request.user.is_authenticated() and 'id' in rpc:
             ula = None
@@ -1036,8 +1043,14 @@ def get_result(request):
         rpc = json.loads(request.body)
         # We only need the Task identifier
         # TO DO:
-        # No ID, Task Not Found
+
         task_id = rpc["id"]
+
+        # No ID, Task Not Found
+        if not task_id:
+            return HttpResponse(json.dumps({'outcome': -1}), content_type='application/javascript')
+
+
         t = Task(id=task_id)
 
         # outcome:
@@ -1665,6 +1678,8 @@ def users(request, user_id=None, course_id=None, ):
             root = UserLearningActivity.objects.get(learning_activity__id=course_id, user=user_id)
         except (ObjectDoesNotExist, IndexError) as e:
             root = None
+
+        s = SimpleSequencing()
         _XML = s.get_nav(root)
         # Escape for javascript
         XML = ET.tostring(_XML, 'utf-8').replace('"', r'\"')
