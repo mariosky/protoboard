@@ -959,6 +959,11 @@ def test_program(request):
         return HttpResponse("Error")
 
 
+
+
+
+
+
 @csrf_protect
 def execute_queue(request):
     # logger.error("VIEW execute_queue")
@@ -985,6 +990,7 @@ def execute_queue(request):
 
 
         logger.debug(task_id)
+        rpc['task_id'] = task_id
 
         if request.user.is_authenticated() and 'id' in rpc:
             ula = None
@@ -1001,7 +1007,7 @@ def execute_queue(request):
 
                 pass
 
-        rpc['task_id'] = task_id
+
 
         result = {"result": "added", "error": None, "id": task_id}
         return HttpResponse(json.dumps(result), content_type='application/javascript')
