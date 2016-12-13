@@ -426,6 +426,9 @@ $(document).ready(function() {
 
     function results(data)
     {
+
+       $("#result_panel_body").html("");
+
          var result = data.result;
                         if (result.result == "Failure")
                         {
@@ -482,6 +485,7 @@ $(document).ready(function() {
 
 
                         {% endif %}
+     $('#main_tab a[href="#results"]').tab('show');
 
 
     }
@@ -502,7 +506,7 @@ $(document).ready(function() {
             //Update your dashboard gauge
                 number_of_tries++;
 
-                  $("#result_panel_body").html("");
+
                    // -1 No result found,
                     if (data.outcome != -1)
                     {
@@ -514,7 +518,7 @@ $(document).ready(function() {
                     {
 
                     }
-            $('#main_tab a[href="#results"]').tab('show');
+
             console.log(data.outcome);
 
             }, dataType: "json",
