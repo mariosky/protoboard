@@ -373,6 +373,18 @@ $(document).ready(function() {
                             // TO DO:
                             // Avisar que ya se envió la tarea al servidor exitósamente
 
+
+                        if ("outcome" in data)
+                        {
+                            results(data);
+
+                        }
+
+
+                        else
+                        {
+
+
                             task_id =data.id;
                             number_of_tries=0;
 
@@ -380,6 +392,10 @@ $(document).ready(function() {
                         $("#result_alert").empty();
                         $("#result_alert").html("Esperando resultados...");
                         poll();
+
+                        }
+
+
 
                         },
                     error: function(jqXHR, textStatus, errorThrown) {
@@ -408,35 +424,9 @@ $(document).ready(function() {
      });
 
 
-
-
-    function poll(){
-        $.ajax({ url: '/get_result',
-            type: "POST",
-            crossDomain: false, // obviates need for sameOrigin test
-            beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type)) {
-                var csrftoken = getCookie('csrftoken');
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-            },
-            contentType: "application/json",
-            data: JSON.stringify({"jsonrpc": "2.0", "method": "_execute", "params": ["{{ activity_uri }}"], "id": task_id }),
-            success: function(data){
-            //Update your dashboard gauge
-            number_of_tries++;
-
-              $("#result_panel_body").html("");
-
-                    if (data.outcome != -1)
-                    {
-
-
-
-
-
-
-                        var result = data.result;
+    function results(data)
+    {
+         var result = data.result;
                         if (result.result == "Failure")
                         {
 
@@ -494,13 +484,37 @@ $(document).ready(function() {
                         {% endif %}
 
 
+    }
+
+    function poll(){
+        $.ajax({ url: '/get_result',
+            type: "POST",
+            crossDomain: false, // obviates need for sameOrigin test
+            beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                var csrftoken = getCookie('csrftoken');
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+            },
+            contentType: "application/json",
+            data: JSON.stringify({"jsonrpc": "2.0", "method": "_execute", "params": ["{{ activity_uri }}"], "id": task_id }),
+            success: function(data){
+            //Update your dashboard gauge
+                number_of_tries++;
+
+                  $("#result_panel_body").html("");
+                   // -1 No result found,
+                    if (data.outcome != -1)
+                    {
+
+                        results(data);
 
                     }
                     else
                     {
 
                     }
-            $('#main_tab a[href="#results"]').tab('show')
+            $('#main_tab a[href="#results"]').tab('show');
             console.log(data.outcome);
 
             }, dataType: "json",

@@ -24,6 +24,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 
+from retest import re_test
 
 import logging
 import xml.etree.ElementTree as ET
@@ -968,24 +969,45 @@ def test_program(request):
 def execute_queue(request):
     # logger.error("VIEW execute_queue")
     if request.method == 'POST':
+        # Read RPC message from client
         rpc = json.loads(request.body)
-        import os
 
-        logger.error("REDIS:" + os.environ['REDIS_HOST'])
-
+        # Get params
+        # Code to execute
         code = rpc["params"][0]
+        # URI of Activity
         activity_uri = rpc["method"]
-        program_test = Activity.get(activity_uri)
-        unit_test = program_test['unit_test']
-        server = Cola(program_test['lang'])
 
+        # Get Activity from MongoDB
+        program_test = Activity.get(activity_uri)
+
+        #Get Regular Expresion Test (RET) if there is one, if not set to None
+        retest = ('reg_exp' in program_test and program_test['reg_exp']) or None
+
+
+
+        #If there is a RET run test
+        if retest:
+            test_errors = re_test(code,retest)
+            if test_errors:
+                # Return Error
+                result = {"outcome": 0, "result": { "successes": [], "failures": test_errors,
+  		                    "errors": [], "result": "Failure", "stdout": ""}}
+
+
+                return HttpResponse(json.dumps(result), content_type='application/javascript' )
+
+        # Get Unittest
+        unit_test = program_test['unit_test']
+
+        server = Cola(program_test['lang'])
         task = {"id": None, "method": "exec", "params": {"code": code, "test": unit_test}}
         logger.debug(task)
         task_id = None
         try:
             task_id = server.enqueue(**task)
         except Exception:
-            result = {"result": "added", "error": "Server Not Found", "id": task_id,"success": False}
+            result = {"result": "error", "error": "Server Not Found", "id": task_id,"success": False}
             return HttpResponse(json.dumps(result), content_type='application/javascript', status=503)
 
 
@@ -1006,9 +1028,6 @@ def execute_queue(request):
                 # Assume is a non assigned program
 
                 pass
-
-
-
         result = {"result": "added", "error": None, "id": task_id}
         return HttpResponse(json.dumps(result), content_type='application/javascript')
 
