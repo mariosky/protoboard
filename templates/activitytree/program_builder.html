@@ -14,8 +14,18 @@
 
     }
 
+  #beforeCode{
+      height: 200px;
+        width: 200;
+    }
+
   #initialCodeEditor{
-        height: 900px;
+        height: 700px;
+        width: 200;
+    }
+
+  #afterCode{
+        height: 200px;
         width: 200;
     }
 
@@ -93,8 +103,13 @@
     -->
     <div class="tab-pane fade" id="initial-code" >
         <div style="width: 100%">
+            <div class="myeditor" id="beforeCode" style="border:3px solid lightgrey">
 
+            </div>
             <div class="myeditor" id="initialCodeEditor" style="border:3px solid lightgrey">
+
+            </div>
+            <div class="myeditor" id="afterCode" style="border:3px solid lightgrey">
 
             </div>
         </div>
@@ -818,6 +833,17 @@ HTML Content
             'name': 'instructions',
             'value': instructionsEditor.getValue()
         };
+
+        var before_code={
+            'name': 'before_code',
+            'value': beforeCode.getValue()
+        };
+
+        var after_code={
+            'name': 'after_code',
+            'value': afterCode.getValue()
+        };
+
         var initial_code={
               'name': 'initial_code',
             'value': initialCodeEditor.getValue()
