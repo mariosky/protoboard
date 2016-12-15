@@ -681,7 +681,8 @@ HTML Content
         var editor = ace.edit("UnitTestEditor");
         var RegExpEditor = ace.edit("RegExpEditor");
         var correctCodeEditor = ace.edit("correctCodeEditor");
-
+        var beforeCode = ace.edit("beforeCode");
+        var afterCode = ace.edit("afterCode");
         var initialCodeEditor = ace.edit("initialCodeEditor");
         var HTMLEditor = ace.edit("HTMLEditor");
         $.each(obj[0], function(key, value){
@@ -693,6 +694,12 @@ HTML Content
             }
             else if (key == "instructions"){
                 instructionsEditor.setValue(value,1)
+            }
+            else if (key == "initial_code"){
+                initialCodeEditor.setValue(value,1)
+            }
+            else if (key == "before_code"){
+                initialCodeEditor.setValue(value,1)
             }
             else if (key == "initial_code"){
                 initialCodeEditor.setValue(value,1)
@@ -762,7 +769,7 @@ HTML Content
         tinyMCE.triggerSave();
         var data = $('#formadetailp').serializeArray();
         var editor_data = progData();
-        data.push(editor_data.instructions,editor_data.initial_code,editor_data.unit_test,editor_data.HTML_code,editor_data.correct_code,editor_data.reg_exp);
+        data.push(editor_data.instructions,editor_data.initial_code,editor_data.unit_test,editor_data.HTML_code,editor_data.correct_code,editor_data.reg_exp,editor_data.before_code,editor_data.after_code);
 
 
 
@@ -813,6 +820,8 @@ HTML Content
         var instructionsEditor = ace.edit("instructionsEditor");
         var correctCodeEditor = ace.edit("correctCodeEditor");
         var RegExpEditor = ace.edit("RegExpEditor");
+        var beforeCode = ace.edit("beforeCode");
+        var afterCode = ace.edit("afterCode");
 
         var initialCodeEditor = ace.edit("initialCodeEditor");
         var HTMLEditor = ace.edit("HTMLEditor");
@@ -857,7 +866,8 @@ HTML Content
             'value': HTMLEditor.getValue()
         };
 
-        return {instructions:instructions,correct_code:correct_code,initial_code:initial_code,unit_test:unit_test,HTML_code:HTML_code,reg_exp:reg_exp};
+        return {instructions:instructions,correct_code:correct_code,initial_code:initial_code,unit_test:unit_test,
+            HTML_code:HTML_code,reg_exp:reg_exp,before_code:before_code,after_code:after_code};
 
     }
 

@@ -13,6 +13,13 @@
 
     }
 
+    #read_only_editor {
+
+        height: 540px;
+
+    }
+
+
  p.test_error, p.test_failure {
     color:#d9534f;
     }
@@ -118,7 +125,9 @@
 
 
              <div class="panel-body">{% csrf_token %}
+                <div id="before_editor" class="read_only_editor">{{program_quiz.before_code}}</div>
                 <div id="editor">{{program_quiz.initial_code}}</div>
+                <div id="after_editor" class="read_only_editor">{{program_quiz.after_code}}</div>
             </div>
 
             <div class="card-footer">
@@ -345,6 +354,7 @@ $(document).ready(function() {
      $("#sendButton").on("click", function (){
 
          var $btn = $(this).button('loading');
+
 
          var code = editor.getValue();
 
