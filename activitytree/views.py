@@ -544,6 +544,13 @@ def course_view(request):
         return HttpResponse(json.dumps(result), content_type='application/javascript')
 
 
+def get_context(request):
+    context = {}
+    if hasattr(request.user, "userprofile"):
+        context['time_zone'] = request.user.userprofile.timezone
+    return context
+
+
 def path_activity(request, path_id, uri):
     learning_activity = None
     try:
@@ -553,10 +560,8 @@ def path_activity(request, path_id, uri):
 
     if request.user.is_authenticated():
         root = None
-        context = {}
-        if hasattr(request.user,"userprofile"):
-            context['time_zone']=request.user.userprofile.timezone
-        s = SimpleSequencing(context=context)
+
+        s = SimpleSequencing(context=get_context(request))
 
         requested_activity = None
 
@@ -752,7 +757,7 @@ def activity(request, uri=None):
 
 def path_test(request, path_id, uri):
     if request.user.is_authenticated():
-        s = SimpleSequencing()
+        s = SimpleSequencing(context=get_context(request))
         try:
             requested_activity = UserLearningActivity.objects.get(learning_activity__id=path_id, user=request.user)
         except ObjectDoesNotExist as e:
@@ -841,7 +846,7 @@ def path_test(request, path_id, uri):
 
 def path_program(request, path_id, uri):
     if request.user.is_authenticated():
-        s = SimpleSequencing()
+        s = SimpleSequencing(context=get_context(request))
         try:
             requested_activity = UserLearningActivity.objects.get(learning_activity__id=path_id, user=request.user)
         except ObjectDoesNotExist as e:
@@ -1019,7 +1024,7 @@ def execute_queue(request):
             try:
                 ula = UserLearningActivity.objects.get(learning_activity__id=rpc["id"], user=request.user)
 
-                s = SimpleSequencing()
+                s = SimpleSequencing(context=get_context(request))
                 s.update(ula)
                 ## Mouse Dynamics
                 event = ULA_Event.objects.create(ULA=ula, context=rpc)
@@ -1046,7 +1051,7 @@ def javascript_result(request):
             try:
                 ula = UserLearningActivity.objects.get(learning_activity__id=rpc["id"], user=request.user)
 
-                s = SimpleSequencing()
+                s = SimpleSequencing(context=get_context(request))
                 if rpc['result'] == 'Success':
                     s.update(ula, progress_status='completed', objective_measure=30, attempt=True)
                 else:
@@ -1096,7 +1101,7 @@ def get_result(request):
                     try:
                         ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["params"][0],
                                                                user=request.user)
-                        s = SimpleSequencing()
+                        s = SimpleSequencing(context=get_context(request))
 
                         if string_json['result'] == 'Success':
                             s.update(ula, progress_status='completed', objective_measure=30, attempt=True)
@@ -1704,7 +1709,7 @@ def users(request, user_id=None, course_id=None, ):
         except (ObjectDoesNotExist, IndexError) as e:
             root = None
 
-        s = SimpleSequencing()
+        s = SimpleSequencing(context=get_context(request))
         _XML = s.get_nav(root)
         # Escape for javascript
         XML = ET.tostring(_XML, 'utf-8').replace('"', r'\"')

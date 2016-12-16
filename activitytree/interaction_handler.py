@@ -378,7 +378,7 @@ class SimpleSequencing(object):
         return None
 
     def get_user_attr(self,attr):
-        print self.context,attr
+
         if hasattr(self.USER, attr):
             return getattr(self.USER, attr)
         if hasattr(self.USER, 'learningstyleinventory'):
@@ -390,9 +390,8 @@ class SimpleSequencing(object):
         return None
 
     def get_time_condition(self, oper, time_value):
-        print self.context
         operators = {'<':operator.lt,'>':operator.gt,'<=':operator.le,'>=':operator.ge,'==':operator.eq,'!=':operator.ne}
-        if 'time_zone' in self.context and self.context['time_zone'] is not None :
+        if self.context is not None and 'time_zone' in self.context and self.context['time_zone'] is not None :
 
             server = timezone.now()
             user_tz = pytz.timezone(self.context['time_zone'])
@@ -402,9 +401,7 @@ class SimpleSequencing(object):
             return False
 
     def get_day_of_week(self):
-        print self.context
-
-        if 'time_zone' in self.context and self.context['time_zone'] is not None:
+        if self.context is not None and 'time_zone' in self.context and self.context['time_zone'] is not None:
             server = timezone.now()
             user_tz = pytz.timezone(self.context['time_zone'])
             print server.astimezone(user_tz).strftime("%A")
