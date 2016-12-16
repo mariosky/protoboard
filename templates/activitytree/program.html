@@ -12,13 +12,21 @@
         height: 540px;
 
     }
-
-    .read_only_editor {
+{% if program_quiz.before_code  %}
+    #before_editor {
 
         height: 100px;
 
     }
+    {% endif %}
 
+ {% if program_quiz.after_code  %}
+    #after_editor {
+
+        height: 100px;
+
+    }
+-+  {% endif %}
 
  p.test_error, p.test_failure {
     color:#d9534f;
@@ -125,13 +133,13 @@
 
 
              <div class="panel-body">{% csrf_token %}
-                 {% if program_quiz.before_code  %}
+
                           <div id="before_editor" class="read_only_editor">{{program_quiz.before_code}}</div>
-                 {% endif %}
+
                  <div id="editor">{{program_quiz.initial_code}}</div>
-                {% if program_quiz.after_code  %}
+
                  <div id="after_editor" class="read_only_editor">{{program_quiz.after_code}}</div>
-                {% endif %}
+
 
              </div>
 
