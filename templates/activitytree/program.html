@@ -377,8 +377,8 @@ $(document).ready(function() {
 
 
 
+         var $btn = $(this).prop('disabled', true);
 
-         var $btn = $(this).button('loading');
 
 
          var code = before_original_code + editor.getValue() + after_original_code;
@@ -411,6 +411,7 @@ $(document).ready(function() {
 
                         if ("outcome" in data)
                         {
+                            $("#sendButton").prop('disabled', false);
                             results(data);
 
                         }
@@ -437,12 +438,12 @@ $(document).ready(function() {
                     error: function(jqXHR, textStatus, errorThrown) {
 
                         alert ("Lo sentimos, hubo un error al enviar tu programa al servidor. El error fué (en lenguaje informático): " +errorThrown);
-                        $("#sendButton").button('reset');
+                        $("#sendButton").prop('disabled', false);
 
                         },
                     fail: function(xhr, textStatus, errorThrown) {
                         alert ("Lo sentimos, hubo un error al enviar tu programa al servidor.. El error fué (en lenguaje informático): "+errorThrown);
-                        $("#sendButton").button('reset');
+                        $("#sendButton").prop('disabled', false);
 
                         }
 
@@ -466,6 +467,7 @@ $(document).ready(function() {
 
        $("#result_panel_body").html("");
        $("#consola").html("");
+       $("#sendButton").prop('disabled', false);
 
          var result = data.result;
                         if (result.result == "Failure")
@@ -574,7 +576,7 @@ $(document).ready(function() {
 
                    else
                    {
-                        $("#sendButton").button('reset');
+                         $("#sendButton").prop('disabled', false);
 
                         $("#result_panel_body").html("");
                         $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
