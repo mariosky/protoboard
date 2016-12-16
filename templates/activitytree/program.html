@@ -375,6 +375,9 @@ $(document).ready(function() {
 
      $("#sendButton").on("click", function (){
 
+
+
+
          var $btn = $(this).button('loading');
 
 
@@ -420,6 +423,7 @@ $(document).ready(function() {
                             task_id =data.id;
                             number_of_tries=0;
 
+                        $("#consola").empty();
                         $("#result_panel_body").empty();
                         $("#result_alert").empty();
                         $("#result_alert").html("Esperando resultados...");
