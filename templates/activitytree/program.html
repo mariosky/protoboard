@@ -13,9 +13,9 @@
 
     }
 
-    #read_only_editor {
+    .read_only_editor {
 
-        height: 540px;
+        height: 100px;
 
     }
 
@@ -125,10 +125,15 @@
 
 
              <div class="panel-body">{% csrf_token %}
-                <div id="before_editor" class="read_only_editor">{{program_quiz.before_code}}</div>
-                <div id="editor">{{program_quiz.initial_code}}</div>
-                <div id="after_editor" class="read_only_editor">{{program_quiz.after_code}}</div>
-            </div>
+                 {% if program_quiz.before_code  %}
+                          <div id="before_editor" class="read_only_editor">{{program_quiz.before_code}}</div>
+                 {% endif %}
+                 <div id="editor">{{program_quiz.initial_code}}</div>
+                {% if program_quiz.after_code  %}
+                 <div id="after_editor" class="read_only_editor">{{program_quiz.after_code}}</div>
+                {% endif %}
+
+             </div>
 
             <div class="card-footer">
 
@@ -330,7 +335,16 @@ $(document).ready(function() {
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
 
+            var editor = ace.edit("editor");
             var original_code = editor.getValue();
+
+            var before_editor = ace.edit("before_editor");
+            var before_original_code = before_editor.getValue();
+
+            var after_editor = ace.edit("after_editor");
+            var after_original_code = after_editor.getValue();
+
+
             task_id = 0;
             number_of_tries = 0;
 
@@ -356,7 +370,7 @@ $(document).ready(function() {
          var $btn = $(this).button('loading');
 
 
-         var code = editor.getValue();
+         var code = before_original_code + editor.getValue() + after_original_code;
 
 
 
@@ -427,9 +441,10 @@ $(document).ready(function() {
   $("#resetButton").on("click", function (){
 
 
-
+         before_editor.setValue(before_original_code);
          editor.setValue(original_code);
 
+         after_editor.setValue(after_original_code);
 
      });
 
@@ -583,7 +598,7 @@ $(document).ready(function() {
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js " type="text/javascript" charset="utf-8"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/{{ program_quiz.lang }}.js" type="text/javascript" charset="utf-8"></script>
 
 
@@ -598,6 +613,17 @@ $(document).ready(function() {
         editor = ace.edit("editor");
         editor.setTheme("ace/theme/chrome");
         editor.getSession().setMode("ace/mode/{{ program_quiz.lang }}");
+
+        $('.read_only_editor').each(function(){
+            read_only_ = ace.edit(this.id);
+            read_only_.setTheme("ace/theme/chrome");
+            //editor.container.style.pointerEvents="none";
+            read_only_.renderer.setOption('showLineNumbers', false);
+            read_only_.container.style.opacity=0.7 ;
+            read_only_.renderer.setStyle("disabled", true);
+            read_only_.blur();
+
+        });
 
    </script>
 

@@ -681,8 +681,8 @@ HTML Content
         var editor = ace.edit("UnitTestEditor");
         var RegExpEditor = ace.edit("RegExpEditor");
         var correctCodeEditor = ace.edit("correctCodeEditor");
-        var beforeCode = ace.edit("beforeCode");
-        var afterCode = ace.edit("afterCode");
+        var beforeCodeEditor = ace.edit("beforeCode");
+        var afterCodeEditor = ace.edit("afterCode");
         var initialCodeEditor = ace.edit("initialCodeEditor");
         var HTMLEditor = ace.edit("HTMLEditor");
         $.each(obj[0], function(key, value){
@@ -699,10 +699,10 @@ HTML Content
                 initialCodeEditor.setValue(value,1)
             }
             else if (key == "before_code"){
-                initialCodeEditor.setValue(value,1)
+                beforeCodeEditor.setValue(value,1)
             }
-            else if (key == "initial_code"){
-                initialCodeEditor.setValue(value,1)
+            else if (key == "after_code"){
+                afterCodeEditor.setValue(value,1)
             }
             else if (key == "HTML_code"){
 
