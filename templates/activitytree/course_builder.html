@@ -983,13 +983,14 @@ function get_course() {
       }
       else if ($(this).val() == "time"){
           $("#context-value-select, #context-txt").hide();
-          $("#contextime").show();
           $("#context-operators").val("==").prop('disabled', false);
+          $("#contextime").show();
+
       }
       else{
           $("#context-value-select, #contextime").hide();
           $("#context-txt").show();
-          $("#context-operators").val("==").prop('disabled', true);
+
       }
   });
 
@@ -1762,7 +1763,7 @@ TO DO: Reuse mustache  templates
 
 
                                     <div class="form-inline"  style="margin-left:3%">
-                                    <select class="form-control selection" id="context-operators" disabled style="width:20%">
+                                    <select class="form-control selection" id="context-operators"  style="width:20%">
                                         <option value="==">igual a</option>
                                         <option value=">">mayor que</option>
                                         <option value="<">menor que</option>
