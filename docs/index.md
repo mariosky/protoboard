@@ -12,10 +12,17 @@ needs the following software/libraries:
 
 To run locally:
 
+= Software
+*   Python 2.7
 *   MongoDB
 *   PosgreSQL
 *   redis
+*   virtualenv
+
+= Libraries
+*   redis-py
 *   bootstrap 4.0
+
 
 To run programing exercises:
 
