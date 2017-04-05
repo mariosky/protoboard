@@ -1,3 +1,7 @@
+---
+layout: nohead
+---
+
 # Crear Actividades
 ## Ejercicios de Porgramación
 ## Cuestionarios
