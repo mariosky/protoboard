@@ -3,8 +3,9 @@ layout: nohead
 ---
 
 # Crear Actividades
-## Ejercicios de Porgramación
+## Ejercicios de Programación
 ## Cuestionarios
+
 ## Videos
 ## HTML
 
