@@ -2,9 +2,9 @@
 layout: default
 ---
 # Documentation
-###[Manual para Autores]( doc-es ) 
+### [Manual para Autores]( doc-es ) 
 
-###[Manual de Instalación para Desarrolladores]( doc-es/instalacion.md )
+### [Manual de Instalación para Desarrolladores]( doc-es/instalacion )
 
 
 # What can I build with protoboard?
