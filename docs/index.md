@@ -7,8 +7,10 @@ layout: default
 
 # Requirements
 
-Protoboard is a [https://www.djangoproject.com/](django) application, and needs the following
-software/libraries to run locally:
+Protoboard is a [django](https://www.djangoproject.com/) project, and it
+needs the following software/libraries:
+
+To run locally:
 
 *   MongoDB
 *   PosgreSQL
@@ -21,10 +23,12 @@ To run programing exercises:
 * Docker image ()
 * sandbox
 
-And for deployment:
+In production:
 
 *   Facebook API keys  
 *   Google Plus API keys
 *   Static files server, like Amazon S3
 *   NGINX, Gunicorn
+
+# How to Install
 
