@@ -5,17 +5,17 @@ layout: default
 # [](#header-2) What can I build with protoboard?
 
 
-# [](#header-2) Requeriments
+# [](#header-2) Requirements
 
 Protoboard is a [https://www.djangoproject.com/](django) application, and needs the following
 software/libraries to run locally:
 
-*   mongodb
-*   posgresql
+*   MongoDB
+*   PosgreSQL
 *   redis
 *   bootstrap 4.0
 
-To run programing excersises:
+To run programing exercises:
 
 * Docker
 * Docker image ()
