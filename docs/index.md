@@ -2,10 +2,10 @@
 layout: default
 ---
 
-# [](#header-2) What can I build with protoboard?
+# What can I build with protoboard?
 
 
-# [](#header-2) Requirements
+# Requirements
 
 Protoboard is a [https://www.djangoproject.com/](django) application, and needs the following
 software/libraries to run locally:
