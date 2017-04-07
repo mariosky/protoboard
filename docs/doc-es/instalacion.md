@@ -36,11 +36,24 @@ está el modelo de nuestro sistema.
 Para empezar a programar debemos primero contar con nuestro ambiente básico de
 desarrollo, en este caso hablaré de la instalación en macOS, pero es casi lo mismo en Linux.
 Te recomiendo seguir la [guía de instalación de Sourabh](http://sourabhbajaj.com/mac-setup/) 
-para la instalación del ambiente. Este es el checklist inicial:
+para la instalación del ambiente, basándonos en la guía este es el checklist inicial:
 
-### Homebrew 
+### Xcode (macOS) 
+Para instalar algunos componentes se requieren que esté instalado Xcode. Puedes bajarlo
+del [Appstore](https://developer.apple.com/xcode/). Para instalar las herramientas de
+línea de comando, debemos ejecutar el siguiente comando en la terminal
+
+```
+xcode-select --install
+``` 
+
+
+
+
+### Homebrew (macOS) 
 Homebrew es un sistema libre de gestión de paquetes para macOS, nos permite instalar
-casi todo lo que ocupamos de una manera rápida. 
+casi todo lo que ocupamos de una manera rápida.
+
 
 ### git / GitHub 
 Git es una herramienta básica, para el control de versiones del código, lo que
@@ -50,7 +63,26 @@ continuar leyendo, debes crear tu cuenta en GitHub, la aplicación Web que nos b
 de manera gratuita un servidor git y muchos más servicios para nuestros programas
 de código abierto. Por ejemplo esto que estás leyendo está hospedado en GitHub.
 
-### Python 
+### Python 2.7 
+Se recomienda instalar alguna distribución como [Anaconda](https://www.continuum.io/anaconda-overview)
+o [Enthought Canopy](https://www.enthought.com/downloads/), este último cuenta con
+Licencia Académica.
+
+### Editor de Texto o IDE
+Un recomendación es PyCharm (https://www.jetbrains.com/pycharm/) el cual cuenta con versiones
+académicas y para proyectos open-source. Pero puedes utilizar cualquier editor de tu preferencia,
+casi todos tienen algún modo de edición para Python. 
+
+### virtualenv 
+Esta herramienta no sirve para crear ambientes de ejecución aislados. En lugar de
+utilizar los módulos de Python globales, por ejemplo los instalados por Anaconda,
+crearemos un ambiente aislado con solo aquellos módulos que requerimos para nuestro 
+proyecto. Es decir vamos a empacar las versiones específicas y los módulos requeridos  
+para la ejecución del proyecto. 
+
+### PIP
+Es el Homebrew o apt-get de Python, va de la mano con virtualenv, ya que nos puede
+instalar de manera automática los módulos y versiones que ocupa
 
 
 
