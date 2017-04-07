@@ -39,21 +39,22 @@ Te recomiendo seguir la [guía de instalación de Sourabh](http://sourabhbajaj.c
 para la instalación del ambiente, basándonos en la guía este es el checklist inicial:
 
 ### Xcode (macOS) 
-Para instalar algunos componentes se requieren que esté instalado Xcode. Puedes bajarlo
+Para instalar algunos componentes, es necesario tener instalado Xcode. Puedes bajarlo
 del [Appstore](https://developer.apple.com/xcode/). Para instalar las herramientas de
-línea de comando, debemos ejecutar el siguiente comando en la terminal
+línea de comando debemos ejecutar el siguiente comando en la terminal
 
 ```
 xcode-select --install
 ``` 
 
-
-
-
 ### Homebrew (macOS) 
 Homebrew es un sistema libre de gestión de paquetes para macOS, nos permite instalar
-casi todo lo que ocupamos de una manera rápida.
+casi todo lo que ocupamos de una manera rápida. Para instalarlo puedes hacer
+Copy-Paste del siguiente comando a tu terminal :
 
+´´´
+$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+´´´
 
 ### git / GitHub 
 Git es una herramienta básica, para el control de versiones del código, lo que
