@@ -97,6 +97,12 @@ pip install --upgrade setuptools
 pip install --upgrade pip
 ```
 
+### Ansible (opcional)
+En caso de que deses ejecutar programas localmente, de una vez instalamos Ansible:
+```
+pip install ansible
+pip install --upgrade pip
+```
 
 ### virtualenv 
 Esta herramienta no sirve para crear ambientes de ejecución aislados. En lugar de
@@ -113,6 +119,36 @@ pip install virtualenv
 Un recomendación es PyCharm (https://www.jetbrains.com/pycharm/) el cual cuenta con versiones
 académicas y para proyectos open-source. Pero puedes utilizar cualquier editor de tu preferencia,
 casi todos tienen algún modo de edición para Python. 
+
+
+## Instalación de Protoboard 
+El primer paso es crear el ambiente virtual donde instaleremos el proyecto.
+En tu folder de trabajo:
+
+```
+virtualenv protoboard_local
+```
+Una vez creado el ambiente nos movemos dentro del proyecto:
+```
+cd protoboard_local
+```
+Activamos el ambiente, fíjate como el prompt cambia. 
+```
+source bin/activate
+```
+Clonamos el proyecto protoboard:
+```
+git clone https://github.com/mariosky/protoboard.git
+```
+Instalamos las dependencias:
+```
+sudo pip install -r protoboard/requirements.txt
+```
+El comando anterior instala dentro del ambiente los módulos de Python necesarios para ejecutar
+el proyecto de manera local. Antes de configurar el proyecto de django debemos instalar los componentes 
+que faltan.
+
+
 
 
 
