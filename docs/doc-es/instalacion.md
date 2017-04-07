@@ -53,7 +53,17 @@ casi todo lo que ocupamos de una manera rápida. Para instalarlo puedes hacer
 Copy-Paste del siguiente comando a tu terminal :
 
 ```
-$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
+Agregamos la ruta de Homebrew a nuestra variable de entorno PATH.
+
+```
+echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bash_profile
+```
+Por último revisamos que todo esté bien:
+
+```
+brew doctor
 ```
 
 ### git / GitHub 
@@ -64,26 +74,46 @@ continuar leyendo, debes crear tu cuenta en GitHub, la aplicación Web que nos b
 de manera gratuita un servidor git y muchos más servicios para nuestros programas
 de código abierto. Por ejemplo esto que estás leyendo está hospedado en GitHub.
 
+```
+brew install git
+```
+
 ### Python 2.7 
 Se recomienda instalar alguna distribución como [Anaconda](https://www.continuum.io/anaconda-overview)
 o [Enthought Canopy](https://www.enthought.com/downloads/), este último cuenta con
-Licencia Académica.
+Licencia Académica. En este caso utilizaremos Homebrew para instalar Python 2.7 estándar.
 
-### Editor de Texto o IDE
-Un recomendación es PyCharm (https://www.jetbrains.com/pycharm/) el cual cuenta con versiones
-académicas y para proyectos open-source. Pero puedes utilizar cualquier editor de tu preferencia,
-casi todos tienen algún modo de edición para Python. 
+```
+brew install python
+```
+
+### PIP y setup-tools
+Es el Homebrew o apt-get de Python, va de la mano con virtualenv, ya que nos puede
+instalar de manera automática los módulos y versiones que ocupa. Este programa se
+instala por el comando anterior, para actualizarlos:
+
+```
+pip install --upgrade setuptools
+pip install --upgrade pip
+```
+
 
 ### virtualenv 
 Esta herramienta no sirve para crear ambientes de ejecución aislados. En lugar de
 utilizar los módulos de Python globales, por ejemplo los instalados por Anaconda,
 crearemos un ambiente aislado con solo aquellos módulos que requerimos para nuestro 
 proyecto. Es decir vamos a empacar las versiones específicas y los módulos requeridos  
-para la ejecución del proyecto. 
+para la ejecución del proyecto. Para instalar:
 
-### PIP
-Es el Homebrew o apt-get de Python, va de la mano con virtualenv, ya que nos puede
-instalar de manera automática los módulos y versiones que ocupa
+```
+pip install virtualenv
+```
+
+### Editor de Texto o IDE
+Un recomendación es PyCharm (https://www.jetbrains.com/pycharm/) el cual cuenta con versiones
+académicas y para proyectos open-source. Pero puedes utilizar cualquier editor de tu preferencia,
+casi todos tienen algún modo de edición para Python. 
+
 
 
 
