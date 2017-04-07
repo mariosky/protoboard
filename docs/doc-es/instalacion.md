@@ -1,4 +1,4 @@
-##Instalación
+##  Instalación
 
 ### Componentes principales
 
@@ -15,7 +15,7 @@ dentro del gestor Vagrant. Primero empezaremos por instalar todo dentro de
 tu computadora, le vamos a llamar LocalHost y a la parte virtual le llamaremos 
 Vagrant. 
 
-##LocalHost
+## LocalHost
 Como vemos en la figura, al final vamos a tener tres servidores:
 
 *   ***django*** Este es el servidor de la aplicación Web, vamos a ejecutar el 
