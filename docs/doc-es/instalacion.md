@@ -52,9 +52,9 @@ Homebrew es un sistema libre de gestión de paquetes para macOS, nos permite ins
 casi todo lo que ocupamos de una manera rápida. Para instalarlo puedes hacer
 Copy-Paste del siguiente comando a tu terminal :
 
-´´´
+```
 $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-´´´
+```
 
 ### git / GitHub 
 Git es una herramienta básica, para el control de versiones del código, lo que
