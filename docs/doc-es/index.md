@@ -6,17 +6,19 @@ layout: nohead
 
 ## Cuestionarios
 
-En protoboard puedes crear cuestionarios de práctica sencillos los cuales
-pueden incluir preguntas de opción múltiple y de completar. El cuestionario
-se captura en dos partes:
+Puedes agregar cuestionarios sencillos que incluan preguntas de opción 
+múltiple y de completar. El cuestionario se captura en dos partes como
+se muestra en la imágen:
 
 ![](https://mariosky.github.io/protoboard/assets/QuizEditor.png)
 
-* La sección de instrucciones o imágenes, debes de escribirla en directamente 
-en HTML, recuerda que puedes utilizar los estilos de Bootstrap 4.0.
+* La sección de instrucciones o imágenes que está en la parte superior. Aquí
+debes de escribir directamente en HTML, las instrucciones, el problema,código 
+o imágenes sobre las cuales vas a preguntar. Puedes utilizar los 
+elementos y atributos de estilo de Bootstrap 4.0 y el código con sintáxis.
 
 * La sección de preguntas. Esta sección se debes escribirla utilizando 
-el formato Markdown, de la siguiente manera:
+el formato Markdown de la siguiente manera:
 
 Para preguntas de opción múltiple de una sola respuesta:
 
@@ -27,10 +29,14 @@ Para preguntas de opción múltiple de una sola respuesta:
 (x) Un programa que ejecuta un lenguaje
 ```
 
+* Escribe la pregunta entre las marcas: >> <<
+* Cada opción va en una línea nueva, en este caso los paréntesis indican 
+los botones tipo radio.
+* Con una x indicas la respuesta correcta.
 
  
 
-![](https://mariosky.github.io/protoboard/assets/QuizEditor.png)
+![](https://mariosky.github.io/protoboard/assets/QuizExample.png)
 
 
 ## Ejercicios de Programación
