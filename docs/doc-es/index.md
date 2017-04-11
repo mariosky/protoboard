@@ -42,10 +42,21 @@ los botones tipo radio.
 ```
 * Escribe la pregunta entre las marcas: >>  <<
 * Cada opción va en una línea nueva, en este caso los corchetes indican 
-las casillas de verificación (check boxes) .
-* Con una x indicas la respuesta correcta.
+que se debe seleccionar más de una respuesta. 
+* Con una x indicas aquellas opciones que deberán ser seleccionadas para
+que se considere una respuesta correcta.
 
-
+#### Para preguntas de de completar:
+```
+>>¿Que empresa desarrolló el lenguaje GO?<<
+{{Empieza con G}}
+=Google=
+=google=
+```
+* Escribe la pregunta entre las marcas: >>  <<
+* Cada opción va en una línea nueva. El texto va entre los simbolos de igualdad: = =  
+* En todos los casos puedes indicar entre llaves dobles {{ }} la pista que se dará al
+estudiante en caso de que lo requiera.  
 
 ![](https://mariosky.github.io/protoboard/assets/QuizExample.png)
 
