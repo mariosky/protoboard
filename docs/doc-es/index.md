@@ -38,7 +38,7 @@ los botones tipo radio.
 >>Son lenguajes interpretados:<<
 [x] Python
 [] c++
-[x] RubyUn programa que ejecuta un lenguaje
+[x] Ruby
 ```
 * Escribe la pregunta entre las marcas: >>  <<
 * Cada opción va en una línea nueva, en este caso los corchetes indican 
