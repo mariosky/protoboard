@@ -58,6 +58,8 @@ que se considere una respuesta correcta.
 * En todos los casos puedes indicar entre llaves dobles {{ }} la pista que se dará al
 estudiante en caso de que lo requiera.  
 
+Para el ejemplo anterior el estudiante vería el siguiente cuestionario:
+
 ![](https://mariosky.github.io/protoboard/assets/QuizExample.png)
 
 
