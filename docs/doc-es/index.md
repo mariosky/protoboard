@@ -49,7 +49,7 @@ que se considere una respuesta correcta.
 #### Preguntas de completar:
 ```
 >>¿Que empresa desarrolló el lenguaje GO?<<
-\{\{Empieza con G\}\}
+{{Empieza con G}}
 =Google=
 =google=
 ```
