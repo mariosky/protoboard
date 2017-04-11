@@ -23,10 +23,10 @@ el formato Markdown de la siguiente manera:
 #### Para preguntas de opción múltiple de una sola respuesta:
 
 ```
->>¿Que es un interprete?<<
-() Un programa
-() Un compildor
-(x) Un programa que ejecuta un lenguaje
+>>¿Qué es un intérprete?<<
+() Una persona que traduce entre varios lenguajes.
+() Es un programa informático que traduce un programa que ha sido escrito en un lenguaje de programación a un lenguaje diferente.
+(x) Un programa informático capaz de analizar y ejecutar otros programas.
 ```
 * Escribe la pregunta entre las marcas: >> <<
 * Cada opción va en una línea nueva, en este caso los paréntesis indican 
