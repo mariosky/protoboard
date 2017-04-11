@@ -33,7 +33,7 @@ el formato Markdown de la siguiente manera:
 los botones tipo radio.
 * Con una x indicas la respuesta correcta.
 
-#### Para preguntas de opción múltiple:
+#### Preguntas de opción múltiple:
 ```
 >>Son lenguajes interpretados:<<
 [x] Python
@@ -46,7 +46,7 @@ que se debe seleccionar más de una respuesta.
 * Con una x indicas aquellas opciones que deberán ser seleccionadas para
 que se considere una respuesta correcta.
 
-#### Para preguntas de de completar:
+#### Preguntas de completar:
 ```
 >>¿Que empresa desarrolló el lenguaje GO?<<
 {{Empieza con G}}
