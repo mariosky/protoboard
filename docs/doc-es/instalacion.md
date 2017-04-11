@@ -144,9 +144,13 @@ Instalamos las dependencias:
 ```
 sudo pip install -r protoboard/requirements.txt
 ```
-El comando anterior instala dentro del ambiente los módulos de Python necesarios para ejecutar
-el proyecto de manera local. Antes de configurar el proyecto de django debemos instalar los componentes 
-que faltan.
+El comando anterior instala dentro del ambiente los módulos de Python 
+necesarios para ejecutar el proyecto de manera local. Antes de configurar 
+el proyecto de django debemos instalar los componentes que faltan.
+
+
+
+
 
 
 
