@@ -49,13 +49,13 @@ que se considere una respuesta correcta.
 #### Preguntas de completar:
 ```
 >>¿Que empresa desarrolló el lenguaje GO?<<
-{{Empieza con G}}
+\{\{Empieza con G\}\}
 =Google=
 =google=
 ```
 * Escribe la pregunta entre las marcas: >>  <<
 * Cada opción va en una línea nueva. El texto va entre los simbolos de igualdad: = =  
-* En todos los casos puedes indicar entre llaves dobles {{ }} la pista que se dará al
+* En todos los casos puedes indicar entre llaves dobles \{\{ \}\} la pista que se dará al
 estudiante en caso de que lo requiera.  
 
 Para el ejemplo anterior el estudiante vería el siguiente cuestionario:
