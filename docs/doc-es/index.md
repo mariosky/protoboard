@@ -16,6 +16,17 @@ se muestra en la imágen:
 debes de escribir directamente en HTML, las instrucciones, el problema,código 
 o imágenes sobre las cuales vas a preguntar. Puedes utilizar los 
 elementos y atributos de estilo de Bootstrap 4.0 y el código con sintáxis resaltada.
+Para resaltar código utilizamos [prisimjs](http://prismjs.com/), por lo que 
+puedes escribir algo como:
+
+```
+<pre> 
+	<code class="language-css">
+		p { color: red }
+	</code>
+</pre>
+```
+
 
 * ***La sección de preguntas.*** Esta sección debes escribirla utilizando
 el formato Markdown de la siguiente manera:
@@ -66,6 +77,7 @@ Para el ejemplo anterior el estudiante vería el siguiente cuestionario:
 ## Ejercicios de Programación
 
 ## Videos
+
 ## HTML
 
 
