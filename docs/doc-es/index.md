@@ -76,6 +76,62 @@ Para el ejemplo anterior el estudiante vería el siguiente cuestionario:
 
 ## Ejercicios de Programación
 
+Un ejercicios de programación tiene varios componentes, los cuales se muestran
+en las siguientes pestañas:
+
+### Instrucciones
+Las instrucciones debes de escribirlas en código HTML utilizando 
+Bootstrap 4.0, por ejemplo:
+```
+<h4>La clase <code>Product</code> tiene errores</h4>
+  <p>
+       La clase <code>Product</code> se utiliza en un programa de la siguiente manera:
+  </p>
+<div class="card card-block bg-faded">
+	<pre>
+		<code class="language-csharp">
+		Product p = new Product(1, "iPhone 6");
+		p.Print();
+		</code>
+	</pre>
+</div>
+  <p>
+       Completa el código para que funcione.
+  </p>
+
+<row>
+	<button aria-controls="collapseExample" aria-expanded="false" class="btn btn-info" data-target="#collapseExample" data-toggle="collapse" type="button">
+	Ayuda
+	</button>
+</row>
+<div class="collapse" id="collapseExample">
+ <div class="card card-block bg-faded">
+  	<p>
+    En C# al declarar los campos debes indicar su tipo de dato. Por ejemplo:
+    </p>
+	<pre>
+		<code class="language-csharp">
+		public int intentos;
+		public string email;
+		</code>
+	</pre>
+  </div>
+</div>
+```
+En este ejemplo se utiliza un elemento adicional de Bootstrap 4.0 para
+mostrar un botón de ayuda el cual muestra texto adicional al presionarlo.
+
+### Código inicial
+
+### Prueba
+
+### RegExp
+
+### Solución Correcta
+
+### HTML Generado
+
+
 ## Videos
 
 ## HTML
