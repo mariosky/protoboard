@@ -123,14 +123,82 @@ mostrar un botón de ayuda el cual muestra texto adicional al presionarlo.
 
 ### Código inicial
 
+El código inicial, es el código con el cual el estudiante empezará
+a hacer el ejercicio. Por ejemplo, en el caso de que tenga que 
+corregir el código, estará el programa incompleto, etc. Por ejemplo:
+```
+using System.IO;
+using System;
+public class Product
+{
+        public   code;
+        public   desc;
+
+        public Product(int c, string d)
+        {
+        code=c;
+        desc=d;
+        }
+
+        public void Print()
+        {
+        Console.WriteLine("Producto {0}: {1}", code,desc);
+        }
+
+}
+```
 ### Prueba
+En la pestaña de prueba, va el código que evaluará el ejercicio.
+El ejercicio se evalúa con una prueba unitaria y el código 
+dependerá del lenguaje del ejercicio. Por ejemplo para C#:
+
+```
+[TestFixture]
+public class ProductTest
+{
+
+    [Test, Description("Prueba del Constructor")]
+    public void Constructor()
+    {
+        Product p = new Product(1,"hola");
+        // Constraint Syntax
+        Assert.AreEqual(p.code,1);
+    }
+
+
+    [Test, Description("Imprimir la Descripción")]
+    public void PrintTest()
+    {
+        Product p = new Product(1,"hola");
+        p.Print();
+
+        using (StringWriter sw = new StringWriter())
+        {
+            Console.SetOut(sw);
+
+
+            p.Print();
+
+        string expected = "Producto 1: hola";
+        StringAssert.StartsWith(expected, sw.ToString());
+
+
+        }
+
+    }
+}
+```
+
 
 ### RegExp
+Se pueden poner expresiones regulares que deban satisfacerse.
 
 ### Solución Correcta
+Es opcional y todavía no se utiliza.
 
 ### HTML Generado
-
+En el caso de ejercicios de JavaScript es código HTML
+que se genererá.
 
 ## Videos
 
