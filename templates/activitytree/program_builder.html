@@ -14,20 +14,12 @@
 
     }
 
-  #beforeCode{
-      height: 200px;
-        width: 200;
-    }
 
   #initialCodeEditor{
         height: 700px;
         width: 200;
     }
 
-  #afterCode{
-        height: 200px;
-        width: 200;
-    }
 
   #UnitTestEditor {
       height: 900px;
@@ -103,13 +95,7 @@
     -->
     <div class="tab-pane fade" id="initial-code" >
         <div style="width: 100%">
-            <div class="myeditor" id="beforeCode" style="border:3px solid lightgrey">
-
-            </div>
             <div class="myeditor" id="initialCodeEditor" style="border:3px solid lightgrey">
-
-            </div>
-            <div class="myeditor" id="afterCode" style="border:3px solid lightgrey">
 
             </div>
         </div>
@@ -689,8 +675,6 @@ HTML Content
         var editor = ace.edit("UnitTestEditor");
         var RegExpEditor = ace.edit("RegExpEditor");
         var correctCodeEditor = ace.edit("correctCodeEditor");
-        var beforeCodeEditor = ace.edit("beforeCode");
-        var afterCodeEditor = ace.edit("afterCode");
         var initialCodeEditor = ace.edit("initialCodeEditor");
         var HTMLEditor = ace.edit("HTMLEditor");
         $.each(obj[0], function(key, value){
@@ -705,12 +689,6 @@ HTML Content
             }
             else if (key == "initial_code"){
                 initialCodeEditor.setValue(value,1)
-            }
-            else if (key == "before_code"){
-                beforeCodeEditor.setValue(value,1)
-            }
-            else if (key == "after_code"){
-                afterCodeEditor.setValue(value,1)
             }
             else if (key == "HTML_code"){
 
@@ -828,7 +806,6 @@ HTML Content
         var instructionsEditor = ace.edit("instructionsEditor");
         var correctCodeEditor = ace.edit("correctCodeEditor");
         var RegExpEditor = ace.edit("RegExpEditor");
-        var beforeCode = ace.edit("beforeCode");
         var afterCode = ace.edit("afterCode");
 
         var initialCodeEditor = ace.edit("initialCodeEditor");
@@ -851,15 +828,8 @@ HTML Content
             'value': instructionsEditor.getValue()
         };
 
-        var before_code={
-            'name': 'before_code',
-            'value': beforeCode.getValue()
-        };
 
-        var after_code={
-            'name': 'after_code',
-            'value': afterCode.getValue()
-        };
+
 
         var initial_code={
               'name': 'initial_code',

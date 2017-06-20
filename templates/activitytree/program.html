@@ -12,21 +12,7 @@
         height: 540px;
 
     }
-{% if program_quiz.before_code  %}
-    #before_editor {
 
-        height: 100px;
-
-    }
-    {% endif %}
-
- {% if program_quiz.after_code  %}
-    #after_editor {
-
-        height: 100px;
-
-    }
--+  {% endif %}
 
  p.test_error, p.test_failure {
     color:#d9534f;
@@ -134,11 +120,9 @@
 
              <div class="panel-body">{% csrf_token %}
 
-                          <div id="before_editor" class="read_only_editor">{{program_quiz.before_code}}</div>
+
 
                  <div id="editor">{{program_quiz.initial_code}}</div>
-
-                 <div id="after_editor" class="read_only_editor">{{program_quiz.after_code}}</div>
 
 
              </div>
@@ -346,8 +330,6 @@ $(document).ready(function() {
             var editor = ace.edit("editor");
             var original_code = editor.getValue();
 
-            var before_editor = ace.edit("before_editor");
-            var before_original_code = before_editor.getValue();
 
             var after_editor = ace.edit("after_editor");
             var after_original_code = after_editor.getValue();
@@ -381,7 +363,7 @@ $(document).ready(function() {
 
 
 
-         var code = before_original_code + editor.getValue() + after_original_code;
+         var code =  editor.getValue() ;
 
 
 
@@ -454,10 +436,8 @@ $(document).ready(function() {
   $("#resetButton").on("click", function (){
 
 
-         before_editor.setValue(before_original_code);
          editor.setValue(original_code);
 
-         after_editor.setValue(after_original_code);
 
      });
 
