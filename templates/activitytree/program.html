@@ -406,7 +406,11 @@ $(document).ready(function() {
                         $("#result_panel_body").empty();
                         $("#result_alert").empty();
                         $("#result_alert").html("Esperando resultados...");
-                        poll();
+
+                            var endTime = Number(new Date()) + (timeout || 2000);
+                            var interval = interval || 100;
+
+                        poll(endTime,interval);
 
                         }
 
@@ -506,7 +510,8 @@ $(document).ready(function() {
 
     }
 
-    function poll(){
+
+    function poll(endTime,interval){
         $.ajax({ url: '/get_result',
             type: "POST",
             crossDomain: false, // obviates need for sameOrigin test
@@ -520,8 +525,6 @@ $(document).ready(function() {
             data: JSON.stringify({"jsonrpc": "2.0", "method": "_execute", "params": ["{{ activity_uri }}"], "id": task_id }),
             success: function(data){
             //Update your dashboard gauge
-                number_of_tries++;
-
 
                    // -1 No result found,
                     if (data.outcome != -1)
@@ -545,9 +548,10 @@ $(document).ready(function() {
                console.log(data);
                if (data.outcome == -1)
                {
-                   if (number_of_tries < 1500)
+
+                   if (Number(new Date()) < endTime)
                    {
-                       poll();
+                       poll(endTime,interval);
                    }
 
                    else
@@ -561,7 +565,7 @@ $(document).ready(function() {
                    }
                }
             },
-            timeout: 5000,
+            timeout: interval,
             error: function(jqXHR, textStatus, errorThrown) {
 
                         alert ("Lo sentimos, hubo un error al recibir el resultado de la ejecución. El error fué (en lenguaje informático): " +errorThrown);
