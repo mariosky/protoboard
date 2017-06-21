@@ -408,7 +408,7 @@ $(document).ready(function() {
                         $("#result_alert").html("Esperando resultados...");
                             var timeout = 2000
                             var endTime = Number(new Date()) + timeout;
-                            var interval = interval || 100;
+                            var interval = interval || 1000;
 
                         poll(endTime,interval);
 
