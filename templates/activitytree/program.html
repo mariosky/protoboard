@@ -406,8 +406,8 @@ $(document).ready(function() {
                         $("#result_panel_body").empty();
                         $("#result_alert").empty();
                         $("#result_alert").html("Esperando resultados...");
-
-                            var endTime = Number(new Date()) + (timeout || 2000);
+                            var timeout = 2000
+                            var endTime = Number(new Date()) + timeout;
                             var interval = interval || 100;
 
                         poll(endTime,interval);
