@@ -9,9 +9,6 @@ from django.utils import timezone
 import pytz
 import operator
 
-import datetime
-from lxml import etree
-
 #Exceptions
 
 

@@ -2,8 +2,9 @@ __author__ = 'mariosky'
 import redis
 import os
 
-HOST = os.environ['REDIS_HOST']
-PORT = os.environ['REDIS_PORT']
+
+HOST = 'REDIS_HOST' in  os.environ and  os.environ['REDIS_HOST'] or 'redis'
+PORT = 'REDIS_PORT' in  os.environ and  os.environ['REDIS_PORT'] or '6379'
 
 r = redis.Redis(host=HOST, port=PORT)
 
