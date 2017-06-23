@@ -406,11 +406,11 @@ $(document).ready(function() {
                         $("#result_panel_body").empty();
                         $("#result_alert").empty();
                         $("#result_alert").html("Esperando resultados...");
-                            var timeout = 2000
+                            var timeout = 10000
                             var endTime = Number(new Date()) + timeout;
                             var interval = interval || 1000;
 
-                        poll(endTime,interval);
+                        poll(endTime,interval,timeout);
 
                         }
 
@@ -511,7 +511,7 @@ $(document).ready(function() {
     }
 
 
-    function poll(endTime,interval){
+    function poll(endTime,interval,timeout){
         $.ajax({ url: '/get_result',
             type: "POST",
             crossDomain: false, // obviates need for sameOrigin test
@@ -565,7 +565,7 @@ $(document).ready(function() {
                    }
                }
             },
-            timeout: interval,
+            timeout: timeout,
             error: function(jqXHR, textStatus, errorThrown) {
 
                         alert ("Lo sentimos, hubo un error al recibir el resultado de la ejecución. El error fué (en lenguaje informático): " +errorThrown);
