@@ -6,6 +6,7 @@ import sys
 from django.conf import settings
 from django.core.wsgi import get_wsgi_application
 
+sys.path.append('/code')
 
 print "####### DJANGO SETTINGS"
 os.environ['DJANGO_SETTINGS_MODULE'] = "protoboard.settings"

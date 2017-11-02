@@ -4,12 +4,15 @@ __author__ = 'mario'
 
 if __name__ == "__main__":
     import os
+    import sys
     from django.core.wsgi import get_wsgi_application
+    sys.path.append('/code')
 
     print "####### DJANGO SETTINGS"
 
     os.environ['DJANGO_SETTINGS_MODULE'] = "protoboard.settings"
     application = get_wsgi_application()
+
 
 from django.contrib.auth.models import User
 from activitytree.interaction_handler import SimpleSequencing
@@ -45,6 +48,3 @@ for e in estudiantes:
                           social=e[7], solitary=e[8], user = u)
     lsu.save()
     print e[0], e[1]
-
-
-
