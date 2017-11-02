@@ -15,6 +15,7 @@ settings.py
 # Icon must ends with two \r.
 Icon
 
+debug.log
 
 # Thumbnails
 ._*
