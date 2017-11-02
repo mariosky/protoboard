@@ -27,3 +27,7 @@ services:
           - MONGO_LOG_DIR=/mongodev/null
     volumes:
           - ./mongodata/db:/mongodata/db
+  mongo_seed:
+    build: ./mongo-seed
+    links:
+      - mongodb

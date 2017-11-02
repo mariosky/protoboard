@@ -1,7 +1,6 @@
 
 #DJANGO/python
 *.pyc
-settings.py
 *~
 .idea
 
