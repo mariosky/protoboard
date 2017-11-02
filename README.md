@@ -13,4 +13,6 @@ docker-compose run web python manage.py migrate auth
 
 ```
 docker-compose run web python manage.py migrate
+docker-compose run web python scripts/create_view.py
+
 ```
