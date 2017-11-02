@@ -12,8 +12,16 @@ services:
       - "8000:8000"
     depends_on:
       - db
+    links:
+      - postgres:postgres
+      - redis:redis
+
   redis:
     image: "redis:alpine"
+    restart: always
+    ports:
+     - "6379:6379"
+
   mongodb:
     image: "mongo:3.5"
     environment:
