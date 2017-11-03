@@ -13,7 +13,6 @@ services:
     depends_on:
       - db
 
-
   redis:
     image: "redis:alpine"
     restart: always
@@ -31,3 +30,48 @@ services:
     build: ./mongo-seed
     links:
       - mongodb
+  # This runs a sandbox worker without a Worker Manger 
+  # If the code in a program example hangs thats it
+  # That woker is out!
+      
+  sandbox-python:
+    image: mariosky/sandbox-python
+    command: python /home/sandbox/worker.py
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PL=python 
+  
+  # Please comment those containers you dont need
+  sandbox-java:
+    image: mariosky/sandbox-java
+    command: python /home/sandbox/worker.py
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PL=java
+    
+  sandbox-csharp:
+    image: mariosky/sandbox-csharp
+    command: python /home/sandbox/worker.py
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PL=csharp
+      
+  sandbox-perl6:
+    image: mariosky/sandbox-java
+    command: python /home/sandbox/worker.py
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PL=perl6
+    
+  sandbox-golang:
+    image: mariosky/sandbox-csharp
+    command: python /home/sandbox/worker.py
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PL=golang
+
