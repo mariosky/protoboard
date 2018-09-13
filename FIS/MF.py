@@ -69,17 +69,17 @@ if __name__ == "__main__":
  
  params = (20.0,25.0,30.0)
  tri = Triangular(*params)
- print "Triangular"
- print tri.eval(0.5)
+ print ("Triangular")
+ print (tri.eval(0.5))
     
  params = (7.0, 9.0, 10.0, 10.0)
  tri = Trapezoidal(*params)
- print "Trapezoidal"
- print tri.eval(10.0)
+ print ("Trapezoidal")
+ print (tri.eval(10.0))
  
- print "Gaussian"
+ print ("Gaussian")
  gaus = Gaussian(1.5,10.0)
- print gaus.eval(3.0)
+ print (gaus.eval(3.0))
 
 
  

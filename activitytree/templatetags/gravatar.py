@@ -10,7 +10,7 @@
 ### just make sure to update the "default" image path below
 
 from django import template
-import urllib, hashlib
+import urllib.request, urllib.parse, urllib.error, hashlib
 
 register = template.Library()
 
@@ -32,7 +32,7 @@ class GravatarUrlNode(template.Node):
         size = self.size
 
         gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(email.lower()).hexdigest() + "?"
-        gravatar_url += urllib.urlencode({'d':default, 's':str(size)})
+        gravatar_url += urllib.parse.urlencode({'d':default, 's':str(size)})
 
         return gravatar_url
 
@@ -42,6 +42,6 @@ def gravatar_url(parser, token):
         tag_name, email, size = token.split_contents()
 
     except ValueError:
-        raise template.TemplateSyntaxError, "%r tag requires a two argumente" % token.contents.split()[0]
+        raise template.TemplateSyntaxError("%r tag requires a two argumente" % token.contents.split()[0])
 
     return GravatarUrlNode(email, size)

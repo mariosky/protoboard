@@ -24,3 +24,5 @@ debug.log
 .Trashes
 
 .log
+
+.env

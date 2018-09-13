@@ -8,7 +8,7 @@ import datetime
 from django.contrib.auth import models as auth_models
 from activitytree.models import FacebookSession, GoogleSession,UserProfile
 
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import json
 from decimal import Decimal
 
@@ -48,14 +48,14 @@ def facebook_query_me(access_token, fields=None, metadata=False):
         if fields:
             params['fields'] = fields
 
-        url += '?' + urllib.urlencode(params)
+        url += '?' + urllib.parse.urlencode(params)
 
-        print urllib.urlencode(params)
-        print url
+        print(urllib.parse.urlencode(params))
+        print(url)
 
         response = ''
         try:
-            response = json.load(urllib.urlopen(url))
+            response = json.load(urllib.request.urlopen(url))
 
             if 'error' in response:
                 error = response['error']
@@ -71,11 +71,11 @@ def google_query_me(access_token, fields=None):
     if fields:
             params['fields'] = fields
 
-    url += '?' + urllib.urlencode(params)
+    url += '?' + urllib.parse.urlencode(params)
 
     response = ''
     try:
-         response = json.load(urllib.urlopen(url))
+         response = json.load(urllib.request.urlopen(url))
 
          if 'error' in response:
              error = response['error']
@@ -102,7 +102,7 @@ class FacebookBackend:
                 #This user/email exists?
                 user = auth_models.User.objects.get(email=profile['email'])
 
-            except auth_models.User.DoesNotExist, e:
+            except auth_models.User.DoesNotExist as e:
                 # IF NOT
                 # We create a new user
                 # Sometimes names are not set in profile
@@ -121,7 +121,7 @@ class FacebookBackend:
             #Renew or create facbook session
             try:
                 FacebookSession.objects.get(user=user).delete()
-            except FacebookSession.DoesNotExist, e:
+            except FacebookSession.DoesNotExist as e:
                 pass
 
             facebook_session = FacebookSession.objects.get_or_create(access_token=access_token)[0]
@@ -150,9 +150,9 @@ class FacebookBackend:
                 user = auth_models.User.objects.get(email=email)
 
 
-            except auth_models.User.DoesNotExist, e:
+            except auth_models.User.DoesNotExist as e:
                 # We create a new user
-                print e
+                print(e)
                 user = auth_models.User(username=email, email=email, is_active=True, first_name = profile["name"]['givenName'], last_name= profile["name"]['familyName'])
                 user.set_unusable_password()
                 user.save()
@@ -171,8 +171,8 @@ class FacebookBackend:
 
             try:
                 GoogleSession.objects.filter(user=user).delete()
-            except GoogleSession.DoesNotExist, e:
-                print e
+            except GoogleSession.DoesNotExist as e:
+                print(e)
 
             google_session = GoogleSession.objects.get_or_create(access_token=access_token, user = user)[0]
             google_session.expires_in = expires_in

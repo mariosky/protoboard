@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import MF
+from FIS import MF
 
 class LinguisticVariable:
     def __init__(self, name, type="in", mfs=None, current_value = 0.0, range = None ):
@@ -83,8 +83,8 @@ class FIS():
         else:
             self.rules = rules
     def composition(self):
-		return [r.getQualConsequence() for r in self.rules]
-		
+        return [r.getQualConsequence() for r in self.rules]
+
     def eval(self):
         Composition = [r.getQualConsequence() for r in self.rules]
         
