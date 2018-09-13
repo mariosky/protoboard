@@ -1,95 +1,82 @@
-from django.conf.urls import patterns, include, url
+from django.urls import path, re_path, include
 from activitytree.forms import ProtoPasswordResetForm
-from registration.backends.default.views import RegistrationView
+from activitytree import views
 
-#from django.contrib import admin
-#admin.autodiscover()
-
-
+from django.contrib.auth import views as auth_views
+from django.contrib.auth import urls as auth_urls
 
 
 
-urlpatterns = patterns('',
-    # Example:
-      (r'^$','activitytree.views.welcome'),
-
-      (r'^welcome/$','activitytree.views.welcome'),
-      (r'^instructor/$', 'activitytree.views.instructor'),
-      (r'^student/$', 'activitytree.views.my_enrolled_courses'),
-      (r'^courses/$', 'activitytree.views.course_list'),
-      (r'^course_info/(?P<course_id>[0-9]*)$','activitytree.views.course_info'),
-      (r'^dashboard/(?P<path_id>[0-9]+)$','activitytree.views.dashboard'),
-
-      (r'^(?P<uri>activity/([\w+](\/*)(-*))+)$','activitytree.views.activity'),
-      (r'^(?P<path_id>[0-9]+)(?P<uri>/activity/([\w+](\/*)(-*))+)$','activitytree.views.path_activity'),
-
-      (r'^(?P<path_id>[0-9]+)(?P<uri>/test/([\w+](\/*)(-*))+)$','activitytree.views.path_test'),
-
-      (r'^(?P<path_id>[0-9]+)(?P<uri>/program/([\w+](\/*)(-*))+)$','activitytree.views.path_program'),
-
-      (r'^(?P<uri>program/([\w+](\/*)(-*))+)$','activitytree.views.program'),
-      (r'^(?P<uri>test/([\w+](\/*)(-*))+)$','activitytree.views.test'),
-
-      (r'^execute_queue$','activitytree.views.execute_queue'),
-      (r'^post_course$','activitytree.views.course_view'),
-      (r'^get_course$','activitytree.views.course_view'),
-      (r'^delete_course/(?P<course_id>[0-9]*)$','activitytree.views.course'),
-
-      url(r'^my_courses$','activitytree.views.my_courses',name='my_courses'),
-
-      (r'^javascript_result$','activitytree.views.javascript_result'),
-      (r'^get_activities$','activitytree.views.get_activities'),
-
-      (r'^get_result$','activitytree.views.get_result'),
-      (r'^me$','activitytree.views.me'),
-      (r'^me/profile/tz$', 'activitytree.views.profile_tz'),
-      (r'^me/profile/experience$', 'activitytree.views.profile_experience'),
-      (r'^me/profile/learning_style$', 'activitytree.views.profile_learning_style'),
-      (r'^users/(?P<user_id>[0-9]*)(\/*)(?P<course_id>[0-9]*)$','activitytree.views.users'),
-      url(r'^course-builder/(?P<course_id>([\w+](\/*)(-*))+)$','activitytree.views.course',name="course"),
-      url(r'^course-builder/?$','activitytree.views.course',name="course"),
-      (r'^test_program$','activitytree.views.test_program'),
-      (r'^search_prueba$','activitytree.views.search_prueba'),
-      (r'^my_enrolled_courses/(?P<status>(incomplete|completed))$','activitytree.views.my_enrolled_courses'),
-      (r'^search$','activitytree.views.search'),
-      (r'^search/?$','activitytree.views.search'),
-      (r'^activitybuilder$','activitytree.views.activity_builder'),
-      (r'^my_activities$','activitytree.views.my_activities'),
-      (r'^delete_activity$','activitytree.views.delActivity'),
-      (r'^upload_activity$','activitytree.views.upload_activity'),
-      (r'^get_activity$','activitytree.views.check_activity'),
-      (r'^get_id$','activitytree.views.get_activity'),
-      (r'^build_quiz$','activitytree.views.build_quiz'),
-      (r'^build_program$','activitytree.views.build_program'),
-      (r'^unlink_facebook/?$', 'activitytree.views.unlink_facebook'),
-      (r'^unlink_google/?$', 'activitytree.views.unlink_google'),
-      (r'^rate_object$','activitytree.views.rate_object'),
-      (r'^upload_course', 'activitytree.views.upload_course'),
-      (r'^facebook/get_login/?$', 'activitytree.views.facebook_get_login'),
-      (r'^facebook/login/?$','activitytree.views.facebook_login'),
-
-      (r'^GoogleCallback/?$','activitytree.views.google_callback'),
-      (r'^GoogleLink/?$','activitytree.views.google_link'),
-
-      (r'^logout/?$', 'activitytree.views.logout_view'),
-      (r'^login/$', 'activitytree.views.login_view', {'template_name': 'registration/login.html'}),
-
-#     url(r'^register/$', RegistrationView.as_view(), name='registration_register'),
-      url(r'^password_reset/$', 'django.contrib.auth.views.password_reset',{'password_reset_form':ProtoPasswordResetForm } ),
-      url(r'^logout/$', 'activitytree.views.logout'),
-      # Hack horrible para el logout
-      (r'^accounts/login/$', 'activitytree.views.login_view', {'template_name': 'registration/login.html'}),
-
-      url('', include('django.contrib.auth.urls')),
-      ('', include('registration.backends.default.urls')),
-      #url('', include('social.apps.django_app.urls', namespace='social')),
 
 
 
-    # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
-    # to INSTALLED_APPS to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+urlpatterns = [
 
-    # Uncomment the next line to enable the admin:
-    # (r'^admin/', include(admin.site.urls)),
-)
+      path('',views.welcome),
+
+      path('welcome/',views.welcome),
+      path('instructor/', views.instructor),
+      path('student/', views.my_enrolled_courses),
+      path('courses/', views.course_list),
+      re_path('^course_info/(?P<course_id>[0-9]*)$',views.course_info),
+      re_path('dashboard/(?P<path_id>[0-9]+)$', views.dashboard),
+
+      re_path('^(?P<uri>activity/([\w+](\/*)(-*))+)$', views.activity),
+
+      re_path('^(?P<path_id>[0-9]+)(?P<uri>/activity/([\w+](\/*)(-*))+)$',views.path_activity),
+
+      re_path(r'^(?P<path_id>[0-9]+)(?P<uri>/test/([\w+](\/*)(-*))+)$',views.path_test),
+
+      re_path(r'^(?P<path_id>[0-9]+)(?P<uri>/program/([\w+](\/*)(-*))+)$',views.path_program),
+
+      re_path(r'^(?P<uri>program/([\w+](\/*)(-*))+)$',views.program),
+      re_path(r'^(?P<uri>test/([\w+](\/*)(-*))+)$',views.test),
+
+      path('execute_queue/',views.execute_queue),
+      path('post_course/',views.course_view),
+      path('get_course/',views.course_view),
+      re_path('delete_course/(?P<course_id>[0-9]*)$',views.course),
+
+      path('my_courses/', views.my_courses,name='my_courses'),
+
+      path('javascript_result/',views.javascript_result),
+      path('get_activities/',views.get_activities),
+
+      path('get_result/',views.get_result),
+      path(r'me/',views.me),
+      path(r'me/profile/tz/', views.profile_tz),
+      path(r'me/profile/experience/', views.profile_experience),
+      path(r'me/profile/learning_style/',views.profile_learning_style),
+      re_path('^users/(?P<user_id>[0-9]*)(\/*)(?P<course_id>[0-9]*)$',views.users),
+               re_path('^course-builder/(?P<course_id>([\w+](\/*)(-*))+)$', views.course,name="course"),
+               re_path('^course-builder/?$',views.course,name="course"),
+      path(r'test_program',views.test_program),
+      path(r'search_prueba',views.search_prueba),
+      re_path(r'^my_enrolled_courses/(?P<status>(incomplete|completed))$',views.my_enrolled_courses),
+      path(r'search/',views.search),
+      path(r'activitybuilder/',views.activity_builder),
+      path(r'my_activities/',views.my_activities),
+      path(r'delete_activity/',views.delActivity),
+      path(r'upload_activity/',views.upload_activity),
+      path(r'get_activity/',views.check_activity),
+      path(r'get_id/',views.get_activity),
+      path(r'build_quiz/',views.build_quiz),
+      path(r'build_program/',views.build_program),
+      path(r'unlink_facebook/',views.unlink_facebook),
+      path(r'unlink_google/', views.unlink_google),
+      path(r'rate_object/',views.rate_object),
+      path(r'upload_course/', views.upload_course),
+      path(r'facebook/get_login/', views.facebook_get_login),
+      path(r'facebook/login/',views.facebook_login),
+
+      path(r'GoogleCallback/',views.google_callback),
+      path(r'GoogleLink/',views.google_link),
+
+      path(r'logout/', views.logout_view),
+
+
+               re_path(r'^password_reset/$', auth_views.PasswordResetView.as_view(),{'password_reset_form':ProtoPasswordResetForm } ),
+
+
+               re_path('', include(auth_urls)),
+ ]

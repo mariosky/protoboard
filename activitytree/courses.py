@@ -5,7 +5,7 @@ if __name__ == "__main__":
     import os
     from django.core.wsgi import get_wsgi_application
 
-    print "####### DJANGO SETTINGS"
+    print("####### DJANGO SETTINGS")
 
     os.environ['DJANGO_SETTINGS_MODULE'] = "protoboard.settings"
     application = get_wsgi_application()
@@ -15,13 +15,13 @@ if __name__ == "__main__":
 
 import json
 from activitytree.models import LearningActivity, Course, AuthorLearningActivity,UserLearningActivity
-from interaction_handler import SimpleSequencing
+from .interaction_handler import SimpleSequencing
 import ast
 
 
 def update_course_from_json( json_tree, user):
     activity_tree = json.loads(json_tree)[0]
-    print "update_course_from_json",activity_tree
+    print("update_course_from_json",activity_tree)
     _traverse_update(activity_tree, user=user)
 
 
@@ -36,11 +36,11 @@ def add_precondition(rule):
 
     if rule is not None:
         rule = rule.encode('ascii','ignore')
-        print 'tha rule:', rule
+        print('tha rule:', rule)
         if 'conditions' in rule:
             try:
                 rule = ast.literal_eval(rule)
-                print 'tha dict rule:', rule
+                print('tha dict rule:', rule)
                 if rule['conditions']:
                     string = ''
                     first = True
@@ -155,7 +155,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
         root = LearningActivity.objects.get(pk=activity['id'])
 
         if 'state' not in activity['learning_activity']:
-            print "Root:SAVE"
+            print("Root:SAVE")
 
             root.name = activity['learning_activity']['name']
             root.uri = activity['learning_activity']['uri']
@@ -231,7 +231,7 @@ def _traverse_update(activity, parent=None, root=None, user=None):
         learning_activity.choice_exit = activity['learning_activity']['choice_exit']
         learning_activity.rules = activity['learning_activity']['rules'] or ""
         learning_activity.rollup_progress= ('rollup_progress' in activity['learning_activity'] and activity['learning_activity']['rollup_progress']) or ""
-        print activity['learning_activity']['name'].encode('utf-8'),activity['learning_activity']['choice_exit']
+        print(activity['learning_activity']['name'].encode('utf-8'),activity['learning_activity']['choice_exit'])
         learning_activity.save()
 
     if 'children' in activity:
@@ -251,7 +251,7 @@ def _traverse_upload(activity, parent=None, root=None, user=None):
 
         root = LearningActivity.objects.get(pk=activity['id'])
         learning_activity = root
-        print "upload root", root, root.id,activity['id']
+        print("upload root", root, root.id,activity['id'])
 
 
     else:
@@ -275,7 +275,7 @@ def _traverse_upload(activity, parent=None, root=None, user=None):
             choice_exit = activity['learning_activity']['choice_exit'],
             rollup_progress= ('rollup_progress' in activity['learning_activity'] and activity['learning_activity']['rollup_progress']) or "")
         learning_activity.save()
-        print "upload activity",learning_activity
+        print("upload activity",learning_activity)
 
 
     if 'children' in activity:
@@ -290,10 +290,10 @@ def activity_tree(parent, nodes):
     #find children
 
     if parent is None:
-        children = [v for k,v in nodes.items() if  v["parent_id"] is None]
+        children = [v for k,v in list(nodes.items()) if  v["parent_id"] is None]
     else:
-        children = [v for k,v in nodes.items() if parent == v["parent_id"]]
-    print 'children',children
+        children = [v for k,v in list(nodes.items()) if parent == v["parent_id"]]
+    print('children',children)
     node_list = []
 
     if children:
@@ -313,5 +313,5 @@ def get_activity_tree(id):
     ss = SimpleSequencing()
     tree = ss.sql_activity_tree(id)
     result = activity_tree(None,tree)
-    print 'get',result
+    print('get',result)
     return result

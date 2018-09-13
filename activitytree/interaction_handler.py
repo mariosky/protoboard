@@ -169,7 +169,7 @@ class SimpleSequencing(object):
                         return None
                     next = navlist[i + 1]
 
-                    if next.get("is_container") == "False" and next.get("pre_condition") <> "disabled":
+                    if next.get("is_container") == "False" and next.get("pre_condition") != "disabled":
                         return next.get("id")
             return None
         else:
@@ -189,20 +189,20 @@ class SimpleSequencing(object):
                         return None
                     next = navlist[i + 1]
 
-                    if next.get("is_container") == "False" and next.get("pre_condition") <> "disabled":
+                    if next.get("is_container") == "False" and next.get("pre_condition") != "disabled":
                         return next.get("id")
             return None
         else:
             return None
 
     def _get_children(self, id):
-        children = [v for k,v in  self.RECORDS.items() if id == v["parent_id"] ]
+        children = [v for k,v in  list(self.RECORDS.items()) if id == v["parent_id"] ]
         return children
 
     def xml_row(self, row):
         str_dict = {}
-        for k,v in row.items():
-            str_dict[k]=unicode(v)
+        for k,v in list(row.items()):
+            str_dict[k]=str(v)
         return str_dict
 
     def sql(self, root_id,user_id):
@@ -263,7 +263,7 @@ class SimpleSequencing(object):
             try:
                 cur.execute(query,(root_id,root_id,user_id,user_id))
                 recs = self.dictfetchall(cur)
-                print recs
+                print(recs)
             finally:
                 cur.close()
 
@@ -320,7 +320,7 @@ class SimpleSequencing(object):
         "Return all rows from a cursor as a dict"
         columns = [col[0] for col in cursor.description]
         return [
-            dict(zip(columns, row))
+            dict(list(zip(columns, row)))
             for row in cursor.fetchall()
         ]
 
@@ -369,7 +369,7 @@ class SimpleSequencing(object):
 
 
     def get_attr(self, uri, attr):
-        for k,v in self.RECORDS.items():
+        for k,v in list(self.RECORDS.items()):
             if uri == v["uri"]:
                 return v[attr]
         return None
@@ -392,7 +392,7 @@ class SimpleSequencing(object):
 
             server = timezone.now()
             user_tz = pytz.timezone(self.context['time_zone'])
-            print server.astimezone(user_tz).strftime("%H:%M"), time_value
+            print(server.astimezone(user_tz).strftime("%H:%M"), time_value)
             return   operators[oper](server.astimezone(user_tz).strftime("%H:%M"), time_value )
         else:
             return False
@@ -401,7 +401,7 @@ class SimpleSequencing(object):
         if self.context is not None and 'time_zone' in self.context and self.context['time_zone'] is not None:
             server = timezone.now()
             user_tz = pytz.timezone(self.context['time_zone'])
-            print server.astimezone(user_tz).strftime("%A")
+            print(server.astimezone(user_tz).strftime("%A"))
 
             return server.astimezone(user_tz).strftime("%A")
         else:
