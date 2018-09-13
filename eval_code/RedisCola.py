@@ -96,6 +96,6 @@ class Cola:
     @staticmethod
     def get_all_workers():
         pattern = '*:worker:*'
-        print pattern
+        print(pattern)
 
         return r.keys(pattern)

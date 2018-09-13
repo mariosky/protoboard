@@ -14,7 +14,7 @@ def pattern_match(program, test,error):
         return error
 
 def get_strings(re_list):
-    return [map(unicode.strip, row.split("%")) for  row in re_list.split('\n') if len(row.split("%")) == 2]
+    return [map(str.strip, row.split("%")) for  row in re_list.split('\n') if len(row.split("%")) == 2]
 
 def re_test(program, pattern):
     strings = get_strings(pattern)

@@ -8,7 +8,7 @@ if __name__ == "__main__":
     from django.core.wsgi import get_wsgi_application
     sys.path.append('/code')
 
-    print "####### DJANGO SETTINGS"
+    print("####### DJANGO SETTINGS")
 
     os.environ['DJANGO_SETTINGS_MODULE'] = "protoboard.settings"
     application = get_wsgi_application()
@@ -47,4 +47,4 @@ for e in estudiantes:
     lsu=LearningStyleInventory(visual=e[2],verbal=e[3],aural=e[4],physical=e[5],logical=e[6],
                           social=e[7], solitary=e[8], user = u)
     lsu.save()
-    print e[0], e[1]
+    print(e[0], e[1])
