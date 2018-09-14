@@ -80,11 +80,11 @@
                         <a  class="list-group-item" href="/dashboard{{ root_id }}">Dashboard</a>
 
                       {% endif %}
-                         <a class="list-group-item" href="/logout">Salir</a>
+                         <a class="list-group-item" href="/accounts/logout">Salir</a>
                {% else %}
                     {% if not hidde_login_link %}
-                        <a class="list-group-item"  href="/login/?next=/welcome">Iniciar sesión</a>
-                        <a class="list-group-item list-group-item-info"  href="/register">Crea tu cuenta</a>
+                        <a class="list-group-item"  href="/accounts/login">Iniciar sesión</a>
+                        <a class="list-group-item list-group-item-info"  href="/accounts/register">Crea tu cuenta</a>
                     {% endif %}
               {% endif %}
 
@@ -132,12 +132,12 @@
 
 
 
-            <li class="nav-item"><a class="nav-link"  href="/logout">Salir</a></li>
+            <li class="nav-item"><a class="nav-link"  href="/accounts/logout">Salir</a></li>
 
           {% else %}
             {% if not hidde_login_link %}
-            <li class="nav-item"><a class="nav-link"  href="/login/?next=/welcome">Iniciar sesión</a></li>
-             <li class="nav-item"> <a class="btn btn-primary-outline"  href="/register">Crea tu cuenta</a></li>
+            <li class="nav-item"><a class="nav-link"  href="/accounts/login">Iniciar sesión</a></li>
+             <li class="nav-item"> <a class="btn btn-primary-outline"  href="/accounts/register">Crea tu cuenta</a></li>
 
 
           {% endif %}

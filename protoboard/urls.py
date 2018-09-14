@@ -67,16 +67,16 @@ urlpatterns = [
       path(r'unlink_google/', views.unlink_google),
       path(r'rate_object/',views.rate_object),
       path(r'upload_course/', views.upload_course),
-      path(r'facebook/get_login/', views.facebook_get_login),
-      path(r'facebook/login/',views.facebook_login),
+#      path(r'facebook/get_login/', views.facebook_get_login),
+#      path(r'facebook/login/',views.facebook_login),
 
-      path(r'GoogleCallback/',views.google_callback),
-      path(r'GoogleLink/',views.google_link),
+#      path(r'GoogleCallback/',views.google_callback),
+#      path(r'GoogleLink/',views.google_link),
       path(r'accounts/', include('allauth.urls')),
-      path(r'logout/', views.logout_view),
+#      path(r'logout/', views.logout_view),
 
 
-               re_path(r'^password_reset/$', auth_views.PasswordResetView.as_view(),{'password_reset_form':ProtoPasswordResetForm } ),
+#               re_path(r'^password_reset/$', auth_views.PasswordResetView.as_view(),{'password_reset_form':ProtoPasswordResetForm } ),
 
 
                re_path('', include(auth_urls)),
