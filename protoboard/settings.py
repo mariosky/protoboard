@@ -40,8 +40,12 @@ DATABASES = {
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 AUTHENTICATION_BACKENDS = (
-  'activitytree.backends.FacebookBackend',
-  'django.contrib.auth.backends.ModelBackend',)
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 
 
@@ -54,13 +58,20 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = (
-
+    'django.contrib.admin',
 	'django.contrib.contenttypes',
 	'django.contrib.sessions',
 	'django.contrib.sites',
     'django.contrib.auth',
 	'django.contrib.staticfiles',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'activitytree',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+
+
 )
 
 MIDDLEWARE = (
@@ -104,6 +115,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },

@@ -4,7 +4,7 @@ from activitytree import views
 
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import urls as auth_urls
-
+from django.contrib import admin
 
 
 
@@ -13,6 +13,7 @@ from django.contrib.auth import urls as auth_urls
 urlpatterns = [
 
       path('',views.welcome),
+      path('admin/', admin.site.urls),
 
       path('welcome/',views.welcome),
       path('instructor/', views.instructor),
@@ -71,7 +72,7 @@ urlpatterns = [
 
       path(r'GoogleCallback/',views.google_callback),
       path(r'GoogleLink/',views.google_link),
-
+      path(r'accounts/', include('allauth.urls')),
       path(r'logout/', views.logout_view),
 
 

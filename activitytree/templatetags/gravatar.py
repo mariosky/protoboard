@@ -31,7 +31,7 @@ class GravatarUrlNode(template.Node):
 
         size = self.size
 
-        gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(email.lower()).hexdigest() + "?"
+        gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(email.lower().encode("utf-8")).hexdigest() + "?"
         gravatar_url += urllib.parse.urlencode({'d':default, 's':str(size)})
 
         return gravatar_url
