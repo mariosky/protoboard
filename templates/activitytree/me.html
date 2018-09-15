@@ -8,7 +8,7 @@
 
 <row>
 
-           <div class="col-sm-3">
+           <div class="col-sm-5">
            <h3>Perfil básico</h3>
            <div class="row">
             <div class="col-md-8 col-sm-8 col-md-offset-2">
@@ -215,104 +215,6 @@ Mensajes de error
    </div>
 
 
-            <div class="col-sm-3">
-
-
-            <h3>Opciones de inicio de sesión</h3>
-
-                <form id="link-accounts-form">
- {% if IntegrityError %}
-
-        <div class='alert alert-danger alert-dismissable'>
-            <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-            <p>Lo sentimos, tu cuenta ya está ligada a un perfil existente. Si es tuyo ingresa con la otra cuenta.</p>
-            <p>Si no recuerdas la cuenta puedes <a href='/password_reset/'> restablecer tu perfil. </a> Ya en tu perfil puedes asociar de nuevo otras cuentas.</p>
-        </div>
-
-    {% endif %}
-    {% if DifferentEMAIL %}
-
-    <div class='alert alert-danger alert-dismissable'>
-        <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-        <p>El correo de la cuenta que desas enlazar debe coincidir con el correo de la cuenta actual.</p>
-        <p>Para evitar conflictos entre cuentas, por el momento no es posible enlazar esta cuenta.</p>
-    </div>
-
-    {% endif %}
-
-
-        {% comment %}
-        Si tenemos una cuenta ligada a Facebbok deberá de existir la facebook_uid
-        {% endcomment %}
-
-
-                   {% if user.userprofile.facebook_uid  %}
-               <div class="card ">
-               <div class="card-header"> <i class="fa fa-facebook"></i> Facebook </a>   </div>
-               <div class="card-block ">
-                  <h6 class="text-success">Conectado</h6>
-
-                    <p class="card-text"><small class="text-muted"> Actualmente puedes ingresar con esta cuenta. </small></p>
-                <a id="unlink-login-facebook" href="/unlink_facebook" class="btn btn-secondary">Desconectar</a>
-                </div>
-                </div>
-
-
-                    {% else %}
-                  <div class="card ">
-                   <div class="card-header"> <i class="fa fa-facebook"></i> Facebook </a>   </div>
-               <div class="card-block ">
-                  <h6  class="text-warning">Desconectado</h6>
-
-                  <p class="card-text"><small class="text-muted"> Conéctate para que puedas ingresar con esta cuenta y  empezar a compartir. </small></p>
-                  <a id="link-login-facebook" href="/facebook/get_login"class="btn btn-primary">Conectar</a>
-                </div>
-                </div>
-
-                    {% endif %}
-
-        {% comment %}
-        Lo mismo para Google
-        {% endcomment %}
-
-        {% if user.userprofile.google_uid  %}
-            <div class="card ">
-               <div class="card-header"> <i class="fa fa-google-plus"></i> Google</a> </div>
-               <div class="card-block ">
-                  <h6 class="text-success">Conectado</h6>
-
-                    <p class="card-text"><small class="text-muted"> Actualmente puedes ingresar con esta cuenta. </small></p>
-                <a  id="unlink-loginGoogle" href="/unlink_google"  class="btn btn-secondary">Desconectar</a>
-                </div>
-            </div>
-
-
-
-        {% else %}
-        <div class="card ">
-           <div class="card-header"> <i class="fa fa-google-plus"></i> Google</div>
-           <div class="card-block ">
-              <h6  class="text-warning">Desconectado</h6>
-
-              <p class="card-text"><small class="text-muted"> Conéctate para que puedas ingresar con esta cuenta y  empezar a compartir. </small></p>
-              <a id="link-loginGoogle"  class="btn btn-primary">Conectar</a>
-           </div>
-        </div>
-
-
-        {% endif %}
-
-               <hr/>
-               <a  href="/password_change/" class="btn btn-block btn-danger"> Cambiar contraseña</a>
-
-    </form>
-
-
-
-
-
-
-        </div>
 </row>
 
 
