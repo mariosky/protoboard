@@ -34,14 +34,14 @@ except Exception as e:
     print(e.message)
     print("""Error on: ALTER TABLE activitytree_ula_vw OWNER TO """)
 
-
-try:
-    cur.execute("""ALTER TABLE auth_user
-      ADD CONSTRAINT auth_user_email_key UNIQUE(email);
-      COMMENT ON CONSTRAINT auth_user_email_key ON auth_user IS 'Unique email ';""")
-except Exception as e:
-    print(e.message)
-    print("""Error on: ADD CONSTRAINT auth_user_email_key UNIQUE""")
+#  NO LONGER UNIQUE
+# try:
+#     cur.execute("""ALTER TABLE auth_user
+#       ADD CONSTRAINT auth_user_email_key UNIQUE(email);
+#       COMMENT ON CONSTRAINT auth_user_email_key ON auth_user IS 'Unique email ';""")
+# except Exception as e:
+#     print(e.message)
+#     print("""Error on: ADD CONSTRAINT auth_user_email_key UNIQUE""")
 
 
 

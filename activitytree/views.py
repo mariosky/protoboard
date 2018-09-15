@@ -1561,7 +1561,12 @@ def register(request):
         f = UserCreationForm(request.POST)
         if f.is_valid():
             f.save()
-            messages.success(request, 'Account created successfully')
+            username = f.cleaned_data.get('username')
+            raw_password = f.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+
+
             return HttpResponseRedirect('/welcome/')
 
     else:
@@ -1710,8 +1715,7 @@ def users(request, user_id=None, course_id=None, ):
 @login_required
 def me(request):
     if request.method == 'GET':
-        return render(request,'activitytree/me.html', {'FACEBOOK_APP_ID': settings.FACEBOOK_APP_ID,
-                                                           'GOOGLE_APP_ID': settings.GOOGLE_APP_ID,'time':timezone.now()})
+        return render(request,'activitytree/me.html', {'time':timezone.now()})
     if request.method == 'POST':
         try:
 
