@@ -53,6 +53,8 @@ from activitytree.models import Course, ActivityTree, UserLearningActivity, Lear
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.models import FacebookSession, GoogleSession, UserProfile
 from activitytree.courses import get_activity_tree, update_course_from_json, create_empty_course, upload_course_from_json
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 
 logger = logging.getLogger(__name__)
 
@@ -1553,6 +1555,20 @@ def google_link(request):
     google_session.save()
 
     return HttpResponse(json.dumps({"success": True, "error": None}), content_type='application/javascript')
+
+def register(request):
+    if request.method == 'POST':
+        f = UserCreationForm(request.POST)
+        if f.is_valid():
+            f.save()
+            messages.success(request, 'Account created successfully')
+            return HttpResponseRedirect('/welcome/')
+
+    else:
+        f = UserCreationForm()
+
+    return render(request, 'registration/registration_form.html', {'form': f})
+
 
 
 def get_activities(request):

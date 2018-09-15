@@ -43,8 +43,6 @@ AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
 
-    # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
 )
 
 
@@ -64,12 +62,9 @@ INSTALLED_APPS = (
 	'django.contrib.sites',
     'django.contrib.auth',
 	'django.contrib.staticfiles',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    'widget_tweaks',
     'activitytree',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google',
+
 
 
 )
@@ -115,7 +110,6 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.request',
             ],
         },
     },
@@ -174,39 +168,3 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL ="/"
 LOGOUT_REDIRECT_URL ="/"
-
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
-    },
-    'facebook': {
-        'METHOD': 'js_sdk',
-        'SCOPE': ['email', 'public_profile', 'user_friends'],
-        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
-        'INIT_PARAMS': {'cookie': True},
-        'FIELDS': [
-            'id',
-            'email',
-            'name',
-            'first_name',
-            'last_name',
-            'verified',
-            'locale',
-            'timezone',
-            'link',
-            'gender',
-            'updated_time',
-        ],
-        'EXCHANGE_TOKEN': True,
-        'VERIFIED_EMAIL': False,
-        'VERSION': 'v2.12',
-    }
-
-}
-

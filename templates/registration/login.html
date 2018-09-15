@@ -1,61 +1,48 @@
 {% extends "activitytree/base.html" %}
-
-
+{% load widget_tweaks %}
 
 {% block content %}
 
    <div class="col-xs-12 col-md-6 col-md-offset-3">
 
-<form id='login_form' class="form-signin" role="form" method="post" action="{% url 'django.contrib.auth.views.login' %}"
-      xmlns="http://www.w3.org/1999/html">{% csrf_token %}
+<form id='login_form' class="form-signin" role="form" method="post" action='/accounts/login/' xmlns="http://www.w3.org/1999/html">{% csrf_token %}
 
 
-{% if errors %}
+{% if form.errors %}
 
-<div class="alert alert-danger alert-dismissable">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <p>Inténtalo de nuevo, el usuario y contraseña no coinciden.</p>
-</div>
-
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <p>Inténtalo de nuevo, el usuario y contraseña no coinciden.</p>
+    </div>
 
 {% endif %}
 
 
-{% if AuthAlreadyAssociated %}
-
-<div class='alert alert-danger alert-dismissable'>
-    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-    <p>El correo electrónico de tu cuenta está ligado a un perfil existente. Si es tuyo ingresa con la otra cuenta.</p>
-    <p>Si no recuerdas la cuenta puedes <a href='/password_reset/'> restablecer tu perfil. </a> Ya en tu perfil puedes asociar de nuevo otras cuentas.</p>
-</div>
-
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
 {% endif %}
 
-
-
-
-        <h5>¡Bienvenido de Regreso!</h5>
          <div class="form-group">
-               <label for="id_username" class="sign-in-label control-label">Usuario</label>
 
-              <input type="text" class="form-control" id="inputEmail3" id="id_username" maxlength="254" name="username">
+             {{ form.username.label_tag }}
+             {% render_field form.username class="form-control" %}
 
-                {{ form.username }}
-
-                </input>
-
-             </div>
+         </div>
 
 
 
 
          <div class="form-group">
-               <label for="id_password" class="sign-in-label control-label">Contraseña</label>
+               {{ form.password.label_tag}}
+               {% render_field form.password class="form-control" %}
 
-             <input type="password" class="form-control" id="id_password" name="password">
-                {{ form.password }} </input>
-        <label class="sign-in-reset control-label"> <a href="/password_reset"> <small> ¿Se te olvidó tu contraseña? </small> </a> </label>
-        <input type="hidden" name="next" value="{{ next }}" />
+        <label class="sign-in-reset control-label"> <a href="/accounts/password_reset"> <small> ¿Se te olvidó tu contraseña? </small> </a> </label>
+
            <div class="row">
 
                <div class="col-xs-12 col-md-8 col-md-offset-2" >
@@ -63,25 +50,8 @@
                </div>
            </div>
 
-
-
-
-
        </div>
 
-
-        <div class="row">
-
-        <div class="col-xs-12 col-md-8 col-md-offset-2" >
-             <h5><small>Tambíen puedes iniciar sesión con:</small></h5>
-               <a id="login-facebook-btn" class="btn btn-default btn-social btn-block btn-facebook " href="/facebook/get_login?next={{ next }}"> <i class="fa fa-facebook"></i>
-        Facebook</a>
-               </div>
-        <div class="col-xs-12 col-md-8 col-md-offset-2" >
-                <a id="loginGoogle" class="btn btn-default  btn-social btn-block btn-google-plus"><i class="fa fa-google-plus"></i>
-       Google+ </a>
-               </div>
-        </div>
 
         <div class="row">
 

@@ -3,7 +3,6 @@ from activitytree.forms import ProtoPasswordResetForm
 from activitytree import views
 
 from django.contrib.auth import views as auth_views
-from django.contrib.auth import urls as auth_urls
 from django.contrib import admin
 
 
@@ -69,15 +68,16 @@ urlpatterns = [
       path(r'upload_course/', views.upload_course),
 #      path(r'facebook/get_login/', views.facebook_get_login),
 #      path(r'facebook/login/',views.facebook_login),
-
+      path('register/', views.register, name='register'),
 #      path(r'GoogleCallback/',views.google_callback),
 #      path(r'GoogleLink/',views.google_link),
-      path(r'accounts/', include('allauth.urls')),
+      path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html')),
+      path('accounts/logout/', auth_views.LogoutView.as_view()),
 #      path(r'logout/', views.logout_view),
 
 
 #               re_path(r'^password_reset/$', auth_views.PasswordResetView.as_view(),{'password_reset_form':ProtoPasswordResetForm } ),
 
 
-               re_path('', include(auth_urls)),
+            #   re_path('', include(auth_urls)),
  ]
