@@ -660,7 +660,7 @@ def path_activity(request, path_id, uri):
             content = ""
 
         if (requested_activity.learning_activity.uri).split('/')[2] == 'video':
-            return render('activitytree/video.html',request,
+            return render(request, 'activitytree/video.html',
 
                                       {'XML_NAV': XML,
                                        'uri': requested_activity.learning_activity.uri,

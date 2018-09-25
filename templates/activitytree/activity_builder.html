@@ -536,7 +536,7 @@ $(function(){
 function buscar(query){
         $.ajax({
         type: 'POST',
-        url: '/search_prueba',
+        url: '/search_prueba/',
         data: JSON.stringify(query),
         crossDomain: false, // obviates need for sameOrigin test
         beforeSend: function(xhr, settings) {
@@ -611,7 +611,7 @@ var on_click = function(){
 function delActivity(activity){
     $.ajax({
         type: 'post',
-        url: '/delete_activity',
+        url: '/delete_activity/',
         crossDomain: false, // obviates need for sameOrigin test
         beforeSend: function(xhr, settings) {
                     if (!csrfSafeMethod(settings.type)) {
@@ -647,7 +647,7 @@ function get_activity(id,type){
     else{
         $.ajax({
             type: 'get',
-            url: '/get_id',
+            url: '/get_id/',
             crossDomain: false, // obviates need for sameOrigin test
             beforeSend: function(xhr, settings) {
                     if (!csrfSafeMethod(settings.type)) {
@@ -832,7 +832,7 @@ function load_dataQuiz(id){
                             xhr.setRequestHeader("X-CSRFToken", csrftoken);
                         }
                     },
-            url: '/upload_activity',
+            url: '/upload_activity/',
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (info){
@@ -891,7 +891,7 @@ function load_dataQuiz(id){
         console.log(data);
         $.ajax({
             type: 'post',
-            url: '/upload_activity',
+            url: '/upload_activity/',
             contentType: "application/json",
             crossDomain: false, // obviates need for sameOrigin test
             beforeSend: function(xhr, settings) {
@@ -948,7 +948,7 @@ function load_dataQuiz(id){
    function check(valor){
        $.ajax({
            type: 'get',
-           url: '/get_activity',
+           url: '/get_activity/',
            data: { valor: valor},
            crossDomain: false, // obviates need for sameOrigin test
            beforeSend: function(xhr, settings) {

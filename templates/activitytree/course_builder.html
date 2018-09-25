@@ -1224,7 +1224,7 @@ body.on('change',"#txtname",function(){
   function buscar(query){
         $.ajax({
         type: 'POST',
-        url: '/search_prueba',
+        url: '/search_prueba/',
         crossDomain: false, // obviates need for sameOrigin test
         beforeSend: function(xhr, settings) {
                     if (!csrfSafeMethod(settings.type)) {
