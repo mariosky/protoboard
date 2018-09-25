@@ -132,6 +132,7 @@ LANGUAGES = (
 
 SITE_ID = 1
 
+
 LANGUAGE_CODE = 'es-mx'
 
 TIME_ZONE = 'UTC'

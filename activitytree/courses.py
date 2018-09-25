@@ -35,8 +35,9 @@ def upload_course_from_json( json_tree,course_id, user):
 def add_precondition(rule):
 
     if rule is not None:
-        rule = rule.encode('ascii','ignore')
-        print('tha rule:', rule)
+        #print('tha rule 1:', rule)
+        #rule = rule.encode('ascii','ignore')
+        #print('tha rule:', rule)
         if 'conditions' in rule:
             try:
                 rule = ast.literal_eval(rule)

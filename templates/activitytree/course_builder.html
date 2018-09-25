@@ -333,7 +333,7 @@ Main Save Changes
 
 
         $.ajax(   {
-                    url: '/post_course',
+                    url: '/post_course/',
                     type: "POST",
                     crossDomain: false, // obviates need for sameOrigin test
                     beforeSend: function(xhr, settings) {
@@ -435,7 +435,7 @@ function get_course() {
 
 
               $.ajax(   {
-                    url: '/get_course',
+                    url: '/get_course/',
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify({"jsonrpc": "2.0", "method": "get_course", "params": [{{ course_id }}],

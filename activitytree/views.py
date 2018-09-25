@@ -101,7 +101,7 @@ def instructor(request):
                                    })
 
     else:
-        return HttpResponseRedirect('/login/?next=%s' % request.path)
+        return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
 
 def student(request):
@@ -642,9 +642,11 @@ def path_activity(request, path_id, uri):
                     '/%s%s' % (next_activity.learning_activity.id, next_activity.learning_activity.uri))
 
         _XML = s.get_nav(root)
-        # Escape for javascript
-        XML = ET.tostring(_XML, 'utf-8').replace('"', r'\"')
 
+
+        # Escape for javascript
+        XML = ET.tostring(_XML, encoding='unicode').replace('"', r'\"')
+        print('XML:', XML)
         breadcrumbs = s.get_current_path(requested_activity)
 
         rating_totals = LearningActivityRating.objects.filter(
