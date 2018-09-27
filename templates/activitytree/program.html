@@ -366,7 +366,7 @@ $(document).ready(function() {
 
            $.ajax(
                 {
-                    url: '/execute_queue',
+                    url: '/execute_queue/',
                     type: "POST",
                     crossDomain: false, // obviates need for sameOrigin test
                     beforeSend: function(xhr, settings) {
@@ -512,7 +512,7 @@ $(document).ready(function() {
 
 
     function poll(endTime,interval,timeout){
-        $.ajax({ url: '/get_result',
+        $.ajax({ url: '/get_result/',
             type: "POST",
             crossDomain: false, // obviates need for sameOrigin test
             beforeSend: function(xhr, settings) {

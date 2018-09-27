@@ -62,8 +62,6 @@ urlpatterns = [
       path(r'get_id/',views.get_activity),
       path(r'build_quiz/',views.build_quiz),
       path(r'build_program/',views.build_program),
-      path(r'unlink_facebook/',views.unlink_facebook),
-      path(r'unlink_google/', views.unlink_google),
       path(r'rate_object/',views.rate_object),
       path(r'upload_course/', views.upload_course),
 #      path(r'facebook/get_login/', views.facebook_get_login),

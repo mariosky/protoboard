@@ -2,11 +2,13 @@ __author__ = 'mariosky'
 import redis
 import os
 
+import ast
+
 
 HOST = 'REDIS_HOST' in  os.environ and  os.environ['REDIS_HOST'] or 'redis'
 PORT = 'REDIS_PORT' in  os.environ and  os.environ['REDIS_PORT'] or '6379'
 
-r = redis.Redis(host=HOST, port=PORT)
+r = redis.StrictRedis(host=HOST, port=PORT, decode_responses=True)
 
 
 class Task:
@@ -42,7 +44,14 @@ class Task:
 
     def get_result(self, app_name, as_dict = False):
         if r.sismember('%s:result_set' % app_name, self.id):
-            _dict = eval(r.get(self.id))
+            result = r.get(self.id)
+            print(result)
+
+            print(type(result))
+            _r = bytearray(result, 'utf')
+            print(type(_r))
+
+            _dict = ast.literal_eval(result)
             self.__dict__.update(_dict)
             if as_dict:
                 return self.__dict__

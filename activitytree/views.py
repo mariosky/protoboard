@@ -43,7 +43,6 @@ import redis
 import bleach
 from activitytree.bleach_whitelist import all_tags, attrs
 
-from activitytree.backends import AuthAlreadyAssociated, google_query_me, facebook_query_me
 from activitytree.mongo_activities import Activity
 
 from eval_code.RedisCola import Cola, Task
@@ -51,7 +50,7 @@ from eval_code.RedisCola import Cola, Task
 from activitytree.models import Course, ActivityTree, UserLearningActivity, LearningActivity, ULA_Event, \
     LearningActivityRating, LearningStyleInventory
 from activitytree.interaction_handler import SimpleSequencing
-from activitytree.models import FacebookSession, GoogleSession, UserProfile
+from activitytree.models import UserProfile
 from activitytree.courses import get_activity_tree, update_course_from_json, create_empty_course, upload_course_from_json
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -969,6 +968,10 @@ def execute_queue(request):
         # Get Activity from MongoDB
         program_test = Activity.get(activity_uri)
 
+        print('program_test')
+        print(type(program_test['unit_test']))
+
+
         #Get Regular Expresion Test (RET) if there is one, if not set to None
         retest = ('reg_exp' in program_test and program_test['reg_exp']) or None
 
@@ -995,6 +998,7 @@ def execute_queue(request):
         try:
             task_id = server.enqueue(**task)
         except Exception:
+
             result = {"result": "error", "error": "Server Not Found", "id": task_id,"success": False}
             return HttpResponse(json.dumps(result), content_type='application/javascript', status=503)
 
@@ -1280,283 +1284,6 @@ def ajax_vote(request, type, uri):
         return HttpResponse(content="Ya voto?")
 
 
-def facebook_get_login(request):
-    state = request.session.session_key
-
-    if 'next' in request.GET:
-        request.session['after_login'] = request.GET['next']
-
-    # Ask for access_token, with email,public_profile,user_friends permitions
-    # First we construct the petition
-    url = """https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&state=%s&scope=%s""" % \
-          (settings.FACEBOOK_APP_ID, settings.FACEBOOK_REDIRECT_URL,
-           state, "email,public_profile,user_friends"
-           )
-    # We redirect to facebook
-    return HttpResponseRedirect(url)
-
-
-def facebook_login(request):
-    # We recieve the answer
-    # If an error
-    if 'error' in request.GET:
-        return HttpResponseRedirect('/')
-    # If not an error get the access code and state variable
-    code = request.GET['code']
-
-    # We could later validate if state is the same
-    UID = request.GET['state']
-
-    # With the code and our credentials we can now get the access token
-    args = {"client_id": settings.FACEBOOK_APP_ID,
-            "redirect_uri": settings.FACEBOOK_REDIRECT_URL,
-            "client_secret": settings.FACEBOOK_APP_SECRET,
-            "code": code}
-
-    # We get the access token
-    response = urllib.urlopen("https://graph.facebook.com/oauth/access_token?" + urllib.urlencode(args))
-
-    access_token_response = urlparse.parse_qs(response.read())
-
-    if request.user.is_authenticated:
-        # LINK ACCOUNT
-        profile = facebook_query_me(access_token_response['access_token'][0], 'email')
-
-        # Facebook account must:
-        # 1. Have a validated email in its Profile
-        # 2. Not be assigned to another account
-        if 'email' not in profile or profile['email'] != request.user.email:
-            if 'email' not in profile:
-                con = RequestContext(request)
-                con['IntegrityError'] = True
-                return TemplateResponse(request, template='activitytree/me.html', context=con)
-            if profile['email'] != request.user.email:
-                # Its  assigned to someone?
-                try:
-                    # This user/email exists?
-                    user = auth_models.User.objects.get(email=profile['email'])
-                    # It is this is not Good
-
-                    con = RequestContext(request)
-                    con['AuthAlreadyAssociated'] = True
-                    return TemplateResponse(request, template='activitytree/me.html', context=con)
-                except auth_models.User.DoesNotExist as e:
-                    # This is Good carry on
-                    pass
-
-        user_profile, created = UserProfile.objects.get_or_create(user=request.user)
-        user_profile.facebook_uid = profile['id']
-        try:
-            user_profile.save()
-        except IntegrityError:
-            con = RequestContext(request)
-            con['IntegrityError'] = True
-            return TemplateResponse(request, template='activitytree/me.html', context=con)
-
-        # Renew or create facebook session
-        try:
-            FacebookSession.objects.get(user=request.user).delete()
-        except FacebookSession.DoesNotExist as e:
-            pass
-
-        facebook_session = FacebookSession.objects.get_or_create(access_token=access_token_response['access_token'][0])[
-            0]
-
-        facebook_session.uid = profile['id']
-        facebook_session.expires = access_token_response["expires"][0]
-        facebook_session.user = request.user
-        facebook_session.save()
-
-        return HttpResponseRedirect('/me')
-
-    else:
-        auth_status = None
-        user = None
-        try:
-            user = authenticate(app="facebook", **access_token_response)
-        except (AuthAlreadyAssociated, IntegrityError):
-            con = RequestContext(request)
-            con['AuthAlreadyAssociated'] = True
-            return TemplateResponse(request, template='registration/login.html', context=con)
-            # return HttpResponse(json.dumps({"success":False, "error":'AuthAlreadyAssociated' , "after_login":"/"}), content_type='application/javascript')
-
-
-        auth_status = None
-        if user:
-            if user.is_active:
-                login(request, user)
-                if 'after_login' in request.session:
-                    return HttpResponseRedirect(request.session['after_login'])
-                return HttpResponseRedirect('/')
-            else:
-                error = 'AUTH_DISABLED'
-
-        if 'error_reason' in request.GET:
-            error = auth_status
-        ### TO DO Log Error
-        return HttpResponseRedirect('/')
-
-
-@login_required
-def unlink_facebook(request):
-    facebook_session = FacebookSession.objects.get(user=request.user)
-    params = urllib.urlencode({'access_token': facebook_session.access_token})
-
-    import http.client
-
-    conn = http.client.HTTPSConnection('graph.facebook.com')
-    conn.request('DELETE', '/me/permissions', params)
-    resp = conn.getresponse()
-    content = resp.read()
-    result = json.loads(content)
-
-    if result["success"]:
-        try:
-            FacebookSession.objects.get(user=request.user).delete()
-        except FacebookSession.DoesNotExist as e:
-            pass
-
-        user_profile = UserProfile.objects.get(user=request.user)
-        user_profile.facebook_uid = None
-        user_profile.save()
-
-    return HttpResponseRedirect('/me')
-
-
-@login_required
-def unlink_google(request):
-    try:
-        google_session = GoogleSession.objects.get(user=request.user)
-    except GoogleSession.DoesNotExist as e:
-        print ("Account does not exists")
-        # There is no account any way
-        return HttpResponseRedirect('/me')
-
-    url = 'https://accounts.google.com/o/oauth2/revoke'
-    params = {'token': google_session.access_token}
-
-    url += '?' + urllib.urlencode(params)
-
-
-    f = urllib.urlopen(url)
-    if f.code in [200, 400]:
-        # DELETE Google Profile
-        try:
-            GoogleSession.objects.get(user=request.user).delete()
-        except GoogleSession.DoesNotExist as e:
-            pass
-
-        user_profile = UserProfile.objects.get(user=request.user)
-        user_profile.google_uid = None
-        user_profile.save()
-        return HttpResponseRedirect('/me')
-    else:
-        # TO DO: Display Error
-        return HttpResponseRedirect('/me')
-
-
-def google_callback(request):
-    # We recieve the answer
-    # If an error
-    json_code = json.loads(request.body)
-    code = json_code['code']
-
-    # With the code and our credentials we can now get the access token
-    args = urllib.urlencode(
-        {"client_id": settings.GOOGLE_APP_ID,
-         "redirect_uri": settings.GOOGLE_REDIRECT_URL,
-         "client_secret": settings.GOOGLE_APP_SECRET,
-         "code": code,
-         "grant_type": "authorization_code"})
-
-    # We get the access token
-    response = urllib.urlopen("https://www.googleapis.com/oauth2/v3/token", args)
-
-    access_token_response = json.loads(response.read())
-    user = None
-    try:
-        user = authenticate(app="google", **access_token_response)
-    except AuthAlreadyAssociated:
-        return HttpResponse(json.dumps({"success": False, "error": 'AuthAlreadyAssociated', "after_login": "/"}),
-                            content_type='application/javascript')
-
-    if user:
-        if user.is_active:
-            login(request, user)
-            if 'after_login' in request.session:
-                return HttpResponse(
-                    json.dumps({"success": True, "error": None, "after_login": request.session['after_login']}),
-                    content_type='application/javascript')
-
-            return HttpResponse(json.dumps({"success": True, "error": None, "after_login": "/"}),
-                                content_type='application/javascript')
-        else:
-            return HttpResponse(json.dumps({"success": False, "error": "UserInactive", "after_login": "/"}),
-                                content_type='application/javascript')
-
-    else:
-        return HttpResponse(json.dumps({"success": False, "error": "ProfileNotFound", "after_login": "/"}),
-                            content_type='application/javascript')
-
-
-@login_required
-def google_link(request):
-    # We recieve the answer
-    # If an error
-    json_code = json.loads(request.body)
-    code = json_code['code']
-
-    # With the code and our credentials we can now get the access token
-    args = urllib.urlencode(
-        {"client_id": settings.GOOGLE_APP_ID,
-         "redirect_uri": settings.GOOGLE_REDIRECT_URL,
-         "client_secret": settings.GOOGLE_APP_SECRET,
-         "code": code,
-         "grant_type": "authorization_code"})
-
-    # We get the access token
-    response = urllib.urlopen("https://www.googleapis.com/oauth2/v3/token", args)
-
-    access_token_response = json.loads(response.read())
-
-    profile = google_query_me(access_token_response['access_token'])
-    email = "emails" in profile and profile["emails"] and profile["emails"][0]["value"] or None
-    # Gmail account must:
-    # 1. Have a validated email in its Profile
-    # 2. Not be assigned to another account
-    if email is None:
-        print ('IntegrityError')
-        return HttpResponse(json.dumps({"success": False, "error": 'IntegrityError'}),
-                            content_type='application/javascript')
-    if email != request.user.email:
-        # Its  assigned to someone?
-        try:
-            # This user/email exists?
-            user = auth_models.User.objects.get(email=email)
-            # It is this is not Good
-
-            con = RequestContext(request)
-            con['AuthAlreadyAssociated'] = True
-            return HttpResponse(json.dumps({"success": False, "error": 'AuthAlreadyAssociated'}),
-                                content_type='application/javascript')
-        except auth_models.User.DoesNotExist as e:
-            # This is Good carry on
-            pass
-
-    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
-    user_profile.google_uid = profile['id']
-    try:
-        user_profile.save()
-    except IntegrityError:
-        return HttpResponse(json.dumps({"success": False, "error": 'IntegrityError'}),
-                            content_type='application/javascript')
-
-    google_session, created = GoogleSession.objects.get_or_create(access_token=access_token_response, user=request.user)
-    google_session.expires_in = access_token_response['expires_in']
-    google_session.refresh_token = access_token_response['id_token']
-    google_session.save()
-
-    return HttpResponse(json.dumps({"success": True, "error": None}), content_type='application/javascript')
 
 def register(request):
     if request.method == 'POST':
