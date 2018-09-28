@@ -631,7 +631,7 @@ HTML Content
     function get_activity(id,type){
         $.ajax({
             type: 'get',
-            url: '/get_id',
+            url: '/get_id/',
             crossDomain: false, // obviates need for same origin test
             beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type)) {
@@ -763,7 +763,7 @@ HTML Content
         console.log(data);
         $.ajax({
             type: 'post',
-            url: '/upload_activity',
+            url: '/upload_activity/',
             crossDomain: false, // obviates need for sameOrigin test
             beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type)) {
@@ -860,7 +860,7 @@ HTML Content
 
         $.ajax({
             type: 'post',
-            url: '/test_program',
+            url: '/test_program/',
             crossDomain: false, // obviates need for sameOrigin test
             beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type)) {
@@ -888,7 +888,7 @@ HTML Content
 
     //checks server for results, if there is a result, it displays it
     function poll(){
-        $.ajax({ url: '/get_result',
+        $.ajax({ url: '/get_result/',
             type: "POST",
             contentType: "application/json",
             crossDomain: false, // obviates need for sameOrigin test

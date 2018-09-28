@@ -45,13 +45,17 @@ class Task:
     def get_result(self, app_name, as_dict = False):
         if r.sismember('%s:result_set' % app_name, self.id):
             result = r.get(self.id)
+
             print(result)
 
-            print(type(result))
-            _r = bytearray(result, 'utf')
-            print(type(_r))
+            res = result.replace("\n","")
 
-            _dict = ast.literal_eval(result)
+
+            print(type(res), res)
+            _r = bytearray(res, 'utf-8')
+            print(type(_r),_r)
+
+            _dict = eval(bytes(_r))
             self.__dict__.update(_dict)
             if as_dict:
                 return self.__dict__
