@@ -305,7 +305,7 @@ function getParameterByName(name, url) {
 function get_activity(id,type){
     $.ajax({
         type: 'get',
-        url: '/get_id',
+        url: '/get_id/',
         data: { _id: id,
             user: '{{ user.email }}',
             type: type},
@@ -554,7 +554,7 @@ function submit_quiz(){
 
     $.ajax({
         type: 'post',
-        url: '/upload_activity',
+        url: '/upload_activity/',
         contentType: "application/json",
         crossDomain: false, // obviates need for sameOrigin test
         beforeSend: function(xhr, settings) {

@@ -54,7 +54,7 @@
   <div class="form-group">
   <label for="exampleInputEmail1">Correo electrónico</label>
   <input type="text" class="form-control" id="exampleInputEmail1" name="email"
-           value="{{ user.email }}"  readonly>
+           value="{{ user.email }}">
   </div>
 
 
@@ -224,9 +224,8 @@ Mensajes de error
 {% endblock content %}
 
 {% block scripts %}
- <script src="{{ STATIC_URL }}app/scripts/jstz.min.js"></script>
-<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
-  </script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.6/jstz.min.js"></script>
+
 
 
 <script>
@@ -264,16 +263,6 @@ Mensajes de error
                 }
             });
 
-    function start() {
-      gapi.load('auth2', function() {
-        auth2 = gapi.auth2.init({
-          client_id: '{{ GOOGLE_APP_ID }}',
-          'scope': 'profile email'
-          // Scopes to request in addition to 'profile' and 'email'
-          //scope: 'additional_scope'
-        });
-      });
-    }
 
 
 
@@ -303,7 +292,7 @@ Mensajes de error
                 }
             });
 
-     $.get( '/me/profile/tz', function(data) {
+     $.get( '/me/profile/tz/', function(data) {
 
          if (data.result == 'found')
          {
@@ -330,7 +319,7 @@ Mensajes de error
           $('#saved-time-zone').html("Error al recuperar la información");
      });
 
-     $.get( '/me/profile/learning_style', function(data) {
+     $.get( '/me/profile/learning_style/', function(data) {
 
           if (data.result == 'found') {
               $.each(data, function (key, value) {
@@ -358,7 +347,7 @@ Mensajes de error
                   data['method']= 'upsert';
                   console.log(JSON.stringify(data));
 
-                  $.post('/me/profile/learning_style', JSON.stringify(data),
+                  $.post('/me/profile/learning_style/', JSON.stringify(data),
 
                       function (data) {
 
@@ -374,7 +363,7 @@ Mensajes de error
 
 
              $("#learning-style-delete").on("click", function (event) {
-                  $.post('/me/profile/learning_style', JSON.stringify({method: 'delete'}),
+                  $.post('/me/profile/learning_style/', JSON.stringify({method: 'delete'}),
 
                           function (data) {
                                $(".ls").each(function () {
@@ -389,7 +378,7 @@ Mensajes de error
 
 
               $("#timezone-save").on("click", function (event) {
-                  $.post('/me/profile/tz', JSON.stringify({tz: timezone.name(), method: 'upsert'}),
+                  $.post('/me/profile/tz/', JSON.stringify({tz: timezone.name(), method: 'upsert'}),
 
                           function (data) {
                               $("#saved-time-zone").html(data.tz);
@@ -401,7 +390,7 @@ Mensajes de error
 
                              console.log($("#experience-list").val());
 
-                  $.post('/me/profile/experience', JSON.stringify({experience: $("#experience-list").val(), method: 'upsert'}),
+                  $.post('/me/profile/experience/', JSON.stringify({experience: $("#experience-list").val(), method: 'upsert'}),
 
                           function (data) {
                              console.log(data);
@@ -410,46 +399,11 @@ Mensajes de error
               });
 
               $("#timezone-delete").on("click", function (event) {
-                  $.post('/me/profile/tz', JSON.stringify({method: 'delete'}),
+                  $.post('/me/profile/tz/', JSON.stringify({method: 'delete'}),
 
                           function (data) {
                               $("#saved-time-zone").html("Sin información");
                           });
-              });
-
-
-              $.getScript('//connect.facebook.net/en_US/sdk.js', function () {
-
-                  FB.init({
-                      appId: '{ {{FACEBOOK_APP_ID}} }',
-                      version: 'v2.3' // or v2.0, v2.1, v2.0
-                  });
-
-                  $('#loginbutton,#feedbutton').removeAttr('disabled');
-                  FB.getLoginStatus(function (response) {
-                      if (response.status === 'connected') {
-                          // the user is logged in and has authenticated your
-                          // app, and response.authResponse supplies
-                          // the user's ID, a valid access token, a signed
-                          // request, and the time the access token
-                          // and signed request each expire
-                          var uid = response.authResponse.userID;
-                          var accessToken = response.authResponse.accessToken;
-                          alert('connected');
-                      }
-                      else if (response.status === 'not_authorized') {
-                          // the user is logged in to Facebook,
-                          // but has not authenticated your app
-                          alert('not_authorized');
-
-                      } else {
-
-                          console.log('not_logged');
-                          // the user isn't logged in to Facebook.
-                      }
-                      console.log('unknown');
-                  });
-
               });
 
 
@@ -468,7 +422,7 @@ Mensajes de error
                       }
                   });
 
-                  $.post('/me', $("#login_form").serialize(),
+                  $.post('/me/', $("#login_form").serialize(),
                           function (data) {
                               console.log("succsess update");
 
@@ -477,79 +431,7 @@ Mensajes de error
 
               });
 
-              $('#unlink-login-facebook').click(function () {
 
-              });
-
-              $('#link-loginGoogle').click(function () {
-                  // signInCallback defined in step 6.
-                  auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(function (authResult) {
-                      if (authResult['code']) {
-
-                          // Hide the sign-in button now that the user is authorized, for example:
-                          //$('#signinButton').attr('style', 'display: none');
-
-                          // Send the code to the server
-                          $.ajax({
-                              type: 'POST',
-                              url: '/GoogleLink',
-                              contentType: 'application/json',
-                              success: function (result) {
-                                  // Handle or verify the server response.
-                                  if (!result.success) {   //alert("Error: "+result.error)
-                                      if (result.error == 'AuthAlreadyAssociated') {
-                                          $('#link-accounts-form').prepend("<div class='alert alert-danger alert-dismissable'>" +
-                                                  "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>" +
-                                                  "<p>El correo electrónico de esa cuenta ya está ligado a un perfil existente. Si es tuyo ingresa con la otra cuenta.</p>  " +
-                                                  "<p>Si no recuerdas la cuenta puedes <a href='/password_reset/'> restablecer tu contraseña. </a> Ya en tu perfil, puedes conectar o desconectar otras cuentas.</p>"
-                                                  + "</div>");
-                                      }
-
-                                      if (result.error == 'IntegrityError') {
-                                          $('#link-accounts-form').prepend("<div class='alert alert-danger alert-dismissable'>" +
-                                                  "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>" +
-                                                  "<p>El correo electrónico de tu cuenta está ligado a un perfil existente. Si es tuyo ingresa con la otra cuenta.</p>  " +
-                                                  "<p>Si no recuerdas la cuenta puedes <a href='/password_reset/'> restablecer tu perfil. </a> Ya en tu perfil puedes asociar de nuevo otras cuentas.</p>"
-                                                  + "</div>");
-                                      }
-                                      if (result.error == 'ProfileNotFound') {
-                                          $('#link-accounts-form').prepend("<p>Inténtalo de nuevo, el usuario y contraseña no coinciden.</p>");
-                                      }
-
-                                      if (result.error == 'DifferentEMAIL') {
-                                          $('#link-accounts-form').prepend("<div class='alert alert-danger alert-dismissable'>" +
-                                                  "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>" +
-                                                  "<p>El correo de la cuenta que desas enlazar debe coincidir con el correo de la cuenta actual.</p></div>");
-
-
-                                      }
-
-
-                                  }
-                                  else {
-
-                                      window.location.href = '/me';
-                                  }
-
-
-                              },
-                              processData: false,
-                              dataType: "json",
-                              data: JSON.stringify({code: authResult['code']}),
-                              error: function (jqXHR, textStatus, errorThrown) {
-                                  alert("Error:" + textStatus + " " + errorThrown + " " + jqXHR.responseText);
-                              }
-
-                          });
-                      }
-                      else {
-                          // There was an error.
-                      }
-
-
-                  });
-
-              })
 
           });
 
