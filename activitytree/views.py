@@ -794,7 +794,7 @@ def path_test(request, path_id, uri):
 
         _XML = s.get_nav(root)
         # Escape for javascript
-        XML = ET.tostring(_XML, 'utf-8').replace('"', r'\"')  # navegation_tree = s.nav_to_html(nav)
+        XML = ET.tostring(_XML, encoding='unicode').replace('"', r'\"')  # navegation_tree = s.nav_to_html(nav)
         rating_totals = LearningActivityRating.objects.filter(
             learning_activity__uri=requested_activity.learning_activity.uri).aggregate(Count('rating'), Avg('rating'))
 
@@ -1148,16 +1148,22 @@ def _set_current(request, requested_activity, root, s, progress_status=None):
 
 
 def _check_quiz(post_dict, quiz):
-    answerDict = dict(post_dict.iterlists())
+    print(post_dict)
+    print('quiz', quiz)
+    #answerDict = dict(post_dict.iterlists())
+    answerDict = dict(post_dict)
+    print('answerDict',answerDict)
     checked = {}
+
     for q in quiz['questions']:
-        id = q['id']
+        id = str(q['id'])
         answer = q['answer']
         interaction = q['interaction']
         checked[id] = {}
-
+        print (id in answerDict)
         if interaction in ['choiceInteraction', 'simpleChoice']:
             if id in answerDict:
+
                 user = answerDict[id]
                 user_index = [int(a.split("_")[-1]) for a in user]
                 user_answer = [int(i in user_index) for i in range(len(answer))]
@@ -1184,7 +1190,7 @@ def _check_quiz(post_dict, quiz):
                 else:
                     checked[id]['correct'] = 0
     checked['total_correct'] = sum([float(checked[key]['correct']) for key in checked if key not in ['checked']])
-
+    print ('checked',checked)
     return checked
 
 
