@@ -776,6 +776,7 @@ def path_test(request, path_id, uri):
                 quiz = Activity.get(requested_activity.learning_activity.uri)
 
                 feedback = _check_quiz(request.POST, quiz)
+                print('feedback',feedback)
                 # Updates the current Learning Activity
                 objective_measure = float(feedback['total_correct']) / len(quiz['questions']) * 100
                 if feedback['total_correct'] >= int(quiz['satisfied_at_least']):
