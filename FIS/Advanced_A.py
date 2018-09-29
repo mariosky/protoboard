@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from FIS import * 
+from FIS.FIS import *
 
 # Performance
 performance  = LinguisticVariable('Performance')
@@ -47,4 +47,4 @@ def eval(p, v):
     return fis.eval()
 
 if __name__ == '__main__':
-    print eval(50,15)
+    print (eval(50,15))

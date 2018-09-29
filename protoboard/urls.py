@@ -1,5 +1,4 @@
 from django.urls import path, re_path, include
-from activitytree.forms import ProtoPasswordResetForm
 from activitytree import views
 
 from django.contrib.auth import views as auth_views
@@ -64,18 +63,17 @@ urlpatterns = [
       path(r'build_program/',views.build_program),
       path(r'rate_object/',views.rate_object),
       path(r'upload_course/', views.upload_course),
-#      path(r'facebook/get_login/', views.facebook_get_login),
-#      path(r'facebook/login/',views.facebook_login),
       path('register/', views.register, name='register'),
-#      path(r'GoogleCallback/',views.google_callback),
-#      path(r'GoogleLink/',views.google_link),
+
       path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html')),
       path('accounts/logout/', auth_views.LogoutView.as_view()),
-#      path(r'logout/', views.logout_view),
+      path('accounts/password_reset/', auth_views.PasswordResetView.as_view()),
 
+      path('accounts/password_change/', auth_views.PasswordChangeView.as_view(), name='password_change'),
+      path('accounts/password_change/done/', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
 
-#               re_path(r'^password_reset/$', auth_views.PasswordResetView.as_view(),{'password_reset_form':ProtoPasswordResetForm } ),
-
-
-            #   re_path('', include(auth_urls)),
+      path('accounts/password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+      path('accounts/password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+      path('accounts/reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+      path('accounts/reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
  ]

@@ -16,6 +16,10 @@ import os
 import environ
 
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False), TEMPLATE_DEBUG=(bool, False)

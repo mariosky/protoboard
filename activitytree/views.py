@@ -504,7 +504,7 @@ def dashboard(request, path_id):
 
             _XML = s.get_nav(root)
             # Escape for javascript
-            XML = ET.tostring(_XML, 'utf-8').replace('"', r'\"')  # navegation_tree = s.nav_to_html(nav)
+            XML = ET.tostring(_XML, encoding='unicode').replace('"', r'\"')  # navegation_tree = s.nav_to_html(nav)
 
             return render(request,'activitytree/dashboard.html', {'XML_NAV': XML,
                                                                       'children': requested_activity.get_children(),
@@ -803,12 +803,14 @@ def path_test(request, path_id, uri):
 
         test = Activity.get(requested_activity.learning_activity.uri)
         if feedback:
+
             for q in test['questions']:
-                if q['id'] in feedback:
-                    q['feedback'] = feedback[q['id']]
+                q_id = str(q['id'])
+                if q_id in feedback:
+                    q['feedback'] = feedback[q_id]
                     if q['interaction'] in ['choiceInteraction', 'simpleChoice']:
-                        q['feedback_options'] = zip(q['options'], feedback[q['id']]['user_answer'],
-                                                    feedback[q['id']]['checked'])
+                        q['feedback_options'] = zip(q['options'], feedback[q_id]['user_answer'],
+                                                    feedback[q_id]['checked'])
 
         return render(request,'activitytree/' + (requested_activity.learning_activity.uri).split('/')[1] + '.html',
                                   {'XML_NAV': XML,
@@ -852,7 +854,7 @@ def path_program(request, path_id, uri):
         # Gets the current navegation tree as XML
         _XML = s.get_nav(root)
         # Escape for javascript
-        XML = ET.tostring(_XML, 'utf-8').replace('"', r'\"')
+        XML = ET.tostring(_XML, encoding='unicode').replace('"', r'\"')
 
         breadcrumbs = s.get_current_path(requested_activity)
         program_quiz = Activity.get(requested_activity.learning_activity.uri)
@@ -1444,7 +1446,7 @@ def users(request, user_id=None, course_id=None, ):
         s = SimpleSequencing(context=get_context(request))
         _XML = s.get_nav(root)
         # Escape for javascript
-        XML = ET.tostring(_XML, 'utf-8').replace('"', r'\"')
+        XML = ET.tostring(_XML, encoding='unicode').replace('"', r'\"')
         return render(request,'activitytree/dashboard.html', {'user': user, 'XML_NAV': XML})
 
 
@@ -1458,6 +1460,7 @@ def me(request):
             request.user.username = request.POST["username"]
             request.user.first_name = request.POST["first_name"]
             request.user.last_name = request.POST["last_name"]
+            request.user.email = request.POST["email"]
             request.user.save()
 
         except:
