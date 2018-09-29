@@ -23,7 +23,7 @@ services:
 
   sandbox-csharp:
     image: mariosky/sandbox-csharp
-    command: python /home/sandbox/worker.py
+    command: python3 /home/sandbox/worker.py
     environment:
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=6379
@@ -37,10 +37,10 @@ services:
       - REDIS_PORT=6379
       - PL=perl6
 
-  sandbox-golang:
-    image: mariosky/sandbox-csharp
-    command: python /home/sandbox/worker.py
-    environment:
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PORT=6379
-      - PL=golang
+#  sandbox-golang:
+#    image: mariosky/sandbox-csharp
+#    command: python /home/sandbox/worker.py
+#    environment:
+#      - REDIS_HOST=${REDIS_HOST}
+#      - REDIS_PORT=6379
+#      - PL=golang
