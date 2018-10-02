@@ -15,47 +15,50 @@
         <a href="/instructor/"> crea el tuyo.</a>
   </p>
 
-    <div class="row">
-        <div class="col-md-12 m-t-2 ">
-         <div class="card-columns">
 
+        <div class="container py-5" >
+
+            <div class="row" id='activities'>
                 {% for c in courses %}
 
-                <div class="card">
-                    <a class="card-link" href="/course_info/{{c.root.id }}">
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                         {% if c.root.image %}
+                           <img class="card-img-top" src="{{ c.root.image }}" alt="Card image cap">
+                         {% endif %}
 
-                       {% if c.root.image %}
-                           <img class="card-img-top center-block img-fluid" src="{{ c.root.image }}" alt="Card image cap">
-                      {% endif %}
-                    </a>
 
-                      <div class="card-block">
-                       <a class="card-link" href="/course_info/{{c.root.id }}">
+                        <div class="card-body">
                            <h5 class="card-title">{{c.root.name}}</h5>
-                       </a>
-                        <p class="card-text">{{ c.short_description}}</p>
-                        <ul class="course-listing-bar">
+
+                       <ul class="course-listing-bar">
                              <li><small> Autor:   <a href="#"  class="card-link">  {{ c.root.authorlearningactivity_set.all.0.user.get_full_name }} </a></small></li>
-                         </ul>
+                       </ul>
 
-                        <div class="row">
-    <div class="col-sm-4">
-      One of three columns
-    </div>
-    <div class="col-sm-4">
-      One of three columns
-    </div>
-    <div class="col-sm-4">
-      One of three columns
-    </div>
-  </div>
-</div>
-                      </div>
+
+                             <p class="card-text">{{ c.short_description}}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-primary" href="/course_info/{{c.root.id }}" role="button">Más información</a>
+                                    <a class="btn btn-sm btn-outline-secondary" href="/course_info/{{c.root.id }}" role="button">Suscribete</a>
+
+
+                                </div>
+                                <small class="text-muted">9 mins</small>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
-            {% endfor %}
-            </div>
 
-</div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+
+
     </div>
 
 

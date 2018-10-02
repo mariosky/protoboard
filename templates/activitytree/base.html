@@ -61,100 +61,74 @@
 
   <body>
 
-    <nav class="navbar navbar-static-top navbar-light bg-faded">
+    <nav class="navbar navbar-expand-md navbar-light bg-light mb-4">
+      <a class="navbar-brand" href="/"><code>código.uno[alpha] </code>  </a>
 
-    <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar" aria-controls="exCollapsingNavbar" aria-expanded="false" aria-label="Toggle navigation">
-        &#9776;
-    </button>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <div class="collapse" id="exCollapsingNavbar">
-        <div class="bg-inverse p-a-1">
-            <div class="list-group">
-              <a href="/" class="list-group-item">Portada</a>
-              <a href="/courses" class="list-group-item">Cursos</a>
-              <a href="/search" class="list-group-item">Biblioteca</a>
-              <a href="/student" class="list-group-item">Estudiante</a>
-              <a href="/instructor" class="list-group-item">Autor</a>
-              {% if user.is_authenticated %}
-                      {% if XML_NAV %}
-                        <a href="{{ root_id }}{{root}}" class="list-group-item">Curso</a>
-                        <a  class="list-group-item" href="/dashboard{{ root_id }}">Dashboard</a>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a href="/courses" class="nav-link">Cursos</a>
+          </li>
+          <li class="nav-item">
+             <a href="/search" class="nav-link">Biblioteca</a>
+          </li>
+          <li class="nav-item">
+           <a href="/student" class="nav-link">Estudiante</a>
+          </li>
+          <li class="nav-item">
+             <a href="/instructor" class="nav-link">Autor</a>
+          </li>
+          {% if user.is_authenticated and XML_NAV %}
 
-                      {% endif %}
-                         <a class="list-group-item" href="/accounts/logout">Salir</a>
-               {% else %}
-                    {% if not hidde_login_link %}
-                        <a class="list-group-item"  href="/accounts/login">Iniciar sesión</a>
-                        <a class="list-group-item list-group-item-info"  href="/register">Crea tu cuenta</a>
-                    {% endif %}
-              {% endif %}
-
-
-            </div>
-        </div>
-  </div>
+                       <li class="nav-item">
+                        <a href="{{ root_id }}{{root}}" class="nav-link">Curso</a>
+                       </li>
+                       <li class="nav-item">
+                        <a href="/dashboard{{ root_id }}" class="nav-link">Dashboard</a>
+                       </li>
+                <li class="nav-item"><p id="user_points" class="navbar-text"></p></li>
 
 
-    <div class="collapse navbar-toggleable-xs" id="exCollapsingNavbar2">
-
-
-        <a class="navbar-brand" href="/"><code>código.uno[alpha] </code>  </a>
-        <ul class="nav navbar-nav">
-            <li class="nav-item"><a  class="nav-link active" href="/courses">Cursos</a></li>
-              <li class="nav-item"><a class="nav-link active"  href="/search"> Biblioteca</a>  </li>
-             <li class="nav-item"><a  class="nav-link active" href="/student">Estudiante</a></li>
-             <li class="nav-item"><a  class="nav-link active" href="/instructor">Autor</a></li>
+         {% endif %}
         </ul>
-        <ul class="nav navbar-nav pull-xs-right">
-
+        <ul class="navbar-nav ml-auto">
 
           {% if user.is_authenticated %}
 
-           {% if XML_NAV %}
-            <li class="nav-item"><a  class="nav-link" href="{{ root_id }}{{root}}">Curso</a></li>
-            <li class="nav-item"><a  class="nav-link" href="/dashboard{{ root_id }}">Dashboard</a></li>
-            <li class="nav-item"><p id="user_points" class="navbar-text"></p></li>
-           {% endif %}
-
-            <li class="nav-item"><a  class="nav-link"  href="#"></a></li>
             {% if user.first_name %}
-            <li class="nav-item"><a class="nav-link"  href="/me"> {{ user.first_name }} {{ user.last_name }}</a></li>
+                <li class="nav-item"><a class="nav-link"  href="/me"> {{ user.first_name }} {{ user.last_name }}</a></li>
             {% else %}
-            <li class="nav-item"><a class="nav-link"  href="/me"> {{ user.username }} </a></li>
+                <li class="nav-item"><a class="nav-link"  href="/me"> {{ user.username }} </a></li>
             {% endif %}
 
-            <li class="nav-item"><a class="nav-link nav-link-user" href="/me">
-
-                <img src="{% gravatar_url user.email 50%}">
+            <li class="nav-item">
+                <a class="nav-link nav-link-user" href="/me">
+                    <img src="{% gravatar_url user.email 50%}">
                 </a>
-
             </li>
-
-
-
-
             <li class="nav-item"><a class="nav-link"  href="/accounts/logout">Salir</a></li>
 
-          {% else %}
-            {% if not hidde_login_link %}
-            <li class="nav-item"><a class="nav-link"  href="/accounts/login">Iniciar sesión</a></li>
-             <li class="nav-item"> <a class="btn btn-primary-outline"  href="/register">Crea tu cuenta</a></li>
 
 
+           {% else %}
+                    {% if not hidde_login_link %}
+                     <li class="nav-item d-flex justify-content-end">
+                        <a href="/accounts/login" class="nav-link">Iniciar sesión</a>
+                      </li>
+                     <li class="nav-item d-flex justify-content-end">
+                        <a href="/register" class="nav-link">Crea tu cuenta</a>
+                     </li>
+               {% endif %}
           {% endif %}
-
-          {% endif %}
-
-
           </ul>
 
-        </div>
 
+      </div>
     </nav>
-
-
-
-
 
 
     <div id="main_container" class="container-fluid">
@@ -197,12 +171,19 @@
     <!-- Placed at the end of the document so the pages load faster -->
 
     <!-- build:js(.) scripts/plugins.js -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+  crossorigin="anonymous"></script>
     <script src="https://www.atlasestateagents.co.uk/javascript/tether.min.js"></script><!-- Tether for Bootstrap -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
     <script src="{{ STATIC_URL }}app/scripts/tag-it.min.js" type="text/javascript" charset="utf-8"></script>
 
        <!--<script src="{{ STATIC_URL }}app/scripts/bootstrap.min.js"></script>-->
