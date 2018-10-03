@@ -2,43 +2,6 @@
 
 
 {% block style %}
-/* CUSTOMIZE THE CAROUSEL
--------------------------------------------------- */
-
-/* Carousel base class */
-.carousel {
-  margin-bottom: 4rem;
-}
-/* Since positioning the image, we need to help out the caption */
-.carousel-caption {
-  z-index: 10;
-}
-
-/* Declare heights because of positioning of img element */
-.carousel-item {
-  height: 32rem;
-  background-color: #777;
-}
-.carousel-item > img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  min-width: 100%;
-  height: 32rem;
-}
-
-.carousel-indicators {
-  top: 1.5rem;
-  right: 1.5rem;
-  bottom: auto;
-  left: auto;
-  width: 1rem;
-  margin-left: 0;
-}
-
-.carousel-indicators > li {
-  margin-bottom: .25rem;
-}
 
 
 /* MARKETING CONTENT
@@ -100,71 +63,102 @@
 
 
 {% block content %}
-    <!-- Main jumbotron for a primary marketing message or call to action -->
 
-    <!-- Carousel
-    ================================================== -->
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
-      <!-- Indicators -->
-      <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-      </ol>
-      <div class="carousel-inner" role="listbox">
-        <div class="carousel-item active">
-          <img class="first-slide" src="https://imageshack.com/a/img924/282/zK1lMA.jpg" alt="First slide">
-          <div class="container">
-            <div class="carousel-caption text-xs-left">
-              <h1>Recursos educativos abiertos.</h1>
-              <p> Consulta directamente en la biblioteca el tema que estés buscando. Son recursos que
-                  puedes utilizar libremente y al punto.</p>
-              <p><a class="btn btn-lg btn-primary" href="/search" role="button">Consulta la bibioteca</a></p>
-            </div>
-          </div>
+    <div class="container marketing">
+          <div class="row featurette">
+        <div class="col-md-7 push-md-5">
+
+          <h3 class="jumbotron-heading"> Programación para todos </h3>
+          <p class="lead text-muted"> Aquí encontrarás lecturas, videos, ejercicios de programación y otras actividades.</p>
+          <p>
+            <a href="#" class="btn btn-primary my-2">Busca en la biblioteca</a>
+            <a href="#" class="btn btn-secondary my-2">Subscribete</a>
+          </p>
+
         </div>
-        <div class="carousel-item">
-          <img class="second-slide" src="https://imageshack.com/a/img921/8334/QdLseQ.jpg" alt="Second slide">
-          <div class="container">
-            <div class="carousel-caption">
-              <h1> Aprende a programar de manera interactiva. </h1>
-              <p> Inscribete a alguno de los cursos o lecciones de python, javascript, c# y otros. </p>
-              <p><a class="btn btn-lg btn-primary" href="/courses/" role="button">Ir a los cursos</a></p>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <img class="third-slide" src="https://imageshack.com/a/img922/1872/kLHtsG.png" alt="Third slide">
-          <div class="container">
-            <div class="carousel-caption text-xs-right">
-              <h1>Crea tus propios recursos educativos, lecciones o cursos.</h1>
-              <p> Selecciona recursos educativos de la biblioteca y organizalos. Crea cursos
-                  tutoriales o ejercicios.</p>
-              <p><a class="btn btn-lg btn-primary" href="/instructor/" role="button">Sé un autor de recursos educativos</a></p>
-            </div>
-          </div>
+        <div class="col-md-5 pull-md-7">
+          <img class="featurette-image img-fluid m-x-auto" src="https://imageshack.com/a/img924/282/zK1lMA.jpg" alt="Logo de Recursos Educacionales Abiertos">
         </div>
       </div>
-      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div><!-- /.carousel -->
 
-    <row>
+    </div>
 
-        <div class="col-md-8  col-md-offset-2 col-sm-12">
-            <h5>Últimos cursos: </h5>
-        <!-- <div class="card-deck-wrapper"> -->
-            <div id='activities' class="card-group">
-
-           </div>
+    <div class="container py-5" >
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                    <div class="card-body d-flex flex-column align-items-start">
+                        <strong class="d-inline-block mb-2 text-primary">World</strong>
+                        <h3 class="mb-0">
+                            <a class="text-dark" href="#">Featured post</a>
+                        </h3>
+                        <div class="mb-1 text-muted">Nov 12</div>
+                        <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                        <a href="#">Continue reading</a>
+                    </div>
+                    <img class="card-img-right flex-auto d-none d-lg-block" src="https://imageshack.com/a/img924/5774/Pu4zMN.png" alt="Card image cap">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                    <div class="card-body d-flex flex-column align-items-start">
+                        <strong class="d-inline-block mb-2 text-success">Design</strong>
+                        <h3 class="mb-0">
+                            <a class="text-dark" href="#">Post title</a>
+                        </h3>
+                        <div class="mb-1 text-muted">Nov 11</div>
+                        <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                        <a href="#">Continue reading</a>
+                    </div>
+                    <img class="card-img-right flex-auto d-none d-lg-block" src="https://imageshack.com/a/img924/5774/Pu4zMN.png" alt="Card image cap">
+                </div>
+            </div>
         </div>
-    </row>
+    </div>
+
+
+
+    <div class="container py-5" >
+        <div class="card" style="width: 18rem;">
+            <div class="card-header">
+                Featured
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Cras justo odio</li>
+                <li class="list-group-item">Dapibus ac facilisis in</li>
+                <li class="list-group-item">Vestibulum at eros</li>
+            </ul>
+        </div>
+
+    </div>
+
+
+
+    <div class="container py-5" >
+
+          <div class="row" id='activities'>
+
+
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" src="https://imageshack.com/a/img921/8334/QdLseQ.jpg" alt="Card image cap">
+                <div class="card-body">
+                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    </div>
+                    <small class="text-muted">9 mins</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+          </div>
+
 
     <div class="row">
 
@@ -172,11 +166,11 @@
            <h5>Hashtags populares:</h5>
 
            <h5>
-            <a href="/search/?tag=java"> <span class="label label-primary"> #java </span></a>
-            <a href="/search/?tag=python"><span class="label label-primary"> #python </span></a>
-            <a href="/search/?tag=principiante"> <span class="label label-primary">#principiante </span></a>
-            <a href="/search/?tag=principiante"> <span class="label label-primary">#ejercicio </span></a>
-            <a href="/search/?tag=javascript"> <span class="label label-primary">#javascript </span></a>
+            <a href="/search/?tag=java"> <span class="badge badge-primary"> #java </span></a>
+            <a href="/search/?tag=python"><span class="badge badge-primary"> #python </span></a>
+            <a href="/search/?tag=principiante"> <span class="badge badge-primary">#principiante </span></a>
+            <a href="/search/?tag=principiante"> <span class="badge badge-primary">#ejercicio </span></a>
+            <a href="/search/?tag=javascript"> <span class="badge badge-primary">#javascript </span></a>
            </h5>
        </div>
    </div>
@@ -184,100 +178,6 @@
     <!-- Marketing messaging and featurettes
     ================================================== -->
     <!-- Wrap the rest of the page in another container to center all the content. -->
-
-    <div class="container marketing">
-
-
-      <!-- START THE FEATURETTES -->
-
-
-
-      <hr class="featurette-divider">
-     <div class="row featurette">
-        <div class="col-md-7">
-          <h2 class="featurette-heading">Ejercicios interactivos. <span class="text-muted">Escribe los programas directamente
-              en el navegador.</span></h2>
-          <p class="lead">Al practicar lo que haz visto inmediatamente tienes una mejor retención y te surgen más dudas (eso es bueno).</p>
-        </div>
-        <div class="col-md-5">
-          <img class="featurette-image img-fluid m-x-auto" src="https://imagizer.imageshack.com/v2/800x600q90/838/o273.jpg" alt="Generic placeholder image">
-        </div>
-      </div>
-
-
-
-      <hr class="featurette-divider">
-
-
-      <div class="row featurette">
-        <div class="col-md-7">
-          <h2 class="featurette-heading"> Diferentes actividades si así lo requieres. <span class="text-muted"> Dependiendo de tu desempeño.</span></h2>
-          <p class="lead">El autor/instructor te puede sugerir nuevos ejercicios y actividades de acuerdo a tus resultados. Tal vez te hace
-              falta reforzar esa instrucción que te falla.</p>
-        </div>
-        <div class="col-md-5">
-          <img class="featurette-image img-fluid m-x-auto" src="https://imageshack.com/a/img922/3818/CbkIl3.png" alt="Generic placeholder image">
-        </div>
-      </div>
-
-      <hr class="featurette-divider">
-
-      <div class="row featurette">
-        <div class="col-md-7">
-          <h2 class="featurette-heading"> Algunos ejercicios están reservados para estudiantes avanzados. <span class="text-muted">¡Desbloquea!.</span></h2>
-          <p class="lead"> A manera de juego, hay algunos ejercicios que solo se desbloquean si resuleves los ejercicios fáciles primero.</p>
-        </div>
-         <div class="col-md-5">
-          <img class="featurette-image img-fluid m-x-auto" src="https://imageshack.com/a/img923/8626/QdGSlC.jpg" alt="Generic placeholder image">
-        </div>
-      </div>
-
-      <hr class="featurette-divider">
-
-      <div class="row featurette">
-        <div class="col-md-7 push-md-5">
-          <h2 class="featurette-heading"> En <code>codigo.uno</code>  se promueve el uso de recursos
-              educativos abiertos. <span class="text-muted"> Libres para estudiantes y educadores.</span></h2>
-          <p class="lead"> La (OCDE) define a los REA como: "materiales digitalizados ofrecidos libres y abiertos
-              a educadores, estudiantes y autodidactas para su uso y reutilización en la enseñanza, el aprendizaje,
-              y la investigación. REA incluye contenidos de aprendizaje, herramientas
-              de software para desarrollar, utilizar y distribuir contenidos y recursos de implementación, como
-              las licencias abiertas" <small>
-                  <a href="https://es.wikipedia.org/wiki/Recursos_educativos_abiertos">wikipedia</a></small> </p>
-        </div>
-        <div class="col-md-5 pull-md-7">
-          <img class="featurette-image img-fluid m-x-auto" src="https://imageshack.com/a/img924/5599/DWduaT.png" alt="Logo de Recursos Educacionales Abiertos">
-        </div>
-      </div>
-
-        <hr class="featurette-divider">
-        <div class="row featurette">
-        <div class="col-md-7">
-          <h2 class="featurette-heading">Crea tus propios recursos educativos. <span class="text-muted"> También agrega de otras fuentes abiertas.</span></h2>
-          <p class="lead"> Además de ejercicios de programación puedes agregar: Contenido HTML, Videos (de Youtube por lo pronto) y
-              Exámenes de opción múltiple. Después organiza los recursos en colecciones con distintas secuencias: Cursos, Lecciones, Tutoriales,
-          Retos, etc.</p>
-        </div>
-
-      </div>
-    <hr class="featurette-divider">
-      <div class="row featurette">
-        <div class="col-md-7">
-          <h2 class="featurette-heading">Participa y aprende en el proceso. <span class="text-muted"> Ayudanos a mejorar el material, es de todos.</span></h2>
-          <p class="lead"> Es muy importante tú retroalimentación. Este es un proyecto que va iniciando, con tu ayuda mejoraremos el
-              contenido, el software y la manera de colaborar.
-          </p>
-        </div>
-        <div class="col-md-5">
-          <img class="featurette-image img-fluid m-x-auto" src="https://imageshack.com/a/img921/8334/QdLseQ.jpg" alt="Voluntarios">
-        </div>
-      </div>
-
-<hr class="featurette-divider">
-
-<p class="pull-xs-right"><a href="#"> Hacia arriba</a></p>
-
- </div>
 
 {% endblock content %}
 
@@ -295,7 +195,7 @@
 
 
 
-        $.get( '/get_activities',  function (data) {
+        $.get( '/get_activities/',  function (data) {
 
             Mustache.tags = ['[[', ']]'];
             var activities_template = $('#activities_template').html();
@@ -334,28 +234,55 @@
 </script>
 
 
+
+
+
+
+
 <script id="activities_template" type="x-tmpl-mustache">
-    <div class="card">
-        [[#image_url]]
-            <img class="card-img-top center-block img-fluid" src="[[image_url]]" alt="[[title]]">
-        [[/image_url]]
-<div class="card-block">
 
-<h6 class="card-title"> <i class="fa fa-[[icon]] text-muted"> </i> <a href="[[uri]]">[[title]]</a>   </h6>
-
+   <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+            [[#image_url]]
+                <img class="card-img-top center-block img-fluid" src="[[image_url]]" alt="[[title]]">
+            [[/image_url]]
 
 
-<p class="card-text"> [[description]]</p>
 
 
-              [[#tags]]
+                <div class="card-body">
+                <h6 class="card-title"> <i class="fa fa-[[icon]] text-muted"> </i> <a href="[[uri]]">[[title]]</a>   </h6>
+
+                  <p class="card-text"> [[description]]</p>
+                  [[#tags]]
               [[#.]]
               <span class="label label-primary"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">#[[.]]</a></span>
               [[/.]]
               [[^.]]
               [[/.]]
         [[/tags]]
-</div>
+
+
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    </div>
+                    <small class="text-muted">9 mins</small>
+                   </div>
+               </div>
+              </div>
+            </div>
+
+        </div>
+   </div>
+
+
+
+
 
 </script>
+
+
+
 {% endblock scripts %}

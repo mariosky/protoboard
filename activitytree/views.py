@@ -64,12 +64,12 @@ def welcome(request):
 
     if request.user.is_authenticated and request.user != 'AnonymousUser':
         return render(request,
-                      'activitytree/welcome2.html',
+                      'activitytree/welcome.html',
                                    { 'courses': courses
                                    # , 'plus_scope':plus_scope,'plus_id':plus_id
                                    } )
     else:
-        return render(request,'activitytree/welcome2.html',
+        return render(request,'activitytree/welcome.html',
                                   {'user_name': None, 'courses': courses
                                    # ,'plus_scope':plus_scope,'plus_id':plus_id
                                    } )

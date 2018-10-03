@@ -3,27 +3,50 @@
 
 {% block content %}
 
-   <div class="row">
+    <div class="row">
 
-       <div class="col-md-10  col-md-offset-1 col-sm-12">
-           <h3>Biblioteca <small><a href="/activitybuilder"> agrega más recursos</a> </small> </h3>
-             <form class="form" role="search" onsubmit="return false">
-                <div class="input-group">
-                    <input id="txtname" class="form-control" type="text" placeholder="Buscar por titulo o  #hashtag" name="srch-term" >
-                   <span class="input-group-btn">
-               <button class="btn  btn-secondary" type="submit">Search</button>
-                        </span>
+        <div class="col-md-12  col-sm-12">
+
+
+            <nav class="navbar navbar-expand-md navbar-light">
+                <div class="container">
+                    <a class="navbar-brand" href="#">Biblioteca</a>
+
+                    <input id="txtname" class="form-control mr-sm-2" type="search" placeholder="Buscar por titulo o  #hashtag" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
                 </div>
+            </nav>
 
-             </form>
+        </div>
+    </div>
 
-       </div>
-   </div>
+     <div class="container py-5" >
+        <div class="row" id='actividades'>
+
+        <div class="col-md-4">
+            <div class="card mb-4 box-shadow">
+                <img class="card-img-top" src="https://imageshack.com/a/img921/8334/QdLseQ.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                        </div>
+                        <small class="text-muted">9 mins</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
 
    <div class="row">
        <div class="col-md-10  col-md-offset-1 col-sm-12 m-t-1">
               <div class="card-deck-wrapper">
-                  <div id='actividades' class="card-columns">
+                  <div id='activiSdades' class="card-columns">
 
                  </div>
               </div>
@@ -47,30 +70,44 @@
 
 
 <script id="activities_template" type="x-tmpl-mustache">
-    <div class="card">
-         [[#image_url]]
-            <img class="card-img-top center-block img-fluid" src="[[image_url]]" alt="[[title]]">
-        [[/image_url]]
-<div class="card-block">
-
-  <h6 class="card-title"> <i class="fa fa-[[icon]] text-muted"> </i> <a href="[[id]]">[[title]]</a>   </h6>
-  <p class="card-text"> [[description]]</p>
-              [[#tags]]
+<div class="col-md-4">
+            <div class="card mb-4 box-shadow">
+            [[#image_url]]
+                <img class="card-img-top" src="[[image_url]]" alt="[[title]]">
+            [[/image_url]]
+                <div class="card-body">
+                 <h5 class="card-title"><i class="fa fa-[[icon]] text-muted"> </i> <a href="[[id]]">[[title]]</a> </h5>
+                    <p class="card-text">[[description]]</p>
+            [[#tags]]
               [[#.]]
-              <span class="label label-primary"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">#[[.]]</a></span>
+                  <span class="label label-primary"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">#[[.]]</a></span>
               [[/.]]
+
               [[^.]]
               [[/.]]
-        [[/tags]]
-</div>
+            [[/tags]]
 
-
-
+                </div>
+            </div>
+        </div>
 </div>
 </script>
 
+
+
+
+
+
+
+
+
+
+
 <script id="paginator_template" type="x-tmpl-mustache">
-    <ul class="pagination">
+
+<nav aria-label="Page navigation example">
+
+    <ul class="pagination  justify-content-center">
 
     [[#prev]]
      <li class="page-item" data-page='[[prevPage]]'>
@@ -103,7 +140,16 @@
 
     [[/next]]
  </ul>
+</nav>
 </script>
+
+
+
+
+
+
+
+
  <script src="{{ STATIC_URL }}app/scripts/main.js"></script>
 <script type="text/javascript">
     $(function(){
