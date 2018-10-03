@@ -51,13 +51,7 @@
 
         <ul id="main_tab" class="nav nav-tabs">
           <li class="nav-item"><a class="nav-link active" href="#instrucciones" data-toggle="tab">Actividad</a></li>
-          <li class="nav-item" ><a class="nav-link" href="#results" data-toggle="tab">Resultado</a></li>
-
-           {% if uri %}
-            <li class="nav-item" ><a class="nav-link text-muted" href="/build_program?id={{uri}}">Ver código</a></li>
-           {% elif activity_uri %}
-            <li class="nav-item" ><a class="nav-link text-muted" href="/build_program?id={{activity_uri}}">Ver código</a></li>
-        {% endif %}
+          <li class="nav-item" ><a class="nav-link" href="#results" data-toggle="tab">Resultados</a></li>
 
 
         </ul>
@@ -74,36 +68,43 @@
 
           </div>
           <div class="tab-pane" id="results">
-            <div class="row">
+
+            <div class="container py-2">
+              <div class="row">
                 <div class="col-md-12 m-t-1">
 
                   <div class="card">
-                      <div class="card-header">
-                        Pruebas:
-                      </div>
+                      <h6 class="card-header">
+                        Resultado de las Pruebas:
+                      </h6>
 
-                      <div id="result_panel_body" class="card-block">
+                      <div id="result_panel_body" class="card-body">
 
                       </div>
                    </div>
               </div>
             </div>
+              </div>
+
                   <div id="result_alert">
 
                   </div>
+
+                <div class="container py-2">
             <div class="row">
                 <div class="col-md-12 m-t-1">
                     <div class="card">
-                      <div class="card-header">
+                      <h6 class="card-header">
                         Se imprimió en la consola:
-                      </div>
-                      <div id="consola" class="card-block">
+                      </h6>
+                      <div id="consola" class="card-body">
 
                       </div>
 
                    </div>
                 </div>
             </div>
+                </div>
 
           </div>
         </div>
