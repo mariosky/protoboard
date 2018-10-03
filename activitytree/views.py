@@ -1150,7 +1150,7 @@ def _set_current(request, requested_activity, root, s, progress_status=None):
     s.set_current(requested_activity)
 
 
-def _quiz(post_dict, quiz):
+def _check_quiz(post_dict, quiz):
     print(post_dict)
     print('quiz', quiz)
     #answerDict = dict(post_dict.iterlists())

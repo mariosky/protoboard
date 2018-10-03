@@ -2,10 +2,12 @@
 {% extends "activitytree/base.html" %}
 
 {% block content %}
+<div class="container" >
+
 
    <div class = "row">
        <div class="col-md-10 col-md-offset-1">
-           <h4>{{ video.title }}</h4>
+
                 <div class="video-player">
                     <div id="player">
 
@@ -16,8 +18,11 @@
 
 
    </div>
+
+
     {% if XML_NAV %}
           <div class="row">
+ {% comment %}
     {% if rating_totals %}
 
                  <div class="col-md-6  m-b-1 col-md-offset-1">
@@ -39,43 +44,50 @@
                         </div>
 
      {% endif %}
-
-        <div class="col-md-4 col-sm-12 m-b-1">
-
-
-                         <form id="nav_form"   role="form" action="{{ root_id }}{{root}}" method = "POST">{% csrf_token %}
+{% endcomment %}
 
 
-                               <ul class="pager">
-                                     <li class="previous"><span class="nav_prev" > &larr; Anterior</span></li>
-                                    <li class="next"><span class="nav_next">  Continuar &rarr;</span></li>
-                               </ul>
+              <div class="col-md-4 col-sm-12 m-b-1">
 
-                       </form>
 
-                </div>
-            </div>
+                  <form id="nav_form"   role="form" action="{{ root_id }}{{root}}" method = "POST">{% csrf_token %}
+                      <nav aria-label="Page navigation example">
+                          <ul class="pagination justify-content-end">
+                              <a class="page-link previous" href="#" tabindex="-1"> <span class="nav_prev" > &larr; Anterior</span></a>
+
+                              <a class="page-link next" href="#"><span class="nav_next">  Continuar &rarr;</span></a>
+                              </li>
+                          </ul>
+                      </nav>
+
+
+
+                  </form>
+
+              </div>
+          </div>
 
 
 
     {% endif %}
 
-    <row>
-    <div class="col-md-6  m-b-1 col-md-offset-1">
-               <div class="card ">
-               <div class="card-header"> Acerca de este recurso  </div>
-               <div class="card-block ">
-                    <p class="card-text">{{ video.content|safe }}</p>
-                   <p class="card-text">Autor: <a href="{{ external_url }}" class="card-link">{{video.publisher}}</a> </p>
+        <row>
+            <div class="col-md-10  m-b-1 col-md-offset-1">
+                <div class="card">
+                    <h5 class="card-header"> {{ video.title }}</h5>
+                    <div class="card-body">
+                        <p class="card-text">{{ video.content|safe }}</p>
+                        <p class="card-text">Autor: <a href="{{ external_url }}" class="card-link">{{video.publisher}}</a> </p>
+                        <p class="card-text"><small class="text-muted">Licencia: {{ video.rights }}</small></p>
 
-                    <p class="card-text"><small class="text-muted">Licencia: {{ video.rights }}</small></p>
-
-
-                </div>
+                    </div>
                 </div>
 
-         </div>
-    </row>
+
+            </div>
+        </row>
+
+ </div>
 
 {% endblock content %}
 
