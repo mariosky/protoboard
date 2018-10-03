@@ -870,7 +870,7 @@ def path_program(request, path_id, uri):
         else:
             template = 'activitytree/program.html'
 
-        return render(request, {'program_quiz': program_quiz,
+        return render(request,template, {'program_quiz': program_quiz,
                                              'activity_uri': requested_activity.learning_activity.uri,
                                              'uri_id': '%s' % requested_activity.learning_activity.id,
                                              'uri': requested_activity.learning_activity.uri,
