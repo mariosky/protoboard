@@ -17,28 +17,36 @@
 
 {% block content %}
 
+
  <div class = "row">
 
      {{content|safe}}
 
  </div>
 
-        <div  id="navlist"  class="card-deck">
 
 
-         </div>
+    <div class = "row">
+
+        <div class="container">
+
+            <div id="navlist"  class="list-group">
 
 
 
+            </div>
 
-
+        </div>
+    </div>
 
 {% endblock content %}
 
+
+
+
 {% block scripts %}
 
-<script id="container_template" type="x-tmpl-mustache">
-
+<script id="container_template_old" type="x-tmpl-mustache">
 <div class="col-sm-12">
     <div class="card">
         <div class="card-block course-list-card">
@@ -50,9 +58,13 @@
              [[^progress_status]]
                 <small>   <i class="fa fa-square-o fa-check"></i> </small>
              [[/progress_status]]
-                <a href="/[[path_id]][[uri]]">
+
+
+
+            <a href="/[[path_id]][[uri]]">
              [[name]]  </a>
             </h5>
+
             <p class="card-text">[[description]]</p>
             <div id="rating-[[id]]" class="raty"> </div>
             <div class="list-group">
@@ -67,7 +79,69 @@
 </script>
 
 
+<script id="container_template" type="x-tmpl-mustache">
+
+ <a href="/[[path_id]][[uri]]" class="list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100  justify-content-between">
+
+      <h5 class="mb-1 text-primary"> [[name]] </h5>
+      <small class="text-muted">Folder</small>
+    </div>
+     <p class="mb-1 text-muted">[[description]]</p>
+
+    [[#progress_status]]
+           <small class="text-success">  <i class="fa fa-folder text-success"></i> Folder </small>
+    [[/progress_status]]
+    [[^progress_status]]
+         <small>   <i class="fa fa-folder text-primary"></i> </small>
+    [[/progress_status]]
+
+  </a>
+</script>
+
+
 <script id="activity_template" type="x-tmpl-mustache">
+
+
+ <a href="/[[path_id]][[uri]]" class="list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100  justify-content-between">
+
+      <h5 class="mb-1 text-primary"> [[name]] </h5>
+      [[#show_objective_measure]]
+          <small class="text-muted">[[objective_measure]] PUNTOS</small>
+       [[/show_objective_measure]]
+    </div>
+
+     <p class="mb-1 text-muted">[[description]]</p>
+
+     <small class="[[^progress_status]] text-muted [[/progress_status]] [[#progress_status]]  text-success     [[/progress_status]]           "><i class="[[icon]]"></i> [[activity_type]] </small>
+
+  </a>
+</script>
+
+
+<script id="disabled_activity_template" type="x-tmpl-mustache">
+ <a href="#" class="list-group-item disabled flex-column align-items-start">
+    <div class="d-flex w-100  justify-content-between">
+
+      <h5 class="mb-1 text-muted "> [[name]] </h5>
+      [[#show_objective_measure]]
+          <small class="text-muted">[[objective_measure]] PUNTOS</small>
+       [[/show_objective_measure]]
+    </div>
+
+     <p class="mb-1 text-muted">[[description]]</p>
+
+     <small class="text-muted"><i class="[[icon]]"></i> [[activity_type]] </small>
+
+  </a>
+
+</script>
+
+
+
+
+<script id="activity_template_old" type="x-tmpl-mustache">
 <div class="col-sm-12">
     <div class="card">
                    <div class="card-block course-list-card">
@@ -92,13 +166,9 @@
                                   <small class="text-muted"><i class="[[icon]]"></i> [[activity_type]] </small>
                              </div>
 
-
                          [[#show_attempts]]
                             <div class="col-md-3 text-center">
                                    <small class="text-muted">Intentos: [[num_attempts]] </small>
-
-
-
                              </div>
                          [[/show_attempts]]
                           [[#show_objective_measure]]
@@ -106,8 +176,6 @@
                                  <small class="text-muted">[[objective_measure]] PUNTOS</small>
                              </div>
                           [[/show_objective_measure]]
-
-
 
                      </div>
 
@@ -121,54 +189,6 @@
 </div>
 </script>
 
-<script id="disabled_activity_template" type="x-tmpl-mustache">
-<div class="col-sm-12">
-<div class="card">
-        <div class="card-block course-list-card">
-                      <h5 class="card-title text-muted  title-list">
-                      [[#progress_status]]
-                                <small class="text-muted">  <i class="fa fa-check-square-o"></i> </small>
-
-                            [[/progress_status]]
-                            [[^progress_status]]
-                                <small class="text-muted">   <i class="fa fa-square-o"></i> </small>
-                            [[/progress_status]]
-
-                       [[name]] <i class="fa fa-lock fa"></i> </h5>
-
-
-                      <p class="card-text title-list">
-                             <div class="row">
-                            [[#activity_type]]
-                            <div class="col-md-3 offset-md-3">
-                                  <small class="text-muted"><i class="[[icon]]"></i> [[activity_type]] </small>
-                             </div>
-                            [[/activity_type]]
-
-                         [[#show_attempts]]
-                            <div class="col-md-3 text-center">
-                                   <small class="text-muted">Intentos: [[num_attempts]] </small>
-
-
-
-                             </div>
-                         [[/show_attempts]]
-                          [[#show_objective_measure]]
-                             <div class="col-md-3 text-center">
-                                 <small class="text-muted">[[objective_measure]] PUNTOS</small>
-                             </div>
-                          [[/show_objective_measure]]
-    </div>
- <p class="card-text">[[description]]</p>
-                      <div id="rating-[[id]]" class="raty"> </div>
-
-
-
-
-
-        </div>
-</div>
-</script>
 
 
 
