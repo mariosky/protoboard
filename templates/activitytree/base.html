@@ -1,4 +1,6 @@
 {% load gravatar %}
+{% load auth_extras %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -79,9 +81,16 @@
           <li class="nav-item">
            <a href="/student" class="nav-link">Estudiante</a>
           </li>
-          <li class="nav-item">
-             <a href="/instructor" class="nav-link">Autor</a>
-          </li>
+            {% if user.is_authenticated %}
+                {% if user|has_group:"author" %}
+                  <li class="nav-item">
+                     <a href="/instructor" class="nav-link">Autor</a>
+                  </li>
+                {% endif %}
+
+            {% endif %}
+
+
           {% if user.is_authenticated and XML_NAV %}
 
                        <li class="nav-item">
