@@ -1275,15 +1275,25 @@ def get_activities(request):
 
 @login_required
 def my_activities(request):  # view used by activity_builder, returns all activities by user
+    print(request)
     client = MongoClient(settings.MONGO_DB)
     db = client.protoboard_database
     activities_collection = db.activities_collection
     user = request.GET['user']
     page = int(request.GET['page'])
-    activities = Activity.get_by_user(user, page)
-    count = activities_collection.find({'author': user},
-                                       {'_id': 1, 'title': 1, 'lang': 1, 'type': 1, 'description': 1, 'icon': 1,
-                                        'level': 1, 'tags': 1}).sort("$natural", pymongo.DESCENDING).count()
+
+    if request.user.is_superuser:
+        print("super")
+        activities = Activity.get_by_admin(page)
+        count = activities_collection.find({},
+                                           {'_id': 1, 'title': 1, 'lang': 1, 'type': 1, 'description': 1, 'icon': 1,
+                                            'level': 1, 'tags': 1}).sort("$natural", pymongo.DESCENDING).count()
+
+    else:
+        activities = Activity.get_by_user(user, page)
+        count = activities_collection.find({'author': user},
+                                           {'_id': 1, 'title': 1, 'lang': 1, 'type': 1, 'description': 1, 'icon': 1,
+                                            'level': 1, 'tags': 1}).sort("$natural", pymongo.DESCENDING).count()
     count = {'count': count}
     json_docs = [doc for doc in activities]
     json_docs.append(count)
@@ -1291,6 +1301,7 @@ def my_activities(request):  # view used by activity_builder, returns all activi
 
 @csrf_exempt
 def search_prueba(request):  # view used by search, receives page and query and returns count of docs and activities
+
     MONGO_PAGE_SIZE = 20
     client = MongoClient(settings.MONGO_DB)
     db = client.protoboard_database
@@ -1303,10 +1314,17 @@ def search_prueba(request):  # view used by search, receives page and query and 
             page = v
         else:
             query.append(v)
+
+    print(query)
     if len(query) == 0:
         message = "null"
         return HttpResponse(json.dumps(message), content_type='application/javascript')
     else:
+        # IF Super user return all activities
+        if request.user.is_superuser:
+            query = [ e for  e in  query if 'author' not in e ]
+
+
         activities = activities_collection.find({'$and': query},
                                                 {'_id': 1, 'title': 1, 'lang': 1, 'type': 1, 'description': 1,
                                                  'icon': 1, 'level': 1, 'tags': 1, 'image_url': 1}).sort("$natural",
