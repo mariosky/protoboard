@@ -62,6 +62,10 @@ class Activity:
         return _activities_collection.remove({'_id': _id, 'author': user})
 
     @staticmethod
+    def del_activity_admin(_id):
+        return _activities_collection.remove({'_id': _id})
+
+    @staticmethod
     def get_activity(_id, user = None):
         if user is None:
             return _activities_collection.find({'_id': _id})

@@ -1351,11 +1351,22 @@ def delActivity(request):  # view that receives user and id of activity to be de
     if request.method == 'POST':
         user = request.POST['user']
         _id = request.POST['_id']
-        try:
-            message = Activity.del_activity(_id, user)
-            return HttpResponse(message)
-        except Exception as e:
-            return HttpResponse(e)
+
+        if request.user.is_superuser:
+            try:
+                message = Activity.del_activity_admin(_id)
+                print(message)
+                return HttpResponse(message)
+            except Exception as e:
+                print(e)
+                return HttpResponse(e)
+
+        else:
+            try:
+                message = Activity.del_activity(_id, user)
+                return HttpResponse(message)
+            except Exception as e:
+                return HttpResponse(e)
 
 
 def get_activity(request):
