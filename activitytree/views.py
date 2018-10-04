@@ -144,16 +144,7 @@ def course_info(request, course_id):
     # Must have credentials
     if request.method == 'GET':
         mycourse = get_object_or_404(Course, root_id=course_id)
-        if request.user.is_authenticated and request.user != 'AnonymousUser':
-            # Are yoy taking this course?
-            # Are the instructor?
-
-            return render(request,'activitytree/course_info.html',
-                                      {'course_id': course_id, 'course': mycourse
-                                       })
-        else:
-            # Genearal AnonymousUser info
-            return render('activitytree/course_info.html',
+        return render(request,'activitytree/course_info.html',
                                       {'course_id': course_id, 'course': mycourse
                                        })
 
@@ -698,7 +689,8 @@ def path_activity(request, path_id, uri):
                                        'rating_totals': rating_totals})
 
     else:
-        return HttpResponseRedirect('/login/?next=%s' % request.path)
+        print(request.path)
+        return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
 
 def activity(request, uri=None):
@@ -706,7 +698,7 @@ def activity(request, uri=None):
 
         # Check if public, all public for now
         if False:
-            return HttpResponseRedirect('/login/?next=%s' % request.path)
+            return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
         activity_content = Activity.get('/%s' % uri)
 
@@ -826,7 +818,7 @@ def path_test(request, path_id, uri):
                                    'root': requested_activity.learning_activity.get_root().uri})
     else:
 
-        return HttpResponseRedirect('/login/?next=%s' % request.path)
+        return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
         # Do something for anonymous users.
 
 
@@ -880,7 +872,7 @@ def path_program(request, path_id, uri):
                                              })
 
     else:
-        return HttpResponseRedirect('/login/?next=%s' % request.path)
+        return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
 
 @transaction.atomic
@@ -1235,43 +1227,6 @@ def _check_survey(post_dict, quiz):
 
     return checked
 
-
-def login_view(request, template_name='registration/login.html', redirect_field_name=REDIRECT_FIELD_NAME):
-    context = {}
-
-    if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                if 'next' in request.GET:
-                    return HttpResponseRedirect(request.GET['next'])
-                else:
-
-                    return HttpResponseRedirect('/')
-
-
-                    # Redirect to a success page.
-            else:
-
-                context['errors'] = 'User is locked'
-
-        else:
-            context['errors'] = 'Invalid Login'
-
-        return TemplateResponse(request, template_name, context, current_app=None)
-
-    else:
-        if 'next' in request.GET:
-            context['next'] = request.GET['next']
-            context['hidde_login_link'] = True
-            request.session['after_login'] = request.GET['next']
-            context['GOOGLE_APP_ID'] = settings.GOOGLE_APP_ID
-
-        return TemplateResponse(request, template_name, context, current_app=None)
 
 
 def ajax_vote(request, type, uri):

@@ -42,6 +42,7 @@ urlpatterns = [
       path('get_activities/',views.get_activities),
 
       path('get_result/',views.get_result),
+      path(r'accounts/profile/', views.me),
       path(r'me/',views.me),
       path(r'me/profile/tz/', views.profile_tz),
       path(r'me/profile/experience/', views.profile_experience),
