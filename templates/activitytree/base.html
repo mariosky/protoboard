@@ -64,7 +64,7 @@
   <body>
 
     <nav class="navbar navbar-expand-md navbar-light bg-light mb-4">
-      <a class="navbar-brand" href="/"><code>código.uno[alpha] </code>  </a>
+      <a class="navbar-brand" href="/"><code class="text-primary">código.uno[alpha] </code>  </a>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -78,9 +78,7 @@
           <li class="nav-item">
              <a href="/search" class="nav-link">Biblioteca</a>
           </li>
-          <li class="nav-item">
-           <a href="/student" class="nav-link">Estudiante</a>
-          </li>
+
             {% if user.is_authenticated %}
                 {% if user|has_group:"author" %}
                   <li class="nav-item">
@@ -106,7 +104,24 @@
         </ul>
         <ul class="navbar-nav ml-auto">
 
+
+
+
+
           {% if user.is_authenticated %}
+
+           <li class="nav-item">
+            <a href="/student" class="nav-link text-primary">Mis Cursos</a>
+           </li>
+
+
+
+            <li class="nav-item">
+                <a class="nav-link nav-link-user" href="/me">
+                    <img src="{% gravatar_url user.email 50%}">
+                </a>
+            </li>
+
 
             {% if user.first_name %}
                 <li class="nav-item"><a class="nav-link"  href="/me"> {{ user.first_name }} {{ user.last_name }}</a></li>
@@ -114,11 +129,8 @@
                 <li class="nav-item"><a class="nav-link"  href="/me"> {{ user.username }} </a></li>
             {% endif %}
 
-            <li class="nav-item">
-                <a class="nav-link nav-link-user" href="/me">
-                    <img src="{% gravatar_url user.email 50%}">
-                </a>
-            </li>
+
+
             <li class="nav-item"><a class="nav-link"  href="/accounts/logout">Salir</a></li>
 
 
@@ -126,7 +138,7 @@
            {% else %}
                     {% if not hidde_login_link %}
                      <li class="nav-item d-flex justify-content-end">
-                        <a href="/accounts/login" class="nav-link">Iniciar sesión</a>
+                        <a href="/accounts/login" class="nav-link text-primary">Iniciar sesión</a>
                       </li>
                      <li class="nav-item d-flex justify-content-end">
                         <a href="/register" class="nav-link">Crea tu cuenta</a>

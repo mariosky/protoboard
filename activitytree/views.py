@@ -128,16 +128,14 @@ def my_courses(request):
         return HttpResponseRedirect('/login/?next=%s' % request.path)
 
 
-def my_enrolled_courses(request,
-                        status='incomplete'):
+def my_enrolled_courses(request):
     """view that determines if user has unfinished courses, and returns the courses"""
 
     if request.user.is_authenticated and request.user != 'AnonymousUser':
 
-        courses = Course.objects.filter(root__userlearningactivity__user=request.user,
-                                        root__userlearningactivity__progress_status=status)
+        RootULAs = UserLearningActivity.objects.filter(learning_activity__root=None, user=request.user)
         return render(request,'activitytree/my_enrolled_courses.html',
-                                  {'courses': courses, 'status': status})
+                                  {'courses': RootULAs})
     else:
         return HttpResponseRedirect('/login/?next=%s' % request.path)
 

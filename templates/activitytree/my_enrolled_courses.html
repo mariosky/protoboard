@@ -6,68 +6,51 @@
 
 
 
- <!--Instructor Header BEGIN -->
 
-<div class="row instructor-tab">
 
-      <!--Instructor TABS -->
+    <div class = "row">
 
-        <ul class="nav nav-tabs">
-            {% if status == 'incomplete' %}
-          <li class="nav-item">
-            <a class="nav-link active" href="/my_enrolled_courses/incomplete">Cursos Activos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/my_enrolled_courses/completed">Cursos Completados</a>
-          </li>
-         {% elif  status == 'completed' %}
-                      <li class="nav-item">
-            <a class="nav-link" href="/my_enrolled_courses/incomplete">Cursos Activos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="/my_enrolled_courses/completed">Cursos Completados</a>
-          </li>
+        <div class="container">
+
+            <div id="navlist"  class="list-group">
+
+
+            {% if courses %}
+
+                {% for c in courses %}
+                   <a href="/{{c.learning_activity.id}}{{c.learning_activity.uri}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100  justify-content-between">
+
+                            <h5 class="mb-1 text-primary"> {{c.learning_activity.name}} </h5>
+                             <small> {{ c.progress_status }} </small>
+
+                        </div>
+
+                        <p class="mb-1 text-muted">{{ c.learning_activity.course.short_description|safe }}</p>
+
+                         <small> Última visita: {{ c.last_visited }} </small>
+                    </a>
+
+                {% endfor %}
+            {% else %}
+
+                            <h5 class="mb-1"> No tienes cursos registrados todavía. </h5>
+
+
+                            <p>
+                                <a href="/courses" class="btn btn-primary my-2">Busca algún curso</a>
+
+                            </p>
+
+
+
 
             {% endif %}
-
-        </ul>
-
-
-
-</div>
-       <!--Student Menu?
-
-            <div class="row instructor-tab" >
-                <nav class="navbar navbar-light bg-faded">
-                    <ul class="nav navbar-nav">
-                        <li class="nav-item"> <button class="btn btn-primary active create-course">Nuevo Curso</button></li>
-                    </ul>
-                </nav>
-           </div>
-
--->
-
-
- <!--Instructor Header END -->
-
-     {% for c in courses %}
-      <div class="row">
-
-
-            <div class="col-md-8">
-                <h4><a href="/{{c.root.id}}{{c.root.uri }}" class="page-header" ><i class="fa fa-book"></i>  {{c.root.name}}</a></h4>
-
-                <p> {{ c.course.short_description|safe }} </p>
-
             </div>
 
-            <div class="col-md-4">
-                <p>
-                    <span class="label label-info">curso</span>
-                </p>
-            </div>
-      </div>
-  {% endfor %}
+        </div>
+    </div>
+
 
     </div> <!-- /container -->
 {% endblock content %}
