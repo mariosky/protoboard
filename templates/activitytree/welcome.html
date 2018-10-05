@@ -59,6 +59,31 @@
 }
 
 
+@media (min-width: 576px) {
+    .card-columns {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 768px) {
+    .card-columns {
+        column-count: 3;
+    }
+}
+
+@media (min-width: 992px) {
+    .card-columns {
+        column-count: 3;
+    }
+}
+
+@media (min-width: 1200px) {
+    .card-columns {
+        column-count: 3;
+    }
+}
+
+
 {% endblock style %}
 
 
@@ -125,31 +150,33 @@
 
 
     <div class="container" >
-           <h3 class="pb-3 mb-4 font-italic border-bottom">
-            Lo último
-          </h3>
-          <div class="row" id='activities'>
+    <h3 class="pb-3 mb-4 font-italic border-bottom">
+        Lo último
+    </h3>
+    <div class="card-columns" id='activities'>
 
 
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
+            <div class="card">
                 <img class="card-img-top" src="https://imageshack.com/a/img921/8334/QdLseQ.jpg" alt="Card image cap">
                 <div class="card-body">
-                  <p class="card-text">Tendencias en la Biblioteca</p>
+                    <p class="card-text">Tendencias en la Biblioteca</p>
 
-                   <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="/search/?tag=python"><span class="badge badge-primary"> #python </span></a>  <span class="text-muted"> Lo nuevo en Python3  </span>  </li>
-                <li class="list-group-item"><a href="/search/?tag=java"> <span class="badge badge-primary"> #java </span></a> <span class="text-muted"> Sigue siendo el más popular </span></li>
-                <li class="list-group-item"><a href="/search/?tag=principiante"> <span class="badge badge-primary">#csharp </span></a> <span class="text-muted">  .net muy solicitado  </span></li>
-                <li class="list-group-item"><a href="/search/?tag=ejercicio"> <span class="badge badge-primary">#ejercicio </span></a> <span class="text-muted"> Nuevos  </span></li>
-            </ul>
-                  </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><a href="/search/?tag=python"><span class="badge badge-primary"> #python </span></a>  <span class="text-muted"> Lo nuevo en Python3  </span>  </li>
+                        <li class="list-group-item"><a href="/search/?tag=java"> <span class="badge badge-primary"> #java </span></a> <span class="text-muted"> Sigue siendo el más popular </span></li>
+                        <li class="list-group-item"><a href="/search/?tag=principiante"> <span class="badge badge-primary">#csharp </span></a> <span class="text-muted">  .net muy solicitado  </span></li>
+                        <li class="list-group-item"><a href="/search/?tag=ejercicio"> <span class="badge badge-primary">#ejercicio </span></a> <span class="text-muted"> Nuevos  </span></li>
+                    </ul>
                 </div>
             </div>
 
 
 
-          </div>
+
+
+
+
+    </div>
 
 
 
@@ -220,8 +247,8 @@
 
 <script id="activities_template" type="x-tmpl-mustache">
 
-   <div class="col-md-4">
-         <div class="card mb-4 box-shadow">
+
+         <div class="card">
             [[#image_url]]
                 <img class="card-img-top center-block img-fluid" src="[[image_url]]" alt="[[title]]">
             [[/image_url]]
@@ -251,7 +278,7 @@
             </div>
 
         </div>
-   </div>
+
 
 </script>
 

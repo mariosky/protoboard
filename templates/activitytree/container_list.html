@@ -54,37 +54,6 @@
 
 {% block scripts %}
 
-<script id="container_template_old" type="x-tmpl-mustache">
-<div class="col-sm-12">
-    <div class="card">
-        <div class="card-block course-list-card">
-            <h5 class="card-title title-list">
-             [[#progress_status]]
-             <small>  <i class="fa fa-check-square-o fa-check"></i> </small>
-
-             [[/progress_status]]
-             [[^progress_status]]
-                <small>   <i class="fa fa-square-o fa-check"></i> </small>
-             [[/progress_status]]
-
-
-
-            <a href="/[[path_id]][[uri]]">
-             [[name]]  </a>
-            </h5>
-
-            <p class="card-text">[[description]]</p>
-            <div id="rating-[[id]]" class="raty"> </div>
-            <div class="list-group">
-                    [[#children_activities]]
-                                <a href=[[^disabled]] "/[[path_id]][[uri]]"[[/disabled]][[#disabled]]"#"[[/disabled]]  class="list-group-item [[#disabled]] disabled [[/disabled]]">
-                                  <i class="[[icon]]"></i> [[heading]]
-                                </a>
-                    [[/children_activities]]
-            </div>
-    </div>
-</div>
-</script>
 
 
 <script id="container_template" type="x-tmpl-mustache">
@@ -109,8 +78,6 @@
 
 
 <script id="activity_template" type="x-tmpl-mustache">
-
-
  <a href="/[[path_id]][[uri]]" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex w-100  justify-content-between">
 
@@ -199,6 +166,37 @@
 
 
 
+<script id="container_template_old" type="x-tmpl-mustache">
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-block course-list-card">
+            <h5 class="card-title title-list">
+             [[#progress_status]]
+             <small>  <i class="fa fa-check-square-o fa-check"></i> </small>
+
+             [[/progress_status]]
+             [[^progress_status]]
+                <small>   <i class="fa fa-square-o fa-check"></i> </small>
+             [[/progress_status]]
+
+
+
+            <a href="/[[path_id]][[uri]]">
+             [[name]]  </a>
+            </h5>
+
+            <p class="card-text">[[description]]</p>
+            <div id="rating-[[id]]" class="raty"> </div>
+            <div class="list-group">
+                    [[#children_activities]]
+                                <a href=[[^disabled]] "/[[path_id]][[uri]]"[[/disabled]][[#disabled]]"#"[[/disabled]]  class="list-group-item [[#disabled]] disabled [[/disabled]]">
+                                  <i class="[[icon]]"></i> [[heading]]
+                                </a>
+                    [[/children_activities]]
+            </div>
+    </div>
+</div>
+</script>
 
 <script type="text/javascript" charset="utf-8">
 

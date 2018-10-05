@@ -2,7 +2,7 @@
 
 {% block content %}
  <!--Instructor Header BEGIN -->
-
+<div class="container">
 
       <!--Instructor TABS -->
 <div  class="row instructor-tab">
@@ -20,45 +20,57 @@
      </div>
 </div>
 
- <!--Instructor Menu -->
-<div class="container m-b-2">
+    <!--Instructor Menu -->`
+    <div class="container m-b-2">
 
-                <nav class="navbar navbar-light bg-faded">
-                           <ul class="nav navbar-nav">
+        <nav class="navbar navbar-expand-lg  navbar-light bg-light">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 
-                             <li class="nav-item dropdown active">
+                <li class="nav-item dropdown active">
 
-                                          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Nueva Actividad
-                                          </button>
-                                            <ul class="dropdown-menu" id="sidebar">
-                                                <li><a class="dropdown-item" href="#" id="htmlBtn">HTML</a></li>
-                                                <li><a class="dropdown-item" href="#" id="videoBtn">Video</a></li>
-                                                <li><a class="dropdown-item" href="/build_quiz">Quiz</a></li>
-                                                <li><a class="dropdown-item" href="/build_program">Program</a></li>
-                                            </ul>
-                              </li>
+                    <a class="nav-link dropdown-toggle" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Nueva Actividad
+                    </a>
+                    <div id="sidebar"  class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#" id="htmlBtn">HTML</a>
+                        <a class="dropdown-item" href="#" id="videoBtn">Video</a>
+                        <a class="dropdown-item" href="/build_quiz">Quiz</a>
+                        <a class="dropdown-item" href="/build_program">Program</a>
+                    </div>
+                </li>
+                     </ul>
 
-                          <form class="form-inline pull-right" role="search" onsubmit="return false">
-                            <input class="form-control" type="search" placeholder="Titulo o #Tag" name="srch-term" id="txtname" >
-                            <button class="btn btn-outline-success" type="submit">Buscar</button>
-                          </form>
-
-                           </ul>
-                </nav>
-</div>
+                <form class="form-inline  my-2 my-lg-0" role="search" onsubmit="return false">
+                    <input class="form-control  mr-sm-2" type="search" placeholder="Titulo o #Tag" name="srch-term" id="txtname" >
+                    <button class="btn btn-outline-success  my-2 my-sm-0" type="submit">Buscar</button>
+                </form>
 
 
-
- <!--Instructor Header END -->
-      <div class="row">
-        <div class="col-md-10 col-md-offset-1 col-xs-12"  >
-             <div class="card-deck-wrapper" id="actividades">
-
-            </div>
-        </div>
+        </nav>
     </div>
+
+
+
  <!--Instructor Header END -->
+
+
+        <div class="container mt-3 mb-3">
+
+            <ul id="actividades"  class="list-group">
+
+
+
+            </ul>
+
+        </div>
+
+
+
+
+ <!--Instructor Header END -->
+
+
+
       <div class="row">
         <div class="col-md-10 col-md-offset-1 col-xs-12"  >
              <nav aria-label="Page navigation" id="paginator" align="center">
@@ -360,7 +372,7 @@
     </div>
 </div>
 
-
+</div>
 
 
 
@@ -392,7 +404,53 @@
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
     <script>tinymce.init({ selector:'tinytext', height:"220", automatic_uploads:true, plugins: "image link code", toolbar:" undo redo| styleselect | bold italic | alignleft aligncenter alignright | link image | code " })</script>
 
+
 <script id="activities_template" type="x-tmpl-mustache">
+
+        <li class="list-group-item list-group-item-action flex-column align-items-start">
+             <div class="d-flex w-100  justify-content-between">
+
+                 <h5 class="mb-1 text">  <i class="fa fa-[[icon]]"> </i> [[title]]</h5>
+                 <small class="text-muted">
+                          <i class="fa fa-tags"></i>
+
+                          [[#tags]]
+                          [[#.]]
+                          <span class="label label-info">#[[.]]</span>
+                          [[/.]]
+                          [[^.]]
+                          [[/.]]
+                          [[/tags]]
+
+
+                </small>
+             </div>
+
+             <p class="mb-1 text-muted">
+                        [[#description]]
+                           <p> [[description]]</p>
+                       [[ /description ]]
+                       [[^description]]
+                          <p> Sin descripción </p>
+                       [[/description]]
+             </p>
+
+            <small class="[[^progress_status]] text-muted [[/progress_status]] [[#progress_status]]  text-success     [[/progress_status]]           "><i class="[[icon]]"></i> [[activity_type]] </small>
+
+
+                <button type="button" value="[[id]]" onclick='javascript:window.open("[[id]]", "_blank", "scrollbars=1,resizable=1,height=600,width=650");'  class="btn btn-primary"><i class="fa fa-eye"></i> </button>
+                 <button type="button" value="[[id]]" onclick='get_activity("[[id]]","[[type]]")' data-toggle="" data-target="#"  data-target="#confirm-edit" data-href="[[id]]" class="btn btn-primary"><i class="fa fa-cog"></i> </button>
+                 <button type="button" value="[[id]]" data-toggle="modal" data-target="#confirm-delete"  data-href="[[id]]" class="btn btn-primary"><i class="fa fa-trash-o"></i></button>
+
+     </li>
+
+
+
+</script>
+
+
+
+<script id="activities_template_old" type="x-tmpl-mustache">
 
        <div class="col-sm-4">
           <div class="card">
@@ -622,15 +680,17 @@ function delActivity(activity){
         data: { _id: activity,
                 user: '{{ user.email }}'},
         success: function (data){
-            if (data == "okn"){
+            console.log(data);
+            if (data == 1){
                 alert("Actividad borrada");
                 location.reload()
             }
             else{
-                alert("Error")
+                alert("Mal. La actividad no se ha borrado")
             }
         },
         error: function(data){
+            alert("Error. La actividad no se ha borrado")
             console.log(data)
         }
     });
