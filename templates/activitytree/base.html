@@ -313,38 +313,6 @@
           {% if user.is_authenticated %}
 
 
-
-            $('#rating-info').raty({
-                path: '{{MEDIA_URL}}images',
-                score: 0,
-                click: function(score, evt)
-                        {
-                        //alert('ID: ' + this.id + "\nscore: " + score + "\nevent: " + evt);
-
-                         $.ajax(
-                            {
-                                url: '/rate_object',
-                                type: "POST",
-                                contentType: "application/json",
-                                data: JSON.stringify({"uri": "{{ uri }}", "rating": score ,"user":"{{user.id}}"  }),
-                                dataType: "json",
-                                success: function(data, textStatus, jqXHR) {
-                                    $("#rating-message").removeClass("label-info").addClass("label-success");
-                                    $("#rating-message").text("Gracias, tu calificación fué registrada");
-
-
-                                    },
-                                error: function(jqXHR, textStatus, errorThrown) {
-                                    alert ("Error:" + textStatus+" "+errorThrown+" "+jqXHR.responseText);
-                                    }
-                                });
-
-
-
-                        }
-
-                });
-
         {% else %}
 
         {% endif %}
