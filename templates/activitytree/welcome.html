@@ -263,11 +263,18 @@
 
 
                <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                    </div>
-                    <small class="text-muted">9 mins</small>
+                <div class="container">
+                <i class="fa fa-tags"></i>
+                          [[#tags]]
+                          [[#.]]
+                          <a href="/search/?tag=[[.]]" class="text-muted"><span >#[[.]]</span></a>
+                          [[/.]]
+                          [[^.]]
+                          [[/.]]
+                          [[/tags]]
+                </div>
+
+                    <small class="text-muted">[[level]]</small>
                </div>
             </div>
               </div>
