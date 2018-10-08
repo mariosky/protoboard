@@ -151,7 +151,7 @@
 
     <div class="container" >
     <h3 class="pb-3 mb-4 font-italic border-bottom">
-        Lo último
+        En portada
     </h3>
     <div class="card-columns" id='activities'>
 
@@ -197,11 +197,7 @@
 
 
 
-
-
-
-
-        $.get( '/get_activities/',  function (data) {
+        $.get( '/get_frontpage/',  function (data) {
 
             Mustache.tags = ['[[', ']]'];
             var activities_template = $('#activities_template').html();
