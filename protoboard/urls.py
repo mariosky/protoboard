@@ -39,7 +39,8 @@ urlpatterns = [
       path('my_courses/', views.my_courses,name='my_courses'),
 
       path('javascript_result/',views.javascript_result),
-      path('get_activities/',views.get_activities),
+      path('get_new_activities/',views.get_new_activities),
+      path('get_frontpage/',views.get_front_page_activities),
 
       path('get_result/',views.get_result),
       path(r'accounts/profile/', views.me),

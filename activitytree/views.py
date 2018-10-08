@@ -1267,11 +1267,15 @@ def register(request):
 
 
 
-def get_activities(request):
+def get_new_activities(request):
     activities = Activity.get_new()
     json_docs = [doc for doc in activities]
     return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 
+def get_front_page_activities(request):
+    activities = Activity.get_frontpage()
+    json_docs = [doc for doc in activities]
+    return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
 
 @login_required
 def my_activities(request):  # view used by activity_builder, returns all activities by user
@@ -1320,6 +1324,7 @@ def search_prueba(request):  # view used by search, receives page and query and 
         message = "null"
         return HttpResponse(json.dumps(message), content_type='application/javascript')
     else:
+        print(query)
         # IF Super user return all activities
         if request.user.is_superuser:
             query = [ e for  e in  query if 'author' not in e ]
