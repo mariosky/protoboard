@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" href="{{ STATIC_URL }}app/styles/activity_tree.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-highlight/prism-line-highlight.min.css" />
 
     <!-- Custom styles for this template-->
 
@@ -220,10 +221,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-abap.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-csharp.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-numbers/prism-line-numbers.js"></script>
-
-     <!--<script type="text/javascript" src="https://b072a7493b24d80848609d1f4876edab240dff84.googledrive.com/host/0B4KIaVIuZK2JUEZmX0ZxQWgwb0k/jquery.oembed.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+     <!--<script type="text/javascript" src="https://b072a7493b24d80848609d1f4876edab240dff84.googledrive.com/host/0B4KIaVIuZK2JUEZmX0ZxQWgwb0k/jquery.oembed.js"></script>
     <script  type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raty/2.8.0/jquery.raty.js"></script>
-
+-->
  <!-- endbuild -->
 
   {% block scripts %}
@@ -311,38 +312,6 @@
     {% endif  %}
           {% if user.is_authenticated %}
 
-
-
-            $('#rating-info').raty({
-                path: '{{MEDIA_URL}}images',
-                score: 0,
-                click: function(score, evt)
-                        {
-                        //alert('ID: ' + this.id + "\nscore: " + score + "\nevent: " + evt);
-
-                         $.ajax(
-                            {
-                                url: '/rate_object',
-                                type: "POST",
-                                contentType: "application/json",
-                                data: JSON.stringify({"uri": "{{ uri }}", "rating": score ,"user":"{{user.id}}"  }),
-                                dataType: "json",
-                                success: function(data, textStatus, jqXHR) {
-                                    $("#rating-message").removeClass("label-info").addClass("label-success");
-                                    $("#rating-message").text("Gracias, tu calificación fué registrada");
-
-
-                                    },
-                                error: function(jqXHR, textStatus, errorThrown) {
-                                    alert ("Error:" + textStatus+" "+errorThrown+" "+jqXHR.responseText);
-                                    }
-                                });
-
-
-
-                        }
-
-                });
 
         {% else %}
 
