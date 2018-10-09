@@ -8,7 +8,7 @@ all_tags = [
 
 attrs = {
  '*': ['class','id'],
- 'a': ['href', 'rel'],
+ 'a': ['href', 'rel', 'data-toggle','role','aria-expanded','aria-controls'],
  'img': ['alt'],
  'div': ['role'],
  'button':['type','data-toggle','data-target','aria-expanded','aria-controls'],
