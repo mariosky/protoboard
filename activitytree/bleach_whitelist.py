@@ -11,5 +11,7 @@ attrs = {
  'a': ['href', 'rel'],
  'img': ['alt'],
  'div': ['role'],
- 'button':['type','data-toggle','data-target','aria-expanded','aria-controls']
+ 'button':['type','data-toggle','data-target','aria-expanded','aria-controls'],
+ 'pre':['data-line', 'class'],
+
 }
