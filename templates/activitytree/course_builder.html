@@ -1441,8 +1441,9 @@ TO DO: Reuse mustache  templates
            <form id="formaContainerEdit" onsubmit="return false">
 
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
         <h4 class="modal-title">Edit Container</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
       </div>
 
 
@@ -1545,8 +1546,9 @@ TO DO: Reuse mustache  templates
   <div class="modal-dialog modal-lg ">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
         <h4 class="modal-title">Editar precondición</h4>
+     <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
       </div>
 
 
@@ -1586,8 +1588,9 @@ TO DO: Reuse mustache  templates
     <div class="modal-content">
        <form action="/delete_course/{{ course_id }}" method="post">{% csrf_token %}
         <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
         <h4 class="modal-title">Borrar curso</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
       </div>
 
 
@@ -1613,8 +1616,8 @@ TO DO: Reuse mustache  templates
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Buscar recursos educativos </h4>
+                <h4 class="modal-title">Buscar recursos educativos </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
       </div>
        <div class="container">
            <div class="row m-t-1">
@@ -1659,12 +1662,10 @@ TO DO: Reuse mustache  templates
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Regla de precondición</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
                 </div>
 
-                  <div class="row">
-                    <div class="col-md-8 col-md-offset-2 m-t-2" >
 
 
                  <ul class="nav nav-tabs">
@@ -1675,53 +1676,62 @@ TO DO: Reuse mustache  templates
 
 
                    <div class="tab-content">
-                    <div class="tab-pane fade in active" id="activity-tab">
+                    <div class="tab-pane fade show active" id="activity-tab">
 
-
-
+                     <div class="container mt-3">
                             <input type="hidden" id="container_rule_id" value="">
 
-                        <div class="card">
-                            <div class="card-block">
-                                <div class="form-inline">
+                             <form>
+                                 <div class="form-group">
                                         <label for="activity-select"><code>IF</code></label>
                                 <select id="activity-select" class="form-control selection" style="width:60%">
+                                </select>
 
-                                </select> <code>HAS</code>
-
+                                 </div>
+                               <div class="form-group">
+                                    <label for="activity-select"><code>HAS</code></label>
                                 </div>
 
-                                <div class="form-inline" style="margin-left:3%">
-                                    <select class="form-control selection" id="activity-options" style="width:35%">
+                               <div class="row">
+
+                                   <div class="col col-md-3">
+                                    <select class="form-control selection" id="activity-options">
                                         <option value="num_attempts">número de intentos</option>
                                         <option value="progress_status">progreso</option>
                                         <option value="objective_measure">calificación</option>
                                     </select>
+                                   </div>
 
-                                    <select class="form-control selection" id="activity-operators" style="width:25%">
+                                   <div class="col col-md-3">
+                                         <select class="form-control selection" id="activity-operators">
                                         <option value="==">igual a</option>
                                         <option value=">">mayor que </option>
                                         <option value="<">menor que</option>
                                         <option value="!=">diferente de</option>
                                     </select>
+                                   </div>
 
-                                    <input type="text" class="form-control" id="activity-txt" placeholder="Valor" style="width:20%">
-
-                                    <select class="form-control selection" id="activity-value-select" style="display:none;width:20%">
+                                   <div class="col col-md-2">
+                                    <select class="form-control selection" id="activity-value-select">
                                         <option value="completed">complete</option>
                                         <option value="incomplete">incomplete</option>
                                     </select>
+                                   </div>
 
-                                    <input type="button" id="activity-submit" class="form-control btn-primary submit-Btn" value="Agregar">
-                                </div>
+                                   <div class="col col-md-2">
+                                        <input type="text" class="form-control" id="activity-txt" placeholder="Valor"">
+                                   </div>
+
+                                   <div class="col col-md-2">
+                                        <input type="button" id="activity-submit" class="form-control btn-primary submit-Btn" value="Agregar">
+                                   </div>
+                     </div>
+
+                         </form>
 
 
 
-                            </div>
-
-                        </div>
-
-
+                    </div>
                     </div>
                     <div class="tab-pane" id="user-tab">
                         <div class="card">
@@ -1765,10 +1775,12 @@ TO DO: Reuse mustache  templates
 
                     </div>
                     <div class="tab-pane" id="context-tab">
-                        <div class="card">
-                            <div class="card-block">
+
+
+
+
                             <div class="form-inline" >
-                                      <label for="context-options"><code>IF</code></label>
+                             <label for="context-options"><code>IF</code></label>
                                     <select class="form-control selection" id="context-options" style="width:30%">
                                       <!--
                                         <option value="device">dispositivo</option>
@@ -1810,14 +1822,16 @@ TO DO: Reuse mustache  templates
                                     <input type="button" id="context-submit" class="form-control btn-primary submit-Btn" value="Agregar">
                                 </div>
 
-                            </div>
-                        </div>
+
+
                          </div>
                    </div>
-                         </div>
-                       </div>
-                <div class="row">
-                    <div class="col-md-8 col-md-offset-2 m-t-2" >
+
+
+
+                    <div class="container  mt-3">
+
+
                         <div class="card">
                             <div class="card-header">
                                 Regla
@@ -1834,9 +1848,9 @@ TO DO: Reuse mustache  templates
                             </div>
 
                             </div>
-                </div>
+                         </div>
 
-                    </div>
+
                 </div>
 
 
@@ -1857,10 +1871,9 @@ TO DO: Reuse mustache  templates
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+
         <h4 class="modal-title">Subir curso</h4>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body">
 
@@ -1887,13 +1900,13 @@ TO DO: Reuse mustache  templates
 
 
 
-   <div class="modal fade" id="modalUpdateCourse">
+   <div class="modal fade" tabindex="-1" role="dialog" id="modalUpdateCourse">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
              <form action="/course-builder/" method="post">{% csrf_token %}
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Actualizar curso</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
                 </div>
 
                 <div class="modal-body">
@@ -1904,7 +1917,7 @@ TO DO: Reuse mustache  templates
                     </ul>
                 <br>
                 <div class="tab-content">
-                    <div class="tab-pane fade in active" id="main">
+                    <div class="tab-pane fade show active" id="main">
                     <input type="hidden" name="action" value="update"/>
                     <input type="hidden" name="course_id" value="{{course_id}}"/>
 
