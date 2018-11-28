@@ -117,7 +117,7 @@
                     <li class="nav-item"> <a class="nav-link active" href="#main"  data-toggle="tab">Principal</a></li>
                     <li class="nav-item"> <a class="nav-link" href="#detail"  data-toggle="tab">Detalle</a></li>
                 </ul>
-                <br>
+                <div class="container mt-3">
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="main">
                         <div class="container-fluid">
@@ -225,11 +225,13 @@
                         </div>
                     </div>
                 </div>
+              </div>
             </div>
             <div class="modal-footer">
             <div class="form-group" align="center">
-                <button id="_htmlActivity" type="submit" class="btn btn-primary">Enviar</button>
+
                 <button type="button" data-dismiss="modal" class="btn btn-default">Cancelar</button>
+                <button id="_htmlActivity" type="submit" class="btn btn-primary">Guadar</button>
             </div>
         </div>
         </div>
@@ -246,11 +248,13 @@
                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
                 </div>
             <div class="modal-body">
+
+
                 <ul class="nav nav-tabs">
                     <li class="nav-item"> <a class="nav-link active" href="#mainv"  data-toggle="tab">Principal</a></li>
                     <li class="nav-item"> <a class="nav-link" href="#detailv"  data-toggle="tab">Detalle</a></li>
                 </ul>
-
+                <div class="container mt-3">
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="mainv">
 
@@ -281,12 +285,12 @@
                                  <div class="form-inline">
                                     <div class="form-group">
                                         <label for="startSeconds" class="">Inicia</label>
-                                        <input type="number" min="0" class="form-control input-optional" id="startSeconds" name="startSeconds" style="width: 30%">
+                                        <input type="number" min="0" class="form-control input-optional" id="startSeconds" name="startSeconds" >
                                     </div>
 
                                         <div class="form-group">
                                             <label for="endSeconds" class="">Termina</label>
-                                            <input type="number"  min="1" class="form-control input-optional" id="endSeconds" name="endSeconds" style="width: 30%">
+                                            <input type="number"  min="1" class="form-control input-optional" id="endSeconds" name="endSeconds" >
                                         </div>
 
                                  </div>
@@ -360,6 +364,7 @@
 
                 </div>
                 </div>
+                 </div>
             </div>
             <div class="modal-footer">
                 <div class="form-group" align="center">
