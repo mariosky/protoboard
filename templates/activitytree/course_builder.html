@@ -1389,8 +1389,12 @@ COPY PASTE FROM search.html
 TO DO: Reuse mustache  templates
 -->
 
+
 <script id="paginator_template" type="x-tmpl-mustache">
-    <ul class="pagination">
+
+<nav aria-label="Page navigation">
+
+    <ul class="pagination  justify-content-center">
 
     [[#prev]]
      <li class="page-item" data-page='[[prevPage]]'>
@@ -1423,21 +1427,24 @@ TO DO: Reuse mustache  templates
 
     [[/next]]
  </ul>
+</nav>
 </script>
 
 
 
 
-
 <script id="searched_activities_template" type="x-tmpl-mustache">
-<div class="card">
-[[#image_url]]
+<div class="card mb-4 box-shadow">
+    [[#image_url]]
             <img class="card-img-top center-block img-fluid" src="[[image_url]]" alt="[[title]]">
         [[/image_url]]
-    <div class="card-block">
+
+    <div class="card-body">
+
         <span class="btn-clipboard"  data-id="[[id]]" data-title="[[title]]" data-description="[[description]]"  data-image="[[image_url]]"  >Copiar</span>
+
         <h6 class="card-title card-search-activity"> <i class="fa fa-[[icon]]"> </i> <a href="[[id]]">[[title]]</a> </h6>
-         <p class="card-text"> [[description]]</p>
+        <p class="card-text"> [[description]]</p>
 
     </div>
 
@@ -1626,50 +1633,59 @@ TO DO: Reuse mustache  templates
 </div><!-- /.modal -->
 
 
-<div class="modal fade" id="modalSearch">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-                <h4 class="modal-title">Buscar recursos educativos </h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
-      </div>
-       <div class="container">
-           <div class="row m-t-1">
-                <div class="col-md-12 col-sm-12">
-           <form id="formSearch" onsubmit="return false">
-               <div class="input-group">
-                   <input id="txtname" type="text" class="form-control" placeholder="Search by Title or #Tag" >
-                   <div class="input-group-btn">
-                       <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
-                   </div>
-               </div>
-           </form>
-           </div>
-         </div>
-
-             <div class="row">
-      <div class="col-md-10 col-md-offset-1 col-sm-12 m-t-1">
-
-             <div class="card-deck-wrapper">
-                 <div id='actividades' class="card-columns">
-
+    <div class="modal fade" id="modalSearch">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Buscar recursos educativos </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
                 </div>
-             </div>
-      </div>
-  </div>
+                <div class="container mt-3 mb-3">
+                    <div class="row m-t-1">
+                        <div class="col-md-12 col-sm-12">
+                            <form id="formSearch" onsubmit="return false">
+                                <div class="input-group">
+                                    <input id="txtname" type="text" class="form-control" placeholder="Search by Title or #Tag" >
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
-       </div>
+                <div class="container mt-3 mb-3">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1 col-sm-12 m-t-1">
+
+                            <div class="card-deck">
+                                <div id='actividades' class="card-columns">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container mt-3 mb-3">
+                    <div class="row">
+                        <div class="col" id="paginator">
+
+                        </div>
+
+
+                    </div>
+                </div>
 
 
 
-    <nav aria-label="Page navigation" id="paginator" align="center">
 
 
-    </nav>
 
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
 
 
     <div class="modal fade" id="modal-rulebuilder">
