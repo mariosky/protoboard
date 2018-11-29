@@ -143,9 +143,10 @@
 
         <div class="form-group" align="center">
 
-            <a id="preview" class="btn btn-primary active" role="button" aria-pressed="true">Vista previa </a>
-             <button type="button" class="btn btn-primary" id="submitquiz">Enviar</button>
-            <a href="/activitybuilder" class="btn btn-secondary active" role="button" aria-pressed="true">Cancelar</a>
+            <a id="preview" class="btn btn-info active" role="button" aria-pressed="true">Vista previa </a>
+             <a href="/activitybuilder" class="btn btn-secondary active" role="button" aria-pressed="true">Cancelar</a>
+             <button type="button" class="btn btn-primary" id="submitquiz">Guardar</button>
+
 
         </div>
    </div>
@@ -156,25 +157,20 @@
   <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
         <h4 class="modal-title">Agregar Quiz</h4>
-      </div>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
       <div class="modal-body">
 
-          <div class="tab-content" style="width: 100%">
-              <div class="tab-pane fade in active" id="quiz1">
-                  <div class="form-group" align="center">
                       <div id="preguntas"  style="align-items: center">
 
                       </div>
-                  </div>
-              </div>
-          </div>
 
         <div class="modal-footer">
             <div class="form-group" align="center">
 
-            <button type="button" data-dismiss="modal" id="CancelQuiz" class="btn btn-default">OK</button>
+            <button type="button" data-dismiss="modal" id="CancelQuiz" class="btn btn-primary">OK</button>
             </div>
         </div>
       </div>
@@ -189,6 +185,11 @@
 <script>
 //checks if url has parameters to load activity
 $(document).ready(function(){
+
+    $("#tagsquiz").tagit({
+            fieldName: "tags"
+        });
+
     var url = getParameterByName('id');
     if (url != null){
         var type = 'quiz';
@@ -252,9 +253,7 @@ $(function(){
     });
 
 
-        $("#tagsquiz").tagit({
-            fieldName: "tags"
-        });
+
 
 //when submit is clicked, validates if key values were input by user
     $('#submitquiz').click(function(e){
