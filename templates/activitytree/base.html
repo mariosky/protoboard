@@ -7,7 +7,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="google-site-verification" content="t1dqQz5ha-B_c6-aL-Wi3ZiTkwk7XGWgqr8V0pHPmHc" />
+
+  {% if meta-description %}
+        <meta name="Description" content="{{ meta-description }}">
+  {% else %}
+        <meta name="Description" content="Ejercicios de programación en Python, C#, Java, GO, Perl6, Javascript y más lenguajes. Aprende con videos y cursos a la medida de E-Learning">
+  {% endif %}
     <title>Código.uno </title>
 
 
@@ -16,9 +21,12 @@
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css"  >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-numbers/prism-line-numbers.css" />
 
-    <link rel="stylesheet" type="text/css" href="//code.jquery.com/qunit/qunit-1.18.0.css">
+    <!-- Not in use
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/raty/2.8.0/jquery.raty.css"/>
-    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="//code.jquery.com/qunit/qunit-1.18.0.css">
+
+   -->
+     <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tag-it/2.0/css/jquery.tagit.min.css" integrity="sha256-lcQWHHJYwmgE3yVHk/xkDggrFXTlO/4BhoCp2LgM8s4=" crossorigin="anonymous" />
 
 
