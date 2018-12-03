@@ -541,6 +541,7 @@ function get_course() {
 
               if (v.is_container == true){
                   var container_template = $('#container_template').html();
+                  Mustache.tags = ['[[', ']]'];
                   Mustache.parse(container_template);
                   rendered = Mustache.render(container_template, { container_id:activity_id, container_name:v.name});
 
@@ -589,6 +590,7 @@ function get_course() {
                 else{
 
                   var activity_template = $('#activity_template').html();
+                  Mustache.tags = ['[[', ']]'];
                   Mustache.parse(activity_template);
                   rendered = Mustache.render(activity_template, { activity_id:activity_id, activity_name: v.name});
 
@@ -645,6 +647,7 @@ function get_course() {
     $('#newContainerBtn').on('click', function(){
       var container_id = 'new-'+ generateUUID();
       var container_template = $('#container_template').html();
+      Mustache.tags = ['[[', ']]'];
       Mustache.parse(container_template);
 
       var container = new LearningActivity( '/activity/'+container_id ,true );
@@ -661,6 +664,7 @@ function get_course() {
     $('#newActivityBtn').on('click', function(){
 
       var activity_template = $('#activity_template').html();
+      Mustache.tags = ['[[', ']]'];
       Mustache.parse(activity_template);
       var activity_id = 'new-'+generateUUID();
       var activity = new LearningActivity( "/activity/"+activity_id, false );
