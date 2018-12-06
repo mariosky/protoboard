@@ -68,7 +68,7 @@ INSTALLED_APPS = (
 	'django.contrib.sites',
     'django.contrib.auth',
 	'django.contrib.staticfiles',
-    'channels',
+   # 'channels',
     'widget_tweaks',
     'activitytree',
 )
