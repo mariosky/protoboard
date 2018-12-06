@@ -68,12 +68,12 @@ INSTALLED_APPS = (
 	'django.contrib.sites',
     'django.contrib.auth',
 	'django.contrib.staticfiles',
+    'channels',
     'widget_tweaks',
     'activitytree',
-
-
-
 )
+
+ASGI_APPLICATION = "protoboard.routing.application"
 
 MIDDLEWARE = (
 	'django.contrib.sessions.middleware.SessionMiddleware',

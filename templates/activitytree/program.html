@@ -174,6 +174,38 @@
 
 {% block scripts %}
 
+    <script type="text/javascript" charset="utf-8">
+
+    var protocol = 'ws://';
+
+    if (window.protocol === 'https:')
+        { protocol = 'ws://';  }
+
+
+    var chatSocket = new WebSocket(
+       protocol + window.location.host + '/ws/execute_queue' + "{{ activity_uri }}" +'/');
+
+
+    chatSocket.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        console.log('data',data);
+
+
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    chatSocket.onopen = () =>
+        chatSocket.send(JSON.stringify({
+            'message': 'hola'
+        }));
+
+
+
+    </script>
+
     <script src="{{ STATIC_URL }}app/scripts/main.js"></script>
 
 
