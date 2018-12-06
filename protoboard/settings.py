@@ -73,7 +73,6 @@ INSTALLED_APPS = (
     'activitytree',
 )
 
-ASGI_APPLICATION = "protoboard.routing.application"
 
 MIDDLEWARE = (
 	'django.contrib.sessions.middleware.SessionMiddleware',
@@ -85,6 +84,9 @@ MIDDLEWARE = (
 )
 
 ROOT_URLCONF = 'protoboard.urls'
+
+
+#ASGI_APPLICATION = "protoboard.routing.application"
 
 WSGI_APPLICATION = 'protoboard.wsgi.application'
 
