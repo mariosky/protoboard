@@ -173,7 +173,7 @@
 {% endblock content %}
 
 {% block scripts %}
-
+<!-- Testing Only
     <script type="text/javascript" charset="utf-8">
 
     var protocol = 'ws://';
@@ -205,7 +205,7 @@
 
 
     </script>
-
+-->
     <script src="{{ STATIC_URL }}app/scripts/main.js"></script>
 
 
@@ -383,9 +383,9 @@ $(document).ready(function() {
                         $("#result_panel_body").empty();
                         $("#result_alert").empty();
                         $("#result_alert").html("Esperando resultados...");
-                            var timeout = 60000
+                            var timeout = 10000
                             var endTime = Number(new Date()) + timeout;
-                            var interval = interval || 1000;
+                            var interval = interval || 2000;
 
                         poll(endTime,interval,timeout);
 
