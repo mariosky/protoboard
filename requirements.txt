@@ -1,5 +1,5 @@
 bleach==2.1.4
-Django==2.1.2
+Django==2.1.6
 django-environ==0.4.5
 environ==1.0
 html5lib==1.0.1
