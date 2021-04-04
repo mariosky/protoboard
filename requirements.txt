@@ -6,6 +6,7 @@ django-environ==0.4.5
 django-widget-tweaks==1.4.8
 dnspython==2.1.0
 docker==4.4.4
+gunicorn==20.1.0
 html5lib==1.1
 httplib2==0.19.1
 idna==2.10
