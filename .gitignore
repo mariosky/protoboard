@@ -7,7 +7,7 @@ venv
 .idea
 
 
-
+.bak
 # MAC
 .DS_Store
 .AppleDouble

@@ -1333,7 +1333,7 @@ function uploadFile() {
   xhr.addEventListener("error", uploadFailed, false);
   xhr.addEventListener("abort", uploadCanceled, false);
   /* Be sure to change the url below to the url of your upload server side script */
-  xhr.open("POST", "/upload_course");
+  xhr.open("POST", "/upload_course/");
   /*Course ID SET IN the Server Side*/
   fd.set("course_id","{{ course_id }}")
   xhr.send(fd);

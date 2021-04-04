@@ -990,9 +990,8 @@ def execute_queue(request):
         task_id = None
         try:
             task_id = server.enqueue(**task)
-        except Exception:
-
-            result = {"result": "error", "error": "Server Not Found", "id": task_id,"success": False}
+        except Exception as err:
+            result = {"result": "error", "error": "Server error: {0}".format(err), "id": task_id,"success": False}
             return HttpResponse(json.dumps(result), content_type='application/javascript', status=503)
 
 

@@ -333,7 +333,7 @@ $(document).ready(function() {
 
 
          var $btn = $(this).prop('disabled', true);
-
+         $('#main_tab a[href="#results"]').tab('show');
 
 
          var code =  editor.getValue() ;
@@ -462,7 +462,7 @@ $(document).ready(function() {
                           for (var i=0; i<result.failures.length; ++i)
                             $( "#result_panel_body").append("<p class='test_failure'>"+ result.failures[i]+"</p>" );
                           for (var i=0; i<result.successes.length; ++i)
-                            $( "#result_panel_body").append("<p class='test_success'>Pasó la prueba: "+ result.successes[i]+"</p>" );
+                            $( "#result_panel_body").append("<p class='test_success'>" + result.successes[i]+"</p>" );
 
                         if (typeof result.stdout != 'undefined'  &&  result.stdout != "\n" )
                         {

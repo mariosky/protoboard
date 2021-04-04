@@ -2,14 +2,27 @@ __author__ = 'mariosky'
 import redis
 import os
 import json
-import ast
+import time
 
 
-HOST = 'REDIS_HOST' in  os.environ and  os.environ['REDIS_HOST'] or 'redis'
-PORT = 'REDIS_PORT' in  os.environ and  os.environ['REDIS_PORT'] or '6379'
+HOST = 'REDIS_HOST' in os.environ and os.environ['REDIS_HOST'] or '127.0.0.1'
+PORT = 'REDIS_PORT' in os.environ and os.environ['REDIS_PORT'] or 6379
 
-r = redis.StrictRedis(host=HOST, port=PORT, decode_responses=True)
+WORKER_HEARTBEAT_INTERVAL = 1  #Time a worker waits for a Task before unblocking to send a heartbeat
 
+#TODO: Connection Exception
+
+
+r = redis.Redis(host=HOST, port=PORT)
+redis_ready = False
+while not redis_ready:
+    try:
+        redis_ready = r.ping()
+    except:
+        print("waiting for redis")
+        time.sleep(3)
+
+print("redis alive")
 
 class Task:
     def __init__(self, **kwargs):
@@ -26,7 +39,7 @@ class Task:
         if pipe.rpush('%s:task_queue' % app_name, self.id):
             self.state = 'submitted'
             message = json.dumps(self.__dict__)
-            pipe.set(self.id,message )
+            pipe.set(self.id, message)
             pipe.execute()
             return True
         else:
@@ -46,18 +59,8 @@ class Task:
 
     def get_result(self, app_name, as_dict = False):
         if r.sismember('%s:result_set' % app_name, self.id):
-            result = r.get(self.id)
-            print(result)
+            _dict = eval(r.get(self.id))
 
-            res = result.replace("\n","")
-
-
-            #print(type(res), res)
-            #_r = bytearray(res, 'utf-8')
-            _dict = json.loads(res)
-            print(type(_dict),_dict)
-
-            #_dict = eval(bytes(_r))
             self.__dict__.update(_dict)
             if as_dict:
                 return self.__dict__
@@ -111,6 +114,45 @@ class Cola:
     @staticmethod
     def get_all_workers():
         pattern = '*:worker:*'
-        print(pattern)
-
         return r.keys(pattern)
+
+class Worker:
+    def __init__(self, worker_id, cola):
+        self.cola = cola
+        self.id = '%s:worker:%s' % (cola.app_name, worker_id)
+        r.sadd(self.cola.worker_set, self.id)
+
+    def pull_task(self, time_out=WORKER_HEARTBEAT_INTERVAL):
+        #Pop task from queue
+        #This is a blocking operation
+        #task is a tuple (queue_name, task_id)
+        task = r.blpop([self.cola.task_queue], time_out)
+
+        if task:
+            print('pull_task:task = ', task)
+            message_queue, task_id = task
+            #Get Task Details
+            _task = r.get(task_id)
+            #Get Time_stamp
+            print('pull_task: _task, task_id = ',_task, task_id)
+            time_stamp =r.time()[0]
+
+            #Store task in pending_set ordered by time
+            # zadd NOTE: The order of arguments differs from that of the official ZADD command.
+            str_key = '%s:%s' % (self.id, task_id.decode('utf-8'))
+            print(redis.__version__)
+            r.zadd(self.cola.pending_set,  {str_key : time_stamp})
+            # Return a Task object
+            _task = json.loads(_task)
+
+            return Task(**_task)
+        #If there is no task to do return None
+        else:
+            return None
+
+    def send_heartbeat(self, timeout = WORKER_HEARTBEAT_INTERVAL + 12):
+        pipe = r.pipeline()
+        pipe.set(self.id, 1)
+        pipe.expire(self.id, timeout)
+        pipe.execute()
+

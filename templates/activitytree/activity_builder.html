@@ -389,7 +389,7 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.7.1/tinymce.min.js" referrerpolicy="origin"></script>
     <script>tinymce.init({ selector:'tinytext', height:"220", automatic_uploads:true, plugins: "image link code", toolbar:" undo redo| styleselect | bold italic | alignleft aligncenter alignright | link image | code " })</script>
 
 
@@ -921,7 +921,7 @@ function load_dataQuiz(id){
                     if (data.name == 'errmsg' && data.code== 11000){
                         alert("Error. Intente otro nombre para su actividad");
                     }
-                    return alert("Error. La actividad no se agrego")
+                    return alert("Error. La actividad no se agregó")
                 }
 
             }

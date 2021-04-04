@@ -68,6 +68,7 @@ INSTALLED_APPS = (
 	'django.contrib.sites',
     'django.contrib.auth',
 	'django.contrib.staticfiles',
+    'django.contrib.messages',
    # 'channels',
     'widget_tweaks',
     'activitytree',
@@ -190,5 +191,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 STATIC_URL = '/static/'
 
+SESSION_COOKIE_SAMESITE = None
 
 LOGOUT_REDIRECT_URL ="/"

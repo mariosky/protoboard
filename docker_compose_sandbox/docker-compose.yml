@@ -4,38 +4,54 @@ version: '3'
 # REDIS_HOST Must be the IP Adress of the HOST
 # REDIS Server Must be open to other interfaces
 services:
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+
   sandbox-python:
-    image: mariosky/sandbox-python
-    command: python /home/sandbox/worker.py
-    environment:
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PORT=6379
-      - PL=python
-
-  # Please comment those containers you dont need
-  sandbox-java:
-    image: mariosky/sandbox-java
-    command: python /home/sandbox/worker.py
-    environment:
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PORT=6379
-      - PL=java
-
-  sandbox-csharp:
-    image: mariosky/sandbox-csharp
+    labels:
+      language: python
+    build:
+      context: .
+      dockerfile: python/Dockerfile
     command: python3 /home/sandbox/worker.py
     environment:
-      - REDIS_HOST=${REDIS_HOST}
+      - PYTHONUNBUFFERED=1
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PL=python
+#
+#  # Please comment those containers you dont need
+#  sandbox-java:
+#    image: mariosky/sandbox-java
+#    command: python /home/sandbox/worker.py
+#    environment:
+#      - REDIS_HOST=redis
+#      - REDIS_PORT=6379
+#      - PL=java
+
+  sandbox-csharp:
+    labels:
+      language: csharp
+    build:
+      context: .
+      dockerfile: csharp/Dockerfile
+    command: python3 /home/sandbox/worker.py
+    environment:
+      - PYTHONUNBUFFERED=1
+      - REDIS_HOST=redis
       - REDIS_PORT=6379
       - PL=csharp
 
-  sandbox-perl6:
-    image: mariosky/sandbox-java
-    command: python /home/sandbox/worker.py
-    environment:
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PORT=6379
-      - PL=perl6
+
+#  sandbox-perl6:
+#    image: mariosky/sandbox-java
+#    command: python /home/sandbox/worker.py
+#    environment:
+#      - REDIS_HOST=redis
+#      - REDIS_PORT=6379
+#      - PL=perl6
 
 #  sandbox-golang:
 #    image: mariosky/sandbox-csharp
