@@ -15,6 +15,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 import environ
 from pathlib import Path
+from django.core.management.utils import get_random_secret_key
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -30,7 +31,7 @@ environ.Env.read_env()
 
 DEBUG = env('DEBUG')
 TEMPLATE_DEBUG = env('TEMPLATE_DEBUG')
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = get_random_secret_key()
 MONGO_DB = env('MONGO_DB')
 
 
