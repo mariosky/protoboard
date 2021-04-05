@@ -14,7 +14,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 import os
 import environ
-
+from pathlib import Path
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -41,7 +41,8 @@ DATABASES = {
 }
 
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+#BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
