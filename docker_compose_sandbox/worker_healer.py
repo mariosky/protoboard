@@ -3,13 +3,21 @@ import sys
 import time
 import redis
 import docker
-
+import environ
 
 from settings import *
+
+env = environ.Env( )
+
+environ.Env.read_env()
+
+
+
 
 print (docker.version)
 REDIS_HOST = 'REDIS_HOST' in os.environ and os.environ['REDIS_HOST'] or '127.0.0.1'
 REDIS_PORT = 'REDIS_PORT' in os.environ and os.environ['REDIS_PORT'] or 6379
+PASSWORD =  env('REDIS_PASSWORD')
 
 
 
@@ -115,9 +123,8 @@ def heal():
         ## Time between checks
         time.sleep(2)
         current_containers = client.containers.list(filters={'label':'language'})
-        print(get_all_workers())
+
         workers = [w.decode("utf-8").split(':worker:') for w in get_all_workers()]
-        print(workers)
         for container in current_containers:
             if container.short_id not in [w_id for w_lang, w_id in workers]:
                 container.restart()
