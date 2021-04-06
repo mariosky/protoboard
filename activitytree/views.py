@@ -935,7 +935,7 @@ def test_program(request):
                 result = [{"result": "added", "id": task_id}]
                 return HttpResponse(json.dumps({"id": task_id}))
             except redis.ConnectionError:
-                return HttpResponse("Error")
+                return HttpResponse("Redis Conection Error")
     else:
         return HttpResponse("Error")
 

@@ -7,21 +7,21 @@ import time
 
 HOST = 'REDIS_HOST' in os.environ and os.environ['REDIS_HOST'] or '127.0.0.1'
 PORT = 'REDIS_PORT' in os.environ and os.environ['REDIS_PORT'] or 6379
+PASSWORD = 'REDIS_PASSWORD' in os.environ and os.environ['REDIS_PASSWORD'] or '123'
 
 WORKER_HEARTBEAT_INTERVAL = 1  #Time a worker waits for a Task before unblocking to send a heartbeat
 
 #TODO: Connection Exception
 
 
-r = redis.Redis(host=HOST, port=PORT)
+r = redis.Redis(host=HOST, port=PORT, password=PASSWORD)
 redis_ready = False
 while not redis_ready:
     try:
         redis_ready = r.ping()
-    except:
-        print("waiting for redis")
+    except Exception as e:
+        print("waiting for redis ", e)
         time.sleep(3)
-
 print("redis alive")
 
 class Task:

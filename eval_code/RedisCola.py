@@ -7,9 +7,9 @@ import ast
 
 HOST = 'REDIS_HOST' in  os.environ and  os.environ['REDIS_HOST'] or 'redis'
 PORT = 'REDIS_PORT' in  os.environ and  os.environ['REDIS_PORT'] or '6379'
+PASSWORD = 'REDIS_PASSWORD' in os.environ and os.environ['REDIS_PASSWORD'] or '123-PleaseChange'
 
-r = redis.StrictRedis(host=HOST, port=PORT, decode_responses=True)
-
+r = redis.Redis(host=HOST, port=PORT, password=PASSWORD, decode_responses=True)
 
 class Task:
     def __init__(self, **kwargs):
