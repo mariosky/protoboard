@@ -72,6 +72,9 @@
           </div>
           <div class="tab-pane" id="results">
 
+                   <div id="result_alert">
+
+                  </div>
             <div class="container py-2">
               <div class="row">
                 <div class="col-md-12 m-t-1">
@@ -89,9 +92,7 @@
             </div>
               </div>
 
-                  <div id="result_alert">
 
-                  </div>
 
                 <div class="container py-2">
             <div class="row">
@@ -225,6 +226,7 @@
     </script>
 
     <script id="fail_template" type="x-tmpl-mustache">
+
         <div class='alert alert-danger' role='alert'>
           <h5 class="alert-heading">Algo anda mal</h5>
                 <p>
@@ -233,7 +235,18 @@
         </div>
     </script>
 
+    <script id="waiting_template" type="x-tmpl-mustache">
+     <div class='alert alert-success' role='alert'>
 
+<div class="d-flex align-items-center">
+            <strong>Esperando...</strong>
+            <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+        </div>
+
+        </div>
+
+
+    </script>
 
 
     <script type="text/javascript" charset="utf-8">
@@ -360,7 +373,7 @@ $(document).ready(function() {
 
 
                         {% endif %}
-     $('#main_tab a[href="#results"]').tab('show');
+
     }
 
 
@@ -384,9 +397,10 @@ $(document).ready(function() {
             Mustache.tags = ['[[', ']]'];
             success_template = $('#success_template').html();
             fail_template = $('#fail_template').html();
+            waiting_template = $('#waiting_template').html();
             Mustache.parse(success_template);
             Mustache.parse(fail_template);
-
+            Mustache.parse(waiting_template);
 
             $("#sendButton").on("click", function () {
 
@@ -490,9 +504,10 @@ $(document).ready(function() {
                     task_id =data.id;
                     number_of_tries=0;
                     $("#consola").empty();
+                    $('#main_tab a[href="#results"]').tab('show');
                     $("#result_panel_body").empty();
                     $("#result_alert").empty();
-                    $("#result_alert").html("Esperando resultados...");
+                    $("#result_alert").html(Mustache.render(waiting_template));
 
                     const pollResults = poll({
                     fn: doAjax,
