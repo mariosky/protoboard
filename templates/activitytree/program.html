@@ -302,141 +302,19 @@ $(document).ready(function() {
 
 
     <script type="text/javascript" charset="utf-8">
-        $(document).ready(function() {
-
-            var editor = ace.edit("editor");
-            var original_code = editor.getValue();
-
-
-            task_id = 0;
-            number_of_tries = 0;
-
-            {% if XML_NAV %}
-            var num_attempts = $xml.find("item[is_current='True']").attr('num_attempts');
-            var attempt_limit = $xml.find("item[is_current='True']").attr('attempt_limit');
-
-            $('#num_attempts').html("intentos: " + num_attempts );
-
-            {% endif %}
-
-            Mustache.tags = ['[[', ']]'];
-            success_template = $('#success_template').html();
-            fail_template = $('#fail_template').html();
-            Mustache.parse(success_template);
-            Mustache.parse(fail_template);
-
-
-
-
-     $("#sendButton").on("click", function (){
-
-
-
-         var $btn = $(this).prop('disabled', true);
-         $('#main_tab a[href="#results"]').tab('show');
-
-
-         var code =  editor.getValue() ;
-
-
-
-
-           $.ajax(
-                {
-                    url: '/execute_queue/',
-                    type: "POST",
-                    crossDomain: false, // obviates need for sameOrigin test
-                    beforeSend: function(xhr, settings) {
-                    if (!csrfSafeMethod(settings.type)) {
-                        var csrftoken = getCookie('csrftoken');
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
-                    },
-                    contentType: "application/json",
-                    data: JSON.stringify({"jsonrpc": "2.0", "method": "{{ activity_uri }}", "params": [code],
-             {% if uri_id %}
-                    "id": {{ uri_id }} ,
-             {% endif %}
-                    "keypresses": keypresses, "mousepresses": mousepresses, "mousemovement": mouse }),
-                    dataType: "json",
-                    success: function(data, textStatus, jqXHR) {
-                            // TO DO:
-                            // Avisar que ya se envió la tarea al servidor exitósamente
-
-
-                        if ("outcome" in data)
-                        {
-                            $("#sendButton").prop('disabled', false);
-                            results(data);
-
-                        }
-
-
-                        else
-                        {
-
-
-                            task_id =data.id;
-                            number_of_tries=0;
-
-                        $("#consola").empty();
-                        $("#result_panel_body").empty();
-                        $("#result_alert").empty();
-                        $("#result_alert").html("Esperando resultados...");
-                            var timeout = 10000
-                            var endTime = Number(new Date()) + timeout;
-                            var interval = interval || 2000;
-
-                        poll(endTime,interval,timeout);
-
-                        }
-
-
-
-                        },
-                    error: function(jqXHR, textStatus, errorThrown) {
-
-                        alert ("Lo sentimos, hubo un error al enviar tu programa al servidor. El error fué (en lenguaje informático): " +errorThrown);
-                        $("#sendButton").prop('disabled', false);
-
-                        },
-                    fail: function(xhr, textStatus, errorThrown) {
-                        alert ("Lo sentimos, hubo un error al enviar tu programa al servidor.. El error fué (en lenguaje informático): "+errorThrown);
-                        $("#sendButton").prop('disabled', false);
-
-                        }
-
-
-                    });
-     });
-
-  $("#resetButton").on("click", function (){
-
-
-         editor.setValue(original_code);
-
-
-     });
-
 
     function results(data)
     {
-
        $("#result_panel_body").html("");
        $("#consola").html("");
        $("#sendButton").prop('disabled', false);
-
          var result = data.result;
                         if (result.result == "Failure")
                         {
-
                             $("#result_alert").html( Mustache.render(fail_template,
                                    {
                                        in_path:in_path
-
                                    }));
-
-
                        }
                         else if (result.result == "ProcessError")
                         {
@@ -483,87 +361,174 @@ $(document).ready(function() {
 
                         {% endif %}
      $('#main_tab a[href="#results"]').tab('show');
-
-
     }
 
 
-    function poll(endTime,interval,timeout){
-        $.ajax({ url: '/get_result/',
-            type: "POST",
-            crossDomain: false, // obviates need for sameOrigin test
-            beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type)) {
-                var csrftoken = getCookie('csrftoken');
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-            },
-            contentType: "application/json",
-            data: JSON.stringify({"jsonrpc": "2.0", "method": "_execute", "params": ["{{ activity_uri }}"], "id": task_id }),
-            success: function(data){
-            //Update your dashboard gauge
+        $(document).ready(function() {
 
-                   // -1 No result found,
+            var editor = ace.edit("editor");
+            var original_code = editor.getValue();
+
+
+            task_id = 0;
+            number_of_tries = 0;
+
+            {% if XML_NAV %}
+                var num_attempts = $xml.find("item[is_current='True']").attr('num_attempts');
+                var attempt_limit = $xml.find("item[is_current='True']").attr('attempt_limit');
+
+            $('#num_attempts').html("intentos: " + num_attempts);
+
+            {% endif %}
+
+            Mustache.tags = ['[[', ']]'];
+            success_template = $('#success_template').html();
+            fail_template = $('#fail_template').html();
+            Mustache.parse(success_template);
+            Mustache.parse(fail_template);
+
+
+            $("#sendButton").on("click", function () {
+
+                var $btn = $(this).prop('disabled', true);
+                var code = editor.getValue();
+
+                const poll = ({fn, validate, interval, maxAttempts}) => {
+                    console.log('Inicia el polling...');
+                    let attempts = 0;
+
+                    const executePoll = async (resolve, reject) => {
+                        console.log('Polling..');
+                        const result = await fn();
+                        attempts++;
+
+                        if (validate(result)) {
+                            return resolve(result);
+                        } else if (maxAttempts && attempts === maxAttempts) {
+                            return reject(new Error('Se agotó el tiempo'));
+                        } else {
+                            setTimeout(executePoll, interval, resolve, reject);
+                        }
+                    };
+                    return new Promise(executePoll);
+                };
+
+                const  sendToQueue  = async () => {
+                    let result;
+                    try {
+                        result = await  $.ajax({
+                            url: '/execute_queue/',
+                            type: 'POST',
+                            crossDomain: false,
+                            beforeSend: function(xhr, settings) {
+                                            if (!csrfSafeMethod(settings.type)) {
+                                                var csrftoken = getCookie('csrftoken');
+                                                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                                            }
+                                            },
+                            dataType: "json",
+                            contentType: "application/json",
+                            data: JSON.stringify({"jsonrpc": "2.0", "method": "{{ activity_uri }}", "params": [code],
+                            {% if uri_id %}
+                           "id": {{ uri_id }} ,
+                           {% endif %}
+                            "keypresses": keypresses,
+                            "mousepresses": mousepresses,
+                            "mousemovement": mouse})
+                        });
+                        return result;
+                        } catch (error)
+                    {
+                        console.error(error);
+                    }
+                }
+
+
+                const  doAjax  = async () => {
+                    let result;
+                    try {
+                        result = await  $.ajax({
+                            url: '/get_result/',
+                            type: 'POST',
+                            crossDomain: false,
+                            beforeSend: function(xhr, settings) {
+                                            if (!csrfSafeMethod(settings.type)) {
+                                                var csrftoken = getCookie('csrftoken');
+                                                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                                            }
+                                            },
+                             dataType: "json",
+                             contentType: "application/json",
+                             data: JSON.stringify({"jsonrpc": "2.0", "method": "_execute", "params": ["{{ activity_uri }}"], "id": task_id })
+                        });
+
+                        return result;
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+
+
+                const validateResults = data => {
                     if (data.outcome != -1)
                     {
-
-                        results(data);
-
+                        return true;
                     }
                     else
                     {
-
+                        return false;
                     }
 
-            console.log(data.outcome);
+                }
 
-            }, dataType: "json",
 
-            complete: function (jqXHR,textStatus ){
-               var data = $.parseJSON(jqXHR.responseText);
-               console.log(data.outcome);
-               console.log(data);
-               if (data.outcome == -1)
-               {
+                const POLL_INTERVAL = 2000; // two seconds
 
-                   if (Number(new Date()) < endTime)
-                   {
-                       poll(endTime,interval);
-                   }
+                const sentToExecuteQueue = sendToQueue()
+                .then( data => {
+                    console.log(data);
+                    task_id =data.id;
+                    number_of_tries=0;
+                    $("#consola").empty();
+                    $("#result_panel_body").empty();
+                    $("#result_alert").empty();
+                    $("#result_alert").html("Esperando resultados...");
 
-                   else
-                   {
-                         $("#sendButton").prop('disabled', false);
+                    const pollResults = poll({
+                    fn: doAjax,
+                    validate: validateResults,
+                    interval: POLL_INTERVAL,
+                    maxAttempts:20
+                    })
+                    .then(data => {
+                        console.log(data);
+                        $("#sendButton").prop('disabled', false);
+                            results(data);
+                    }
 
-                        $("#result_panel_body").html("");
-                        $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
-                        $('<p>'+ 'TIEMPO DE RESPUESTA AGOTADO'+'<p/>', {class:"p"}).appendTo("#result_panel_body");
 
-                   }
-               }
-            },
-            timeout: timeout,
-            error: function(jqXHR, textStatus, errorThrown) {
 
-                        alert ("Lo sentimos, hubo un error al recibir el resultado de la ejecución. El error fué (en lenguaje informático): " +errorThrown);
-                        $("#sendButton").button('reset');
-                        $("#result_panel_body").html("");
-                        $('#main_tab a[href="#instrucciones"]').tab('show');
+                    )
+                    .catch(err => {
+                        console.error(err);
+                        alert ("Lo sentimos, hubo un error al enviar tu programa al servidor. El error fué (en lenguaje informático): " +errorThrown);
+                        $("#sendButton").prop('disabled', false);
 
-                        },
-                    fail: function(xhr, textStatus, errorThrown) {
-                        alert ("Lo sentimos, hubo un error al recibir el resultado de la ejecución. El error fué (en lenguaje informático): " +errorThrown);
-                        $("#sendButton").button('reset');
-                        $("#result_panel_body").html("");
-                        $('#main_tab a[href="#instrucciones"]').tab('show');
+                    });
+                    })
+                .catch(err => {
+                    console.error(err);
 
-                        }
+                    $("#sendButton").prop('disabled', false);
 
+                    $("#result_panel_body").html("");
+                    $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
+                    $('<p>'+ 'TIEMPO DE RESPUESTA AGOTADO'+'<p/>', {class:"p"}).appendTo("#result_panel_body");
+                });
+
+
+            });
         });
-    };
-
-  });
-
 </script>
 
 
