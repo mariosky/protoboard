@@ -11,8 +11,6 @@ if __name__ == "__main__":
     application = get_wsgi_application()
 
 
-
-
 import json
 from activitytree.models import LearningActivity, Course, AuthorLearningActivity,UserLearningActivity
 from .interaction_handler import SimpleSequencing

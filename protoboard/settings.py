@@ -41,7 +41,7 @@ DATABASES = {
 
 }
 
-
+TEMPLATE_DIR="mytemplates"
 #BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -106,7 +106,7 @@ from os.path import join
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ join(BASE_DIR,  'templates_local'), join(BASE_DIR,  'templates'),
+        'DIRS': [join(BASE_DIR, TEMPLATE_DIR),
             # insert your TEMPLATE_DIRS here
         ],
         'APP_DIRS': True,
