@@ -682,7 +682,7 @@ def path_activity(request, path_id, uri):
                                        'uri': requested_activity.learning_activity.uri,
                                        'current_site': get_current_site(request),
                                        'uri_id': '/%s' % requested_activity.learning_activity.id,
-                                       'content': content,
+                                       'content': activity_content,
                                        'root': requested_activity.learning_activity.get_root().uri,
                                        'root_id': '/%s' % requested_activity.learning_activity.get_root().id,
                                        'breadcrumbs': breadcrumbs,
@@ -703,7 +703,7 @@ def activity(request, uri=None):
         activity_content = Activity.get('/%s' % uri)
 
         if activity_content and 'content' in activity_content:
-            content = activity_content['content']
+            content = activity_content
         else:
             content = ""
 
@@ -723,7 +723,7 @@ def activity(request, uri=None):
 
                                       {'XML_NAV': None,
                                        'uri': uri,
-                                       'content': content,
+                                       'content': activity_content,
                                        'breadcrumbs': None,
                                        'current_site': get_current_site(request)
                                        })
