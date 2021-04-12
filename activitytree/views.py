@@ -132,8 +132,10 @@ def my_enrolled_courses(request):
     """view that determines if user has unfinished courses, and returns the courses"""
 
     if request.user.is_authenticated and request.user != 'AnonymousUser':
-
-        RootULAs = UserLearningActivity.objects.filter(learning_activity__root=None, user=request.user)
+        RootULAs = ActivityTree.objects.filter(user=request.user)
+        #RootULAs = UserLearningActivity.objects.filter(learning_activity__root=None, user=request.user)
+        
+        print(RootULAs[0].root_activity,RootULAs[0].root_activity.name )
         return render(request,'activitytree/my_enrolled_courses.html',
                                   {'courses': RootULAs})
     else:
@@ -634,7 +636,7 @@ def path_activity(request, path_id, uri):
 
         # Escape for javascript
         XML = ET.tostring(_XML, encoding='unicode').replace('"', r'\"')
-        print('XML:', XML)
+        #print('XML:', XML)
         breadcrumbs = s.get_current_path(requested_activity)
 
         rating_totals = LearningActivityRating.objects.filter(
@@ -653,7 +655,7 @@ def path_activity(request, path_id, uri):
                                       {'XML_NAV': XML,
                                        'uri': requested_activity.learning_activity.uri,
                                        'uri_id': requested_activity.learning_activity.id,
-                                       'video': activity_content,
+                                       'content': activity_content,
                                        'current_site': get_current_site(request),
 
                                        'breadcrumbs': breadcrumbs,
@@ -663,8 +665,20 @@ def path_activity(request, path_id, uri):
 
         elif requested_activity.learning_activity.is_container:
 
-            return render(request,'activitytree/container_list.html',
+            if request.GET.get('nav_event'):
+                next_uri = s.get_next(root, requested_activity)
+                next_activity = UserLearningActivity.objects.get(learning_activity__id=next_uri, user=request.user)
+                print('next_uri', next_uri)
+                if next_uri is None:
+                    pass
+                else:
+                    return HttpResponseRedirect(
+                    '/%s%s' % (next_activity.learning_activity.id, next_activity.learning_activity.uri))
+                    
 
+
+            else:
+                return render(request,'activitytree/container_list.html',
                                       {
                                           'XML_NAV': XML,
                                           'children': requested_activity.get_children(),
