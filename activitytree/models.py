@@ -83,12 +83,6 @@ class LearningActivity(models.Model):
     def __unicode__(self):
         return self.name
 
-
-
-
-
-
-
 from decimal import Decimal
 class UserLearningActivity(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -288,12 +282,16 @@ class UserLearningActivity(models.Model):
 
 
 class Course(models.Model):
-    short_description = models.TextField()
-    image = models.ImageField(upload_to='courses', blank=True)
+    author = models.ForeignKey(User,on_delete=models.CASCADE,null = True , default=None)
+    uri = models.URLField(blank=True, unique=True)
+    lom = models.URLField(blank=True)
     private = models.BooleanField(blank=False, default=False)
+    current_price = models.IntegerField(blank=True, default=0)
+    duration = models.DurationField(null=True, default=None)
     html_description = models.TextField(blank=True)
     root = models.OneToOneField('LearningActivity', on_delete=models.CASCADE)
     start_date = models.DateField(auto_now=True)
+    
 
 
 
@@ -312,8 +310,6 @@ class ULA_Event(models.Model):
     ULA = models.ForeignKey(UserLearningActivity,on_delete=models.CASCADE)
     time_stamp = models.TimeField(auto_now=True)
     context = models.TextField()
-
-
 
 
 class LearningActivityRating(models.Model):

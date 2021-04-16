@@ -12,7 +12,8 @@ urlpatterns = [
 
       path('',views.welcome),
       path('admin/', admin.site.urls),
-
+      path('update-course/<int:course_id>/', views.update_course_view, name='update-course'),
+      path('add-course/',views.add_course_view),
       path('welcome/',views.welcome),
       path('instructor/', views.instructor),
       path('student/', views.my_enrolled_courses),

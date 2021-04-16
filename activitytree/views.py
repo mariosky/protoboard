@@ -35,6 +35,7 @@ from urllib.parse import urlparse
 import json
 
 from activitytree.retest import re_test
+
 import pymongo
 from pymongo import errors
 from pymongo import MongoClient
@@ -53,9 +54,138 @@ from activitytree.interaction_handler import SimpleSequencing
 from activitytree.models import UserProfile
 from activitytree.courses import get_activity_tree, update_course_from_json, create_empty_course, upload_course_from_json
 from django.contrib.auth.forms import UserCreationForm
+from .forms.course import CourseForm
+from django import forms
 from django.contrib import messages
+from django.db import transaction
 
 logger = logging.getLogger(__name__)
+
+
+def add_course_view(request):
+    if request.user.is_authenticated and request.user != 'AnonymousUser':
+        if request.method == 'POST':
+            form = CourseForm(request.POST)
+            if form.is_valid():
+                course_metadata =  form.cleaned_data
+                title = course_metadata['title']
+                uri = course_metadata['uri']
+                is_private = course_metadata['is_private']
+                course_metadata['_id'] = '/activity/'+uri
+
+                try:
+                    with transaction.atomic():
+                        learning_activity = LearningActivity(
+                            parent=None,
+                            root=None,
+                            is_container=True,
+                            name=title,
+                            uri=course_metadata['_id'])
+                        learning_activity.save()
+
+                        course = Course(author=request.user, uri=course_metadata['_id'], root=learning_activity, private=is_private)
+                        course.save()
+
+                        client = MongoClient(settings.MONGO_DB)
+                        db = client.protoboard_database
+                        activities_collection = db.activities_collection
+
+                        course_metadata['duration'] = str(course_metadata['duration'])
+                        print(course_metadata['duration'])
+                        try:
+                            ## Is a new activity Generate a Global ID
+                            message = activities_collection.update(
+                                {'_id': course_metadata['_id'], 'author': course_metadata['author']},
+                                course_metadata, upsert=True)
+                        except:
+                            pass
+
+                except IntegrityError:
+                    form.add_error(None,'Error de Integridad, El nombre del Slug del curso ya existe, intenta otro')
+                    print(form.errors)
+                    return render(request, 'activitytree/create_course.html', {'form': form})
+
+                except pymongo.errors.DuplicateKeyError as e:
+                    transaction.rollback()
+                    form.add_error(None, 'Error de Integridad, El nombre del Slug de la actividad ya existe, intenta otro nombre')
+                    return render(request, 'activitytree/create_course.html', {'form': form})
+
+                # All OK
+                return HttpResponseRedirect('/instructor/')
+            else:
+                print("Forma inválida")
+
+        else:
+            form = CourseForm()
+        return render(request, 'activitytree/create_course.html', {'form': form})
+    else:
+        # please log in
+        return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
+
+
+def update_course_view(request, course_id):
+    if request.user.is_authenticated and request.user != 'AnonymousUser':
+        course = get_object_or_404(Course, pk=course_id)
+        if request.method == 'POST':
+            form = CourseForm(request.POST)
+            if form.is_valid():
+                course_metadata = form.cleaned_data
+                course.title = course_metadata['title']
+                course.is_private = course_metadata['is_private']
+                course.duration = course_metadata['duration']
+                course.html_description = course_metadata['html_description']
+                course.start_date = course_metadata['start_date']
+                course.root.name =  course_metadata['title']
+
+                try:
+                    with transaction.atomic():
+                        course.save()
+                        client = MongoClient(settings.MONGO_DB)
+                        db = client.protoboard_database
+                        activities_collection = db.activities_collection
+
+                        course_metadata['duration'] = str(course_metadata['duration'])
+                        try:
+                            ## Is a new activity Generate a Global ID
+                            message = activities_collection.update(
+                                {'_id': course_metadata['_id'], 'author': course_metadata['author']},
+                                course_metadata, upsert=True)
+                        except:
+                            pass
+
+                except IntegrityError:
+                    form.add_error(None, 'Error de Integridad, El nombre del Slug del curso ya existe, intenta otro')
+                    print(form.errors)
+                    return render(request, 'activitytree/create_course.html', {'form': form})
+
+                except pymongo.errors.DuplicateKeyError as e:
+                    transaction.rollback()
+                    form.add_error(None,
+                                   'Error de Integridad, El nombre del Slug de la actividad ya existe, intenta otro nombre')
+                    return render(request, 'activitytree/create_course.html', {'form': form})
+
+                # All OK
+                return HttpResponseRedirect('/instructor/')
+            else:
+                print("Forma Inválida", form.errors)
+                return render(request, 'activitytree/create_course.html', {'form': form})
+        else:
+            #get activity from mongo
+            activity = None
+            try:
+                ## Is a new activity Generate a Global ID
+                activity = Activity.get(course.uri)
+            except:
+                pass
+
+            print(activity)
+            activity['duration'] = course.duration
+
+            form = CourseForm(initial=activity)
+        return render(request, 'activitytree/create_course.html', {'form': form})
+    else:
+        # please log in
+        return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
 
 def welcome(request):
@@ -103,19 +233,6 @@ def instructor(request):
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
 
-def student(request):
-    if request.user.is_authenticated and request.user != 'AnonymousUser':
-        courses = LearningActivity.objects.filter(authorlearningactivity__user=request.user, root=None)
-
-        return render(request,'activitytree/student_home.html',
-                                  {'courses': courses
-                                   # , 'plus_scope':plus_scope,'plus_id':plus_id
-                                   })
-
-    else:
-        return HttpResponseRedirect('/login/?next=%s' % request.path)
-
-
 def my_courses(request):
     if request.user.is_authenticated and request.user != 'AnonymousUser':
         courses = LearningActivity.objects.filter(authorlearningactivity__user=request.user, root=None)
@@ -125,7 +242,7 @@ def my_courses(request):
                                    # , 'plus_scope':plus_scope,'plus_id':plus_id
                                    })
     else:
-        return HttpResponseRedirect('/login/?next=%s' % request.path)
+        return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
 
 def my_enrolled_courses(request):
@@ -133,13 +250,16 @@ def my_enrolled_courses(request):
 
     if request.user.is_authenticated and request.user != 'AnonymousUser':
         RootULAs = ActivityTree.objects.filter(user=request.user)
-        #RootULAs = UserLearningActivity.objects.filter(learning_activity__root=None, user=request.user)
+        rows = []            
+        for row in range(1+len(RootULAs)%4):
+            rows.append(RootULAs[((row+1)*4)-4:(row+1)*4])
+
+
+        print(RootULAs[0].root_activity.image,RootULAs[0].root_activity.name )
         
-        print(RootULAs[0].root_activity,RootULAs[0].root_activity.name )
-        return render(request,'activitytree/my_enrolled_courses.html',
-                                  {'courses': RootULAs})
+        return render(request,'activitytree/my_enrolled_courses.html', {'courses': RootULAs, 'student': request.user, 'rows':rows})
     else:
-        return HttpResponseRedirect('/login/?next=%s' % request.path)
+        return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
 
 def course_info(request, course_id):
@@ -149,7 +269,6 @@ def course_info(request, course_id):
         return render(request,'activitytree/course_info.html',
                                       {'course_id': course_id, 'course': mycourse
                                        })
-
     else:
         return HttpResponseNotFound('<h1>HTTP METHOD IS NOT VALID</h1>')
 
@@ -157,7 +276,6 @@ def course_info(request, course_id):
 def course(request, course_id=None):
     # Must have credentials
     if request.user.is_authenticated and request.user != 'AnonymousUser':
-
         # POST:
         # Add or Delete a New Course
         if request.method == 'POST':
@@ -209,7 +327,6 @@ def course(request, course_id=None):
                 return HttpResponseNotFound(u'<h1>Falta información para enviarse a la petición</h1>')
         # GET:
         # Edit course
-
         elif request.method == 'GET':
             if course_id:
                 # Is yours or you are staff?
@@ -226,7 +343,7 @@ def course(request, course_id=None):
                 return HttpResponseNotFound('<h1>Course ID not Found</h1>')
     else:
         # please log in
-        return HttpResponseRedirect('/login/?next=%s' % request.path)
+        return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
 @login_required()
 def profile_tz(request):
