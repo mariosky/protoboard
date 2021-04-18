@@ -88,8 +88,6 @@ def delete_course_view(request, course_id):
 
         return HttpResponseRedirect('/instructor/')
 
-
-
 def add_course_view(request):
     if request.user.is_authenticated and request.user != 'AnonymousUser':
         if request.method == 'POST':
@@ -100,6 +98,7 @@ def add_course_view(request):
                 uri = course_metadata['uri']
                 is_private = course_metadata['is_private']
                 course_metadata['_id'] = '/activity/'+uri
+                course_metadata['html_description'] = bleach.clean(course_metadata['html_description'], tags=all_tags, attributes=attrs)
 
                 try:
                     with transaction.atomic():
@@ -163,6 +162,8 @@ def update_course_view(request, course_id):
                 form.cleaned_data['uri'] = original_uri
                 course.metadata = form.cleaned_data
                 course.metadata['_id'] = '/activity/' + course.uri
+                course.metadata['html_description'] = bleach.clean(course.metadata['html_description'], tags=all_tags,
+                                                                   attributes=attrs)
 
                 try:
                     with transaction.atomic():
@@ -1043,11 +1044,6 @@ def test_program(request):
                 return HttpResponse("Redis Conection Error")
     else:
         return HttpResponse("Error")
-
-
-
-
-
 
 
 @csrf_protect
