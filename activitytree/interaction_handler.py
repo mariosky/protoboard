@@ -209,7 +209,7 @@ class SimpleSequencing(object):
         query = """
         WITH RECURSIVE nodes_cte AS (
         SELECT 	n.id, n.parent_id, n.name, n.id::TEXT AS path,
-                n.description, n.image,  n.uri, n.lom, n.root_id,
+                 n.uri, n.root_id,
                 n.pre_condition_rule,
                 n.choice_exit, n.attempt_limit, n.available_from,
                 n.available_until, n.is_container, n.is_visible, n.order_in_container
@@ -217,7 +217,7 @@ class SimpleSequencing(object):
         WHERE n.parent_id = %s
             UNION ALL
         SELECT 	c.id, c.parent_id, c.name, c.id::TEXT AS path,
-                c.description, c.image,  c.uri, c.lom, c.root_id,
+                c.uri, c.root_id,
                 c.pre_condition_rule,
                 c.choice_exit, c.attempt_limit, c.available_from,
                 c.available_until, c.is_container, c.is_visible, c.order_in_container
@@ -226,7 +226,7 @@ class SimpleSequencing(object):
         )
         (
         SELECT  la.id, parent_id, name, ''as path,
-                 description, image, uri, lom, root_id,
+                uri, root_id,
                 pre_condition_rule,
                 choice_exit, attempt_limit, available_from,
                 available_until, is_container, is_visible, order_in_container,
@@ -241,7 +241,7 @@ class SimpleSequencing(object):
 
         UNION ALL
         SELECT  nd.id, parent_id, name,path,
-                description, image,  uri, lom, root_id,
+                uri, root_id,
                 pre_condition_rule,
                 choice_exit, attempt_limit, available_from,
                 available_until, is_container, is_visible, order_in_container,
@@ -278,7 +278,7 @@ class SimpleSequencing(object):
         query= """
     WITH RECURSIVE nodes_cte AS (
     SELECT 	n.id, n.parent_id, n.name, n.id::TEXT AS path,
-            n.description, n.image, n.uri, n.lom, n.root_id,
+            n.uri,  n.root_id,
             n.pre_condition_rule,
             n.choice_exit, n.attempt_limit, n.available_from,
             n.available_until, n.is_container, n.is_visible, n.order_in_container, n.rules,n.rollup_rule,n.rollup_progress
@@ -286,7 +286,7 @@ class SimpleSequencing(object):
     WHERE n.id = %s
         UNION ALL
     SELECT 	c.id, c.parent_id, c.name, path || '|'|| c.id::TEXT  AS path ,
-         c.description, c.image, c.uri, c.lom, c.root_id,
+          c.uri, c.root_id,
             c.pre_condition_rule,
             c.choice_exit, c.attempt_limit, c.available_from,
             c.available_until, c.is_container, c.is_visible, c.order_in_container, c.rules,c.rollup_rule,c.rollup_progress
