@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
-
+from django.core.serializers.json import DjangoJSONEncoder
 from FIS import Text_Verbal
 # Create your models here.
 
@@ -32,13 +32,7 @@ class UserProfile(models.Model):
 class LearningActivity(models.Model):
     """ Esta clase implementa los nodos del arbol de actividades """
     name = models.CharField(max_length=128)
-    description = models.TextField(blank=True)
-    image = models.URLField(blank=True)
-
     uri = models.URLField(blank=True)
-    lom = models.URLField(blank=True)
-
-
     parent = models.ForeignKey(to ='LearningActivity',null=True,related_name = 'children', on_delete=models.CASCADE)
     root   = models.ForeignKey(to ='LearningActivity', on_delete=models.CASCADE, null=True)
     
@@ -284,14 +278,9 @@ class UserLearningActivity(models.Model):
 class Course(models.Model):
     author = models.ForeignKey(User,on_delete=models.CASCADE,null = True , default=None)
     uri = models.URLField(blank=True, unique=True)
-    lom = models.URLField(blank=True)
-    private = models.BooleanField(blank=False, default=False)
-    current_price = models.IntegerField(blank=True, default=0)
-    duration = models.DurationField(null=True, default=None)
-    html_description = models.TextField(blank=True)
     root = models.OneToOneField('LearningActivity', on_delete=models.CASCADE)
-    start_date = models.DateField(auto_now=True)
-    
+    meta_data = models.JSONField(null=True, encoder=DjangoJSONEncoder)
+
 
 
 
@@ -320,10 +309,7 @@ class LearningActivityRating(models.Model):
     context = models.PositiveSmallIntegerField()
 
             
-class AuthorLearningActivity(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
-    learning_activity = models.ForeignKey(LearningActivity,on_delete=models.CASCADE)
-    time=models.DateTimeField(auto_now=True)
+
 
             
             

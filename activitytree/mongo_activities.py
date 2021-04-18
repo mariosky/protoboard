@@ -14,10 +14,6 @@ _db = _client.protoboard_database
 _activities_collection = _db.activities_collection
 
 
-
-
-
-
 class Activity:
     @staticmethod
     def get(uri):
@@ -40,7 +36,6 @@ class Activity:
         return _activities_collection.find({},
                                            {'_id': 1, 'title': 1, 'tags': 1, 'lang': 1, 'type': 1, 'description': 1,
                                             'icon': 1, 'level': 1})
-
     @staticmethod
     def get_by_user(user, page):
         return _activities_collection.find({'author': user}, { '_id':1, 'title':1, 'lang':1,'type':1,'description':1,'icon':1,'level':1, 'tags':1}).sort("$natural", pymongo.DESCENDING).limit(5).skip(page)
@@ -55,8 +50,6 @@ class Activity:
         return _activities_collection.find({'type': {'$ne': 'quiz'}},
                                            {'_id': 1, 'title': 1, 'tags': 1, 'lang': 1, 'type': 1, 'description': 1,
                                             'icon': 1, 'level': 1, 'image_url':1}).sort("$natural", pymongo.DESCENDING).limit(4)
-
-
     @staticmethod
     def get_title(title):
         return _activities_collection.find({'_id': title}, { '_id':1, 'author':1})

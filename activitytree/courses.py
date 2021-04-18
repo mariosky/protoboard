@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
 
 import json
-from activitytree.models import LearningActivity, Course, AuthorLearningActivity,UserLearningActivity
+from activitytree.models import LearningActivity, Course, UserLearningActivity
 from .interaction_handler import SimpleSequencing
 import ast
 
@@ -125,23 +125,6 @@ def add_precondition(rule):
     return rule
 
 
-def create_empty_course(url,user, name ='New Course', short_description="", is_private=False):
-        learning_activity = LearningActivity(
-        parent =  None,
-        root   =  None,
-        is_container = True,
-        name = name,
-
-        uri = '/activity/'+url)
-        learning_activity.save()
-
-        course = Course(short_description=short_description, root=learning_activity, private=is_private)
-        course.save()
-
-        auth = AuthorLearningActivity(user=user, learning_activity=learning_activity )
-        auth.save()
-
-        return learning_activity.id,learning_activity.uri
 
 
 
@@ -160,12 +143,9 @@ def _traverse_update(activity, parent=None, root=None, user=None):
 
             root.name = activity['learning_activity']['name']
             root.uri = activity['learning_activity']['uri']
-            root.lom = activity['learning_activity']['lom'] or ""
             root.attempt_limit=activity['learning_activity']['attempt_limit']
             root.available_until=activity['learning_activity']['available_until']
             root.available_from =activity['learning_activity']['available_from']
-            root.description =activity['learning_activity']['description']
-            root.image = activity['learning_activity']['image']
             root.rules = activity['learning_activity']['rules'] or ""
             root.pre_condition_rule = add_precondition(activity['learning_activity']['rules']) or ""
             root.rollup_rule  = ('rollup_rule' in activity['learning_activity'] and  activity['learning_activity']['rollup_rule']) or ""
@@ -179,12 +159,9 @@ def _traverse_update(activity, parent=None, root=None, user=None):
             root   = root,
             name = activity['learning_activity']['name'],
             uri = activity['learning_activity']['uri'],
-            lom = activity['learning_activity']['lom'] or "",
             attempt_limit=activity['learning_activity']['attempt_limit'] ,
             available_until=activity['learning_activity']['available_until'] ,
             available_from =activity['learning_activity']['available_from'],
-            description =activity['learning_activity']['description'],
-            image = activity['learning_activity']['image'],
             pre_condition_rule = add_precondition(activity['learning_activity']['rules']) or "",
             rollup_rule  = activity['learning_activity']['rollup_rule'],
             is_container = activity['learning_activity']['is_container'],
@@ -218,12 +195,9 @@ def _traverse_update(activity, parent=None, root=None, user=None):
         learning_activity.root   = root
         learning_activity.name = activity['learning_activity']['name']
         learning_activity.uri = activity['learning_activity']['uri']
-        learning_activity.lom = activity['learning_activity']['lom'] or ""
         learning_activity.attempt_limit=activity['learning_activity']['attempt_limit']
         learning_activity.available_until=activity['learning_activity']['available_until']
         learning_activity.available_from =activity['learning_activity']['available_from']
-        learning_activity.description =activity['learning_activity']['description']
-        learning_activity.image = activity['learning_activity']['image']
         learning_activity.pre_condition_rule = add_precondition(activity['learning_activity']['rules']) or ""
         learning_activity.rollup_rule  = ('rollup_rule' in activity['learning_activity'] and  activity['learning_activity']['rollup_rule']) or ""
         learning_activity.is_container = activity['learning_activity']['is_container']
@@ -261,12 +235,9 @@ def _traverse_upload(activity, parent=None, root=None, user=None):
             root   = root,
             name = activity['learning_activity']['name'],
             uri = activity['learning_activity']['uri'],
-            lom = activity['learning_activity']['lom'] or "",
             attempt_limit=activity['learning_activity']['attempt_limit'] ,
             available_until=activity['learning_activity']['available_until'] ,
             available_from =activity['learning_activity']['available_from'],
-            description =activity['learning_activity']['description'],
-            image = activity['learning_activity']['image'],
             pre_condition_rule = add_precondition(activity['learning_activity']['rules']) or "",
             rollup_rule  =('rollup_rule' in activity['learning_activity'] and  activity['learning_activity']['rollup_rule']) or "",
             is_container = activity['learning_activity']['is_container'],

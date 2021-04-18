@@ -9,10 +9,10 @@ from django.contrib import admin
 
 
 urlpatterns = [
-
       path('',views.welcome),
       path('admin/', admin.site.urls),
-      path('update-course/<int:course_id>/', views.update_course_view, name='update-course'),
+      path('delete-course/<int:course_id>/', views.delete_course_view, name='delete_course_view'),
+      path('update-course/<int:course_id>/', views.update_course_view, name='update_course_view'),
       path('add-course/',views.add_course_view),
       path('welcome/',views.welcome),
       path('instructor/', views.instructor),
@@ -35,7 +35,7 @@ urlpatterns = [
       path('execute_queue/',views.execute_queue),
       path('post_course/',views.course_view),
       path('get_course/',views.course_view),
-      re_path('delete_course/(?P<course_id>[0-9]*)$',views.course),
+
 
       path('my_courses/', views.my_courses,name='my_courses'),
 

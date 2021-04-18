@@ -41,7 +41,7 @@ class CourseForm(forms.Form):
     current_price = forms.IntegerField(label = "Precio actual", help_text="Sin centavos", initial=0)
     image_url = forms.URLField( label = "URL de la imágen promocional", required=False, help_text="URL del responsable")
     video_url = forms.URLField(label="URL del video promocional",required=False, help_text="URL del responsable")
-    duration = forms.DurationField(label="Duración aproximada", required=False, help_text="HH:MM")
+    duration = forms.DurationField(label="Duración aproximada", required=False, help_text="HH:MM:SS")
     html_description = forms.CharField(label="HTML Descriptivo", required=False, widget=forms.Textarea)
     tags = forms.MultipleChoiceField(label="Tags", choices= TAGS, help_text="Elige los tags apropiados, presiona Ctrl en Linux o Windows, en en macOS presiona ⌘ Command")
     status = forms.ChoiceField(label='Status', choices=STATUS, help_text="Estatus actual del recurso")

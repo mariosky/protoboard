@@ -52,7 +52,7 @@ from activitytree.models import Course, ActivityTree, UserLearningActivity, Lear
     LearningActivityRating, LearningStyleInventory
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.models import UserProfile
-from activitytree.courses import get_activity_tree, update_course_from_json, create_empty_course, upload_course_from_json
+from activitytree.courses import get_activity_tree, update_course_from_json, upload_course_from_json
 from django.contrib.auth.forms import UserCreationForm
 from .forms.course import CourseForm
 from django import forms
@@ -60,6 +60,27 @@ from django.contrib import messages
 from django.db import transaction
 
 logger = logging.getLogger(__name__)
+
+def delete_course_view(request, course_id):
+    if request.user.is_authenticated and request.user != 'AnonymousUser':
+
+        mycourse = None
+        if not request.user.is_superuser:
+            mycourse = get_object_or_404(Course, pk=course_id, author = request.user)
+        else:
+            mycourse = get_object_or_404(Course, pk=course_id)
+
+        if (mycourse):
+            #Consider doing this with DELETE CASCADE
+            ActivityTree.objects.filter(root_activity=mycourse.root).delete()
+            UserLearningActivity.objects.filter(learning_activity__root=mycourse.root).delete()
+            LearningActivity.objects.filter(root=mycourse.root).delete()
+            mycourse.root.delete()
+            mycourse.delete()
+
+
+        return HttpResponseRedirect('/instructor/')
+
 
 
 def add_course_view(request):
@@ -83,7 +104,8 @@ def add_course_view(request):
                             uri=course_metadata['_id'])
                         learning_activity.save()
 
-                        course = Course(author=request.user, uri=course_metadata['_id'], root=learning_activity, private=is_private)
+                        course = Course(author=request.user, uri=course_metadata['_id'], root=learning_activity,  meta_data=course_metadata)
+
                         course.save()
 
                         client = MongoClient(settings.MONGO_DB)
@@ -92,6 +114,7 @@ def add_course_view(request):
 
                         course_metadata['duration'] = str(course_metadata['duration'])
                         print(course_metadata['duration'])
+
                         try:
                             ## Is a new activity Generate a Global ID
                             message = activities_collection.update(
@@ -129,14 +152,7 @@ def update_course_view(request, course_id):
         if request.method == 'POST':
             form = CourseForm(request.POST)
             if form.is_valid():
-                course_metadata = form.cleaned_data
-                course.title = course_metadata['title']
-                course.is_private = course_metadata['is_private']
-                course.duration = course_metadata['duration']
-                course.html_description = course_metadata['html_description']
-                course.start_date = course_metadata['start_date']
-                course.root.name =  course_metadata['title']
-
+                course.meta_data = form.cleaned_data
                 try:
                     with transaction.atomic():
                         course.save()
@@ -144,12 +160,13 @@ def update_course_view(request, course_id):
                         db = client.protoboard_database
                         activities_collection = db.activities_collection
 
-                        course_metadata['duration'] = str(course_metadata['duration'])
+                        print(str(course.meta_data['duration']))
+                        course.meta_data['duration'] = str(course.meta_data['duration'])
                         try:
                             ## Is a new activity Generate a Global ID
                             message = activities_collection.update(
-                                {'_id': course_metadata['_id'], 'author': course_metadata['author']},
-                                course_metadata, upsert=True)
+                                {'_id': course.meta_data['_id'], 'author': course.meta_data['author']},
+                                course.meta_data, upsert=True)
                         except:
                             pass
 
@@ -170,18 +187,14 @@ def update_course_view(request, course_id):
                 print("Forma Inválida", form.errors)
                 return render(request, 'activitytree/create_course.html', {'form': form})
         else:
-            #get activity from mongo
-            activity = None
-            try:
-                ## Is a new activity Generate a Global ID
-                activity = Activity.get(course.uri)
-            except:
-                pass
+            #get activity from field
+            if course.meta_data['duration']:
+                duration_json = course.meta_data['duration']
+                duration =  "{}:{}:{}".format( duration_json[4:6], duration_json[7:9],duration_json[-3:-1])
+                course.meta_data['duration'] = duration
 
-            print(activity)
-            activity['duration'] = course.duration
+            form = CourseForm(initial=course.meta_data)
 
-            form = CourseForm(initial=activity)
         return render(request, 'activitytree/create_course.html', {'form': form})
     else:
         # please log in
@@ -222,7 +235,7 @@ def course_list(request):
 
 def instructor(request):
     if request.user.is_authenticated and request.user != 'AnonymousUser':
-        courses = LearningActivity.objects.filter(authorlearningactivity__user=request.user, root=None)
+        courses = Course.objects.filter(author=request.user)
 
         return render(request, 'activitytree/instructor_home.html',
                                   {'courses': courses
@@ -254,9 +267,6 @@ def my_enrolled_courses(request):
         for row in range(1+len(RootULAs)%4):
             rows.append(RootULAs[((row+1)*4)-4:(row+1)*4])
 
-
-        print(RootULAs[0].root_activity.image,RootULAs[0].root_activity.name )
-        
         return render(request,'activitytree/my_enrolled_courses.html', {'courses': RootULAs, 'student': request.user, 'rows':rows})
     else:
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
@@ -276,65 +286,13 @@ def course_info(request, course_id):
 def course(request, course_id=None):
     # Must have credentials
     if request.user.is_authenticated and request.user != 'AnonymousUser':
-        # POST:
-        # Add or Delete a New Course
-        if request.method == 'POST':
-
-            # IF course_id then a DELETE
-            if course_id:
-                # Get course and delete only if the user or staff
-                mycourse = None
-                if not request.user.is_superuser:
-                    mycourse = get_object_or_404(LearningActivity, pk=course_id,
-                                                 authorlearningactivity__user=request.user)
-
-                if (mycourse or request.user.is_superuser):
-                    LearningActivity.objects.filter(root=course_id).delete()
-                    LearningActivity.objects.get(id=course_id).delete()
-
-                return HttpResponseRedirect(reverse('my_courses'))
-
-            # IF course_uri IS a CREATE or UPDATE
-
-            if 'course_uri' in request.POST and 'action' in request.POST:
-                is_private = 'private' in request.POST
-                if request.POST['action'] == 'create':
-                    course_id, course_uri = create_empty_course(request.POST['course_uri'], request.user,
-                                                                request.POST['course_name'],
-                                                                request.POST['course_short_description'],
-                                                                is_private)
-                    return HttpResponseRedirect(reverse('course', args=[course_id]))
-
-                elif request.POST['action'] == 'update' and 'course_id' in request.POST:
-
-
-                    mycourse = get_object_or_404(Course, root_id=request.POST['course_id'],
-                                                 root__authorlearningactivity__user=request.user)
-                    mycourse.short_description = request.POST['course_short_description']
-                    mycourse.html_description = bleach.clean(request.POST['html_description'], tags=all_tags,
-                                                             attributes=attrs)
-                    mycourse.save()
-                    mycourse.root.image = request.POST['image_url']
-                    mycourse.root.name = request.POST['course_name']
-                    mycourse.root.save()
-
-                    return HttpResponseRedirect(reverse('course', args=[request.POST['course_id']]))
-
-                return HttpResponseRedirect(reverse('course', args=[course_id]))
-
-
-            else:
-                return HttpResponseNotFound(u'<h1>Falta información para enviarse a la petición</h1>')
-        # GET:
-        # Edit course
-        elif request.method == 'GET':
+         if request.method == 'GET':
             if course_id:
                 # Is yours or you are staff?
                 mycourse = None
                 if not request.user.is_superuser:
                     mycourse = get_object_or_404(Course, root_id=course_id,
                                                  root__authorlearningactivity__user=request.user)
-
                 if (mycourse or request.user.is_superuser):
                     return render(request,'activitytree/course_builder.html',
                                               {'course_id': course_id, 'course': mycourse
@@ -344,6 +302,7 @@ def course(request, course_id=None):
     else:
         # please log in
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
+
 
 @login_required()
 def profile_tz(request):

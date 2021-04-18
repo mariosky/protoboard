@@ -55,6 +55,7 @@ SESSION_COOKIE_SECURE=True
 SESSION_COOKIE_HTTPONLY=True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 
 
@@ -114,6 +115,7 @@ TEMPLATES = [
             'context_processors': [
                 # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
                 # list if you haven't customized them:
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.i18n',
