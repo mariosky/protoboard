@@ -71,12 +71,19 @@ def delete_course_view(request, course_id):
             mycourse = get_object_or_404(Course, pk=course_id)
 
         if (mycourse):
-            #Consider doing this with DELETE CASCADE
-            ActivityTree.objects.filter(root_activity=mycourse.root).delete()
-            UserLearningActivity.objects.filter(learning_activity__root=mycourse.root).delete()
-            LearningActivity.objects.filter(root=mycourse.root).delete()
-            mycourse.root.delete()
-            mycourse.delete()
+            try:
+                with transaction.atomic():
+                    #Consider doing this with DELETE CASCADE
+                    uri = mycourse.uri
+                    ActivityTree.objects.filter(root_activity=mycourse.root).delete()
+                    UserLearningActivity.objects.filter(learning_activity__root=mycourse.root).delete()
+                    LearningActivity.objects.filter(root=mycourse.root).delete()
+                    mycourse.root.delete()
+                    Activity.del_activity_admin('/activity/'+uri)
+            except Exception as e:
+                transaction.rollback()
+                print("Error al borrar {}".format(e))
+
 
 
         return HttpResponseRedirect('/instructor/')
@@ -104,7 +111,7 @@ def add_course_view(request):
                             uri=course_metadata['_id'])
                         learning_activity.save()
 
-                        course = Course(author=request.user, uri=course_metadata['_id'], root=learning_activity,  meta_data=course_metadata)
+                        course = Course(author=request.user, uri=uri, root=learning_activity,  meta_data=course_metadata)
 
                         course.save()
 
@@ -149,10 +156,14 @@ def add_course_view(request):
 def update_course_view(request, course_id):
     if request.user.is_authenticated and request.user != 'AnonymousUser':
         course = get_object_or_404(Course, pk=course_id)
+        original_uri = course.uri
         if request.method == 'POST':
             form = CourseForm(request.POST)
             if form.is_valid():
+                form.cleaned_data['uri'] = original_uri
                 course.meta_data = form.cleaned_data
+                course.meta_data['_id'] = '/activity/' + course.uri
+
                 try:
                     with transaction.atomic():
                         course.save()
@@ -162,6 +173,7 @@ def update_course_view(request, course_id):
 
                         print(str(course.meta_data['duration']))
                         course.meta_data['duration'] = str(course.meta_data['duration'])
+
                         try:
                             ## Is a new activity Generate a Global ID
                             message = activities_collection.update(
@@ -194,6 +206,9 @@ def update_course_view(request, course_id):
                 course.meta_data['duration'] = duration
 
             form = CourseForm(initial=course.meta_data)
+            form.fields['uri'].initial = course.uri
+            print(form.fields['uri'].initial)
+            form.fields['uri'].widget.attrs['readonly'] = True
 
         return render(request, 'activitytree/create_course.html', {'form': form})
     else:
