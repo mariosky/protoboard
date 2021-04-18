@@ -279,7 +279,7 @@ class Course(models.Model):
     author = models.ForeignKey(User,on_delete=models.CASCADE,null = True , default=None)
     uri = models.URLField(blank=True, unique=True)
     root = models.OneToOneField('LearningActivity', on_delete=models.CASCADE)
-    meta_data = models.JSONField(null=True, encoder=DjangoJSONEncoder)
+    metadata = models.JSONField(null=True, encoder=DjangoJSONEncoder)
 
 
 

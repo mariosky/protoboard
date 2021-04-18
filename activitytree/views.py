@@ -111,7 +111,7 @@ def add_course_view(request):
                             uri=course_metadata['_id'])
                         learning_activity.save()
 
-                        course = Course(author=request.user, uri=uri, root=learning_activity,  meta_data=course_metadata)
+                        course = Course(author=request.user, uri=uri, root=learning_activity,  metadata=course_metadata)
 
                         course.save()
 
@@ -161,8 +161,8 @@ def update_course_view(request, course_id):
             form = CourseForm(request.POST)
             if form.is_valid():
                 form.cleaned_data['uri'] = original_uri
-                course.meta_data = form.cleaned_data
-                course.meta_data['_id'] = '/activity/' + course.uri
+                course.metadata = form.cleaned_data
+                course.metadata['_id'] = '/activity/' + course.uri
 
                 try:
                     with transaction.atomic():
@@ -171,14 +171,14 @@ def update_course_view(request, course_id):
                         db = client.protoboard_database
                         activities_collection = db.activities_collection
 
-                        print(str(course.meta_data['duration']))
-                        course.meta_data['duration'] = str(course.meta_data['duration'])
+                        print(str(course.metadata['duration']))
+                        course.metadata['duration'] = str(course.metadata['duration'])
 
                         try:
                             ## Is a new activity Generate a Global ID
                             message = activities_collection.update(
-                                {'_id': course.meta_data['_id'], 'author': course.meta_data['author']},
-                                course.meta_data, upsert=True)
+                                {'_id': course.metadata['_id'], 'author': course.metadata['author']},
+                                course.metadata, upsert=True)
                         except:
                             pass
 
@@ -200,12 +200,12 @@ def update_course_view(request, course_id):
                 return render(request, 'activitytree/create_course.html', {'form': form})
         else:
             #get activity from field
-            if course.meta_data['duration']:
-                duration_json = course.meta_data['duration']
+            if course.metadata['duration']:
+                duration_json = course.metadata['duration']
                 duration =  "{}:{}:{}".format( duration_json[4:6], duration_json[7:9],duration_json[-3:-1])
-                course.meta_data['duration'] = duration
+                course.metadata['duration'] = duration
 
-            form = CourseForm(initial=course.meta_data)
+            form = CourseForm(initial=course.metadata)
             form.fields['uri'].initial = course.uri
             print(form.fields['uri'].initial)
             form.fields['uri'].widget.attrs['readonly'] = True
