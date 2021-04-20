@@ -287,3 +287,40 @@ def get_activity_tree(id):
     result = activity_tree(None,tree)
     print('get',result)
     return result
+
+
+
+
+def get_course_list(id):
+    node_list = []
+
+    def traverse(nodes):
+        for node in nodes:
+            node_list.append((node['learning_activity']['path'], node['learning_activity']['name'], node['order'], node['learning_activity']['uri']))
+            if node['children']:
+                order = node['children'].sort(key=lambda node: node['order'])
+                traverse(node['children'])
+            else:
+                pass
+        return node_list
+
+    tree = get_activity_tree(id)
+    node_list = traverse(tree)
+    course_list = []
+    course_name = None
+    subsec_name = None
+    for e in node_list:
+        path = e[0].split('|')
+        depth = len(path)
+        if depth == 1:
+            continue
+
+        elif depth == 2:
+            subsec_name = e[1]
+        else:
+            course_list.append({'sec': subsec_name, 'title':e[1], 'path':e[0].replace('|','.'), 'uri': e[3]})
+    return course_list
+
+
+
+

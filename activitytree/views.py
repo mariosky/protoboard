@@ -52,7 +52,7 @@ from activitytree.models import Course, ActivityTree, UserLearningActivity, Lear
     LearningActivityRating, LearningStyleInventory
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.models import UserProfile
-from activitytree.courses import get_activity_tree, update_course_from_json, upload_course_from_json
+from activitytree.courses import get_activity_tree, update_course_from_json, upload_course_from_json, get_course_list
 from django.contrib.auth.forms import UserCreationForm
 from .forms.course import CourseForm
 from django import forms
@@ -290,10 +290,16 @@ def my_enrolled_courses(request):
 
 def course_info(request, course_id):
     # Must have credentials
+
+
     if request.method == 'GET':
         mycourse = get_object_or_404(Course, root_id=course_id)
+        activity_list = get_course_list(course_id)
+        for r in activity_list:
+            print(r)
+
         return render(request,'activitytree/course_info.html',
-                                      {'course_id': course_id, 'course': mycourse
+                                      {'course_id': course_id, 'course': mycourse, 'activity_list':activity_list
                                        })
     else:
         return HttpResponseNotFound('<h1>HTTP METHOD IS NOT VALID</h1>')
