@@ -17,7 +17,7 @@ import environ
 from pathlib import Path
 from django.core.management.utils import get_random_secret_key
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 
@@ -57,6 +57,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
+ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window
+REGISTRATION_OPEN=True
 
 
 ALLOWED_HOSTS =  env.list('ALLOWED_HOSTS')
