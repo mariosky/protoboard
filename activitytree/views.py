@@ -119,6 +119,8 @@ def add_course_view(request):
                         activities_collection = db.activities_collection
 
                         course_metadata['duration'] = str(course_metadata['duration'])
+                        course_metadata['type'] = 'course'
+                        
                         print(course_metadata['duration'])
 
                         try:
@@ -174,6 +176,7 @@ def update_course_view(request, course_id):
 
                         print(str(course.metadata['duration']))
                         course.metadata['duration'] = str(course.metadata['duration'])
+                        course.metadata['type'] = 'course'
 
                         try:
                             ## Is a new activity Generate a Global ID
@@ -1397,13 +1400,13 @@ def my_activities(request):  # view used by activity_builder, returns all activi
         activities = Activity.get_by_admin(page)
         count = activities_collection.find({},
                                            {'_id': 1, 'title': 1, 'lang': 1, 'type': 1, 'description': 1, 'icon': 1,
-                                            'level': 1, 'tags': 1}).sort("$natural", pymongo.DESCENDING).count()
+                                            'level': 1, 'tags': 1}).sort([('score', {'$meta': 'textScore'})]).count()
 
     else:
         activities = Activity.get_by_user(user, page)
         count = activities_collection.find({'author': user},
                                            {'_id': 1, 'title': 1, 'lang': 1, 'type': 1, 'description': 1, 'icon': 1,
-                                            'level': 1, 'tags': 1}).sort("$natural", pymongo.DESCENDING).count()
+                                            'level': 1, 'tags': 1}).sort([('score', {'$meta': 'textScore'})]).count()
     count = {'count': count}
     json_docs = [doc for doc in activities]
     json_docs.append(count)
@@ -1425,26 +1428,34 @@ def search_prueba(request):  # view used by search, receives page and query and 
         else:
             query.append(v)
 
-    print(query)
     if len(query) == 0:
         message = "null"
         return HttpResponse(json.dumps(message), content_type='application/javascript')
     else:
-        print(query)
+        
         # IF Super user return all activities
         if request.user.is_superuser:
             query = [ e for  e in  query if 'author' not in e ]
 
+        # Get query component keys
+        components = [list(dict.keys())[0]  for dict in query]
+        # Only terms 
+        projection = {'_id': 1, 'title': 1, 'lang': 1, 'type': 1, 'description': 1, 'level': 1, 'tags': 1, 'image_url': 1}
+        sort_param = None
 
-        activities = activities_collection.find({'$and': query},
-                                                {'_id': 1, 'title': 1, 'lang': 1, 'type': 1, 'description': 1,
-                                                 'icon': 1, 'level': 1, 'tags': 1, 'image_url': 1}).sort("$natural",
-                                                                                                         pymongo.DESCENDING).limit(
+        if '$text' in components:
+            projection['score'] = {'$meta': 'textScore'}
+            sort_param = [('score', {'$meta': 'textScore'})]
+        else:
+            sort_param = "$natural" #, pymongo.DESCENDING
+
+
+        print(query, projection, components)    
+        
+        activities = activities_collection.find({'$and': query},projection).sort(sort_param).limit(
             MONGO_PAGE_SIZE).skip(page * MONGO_PAGE_SIZE)
-        count = activities_collection.find({'$and': query},
-                                           {'_id': 1, 'title': 1, 'lang': 1, 'type': 1, 'description': 1, 'icon': 1,
-                                            'level': 1, 'tags': 1, 'image_url': 1}).sort("$natural",
-                                                                                         pymongo.DESCENDING).count()
+        #print(activities.count())
+        count = activities_collection.find({'$and': query},projection).sort(sort_param).count()
         count = {'count': count}
         json_docs = [doc for doc in activities]
         json_docs.append(count)

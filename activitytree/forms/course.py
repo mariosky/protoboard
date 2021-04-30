@@ -10,13 +10,13 @@ class CourseForm(forms.Form):
                     '%d/%m/%Y',
                     '%d/%m/%y']
     TAGS = [
-        ('#tutorial', 'tutorial'),
-        ('#curso', 'curso'),
-        ('#frontpage', 'front page'),
-        ('#reto', 'reto'),
-        ('#csharp','csharp'),
-        ('#python', 'python'),
-        ('#jave', 'java'),
+        ('tutorial', 'tutorial'),
+        ('curso', 'curso'),
+        ('frontpage', 'front page'),
+        ('reto', 'reto'),
+        ('csharp','csharp'),
+        ('python', 'python'),
+        ('java', 'java'),
     ]
 
     STATUS = [
