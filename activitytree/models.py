@@ -282,8 +282,6 @@ class Course(models.Model):
     metadata = models.JSONField(null=True, encoder=DjangoJSONEncoder)
 
 
-
-
 class ActivityTree(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     root_activity = models.ForeignKey(to ='LearningActivity',related_name = 'activity_tree', on_delete=models.CASCADE)
