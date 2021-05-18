@@ -1,0 +1,24 @@
+{
+    "_id" : "/activity/reto-listas-de-python",
+    "title" : "Reto de listas de python",
+    "uri" : "reto-listas-de-python",
+    "description" : "Este es un ejercicio que consiste en realizar varios programas para poner a prueba tus conocimientos de listas en python.",
+    "author" : "Mario García Valdez",
+    "author_image" : "https://evo.sfo2.digitaloceanspaces.com/uno/autores/avatar-16.jpg",
+    "rights" : "Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)",
+    "is_private" : false,
+    "rights_url" : "https://creativecommons.org/licenses/by-sa/4.0/",
+    "level" : "principiante",
+    "external_url" : "",
+    "current_price" : 0,
+    "image_url" : "https://evo.sfo2.digitaloceanspaces.com/uno/course-python.jpg",
+    "video_url" : "",
+    "duration" : "2:00:00",
+    "html_description" : "",
+    "tags" : [ 
+        "tutorial", 
+        "reto"
+    ],
+    "status" : "published",
+    "start_date" : null
+}

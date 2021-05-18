@@ -16,6 +16,8 @@ urlpatterns = [
       path('add-course/',views.add_course_view),
       path('welcome/',views.welcome),
       path('instructor/', views.instructor),
+      path('instructor_info/<int:user_id>/', views.instructor_profile, name='instructor_profile'),
+      
       path('student/', views.my_enrolled_courses),
       path('courses/', views.course_list),
       re_path('^course_info/(?P<course_id>[0-9]*)$',views.course_info),

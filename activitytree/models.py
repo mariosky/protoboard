@@ -28,6 +28,34 @@ class UserProfile(models.Model):
     reputation = models.PositiveSmallIntegerField(default=80)
     experience = models.PositiveSmallIntegerField(default=0)
 
+class AuthorProfile(models.Model):
+    user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
+    image = models.URLField(blank=True)
+    cover_image = models.URLField(blank=True)
+    short_about = models.CharField(max_length=128, blank=True)
+    about = models.TextField(blank=True)
+    location = models.TextField(blank=True)
+    web_page = models.CharField(max_length=256, blank=True)
+    twitter = models.CharField(max_length=256, blank=True)
+    github = models.CharField(max_length=256, blank=True)
+    youtube = models.CharField(max_length=256, blank=True)
+    twitch = models.CharField(max_length=256, blank=True)
+    instagram = models.CharField(max_length=256, blank=True)
+    google_scholar = models.CharField(max_length=256, blank=True)
+    linkedin = models.CharField(max_length=256, blank=True)
+
+    def student_count(self):
+        from django.db import connection
+        query = """SELECT count(*)
+                   FROM public.activitytree_course as course, public.activitytree_activitytree as tree
+                   WHERE course.root_id = root_activity_id
+                   AND author_id =  %s;""" % (self.user.id)
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            row = cursor.fetchone()
+        return row[0]
+
+
 
 class LearningActivity(models.Model):
     """ Esta clase implementa los nodos del arbol de actividades """

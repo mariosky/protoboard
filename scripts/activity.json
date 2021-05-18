@@ -1,0 +1,29 @@
+{
+    "_id": "/activity/video/528f4870-11e8-11e7-898e-0401663b8f01",
+    "title": "Declaración de Clases en c#",
+    "description": "Tutorial en C# de nicosiored",
+    "publisher": "nicosiored",
+    "rights": "Licencia estándar de YouTube",
+    "level": "principiante",
+    "tags": [
+        "declararclase",
+        "csharp",
+        "poo"
+    ],
+
+    
+    "author": "adriana.arias@tectijuana.edu.mx",
+   
+
+    "icon": "youtube-play",
+    "url": "https://www.youtube.com/watch?v=9lfG_zzZXpI",
+
+    "startSeconds": "",
+    "content": "Tutorial en C# de nicosiored",
+    "endSeconds": "",
+    "youtube_id": "9lfG_zzZXpI",
+    "type": "video",
+
+    "image_url": "",
+    "external_url": "http://nicosio.com/"
+}

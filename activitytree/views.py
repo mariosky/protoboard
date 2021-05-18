@@ -49,7 +49,7 @@ from activitytree.mongo_activities import Activity
 from eval_code.RedisCola import Cola, Task
 
 from activitytree.models import Course, ActivityTree, UserLearningActivity, LearningActivity, ULA_Event, \
-    LearningActivityRating, LearningStyleInventory
+    LearningActivityRating, LearningStyleInventory, AuthorProfile
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.models import UserProfile
 from activitytree.courses import get_activity_tree, update_course_from_json, upload_course_from_json, get_course_list
@@ -220,6 +220,20 @@ def update_course_view(request, course_id):
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
 
+def instructor_profile(request,user_id):
+
+    queryset =  AuthorProfile.objects.filter(user_id = 1)
+    author   =  get_object_or_404(queryset, user_id = 1)
+
+    courses = Course.objects.filter(author=author.user)
+
+    return render(request, 'activitytree/instructor_profile.html',
+                                  {'courses': courses, 
+                                   'author': author
+                                   # , 'plus_scope':plus_scope,'plus_id':plus_id
+                                   })
+
+
 def welcome(request):
     courses = Course.objects.all()
     print(request)
@@ -255,6 +269,7 @@ def course_list(request):
 def instructor(request):
     if request.user.is_authenticated and request.user != 'AnonymousUser':
         courses = Course.objects.filter(author=request.user)
+        
 
         return render(request, 'activitytree/instructor_home.html',
                                   {'courses': courses
@@ -298,6 +313,8 @@ def course_info(request, course_id):
     if request.method == 'GET':
         mycourse = get_object_or_404(Course, root_id=course_id)
         activity_list = get_course_list(course_id)
+        total_courses = Course.objects.filter(author=mycourse.author).count()
+        
         for r in activity_list:
             print(r)
 
