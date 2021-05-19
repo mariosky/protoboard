@@ -520,7 +520,7 @@ def upload_activity(request):  # view that receives activity data and saves it t
                         ## Is a new activity Generate a Global ID
                         actividad['_id'] = '/activity/video/' + str(uuid.uuid1())
                     actividad['content'] = actividad['description']
-                    message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']},
+                    message = activities_collection.update({'_id': actividad['_id']},
                                                            actividad, upsert=True)
                     return HttpResponse(json.dumps(message))
                 except pymongo.errors.DuplicateKeyError as e:
@@ -531,7 +531,7 @@ def upload_activity(request):  # view that receives activity data and saves it t
                     if not actividad['_id']:
                         ## Is a new activity Generate a Global ID
                         actividad['_id'] = '/activity/' + str(uuid.uuid1())
-                    message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']},
+                    message = activities_collection.update({'_id': actividad['_id']},
                                                            actividad, upsert=True)
                     return HttpResponse(json.dumps(message))
                 except pymongo.errors.DuplicateKeyError as e:
@@ -543,7 +543,7 @@ def upload_activity(request):  # view that receives activity data and saves it t
                         ## Is a new activity Generate a Global ID
                         actividad['_id'] = '/test/' + str(uuid.uuid1())
 
-                    message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']},
+                    message = activities_collection.update({'_id': actividad['_id']},
                                                            actividad, upsert=True)
                     return HttpResponse(json.dumps(message))
                 except pymongo.errors.DuplicateKeyError as e:
@@ -558,7 +558,7 @@ def upload_activity(request):  # view that receives activity data and saves it t
                     actividad['instructions'] = bleach.clean(actividad['instructions'], tags=all_tags, attributes=attrs)
                     actividad['HTML_code'] = bleach.clean(actividad['HTML_code'], tags=all_tags, attributes=attrs)
 
-                    message = activities_collection.update({'_id': actividad['_id'], 'author': actividad['author']},
+                    message = activities_collection.update({'_id': actividad['_id']},
                                                            actividad, upsert=True)
                     return HttpResponse(json.dumps(message))
                 except pymongo.errors.DuplicateKeyError as e:
