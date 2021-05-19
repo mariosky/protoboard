@@ -252,17 +252,45 @@ def welcome(request):
 
 
 def course_list(request):
-    courses = Course.objects.all()
 
+    tags  = request.GET.get('tags', '')
+    sort  = request.GET.get('sort', '')
+    levels = request.GET.get('levels', '')
+    courses = None
+
+    query = {'metadata__status':'published'} # only published
+    
+    if (tags):
+        query['metadata__tags__has_any_keys'] = tags.split(',')
+    if (levels): 
+        query['metadata__level__in'] = tuple(levels.split(','))
+    if (sort):
+        order = {'new': ''  }
+    
+    order = '?' #random order
+    courses =  Course.objects.filter(**query).order_by(order)
+
+
+    count = Course.objects.filter(metadata__status='published').count()
+
+    tag_checkbox = [ { 'tag':tag, 'checked':tag in tags} for tag, _  in CourseForm.TAGS ]
+    level_checkbox = [ { 'level':level, 'checked':level in levels} for level, _  in CourseForm.LEVEL_CHOICES ]
+
+    
+
+    
     if request.user.is_authenticated and request.user != 'AnonymousUser':
+
         return render(request,'activitytree/course_list.html',
-                                  {'courses': courses
-                                   # , 'plus_scope':plus_scope,'plus_id':plus_id
+                                  {'courses': courses, 
+                                    'count': count,
+                                    'tags':tag_checkbox,
+                                    'levels':level_checkbox
                                    })
     else:
         return render(request,'activitytree/course_list.html',
-                                  {'user_name': None, 'courses': courses
-                                   # ,'plus_scope':plus_scope,'plus_id':plus_id
+                                  {'user_name': None, 'courses': courses,  'count': count,
+                                  'tags':tag_checkbox, 'levels':level_checkbox
                                    })
 
 
