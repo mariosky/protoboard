@@ -1485,7 +1485,9 @@ def search_prueba(request):  # view used by search, receives page and query and 
         # Get query component keys
         components = [list(dict.keys())[0]  for dict in query]
         # Only terms 
-        projection = {'_id': 1, 'title': 1, 'lang': 1, 'type': 1, 'description': 1, 'level': 1, 'tags': 1, 'image_url': 1}
+        projection = {'_id': 1, 'title': 1, 'lang': 1, 'type': 1, 
+                      'description': 1, 'level': 1, 'tags': 1, 'image_url': 1, 
+                      'author': 1, 'author_image': 1, 'duration':1, 'creation_date':1}
         sort_param = None
 
         if '$text' in components:
