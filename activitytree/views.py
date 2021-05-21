@@ -861,11 +861,11 @@ def activity(request, uri=None):
             return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
         activity_content = Activity.get('/%s' % uri)
-
-        if activity_content and 'content' in activity_content:
-            content = activity_content
-        else:
-            content = ""
+        #print('activity_content:',activity_content)
+        #if activity_content and 'content' in activity_content:
+        #    content = activity_content
+        #else:
+        #    content = ""
 
         if (uri).split('/')[1] == 'video':
 
@@ -873,7 +873,7 @@ def activity(request, uri=None):
 
                                       {'XML_NAV': None,
                                        'uri': uri,
-                                       'video': activity_content,
+                                       'content': activity_content,
                                        'current_site': get_current_site(request),
                                        'breadcrumbs': None})
 
