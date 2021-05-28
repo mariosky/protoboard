@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Create your views here.
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, Http404
 from django.http import JsonResponse
 
 from django.template.response import TemplateResponse
@@ -49,7 +49,7 @@ from activitytree.mongo_activities import Activity
 from eval_code.RedisCola import Cola, Task
 
 from activitytree.models import Course, ActivityTree, UserLearningActivity, LearningActivity, ULA_Event, \
-    LearningActivityRating, LearningStyleInventory, AuthorProfile
+    LearningActivityRating, LearningStyleInventory, AuthorProfile, LearningActivityLocal
 from activitytree.interaction_handler import SimpleSequencing
 from activitytree.models import UserProfile
 from activitytree.courses import get_activity_tree, update_course_from_json, upload_course_from_json, get_course_list
@@ -153,7 +153,6 @@ def add_course_view(request):
         # please log in
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
-
 def update_course_view(request, course_id):
     if request.user.is_authenticated and request.user != 'AnonymousUser':
         course = get_object_or_404(Course, pk=course_id)
@@ -219,7 +218,6 @@ def update_course_view(request, course_id):
         # please log in
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
-
 def instructor_profile(request,user_id):
 
     queryset =  AuthorProfile.objects.filter(user_id = 1)
@@ -232,7 +230,6 @@ def instructor_profile(request,user_id):
                                    'author': author
                                    # , 'plus_scope':plus_scope,'plus_id':plus_id
                                    })
-
 
 def welcome(request):
     courses = Course.objects.all()
@@ -796,6 +793,7 @@ def path_activity(request, path_id, uri):
             content = ""
 
         if (requested_activity.learning_activity.uri).split('/')[2] == 'video':
+            learning_activity_local, created = LearningActivityLocal.objects.get_or_create(uri=requested_activity.learning_activity.uri, title=activity_content['title'])
             return render(request, 'activitytree/video.html',
 
                                       {'XML_NAV': XML,
@@ -803,7 +801,7 @@ def path_activity(request, path_id, uri):
                                        'uri_id': requested_activity.learning_activity.id,
                                        'content': activity_content,
                                        'current_site': get_current_site(request),
-
+                                       'learning_activity' : learning_activity_local,
                                        'breadcrumbs': breadcrumbs,
                                        'root': requested_activity.learning_activity.get_root().uri,
                                        'root_id': '/%s' % requested_activity.learning_activity.get_root().id,
@@ -836,6 +834,7 @@ def path_activity(request, path_id, uri):
                                           'root_id': '/%s' % requested_activity.learning_activity.get_root().id,
                                           'breadcrumbs': breadcrumbs})
         else:
+            learning_activity_local, created = LearningActivityLocal.objects.get_or_create(uri=requested_activity.learning_activity.uri, title=activity_content['title'])
             return render(request,'activitytree/activity.html',
 
                                       {'XML_NAV': XML,
@@ -843,52 +842,48 @@ def path_activity(request, path_id, uri):
                                        'current_site': get_current_site(request),
                                        'uri_id': '/%s' % requested_activity.learning_activity.id,
                                        'content': activity_content,
+                                       'learning_activity' :learning_activity_local,
                                        'root': requested_activity.learning_activity.get_root().uri,
                                        'root_id': '/%s' % requested_activity.learning_activity.get_root().id,
                                        'breadcrumbs': breadcrumbs,
                                        'rating_totals': rating_totals})
 
     else:
-        print(request.path)
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
 
-def activity(request, uri=None):
+def activity(request, uuid, type = None):
     if request.method == 'GET':
-
-        # Check if public, all public for now
         if False:
             return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
+        print('type:',type)
+         
+        _id = None
+        if type:
+            _id = "/activity/{type}/{uuid}".format(uuid=uuid, type=type)
+        else:
+            _id =  "/activity/{uuid}".format(uuid=uuid)
+        
+        
+        print(_id)
+        activity_content = Activity.get(_id)
+        
 
-        activity_content = Activity.get('/%s' % uri)
-        #print('activity_content:',activity_content)
-        #if activity_content and 'content' in activity_content:
-        #    content = activity_content
-        #else:
-        #    content = ""
+        if activity_content:
+            template = { 'video':'activitytree/video.html', None:'activitytree/activity.html' }
 
-        if (uri).split('/')[1] == 'video':
-
-            return render(request,'activitytree/video.html',
-
-                                      {'XML_NAV': None,
-                                       'uri': uri,
-                                       'content': activity_content,
-                                       'current_site': get_current_site(request),
-                                       'breadcrumbs': None})
-
+            learning_activity_local, created = LearningActivityLocal.objects.get_or_create(uri=_id, title=activity_content['title'])
+            
+            return render(request,template[type],
+                                        {
+                                        'uri': _id,
+                                        'content': activity_content,
+                                        'learning_activity':learning_activity_local,
+                                        'current_site': get_current_site(request)
+                                        })
 
         else:
-            return render(request,'activitytree/activity.html',
-
-                                      {'XML_NAV': None,
-                                       'uri': uri,
-                                       'content': activity_content,
-                                       'breadcrumbs': None,
-                                       'current_site': get_current_site(request)
-                                       })
-
-
+            raise Http404("La actividad no existe")
             # Do something for anonymous users.
 
 

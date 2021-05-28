@@ -66,6 +66,14 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 
 
+COMMENTS_XTD_APP_MODEL_OPTIONS = {
+    'default': {
+        'allow_flagging': True,
+        'allow_feedback': True,
+        'show_feedback': False,
+        'who_can_post': 'users'  # Valid values: 'all', users'
+    }
+}
 
 
 ALLOWED_HOSTS =  env.list('ALLOWED_HOSTS')
@@ -82,10 +90,14 @@ INSTALLED_APPS = (
 	'django.contrib.staticfiles',
     'django.contrib.messages',
    # 'channels',
+    'django_markdown2', 
     'widget_tweaks',
+    'django_comments_xtd',
+    'django_comments',
     'activitytree',
 )
-
+COMMENTS_XTD_MARKUP_FALLBACK_FILTER = 'markdown'
+COMMENTS_APP = 'django_comments_xtd'
 
 MIDDLEWARE = (
 	'django.contrib.sessions.middleware.SessionMiddleware',
@@ -97,6 +109,17 @@ MIDDLEWARE = (
 )
 
 ROOT_URLCONF = 'protoboard.urls'
+
+#  To help obfuscating comments before they are sent for confirmation.
+COMMENTS_XTD_SALT = (b"Timendi causa est nescire. "
+                     b"Aequam memento rebus in arduis servare mentem.")
+
+# Source mail address used for notifications.
+COMMENTS_XTD_FROM_EMAIL = "mariosky@aulacode.com"
+
+# Contact mail address to show in messages.
+COMMENTS_XTD_CONTACT_EMAIL = "mariosky@aulacode.com"
+
 
 
 #ASGI_APPLICATION = "protoboard.routing.application"

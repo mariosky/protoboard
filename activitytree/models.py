@@ -56,6 +56,17 @@ class AuthorProfile(models.Model):
         return row[0]
 
 
+class LearningActivityLocal(models.Model):
+    title = models.CharField(max_length=128)
+    uri = models.URLField(blank=True, unique=True)
+
+    def get_absolute_url(self):
+        return  "{uri}/".format(uri = self.uri)   
+
+    def __str__(self):
+        return "{title}=>{uri}".format(title = self.title, uri = self.uri)    
+
+    
 
 class LearningActivity(models.Model):
     """ Esta clase implementa los nodos del arbol de actividades """
@@ -81,6 +92,9 @@ class LearningActivity(models.Model):
 
     order_in_container = models.PositiveIntegerField(default=0)
     rules = models.TextField(blank=True)
+
+    def get_absolute_url(self):
+        return  "/{id}{uri}/".format(id = self.id, uri = self.uri)   
 
     def get_children(self, recursive = False):
         l=[]

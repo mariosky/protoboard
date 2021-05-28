@@ -22,7 +22,9 @@ urlpatterns = [
       path('courses/', views.course_list),
       re_path('^course_info/(?P<course_id>[0-9]*)$',views.course_info),
       re_path('dashboard/(?P<path_id>[0-9]+)$', views.dashboard),
-      re_path('^(?P<uri>activity/([\w+](\/*)(-*))+)$', views.activity),
+      path('activity/<uuid:uuid>/', views.activity),
+      path('activity/<str:type>/<uuid:uuid>/', views.activity),
+      
       re_path('^(?P<path_id>[0-9]+)(?P<uri>/activity/([\w+](\/*)(-*))+)$',views.path_activity),
       re_path(r'^(?P<path_id>[0-9]+)(?P<uri>/test/([\w+](\/*)(-*))+)$',views.path_test),
       re_path(r'^(?P<path_id>[0-9]+)(?P<uri>/program/([\w+](\/*)(-*))+)$',views.path_program),
@@ -41,7 +43,7 @@ urlpatterns = [
       path('get_frontpage/',views.get_front_page_activities),
 
       path('get_result/',views.get_result),
-      path(r'accounts/profile/', views.me),
+      path(r'accounts/profile/', views.my_enrolled_courses),
       path(r'me/',views.me),
       path(r'me/profile/tz/', views.profile_tz),
       path(r'me/profile/experience/', views.profile_experience),
@@ -67,7 +69,7 @@ urlpatterns = [
 
       path('accounts/', include('django_registration.backends.activation.urls')),
       path('accounts/', include('django.contrib.auth.urls')),
-
+      path('comments/', include('django_comments_xtd.urls')),
       path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html')),
       path('accounts/logout/', auth_views.LogoutView.as_view()),
       path('accounts/password_reset/', auth_views.PasswordResetView.as_view()),
