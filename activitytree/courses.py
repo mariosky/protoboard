@@ -291,7 +291,9 @@ def get_activity_tree(id):
 
 
 
+
 def get_course_list(id):
+    # id is Root Learning Activity 
     node_list = []
 
     def traverse(nodes):

@@ -336,8 +336,11 @@ def course_info(request, course_id):
 
 
     if request.method == 'GET':
-        mycourse = get_object_or_404(Course, root_id=course_id)
-        activity_list = get_course_list(course_id)
+        print(course_id)
+        mycourse = get_object_or_404(Course, pk=course_id)
+        print(mycourse)
+        activity_list = get_course_list(mycourse.root.id)
+        print(activity_list)
         total_courses = Course.objects.filter(author=mycourse.author).count()
         
         for r in activity_list:
@@ -358,7 +361,7 @@ def course(request, course_id=None):
                 # Is yours or you are staff?
                 mycourse = None
                 if not request.user.is_superuser:
-                    mycourse = get_object_or_404(Course, root_id=course_id,
+                    mycourse = get_object_or_404(Course, pk=course_id,
                                                  root__authorlearningactivity__user=request.user)
                 if (mycourse or request.user.is_superuser):
                     return render(request,'activitytree/course_builder.html',

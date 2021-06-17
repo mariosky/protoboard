@@ -116,7 +116,7 @@ class LearningActivity(models.Model):
         else:
             return self
         
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 from decimal import Decimal
