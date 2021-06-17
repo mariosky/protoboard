@@ -319,9 +319,12 @@ class UserLearningActivity(models.Model):
 
 class Course(models.Model):
     author = models.ForeignKey(User,on_delete=models.CASCADE,null = True , default=None)
-    uri = models.URLField(blank=True, unique=True)
+    uri = models.SlugField(blank=True, unique=True)
     root = models.OneToOneField('LearningActivity', on_delete=models.CASCADE)
     metadata = models.JSONField(null=True, encoder=DjangoJSONEncoder)
+    related = models.ManyToManyField("self",blank=True)
+    def __str__(self):
+        return self.uri
 
 
 class ActivityTree(models.Model):
