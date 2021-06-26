@@ -233,8 +233,7 @@ def instructor_profile(request,user_id):
 
 def welcome(request):
     courses = Course.objects.all()
-    print(request)
-
+    
     if request.user.is_authenticated and request.user != 'AnonymousUser':
         return render(request,
                       'activitytree/welcome.html',
