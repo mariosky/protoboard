@@ -1,0 +1,20 @@
+version: '3.1'
+services:
+  database:
+    image: postgres # use latest official postgres version
+    env_file:
+      - database.env # configure postgres
+    volumes:
+      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts downvolumes:
+    ports:
+      - "5432:5432"
+
+  mongodb:
+    image: mongo:5.0
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: django
+      MONGO_INITDB_ROOT_PASSWORD: masterkey 
+    ports:
+      - "27017:27017"
+volumes:
+  database-data: # named volumes can be managed easier using docker-compose
