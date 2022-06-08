@@ -78,7 +78,7 @@ COMMENTS_XTD_APP_MODEL_OPTIONS = {
 
 ALLOWED_HOSTS =  env.list('ALLOWED_HOSTS')
 SITE_ID = 1
-
+print(ALLOWED_HOSTS)
 # Application definition
 
 INSTALLED_APPS = (

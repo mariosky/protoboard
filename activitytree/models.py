@@ -2,8 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
-from FIS import Text_Verbal
 # Create your models here.
+from decimal import Decimal
 
 
 def get_timezone():
@@ -12,6 +12,8 @@ def get_timezone():
 ###
 # MODELS
 ###
+
+
 class LearningStyleInventory(models.Model):
     visual = models.PositiveSmallIntegerField()
     verbal = models.PositiveSmallIntegerField()
@@ -21,12 +23,14 @@ class LearningStyleInventory(models.Model):
     social = models.PositiveSmallIntegerField()
     solitary = models.PositiveSmallIntegerField()
     user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
-    
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
     timezone = models.CharField(max_length=30, null=True)
     reputation = models.PositiveSmallIntegerField(default=80)
     experience = models.PositiveSmallIntegerField(default=0)
+
 
 class AuthorProfile(models.Model):
     user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
@@ -47,7 +51,8 @@ class AuthorProfile(models.Model):
     def student_count(self):
         from django.db import connection
         query = """SELECT count(*)
-                   FROM public.activitytree_course as course, public.activitytree_activitytree as tree
+                   FROM public.activitytree_course as course,
+                        public.activitytree_activitytree as tree
                    WHERE course.root_id = root_activity_id
                    AND author_id =  %s;""" % (self.user.id)
         with connection.cursor() as cursor:
@@ -61,32 +66,35 @@ class LearningActivityLocal(models.Model):
     uri = models.URLField(blank=True, unique=True)
 
     def get_absolute_url(self):
-        return  "{uri}/".format(uri = self.uri)   
+        return "{uri}/".format(uri=self.uri)
 
     def __str__(self):
-        return "{title}=>{uri}".format(title = self.title, uri = self.uri)    
+        return "{title}=>{uri}".format(title=self.title, uri=self.uri)
 
-    
 
 class LearningActivity(models.Model):
     """ Esta clase implementa los nodos del arbol de actividades """
     name = models.CharField(max_length=128)
     uri = models.URLField(blank=True)
-    parent = models.ForeignKey(to ='LearningActivity',null=True,related_name = 'children', on_delete=models.CASCADE)
-    root   = models.ForeignKey(to ='LearningActivity', on_delete=models.CASCADE, null=True)
-    
-    pre_condition_rule  = models.TextField(blank=True)
+    parent = models.ForeignKey(to='LearningActivity',
+                               null=True,
+                               related_name='children',
+                               on_delete=models.CASCADE)
+    root = models.ForeignKey(to='LearningActivity',
+                             on_delete=models.CASCADE, null=True)
+    pre_condition_rule = models.TextField(blank=True)
 
     choice_exit = models.BooleanField(default=True)
-    rollup_rule  = models.TextField(blank=True, default="completed IF All completed")
+    rollup_rule = models.TextField(blank=True,
+                                   default="completed IF All completed")
 
     rollup_progress = models.BooleanField(default=True)
-    #default value of attempt_limit (100) means no restriction in number of attempts, max attempts = 99
+    # default value of attempt_limit (100) means no restriction
+    # in number of attempts, max attempts = 99
     attempt_limit = models.PositiveSmallIntegerField(default=100)
 
     available_from = models.DateTimeField(null=True)
     available_until = models.DateTimeField(null=True)
-    
     is_container = models.BooleanField(default=False)
     is_visible = models.BooleanField(default=True)
 
@@ -94,16 +102,16 @@ class LearningActivity(models.Model):
     rules = models.TextField(blank=True)
 
     def get_absolute_url(self):
-        return  "/{id}{uri}/".format(id = self.id, uri = self.uri)   
+        return "/{id}{uri}/".format(id=self.id, uri=self.uri)
 
-    def get_children(self, recursive = False):
-        l=[]
+    def get_children(self, recursive=False):
+        lst = []
         for r in self.children.order_by('order_in_container'):
-            l.append(r)          
+            lst.append(r)
             if recursive:
-                l.extend(r.get_children(True))
-        return l
-    
+                lst.extend(r.get_children(True))
+        return lst
+
     def is_leaf(self):
         if self.is_container:
             return False
@@ -115,23 +123,27 @@ class LearningActivity(models.Model):
             return self.root
         else:
             return self
-        
+
     def __str__(self):
         return self.name
 
-from decimal import Decimal
+
 class UserLearningActivity(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
-    learning_activity = models.ForeignKey(to ='LearningActivity', on_delete=models.CASCADE)
-    pre_condition = models.CharField(max_length=32,default = "",blank=True)
-    recommendation_value = models.PositiveSmallIntegerField(null=True, default = 0)
-    progress_status = models.CharField(max_length=16,default = "incomplete")
-    objective_status = models.CharField(max_length=16,default = "notSatisfied")
-    objective_measure = models.FloatField( null=True, default = 0)
-    last_visited = models.DateTimeField(null=True,default = None)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    learning_activity = models.ForeignKey(to='LearningActivity',
+                                          on_delete=models.CASCADE)
+    pre_condition = models.CharField(max_length=32, default="", blank=True)
+    recommendation_value = models.PositiveSmallIntegerField(null=True,
+                                                            default=0)
+    progress_status = models.CharField(max_length=16, default="incomplete")
+    objective_status = models.CharField(max_length=16, default="notSatisfied")
+    objective_measure = models.FloatField(null=True, default=0)
+    last_visited = models.DateTimeField(null=True, default=None)
     num_attempts = models.PositiveSmallIntegerField(default=0)
     suspended = models.BooleanField(default=False)
-    accumulated_time = models.DecimalField(null=True, decimal_places = 2, max_digits = 3,default = Decimal('0.0'))
+    accumulated_time = models.DecimalField(null=True, decimal_places=2,
+                                           max_digits=3,
+                                           default=Decimal('0.0'))
     is_current = models.BooleanField(default=False)
 
     class Meta:
@@ -145,26 +157,25 @@ class UserLearningActivity(models.Model):
             return True
         else:
             return False
-    def get_atree(self):
-        return ActivityTree.objects.get(user=self.user, root_activity=self.learning_activity.get_root())
 
-    
+    def get_atree(self):
+        return ActivityTree.objects.get(user=self.user,
+                                        root_activity=self.learning_activity.get_root())
+
     def eval_pre_condition_rule(self):
         self.pre_condition = ""
-        if  self.learning_activity.pre_condition_rule != "":
+        if self.learning_activity.pre_condition_rule != "":
             exec(self.learning_activity.pre_condition_rule)
             super(UserLearningActivity, self).save()
 
     def eval_post_condition_rule(self):
         self.pre_condition = ""
-        if  self.learning_activity.post_condition_rule != "":
+        if self.learning_activity.post_condition_rule != "":
             exec(self.learning_activity.post_condition_rule)
             super(UserLearningActivity, self).save()
 
-
-    def get_objective_measure(self,activity_name):   ###      REVISAR
-        activity = UserLearningActivity.objects.select_related('user','learning_activity').filter(user = self.user,
-            learning_activity = LearningActivity.objects.filter(name=activity_name))
+    def get_objective_measure(self, activity_name):   # REVISAR
+        activity = UserLearningActivity.objects.select_related('user', 'learning_activity').filter(user=self.user,learning_activity=LearningActivity.objects.filter(name=activity_name))
         if activity[0] is None or activity[0].objective_measure is None:
             return 0
         else:
@@ -328,9 +339,16 @@ class Course(models.Model):
 
 
 class ActivityTree(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
-    root_activity = models.ForeignKey(to ='LearningActivity',related_name = 'activity_tree', on_delete=models.CASCADE)
-    current_activity =  models.ForeignKey(to ='UserLearningActivity',on_delete=models.CASCADE,related_name = 'current_in', null = True ,default=None)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    root_activity = models.ForeignKey(to='LearningActivity',
+                                      related_name='activity_tree',
+                                      on_delete=models.CASCADE)
+    current_activity = models.ForeignKey(to='UserLearningActivity',
+                                         on_delete=models.CASCADE,
+                                         related_name='current_in',
+                                         null=True,
+                                         default=None)
+
     class Meta:
         unique_together = ("user", "root_activity")
 
@@ -339,22 +357,14 @@ class ActivityTree(models.Model):
 # Se puede cambiar a CouchDB, MongoDB, Redis, etc.
 #
 class ULA_Event(models.Model):
-    ULA = models.ForeignKey(UserLearningActivity,on_delete=models.CASCADE)
+    ULA = models.ForeignKey(UserLearningActivity, on_delete=models.CASCADE)
     time_stamp = models.TimeField(auto_now=True)
     context = models.TextField()
 
 
 class LearningActivityRating(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
-    learning_activity = models.ForeignKey(LearningActivity,on_delete=models.CASCADE)
-    time=models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    learning_activity = models.ForeignKey(LearningActivity, on_delete=models.CASCADE)
+    time = models.DateTimeField(auto_now=True)
     rating = models.PositiveSmallIntegerField()
     context = models.PositiveSmallIntegerField()
-
-            
-
-
-            
-            
-
-            

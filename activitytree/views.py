@@ -24,8 +24,6 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 
-#from retest import re_test
-
 import logging
 import xml.etree.ElementTree as ET
 import uuid
@@ -84,8 +82,6 @@ def delete_course_view(request, course_id):
                 transaction.rollback()
                 print("Error al borrar {}".format(e))
 
-
-
         return HttpResponseRedirect('/instructor/')
 
 def add_course_view(request):
@@ -120,7 +116,6 @@ def add_course_view(request):
 
                         course_metadata['duration'] = str(course_metadata['duration'])
                         course_metadata['type'] = 'course'
-                        
                         print(course_metadata['duration'])
 
                         try:
@@ -153,6 +148,7 @@ def add_course_view(request):
         # please log in
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
+
 def update_course_view(request, course_id):
     if request.user.is_authenticated and request.user != 'AnonymousUser':
         course = get_object_or_404(Course, pk=course_id)
@@ -163,8 +159,9 @@ def update_course_view(request, course_id):
                 form.cleaned_data['uri'] = original_uri
                 course.metadata = form.cleaned_data
                 course.metadata['_id'] = '/activity/' + course.uri
-                course.metadata['html_description'] = bleach.clean(course.metadata['html_description'], tags=all_tags,
-                                                                   attributes=attrs)
+                course.metadata['html_description'] = bleach.clean(
+                    course.metadata['html_description'], tags=all_tags,
+                    attributes=attrs)
 
                 try:
                     with transaction.atomic():

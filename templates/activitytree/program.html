@@ -4,37 +4,37 @@
 {% block style %}
 
 /*
- * Editor
- */
+* Editor
+*/
 
-    #editor {
+#editor {
 
-        height: 540px;
+height: 540px;
 
-    }
+}
 
 
- p.test_error, p.test_failure {
-    color:#d9534f;
-    }
+p.test_error, p.test_failure {
+color:#d9534f;
+}
 
- p.test_success{
-    color:#5cb85c;
-    }
+p.test_success{
+color:#5cb85c;
+}
 
-  .alert{
-    margin:10px;
-    margin-bottom:0px;
-    }
+.alert{
+margin:10px;
+margin-bottom:0px;
+}
 
-  #info_panel{
-    padding:10px;
+#info_panel{
+padding:10px;
 
-    }
+}
 
-  #program_header{
-    margin-bottom:0px;
-    }
+#program_header{
+margin-bottom:0px;
+}
 
 
 
@@ -47,128 +47,89 @@
 
 
 <div class="row">
-
-    <div class="col-md-5">
-                <!-- Nav tabs -->
-
-
-        <ul id="main_tab" class="nav nav-tabs">
-          <li class="nav-item"><a class="nav-link active" href="#instrucciones" data-toggle="tab">Actividad</a></li>
-          <li class="nav-item" ><a class="nav-link" href="#results" data-toggle="tab">Resultados</a></li>
-
-
-        </ul>
-
-        <!-- Tab panes -->
-        <div class="tab-content">
-          <div class="tab-pane active" id="instrucciones">
-                <div id="info_panel">
-
-                    <div id="info_panel_body">
-                       {{ program_quiz.instructions|safe }}
-                    </div>
-                </div>
-
-          </div>
-          <div class="tab-pane" id="results">
-
-                   <div id="result_alert">
-
-                  </div>
-            <div class="container py-2">
-              <div class="row">
-                <div class="col-md-12 m-t-1">
-
-                  <div class="card">
-                      <h6 class="card-header">
-                        Resultado de las pruebas o salida del compilador (en inglés):
-                      </h6>
-
-                      <div id="result_panel_body" class="card-body">
-
-                      </div>
-                   </div>
-              </div>
-            </div>
-              </div>
-
-
-
-                <div class="container py-2">
-            <div class="row">
-                <div class="col-md-12 m-t-1">
-                    <div class="card">
-                      <h6 class="card-header">
-                        Se imprimió en la consola:
-                      </h6>
-                      <div id="consola" class="card-body">
-
-                      </div>
-
-                   </div>
-                </div>
-            </div>
-                </div>
-
+  <div class="col-md-5">
+    <!-- Nav tabs -->
+    <ul id="main_tab" class="nav nav-tabs">
+      <li class="nav-item"><a class="nav-link active" href="#instrucciones" data-toggle="tab">Actividad</a></li>
+      <li class="nav-item"><a class="nav-link" href="#results" data-toggle="tab">Resultados</a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane active" id="instrucciones">
+        <div id="info_panel">
+          <div id="info_panel_body">
+            {{ program_quiz.instructions|safe }}
           </div>
         </div>
-
-</div>
-    <div class="col-md-7">
-
-        <div class="card">
-
-            <h6 id="program_header" class="card-header">{{program_quiz.title}}</h6>
-
-
-
-
-             <div class="panel-body">{% csrf_token %}
-
-
-
-                 <div id="editor">{{program_quiz.initial_code}}</div>
-
-
-             </div>
-
-            <div class="card-footer">
-
-                <button type="button" id="sendButton"  data-complete-text="finished!" data-loading-text="Trabajando..."  class="btn btn-primary btn-sm" autocomplete="off">Ejecuta el código</button>
-                <button type="button" id="resetButton" class="btn btn-default btn-sm "> Reinicia el código</button>
-
-                 <span id="num_attempts" class="text-info pull-right">  </span>
-            </div>
-
+      </div>
+      <div class="tab-pane" id="results">
+        <div id="result_alert">
         </div>
-
-        </div>
-</div>
-
-
-    {% if XML_NAV %}
+        <div class="container py-2">
           <div class="row">
-              <div class="col-md-4 col-sm-12 m-b-1">
-
-
-                  <form id="nav_form"   role="form" action="{{ root_id }}{{root}}" method = "POST">{% csrf_token %}
-                      <nav aria-label="Page navigation example">
-                          <ul class="pagination justify-content-end">
-                              <a class="page-link previous" href="#" tabindex="-1"> <span class="nav_prev" > &larr; Anterior</span></a>
-
-                              <a class="page-link next" href="#"><span class="nav_next">  Continuar &rarr;</span></a>
-                              </li>
-                          </ul>
-                      </nav>
-
-
-
-                  </form>
-
+            <div class="col-md-12 m-t-1">
+              <div class="card">
+                <h6 class="card-header">
+                  Resultado de las pruebas o salida del compilador (en inglés):
+                </h6>
+                <div id="result_panel_body" class="card-body">
+                </div>
               </div>
+            </div>
           </div>
+        </div>
 
-    {% endif %}
+        <div class="container py-2">
+          <div class="row">
+            <div class="col-md-12 m-t-1">
+              <div class="card">
+                <h6 class="card-header">
+                  Se imprimió en la consola:
+                </h6>
+                <div id="consola" class="card-body">
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <div class="card">
+      <h6 id="program_header" class="card-header">{{program_quiz.title}}</h6>
+      <div class="panel-body">{% csrf_token %}
+        <div id="editor">{{program_quiz.initial_code}}</div>
+        </div>
+      <div class="card-footer">
+        <button type="button" id="sendButton" data-complete-text="finished!" data-loading-text="Trabajando..."
+          class="btn btn-primary btn-sm" autocomplete="off">Ejecuta el código</button>
+        <button type="button" id="resetButton" class="btn btn-default btn-sm "> Reinicia el código</button>
+        <span id="num_attempts" class="text-info pull-right"> </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% if XML_NAV %}
+<div class="row">
+  <div class="col-md-4 col-sm-12 m-b-1">
+    <form id="nav_form" role="form" action="{{ root_id }}{{root}}" method="POST">{% csrf_token %}
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+          <a class="page-link previous" href="#" tabindex="-1"> <span class="nav_prev"> &larr; Anterior</span></a>
+
+          <a class="page-link next" href="#"><span class="nav_next"> Continuar &rarr;</span></a>
+          </li>
+        </ul>
+      </nav>
+    </form>
+  </div>
+</div>
+{% endif %}
 
 
 {% endblock content %}
@@ -207,10 +168,10 @@
 
     </script>
 -->
-    <script src="{{ STATIC_URL }}app/scripts/proto-main.js"></script>
+<script src="{{ STATIC_URL }}app/scripts/proto-main.js"></script>
 
 
-    <script id="success_template" type="x-tmpl-mustache">
+<script id="success_template" type="x-tmpl-mustache">
         <div class='alert alert-success' role='alert'>
           <h5 class="alert-heading">¡Bien hecho!</h5>
                 <p>
@@ -225,7 +186,7 @@
         </div>
     </script>
 
-    <script id="fail_template" type="x-tmpl-mustache">
+<script id="fail_template" type="x-tmpl-mustache">
 
         <div class='alert alert-danger' role='alert'>
           <h5 class="alert-heading">Algo anda mal</h5>
@@ -235,7 +196,7 @@
         </div>
     </script>
 
-    <script id="waiting_template" type="x-tmpl-mustache">
+<script id="waiting_template" type="x-tmpl-mustache">
      <div class='alert alert-success' role='alert'>
 
 <div class="d-flex align-items-center">
@@ -249,297 +210,300 @@
     </script>
 
 
-    <script type="text/javascript" charset="utf-8">
-	/* Keyboard & Mouse Dynamics*/
+<script type="text/javascript" charset="utf-8">
+  /* Keyboard & Mouse Dynamics*/
 
-var keypresses = []; //Keyboard
-var mousepresses =[]; //Mouse clicks
-var mouse = []; //Mouse movement
+  var keypresses = []; //Keyboard
+  var mousepresses = []; //Mouse clicks
+  var mouse = []; //Mouse movement
 
-var mousePos = []; //Auxiliary
+  var mousePos = []; //Auxiliary
 
-$(document).keyup(function(evt) {
+  $(document).keyup(function (evt) {
     keypresses.push(
-	{"timestamp": new Date().getTime(),
-         "keycode": evt.which,
-	 "type": "keyup"});
-});
+      {
+        "timestamp": new Date().getTime(),
+        "keycode": evt.which,
+        "type": "keyup"
+      });
+  });
 
-$(document).keydown(function(evt) {
+  $(document).keydown(function (evt) {
     keypresses.push(
-	{"timestamp": new Date().getTime(),
-         "keycode":evt.which,
-	 "type": "keydown"});
-});
+      {
+        "timestamp": new Date().getTime(),
+        "keycode": evt.which,
+        "type": "keydown"
+      });
+  });
 
-$(document).mouseup(function(evt) {
+  $(document).mouseup(function (evt) {
     mousepresses.push(
-	{"timestamp": new Date().getTime(),
-         "mousecode": evt.which,
-	 "type": "mouseup"});
-});
+      {
+        "timestamp": new Date().getTime(),
+        "mousecode": evt.which,
+        "type": "mouseup"
+      });
+  });
 
-$(document).mousedown(function(evt) {
+  $(document).mousedown(function (evt) {
     mousepresses.push(
-	{"timestamp": new Date().getTime(),
-         "mousecode":evt.which,
-	 "type": "mousedown"});
-});
+      {
+        "timestamp": new Date().getTime(),
+        "mousecode": evt.which,
+        "type": "mousedown"
+      });
+  });
 
-$(document).ready(function() {
+  $(document).ready(function () {
     function handleMouseMove(event) {
-	event = event || window.event; // IE-ism
-	mousePos = {
-            x: event.clientX,
-            y: event.clientY
-	};
+      event = event || window.event; // IE-ism
+      mousePos = {
+        x: event.clientX,
+        y: event.clientY
+      };
     }
     window.onmousemove = handleMouseMove;
 
     function getMousePosition() {
-	if(mouse.length > 0 && mouse[mouse.length-1].position.x == mousePos.x && mouse[mouse.length-1].position.y == mousePos.y) {
-	    //Nothing
-	} else {
-	    mouse.push(
-	{timestamp: new Date().getTime(),
-	 position: mousePos});
-	}
+      if (mouse.length > 0 && mouse[mouse.length - 1].position.x == mousePos.x && mouse[mouse.length - 1].position.y == mousePos.y) {
+        //Nothing
+      } else {
+        mouse.push(
+          {
+            timestamp: new Date().getTime(),
+            position: mousePos
+          });
+      }
     }
     setInterval(getMousePosition, 100);
-});
+  });
 
 
-    </script>
+</script>
 
 
 
 
-    <script type="text/javascript" charset="utf-8">
+<script type="text/javascript" charset="utf-8">
 
-    function results(data)
-    {
-       $("#result_panel_body").html("");
-       $("#consola").html("");
-       $("#sendButton").prop('disabled', false);
-         var result = data.result;
-                        if (result.result == "Failure")
-                        {
-                            $("#result_alert").html( Mustache.render(fail_template,
-                                   {
-                                       in_path:in_path
-                                   }));
-                       }
-                        else if (result.result == "ProcessError")
-                        {
-                          $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
-                          $("#result_panel_heading").html("Error al procesar las pruebas");
-                        }
-
-                        else if (result.result == "Success")
-                        {
-
-
-                           $("#result_alert").html( Mustache.render(success_template,
-                                   {
-                                       in_path:in_path
-
-                                   }
-
-                           ));
-                        }
-
-                          for (var i=0; i<result.errors.length; ++i)
-                            $( "#result_panel_body").append("<p class='test_error'>"+ result.errors[i]+"</p>" );
-                          for (var i=0; i<result.failures.length; ++i)
-                            $( "#result_panel_body").append("<p class='test_failure'>"+ result.failures[i]+"</p>" );
-                          for (var i=0; i<result.successes.length; ++i)
-                            $( "#result_panel_body").append("<p class='test_success'>" + result.successes[i]+"</p>" );
-
-                        if (typeof result.stdout != 'undefined'  &&  result.stdout != "\n" )
-                        {
-
-                          $("<pre></pre>").text(result.stdout).appendTo("#consola");
-                         // $( "#result_panel_body").append("<code>"+ result.stdout +"</code>" );
-                        }
-                        //for (var i=0; i<info_list.length; i++){
-                        // $('<p>'+ info_list[i]+'<p/>', {class:"p"}).appendTo("#result_panel_body");
-                        //}
-                        $("#sendButton").button('reset');
-
-                        {% if XML_NAV %}
-
-                         num_attempts++;
-                         $('#num_attempts').html("intentos: " + num_attempts );
-
-
-                        {% endif %}
-
+  function results(data) {
+    $("#result_panel_body").html("");
+    $("#consola").html("");
+    $("#sendButton").prop('disabled', false);
+    var result = data.result;
+    if (result.result == "Failure") {
+      $("#result_alert").html(Mustache.render(fail_template,
+        {
+          in_path: in_path
+        }));
+    }
+    else if (result.result == "ProcessError") {
+      $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
+      $("#result_panel_heading").html("Error al procesar las pruebas");
     }
 
-
-        $(document).ready(function() {
-
-            var editor = ace.edit("editor");
-            var original_code = editor.getValue();
+    else if (result.result == "Success") {
 
 
-            task_id = 0;
-            number_of_tries = 0;
+      $("#result_alert").html(Mustache.render(success_template,
+        {
+          in_path: in_path
 
-            {% if XML_NAV %}
-                var num_attempts = $xml.find("item[is_current='True']").attr('num_attempts');
-                var attempt_limit = $xml.find("item[is_current='True']").attr('attempt_limit');
+        }
 
-            $('#num_attempts').html("intentos: " + num_attempts);
+      ));
+    }
 
-            {% endif %}
+    for (var i = 0; i < result.errors.length; ++i)
+      $("#result_panel_body").append("<p class='test_error'>" + result.errors[i] + "</p>");
+    for (var i = 0; i < result.failures.length; ++i)
+      $("#result_panel_body").append("<p class='test_failure'>" + result.failures[i] + "</p>");
+    for (var i = 0; i < result.successes.length; ++i)
+      $("#result_panel_body").append("<p class='test_success'>" + result.successes[i] + "</p>");
 
-            Mustache.tags = ['[[', ']]'];
-            success_template = $('#success_template').html();
-            fail_template = $('#fail_template').html();
-            waiting_template = $('#waiting_template').html();
-            Mustache.parse(success_template);
-            Mustache.parse(fail_template);
-            Mustache.parse(waiting_template);
+    if (typeof result.stdout != 'undefined' && result.stdout != "\n") {
 
-            $("#sendButton").on("click", function () {
+      $("<pre></pre>").text(result.stdout).appendTo("#consola");
+      // $( "#result_panel_body").append("<code>"+ result.stdout +"</code>" );
+    }
+    //for (var i=0; i<info_list.length; i++){
+    // $('<p>'+ info_list[i]+'<p/>', {class:"p"}).appendTo("#result_panel_body");
+    //}
+    $("#sendButton").button('reset');
 
-                var $btn = $(this).prop('disabled', true);
-                var code = editor.getValue();
+    {% if XML_NAV %}
 
-                const poll = ({fn, validate, interval, maxAttempts}) => {
-                    console.log('Inicia el polling...');
-                    let attempts = 0;
+    num_attempts++;
+    $('#num_attempts').html("intentos: " + num_attempts);
 
-                    const executePoll = async (resolve, reject) => {
-                        console.log('Polling..');
-                        const result = await fn();
-                        attempts++;
 
-                        if (validate(result)) {
-                            return resolve(result);
-                        } else if (maxAttempts && attempts === maxAttempts) {
-                            return reject(new Error('Se agotó el tiempo'));
-                        } else {
-                            setTimeout(executePoll, interval, resolve, reject);
-                        }
-                    };
-                    return new Promise(executePoll);
-                };
+    {% endif %}
 
-                const  sendToQueue  = async () => {
-                    let result;
-                    try {
-                        result = await  $.ajax({
-                            url: '/execute_queue/',
-                            type: 'POST',
-                            crossDomain: false,
-                            beforeSend: function(xhr, settings) {
-                                            if (!csrfSafeMethod(settings.type)) {
-                                                var csrftoken = getCookie('csrftoken');
-                                                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                                            }
-                                            },
-                            dataType: "json",
-                            contentType: "application/json",
-                            data: JSON.stringify({"jsonrpc": "2.0", "method": "{{ activity_uri }}", "params": [code],
+  }
+
+
+  $(document).ready(function () {
+
+    var editor = ace.edit("editor");
+    var original_code = editor.getValue();
+
+
+    task_id = 0;
+    number_of_tries = 0;
+
+    {% if XML_NAV %}
+    var num_attempts = $xml.find("item[is_current='True']").attr('num_attempts');
+    var attempt_limit = $xml.find("item[is_current='True']").attr('attempt_limit');
+
+    $('#num_attempts').html("intentos: " + num_attempts);
+
+    {% endif %}
+
+    Mustache.tags = ['[[', ']]'];
+    success_template = $('#success_template').html();
+    fail_template = $('#fail_template').html();
+    waiting_template = $('#waiting_template').html();
+    Mustache.parse(success_template);
+    Mustache.parse(fail_template);
+    Mustache.parse(waiting_template);
+
+    $("#sendButton").on("click", function () {
+
+      var $btn = $(this).prop('disabled', true);
+      var code = editor.getValue();
+
+      const poll = ({fn, validate, interval, maxAttempts}) => {
+        console.log('Inicia el polling...');
+        let attempts = 0;
+
+        const executePoll = async (resolve, reject) => {
+          console.log('Polling..');
+          const result = await fn();
+          attempts++;
+
+          if (validate(result)) {
+            return resolve(result);
+          } else if (maxAttempts && attempts === maxAttempts) {
+            return reject(new Error('Se agotó el tiempo'));
+          } else {
+            setTimeout(executePoll, interval, resolve, reject);
+          }
+        };
+        return new Promise(executePoll);
+      };
+
+      const sendToQueue = async () => {
+        let result;
+        try {
+          result = await $.ajax({
+            url: '/execute_queue/',
+            type: 'POST',
+            crossDomain: false,
+            beforeSend: function (xhr, settings) {
+              if (!csrfSafeMethod(settings.type)) {
+                var csrftoken = getCookie('csrftoken');
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+            },
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify({"jsonrpc": "2.0", "method": "{{ activity_uri }}", "params": [code],
                             {% if uri_id %}
-                           "id": {{ uri_id }} ,
-                           {% endif %}
-                            "keypresses": keypresses,
-                            "mousepresses": mousepresses,
-                            "mousemovement": mouse})
-                        });
-                        return result;
-                        } catch (error)
-                    {
-                        console.error(error);
-                    }
+                           "id": {{uri_id}} ,
+        {% endif %}
+        "keypresses": keypresses,
+          "mousepresses": mousepresses,
+            "mousemovement": mouse
+      })
+  });
+  return result;
+                        } catch (error) {
+    console.error(error);
+  }
                 }
 
 
-                const  doAjax  = async () => {
-                    let result;
-                    try {
-                        result = await  $.ajax({
-                            url: '/get_result/',
-                            type: 'POST',
-                            crossDomain: false,
-                            beforeSend: function(xhr, settings) {
-                                            if (!csrfSafeMethod(settings.type)) {
-                                                var csrftoken = getCookie('csrftoken');
-                                                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                                            }
-                                            },
-                             dataType: "json",
-                             contentType: "application/json",
-                             data: JSON.stringify({"jsonrpc": "2.0", "method": "_execute", "params": ["{{ activity_uri }}"], "id": task_id })
-                        });
+  const doAjax = async () => {
+    let result;
+    try {
+      result = await $.ajax({
+        url: '/get_result/',
+        type: 'POST',
+        crossDomain: false,
+        beforeSend: function (xhr, settings) {
+          if (!csrfSafeMethod(settings.type)) {
+            var csrftoken = getCookie('csrftoken');
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+        },
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify({"jsonrpc": "2.0", "method": "_execute", "params": ["{{ activity_uri }}"], "id": task_id})
+      });
 
-                        return result;
-                    } catch (error) {
-                        console.error(error);
-                    }
-                }
-
-
-                const validateResults = data => {
-                    if (data.outcome != -1)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-
-                }
+      return result;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
 
-                const POLL_INTERVAL = 2000; // two seconds
+  const validateResults = data => {
+    if (data.outcome != -1) {
+      return true;
+    }
+    else {
+      return false;
+    }
 
-                const sentToExecuteQueue = sendToQueue()
-                .then( data => {
-                    console.log(data);
-                    task_id =data.id;
-                    number_of_tries=0;
-                    $("#consola").empty();
-                    $('#main_tab a[href="#results"]').tab('show');
-                    $("#result_panel_body").empty();
-                    $("#result_alert").empty();
-                    $("#result_alert").html(Mustache.render(waiting_template));
+  }
 
-                    const pollResults = poll({
-                    fn: doAjax,
-                    validate: validateResults,
-                    interval: POLL_INTERVAL,
-                    maxAttempts:20
-                    })
-                    .then(data => {
-                        console.log(data);
-                        $("#sendButton").prop('disabled', false);
-                            results(data);
-                    }
+
+  const POLL_INTERVAL = 2000; // two seconds
+
+  const sentToExecuteQueue = sendToQueue()
+    .then(data => {
+      console.log(data);
+      task_id = data.id;
+      number_of_tries = 0;
+      $("#consola").empty();
+      $('#main_tab a[href="#results"]').tab('show');
+      $("#result_panel_body").empty();
+      $("#result_alert").empty();
+      $("#result_alert").html(Mustache.render(waiting_template));
+
+      const pollResults = poll({
+        fn: doAjax,
+        validate: validateResults,
+        interval: POLL_INTERVAL,
+        maxAttempts: 20
+      })
+        .then(data => {
+          console.log(data);
+          $("#sendButton").prop('disabled', false);
+          results(data);
+        }
 
 
 
-                    )
-                    .catch(err => {
-                        console.error(err);
-                        alert ("Lo sentimos, hubo un error al enviar tu programa al servidor. El error fué (en lenguaje informático): " +errorThrown);
-                        $("#sendButton").prop('disabled', false);
+        )
+        .catch(err => {
+          console.error(err);
+          alert("Lo sentimos, hubo un error al enviar tu programa al servidor. El error fué (en lenguaje informático): " + errorThrown);
+          $("#sendButton").prop('disabled', false);
 
-                    });
-                    })
-                .catch(err => {
-                    console.error(err);
+        });
+    })
+    .catch(err => {
+      console.error(err);
 
-                    $("#sendButton").prop('disabled', false);
+      $("#sendButton").prop('disabled', false);
 
-                    $("#result_panel_body").html("");
-                    $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
-                    $('<p>'+ 'TIEMPO DE RESPUESTA AGOTADO'+'<p/>', {class:"p"}).appendTo("#result_panel_body");
-                });
+      $("#result_panel_body").html("");
+      $("#result_panel").removeClass("panel-info").removeClass("panel-success").addClass("panel-danger");
+      $('<p>' + 'TIEMPO DE RESPUESTA AGOTADO' + '<p/>', {class: "p"}).appendTo("#result_panel_body");
+    });
 
 
             });
@@ -548,34 +512,36 @@ $(document).ready(function() {
 
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js" type="text/javascript" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/{{ program_quiz.lang }}.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript"
+  charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/{{ program_quiz.lang }}.js"
+  type="text/javascript" charset="utf-8"></script>
 
 
-    {% comment  %}
-      <script src="{{ MEDIA_URL }}js/ace.js" type="text/javascript" charset="utf-8"></script>
-      <script src="{{ MEDIA_URL }}js/theme-chrome.js" type="text/javascript" charset="utf-8"></script>
-      <script src="{{ MEDIA_URL }}js/mode-{{ program_quiz.lang }}.js" type="text/javascript" charset="utf-8"></script>
+{% comment %}
+<script src="{{ MEDIA_URL }}js/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ MEDIA_URL }}js/theme-chrome.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ MEDIA_URL }}js/mode-{{ program_quiz.lang }}.js" type="text/javascript" charset="utf-8"></script>
 
-   {% endcomment %}
-   <script type="text/javascript" charset="utf-8">
-        editor = ace.edit("editor");
-        editor.setTheme("ace/theme/chrome");
-        editor.getSession().setMode("ace/mode/{{ program_quiz.lang }}");
+{% endcomment %}
+<script type="text/javascript" charset="utf-8">
+  editor = ace.edit("editor");
+  editor.setTheme("ace/theme/chrome");
+  editor.getSession().setMode("ace/mode/{{ program_quiz.lang }}");
 
-        $('.read_only_editor').each(function(){
-            read_only_ = ace.edit(this.id);
-            read_only_.setTheme("ace/theme/chrome");
-            //editor.container.style.pointerEvents="none";
-            read_only_.renderer.setOption('showLineNumbers', false);
-            read_only_.container.style.opacity=0.7 ;
-            read_only_.renderer.setStyle("disabled", true);
-            read_only_.blur();
+  $('.read_only_editor').each(function () {
+    read_only_ = ace.edit(this.id);
+    read_only_.setTheme("ace/theme/chrome");
+    //editor.container.style.pointerEvents="none";
+    read_only_.renderer.setOption('showLineNumbers', false);
+    read_only_.container.style.opacity = 0.7;
+    read_only_.renderer.setStyle("disabled", true);
+    read_only_.blur();
 
-        });
+  });
 
-   </script>
+</script>
 
 
 
