@@ -945,7 +945,6 @@ def path_test(request, path_id, uri):
 
         breadcrumbs = s.get_current_path(requested_activity)
 
-        test = Activity.get(requested_activity.learning_activity.uri)
         if feedback:
 
             for q in test['questions']:
@@ -1132,7 +1131,7 @@ def execute_queue(request):
 
         # Get Unittest
         unit_test = program_test['unit_test']
-
+        print(unit_test)
         server = Cola(program_test['lang'])
         task = {"id": None, "method": "exec", "params": {"code": code, "test": unit_test}}
         logger.debug(task)

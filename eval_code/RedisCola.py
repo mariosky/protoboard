@@ -11,6 +11,7 @@ PASSWORD = 'REDIS_PASSWORD' in os.environ and os.environ['REDIS_PASSWORD'] or '1
 
 r = redis.Redis(host=HOST, port=PORT, password=PASSWORD, decode_responses=True)
 
+print(HOST, PORT, PASSWORD)
 class Task:
     def __init__(self, **kwargs):
         self.id = kwargs['id']
