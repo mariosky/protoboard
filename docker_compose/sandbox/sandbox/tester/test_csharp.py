@@ -13,14 +13,14 @@ def run_test(code, test):
         print("Folder Created:",tmp_dir )
 
         # Create the project
-        print("Creating Project", tmp_dir)
+        print("Copy Project Folder", tmp_dir)
 
         try:
             out = subprocess.check_output(
-                ['dotnet','new', 'xunit', '--output', tmp_dir ],
+                ['cp','-r', '/home/sandbox/test_csharp/', tmp_dir],
                 stderr=subprocess.STDOUT)
             print("out:", out)
-            print("Project Created")
+            print("Project Copied")
         except subprocess.CalledProcessError as e:
             print("out Exception:", e)
             result = (json.dumps(
@@ -28,12 +28,7 @@ def run_test(code, test):
                  'result': 'ProcessError'}), e.returncode)
             return result
 
-        print("Project Created:")
-        listOfFiles = os.listdir(tmp_dir)
-        for entry in listOfFiles:
-            print(entry)
-
-        #Create the file
+        # Create the file
         code = """using Xunit;
         """ + code + test
         tmp_script = open(os.path.join(tmp_dir, "UnitTest1.cs"), 'w')
@@ -42,11 +37,10 @@ def run_test(code, test):
         result = [], 0
         print("File Created")
 
-
         # TEST
         try:
             out = subprocess.check_output(
-                ['dotnet', 'test', tmp_dir, '--nologo'],
+                ['dotnet', 'test', tmp_dir+'/test_csharp', '--nologo', '--no-restore'],
                 stderr=subprocess.STDOUT)
             print("Pass TEST:", out)
             result = (json.dumps({
@@ -58,7 +52,7 @@ def run_test(code, test):
             }), 0)
 
         except subprocess.CalledProcessError as e:
-            print("Fail TEST:",e.output.decode('utf8'))
+            print("Fail TEST:", e.output.decode('utf8'))
             return (json.dumps({
                 'successes': [],
                 'failures': [e.output.decode('utf8')],
@@ -72,22 +66,6 @@ def run_test(code, test):
         return result
     except Exception as e:
         return ["Error, could not evaluate"], e
-
-
-def _result():
-    import xml.etree.ElementTree as ET
-    tree = ET.parse('TestResult.xml')
-    a = open('out.txt')
-    r = {
-        'successes': [e.attrib['description'] for e in tree.findall(".//test-case[@result='Success']")],
-        'failures': [e.attrib['description'] for e in tree.findall(".//test-case[@result='Failure']")],
-        'errors': [],
-        'stdout': a.read(),
-        'result': tree.findall("test-suite")[0].attrib['result']
-    }
-
-    return json.dumps(r)
-
 
 if __name__ == "__main__":
     code = """using System.IO;
