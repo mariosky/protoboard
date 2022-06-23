@@ -10,14 +10,14 @@ def run_test(code, test):
     try:
         # Create folder
         tmp_dir = tempfile.mkdtemp()
-        print("Folder Created:",tmp_dir )
+        print("Folder Created:", tmp_dir)
 
         # Create the project
         print("Copy Project Folder", tmp_dir)
 
         try:
             out = subprocess.check_output(
-                ['cp','-r', '/home/sandbox/test_csharp/', tmp_dir],
+                ['cp', '-r', '/home/sandbox/test_csharp/', tmp_dir],
                 stderr=subprocess.STDOUT)
             print("out:", out)
             print("Project Copied")
@@ -31,7 +31,7 @@ def run_test(code, test):
         # Create the file
         code = """using Xunit;
         """ + code + test
-        tmp_script = open(os.path.join(tmp_dir, "UnitTest1.cs"), 'w')
+        tmp_script = open(os.path.join(tmp_dir+'/test_csharp', "UnitTest1.cs"), 'w')
         tmp_script.write(code)
         tmp_script.close()
         result = [], 0
@@ -67,10 +67,11 @@ def run_test(code, test):
     except Exception as e:
         return ["Error, could not evaluate"], e
 
+
 if __name__ == "__main__":
     code = """using System.IO;
     using System;
-    
+
     public class Product
     {
             public int  code;
