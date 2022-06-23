@@ -31,7 +31,7 @@ def run_test(code, test):
         # Create the file
         code = """using Xunit;
         """ + code + test
-        tmp_script = open(os.path.join(tmp_dir+'/test_csharp', "UnitTest1.cs"), 'w')
+        tmp_script = open(os.path.join(tmp_dir+'/test_csharp/', 'UnitTest1.cs'), 'w')
         tmp_script.write(code)
         tmp_script.close()
         result = [], 0
