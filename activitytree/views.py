@@ -3,23 +3,18 @@
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, Http404
 from django.http import JsonResponse
 
-from django.template.response import TemplateResponse
 
 from django.db.models import Avg, Count
 from django.db import IntegrityError
 from django.db import transaction
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.conf import settings
-from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth import models as auth_models
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
-from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
@@ -28,14 +23,11 @@ import logging
 import xml.etree.ElementTree as ET
 import uuid
 
-import urllib
-from urllib.parse import urlparse
 import json
 
 from activitytree.retest import re_test
 
 import pymongo
-from pymongo import errors
 from pymongo import MongoClient
 
 import redis
@@ -53,25 +45,23 @@ from activitytree.models import UserProfile
 from activitytree.courses import get_activity_tree, update_course_from_json, upload_course_from_json, get_course_list
 from django.contrib.auth.forms import UserCreationForm
 from .forms.course import CourseForm
-from django import forms
-from django.contrib import messages
-from django.db import transaction
 
 logger = logging.getLogger(__name__)
+
 
 def delete_course_view(request, course_id):
     if request.user.is_authenticated and request.user != 'AnonymousUser':
 
         mycourse = None
         if not request.user.is_superuser:
-            mycourse = get_object_or_404(Course, pk=course_id, author = request.user)
+            mycourse = get_object_or_404(Course, pk=course_id, author=request.user)
         else:
             mycourse = get_object_or_404(Course, pk=course_id)
 
         if (mycourse):
             try:
                 with transaction.atomic():
-                    #Consider doing this with DELETE CASCADE
+                    # Consider doing this with DELETE CASCADE
                     uri = mycourse.uri
                     ActivityTree.objects.filter(root_activity=mycourse.root).delete()
                     UserLearningActivity.objects.filter(learning_activity__root=mycourse.root).delete()
@@ -84,12 +74,13 @@ def delete_course_view(request, course_id):
 
         return HttpResponseRedirect('/instructor/')
 
+
 def add_course_view(request):
     if request.user.is_authenticated and request.user != 'AnonymousUser':
         if request.method == 'POST':
             form = CourseForm(request.POST)
             if form.is_valid():
-                course_metadata =  form.cleaned_data
+                course_metadata = form.cleaned_data
                 title = course_metadata['title']
                 uri = course_metadata['uri']
                 is_private = course_metadata['is_private']
@@ -119,7 +110,7 @@ def add_course_view(request):
                         print(course_metadata['duration'])
 
                         try:
-                            ## Is a new activity Generate a Global ID
+                            # Is a new activity Generate a Global ID
                             message = activities_collection.update(
                                 {'_id': course_metadata['_id'], 'author': course_metadata['author']},
                                 course_metadata, upsert=True)
@@ -131,7 +122,7 @@ def add_course_view(request):
                     print(form.errors)
                     return render(request, 'activitytree/create_course.html', {'form': form})
 
-                except pymongo.errors.DuplicateKeyError as e:
+                except pymongo.errors.DuplicateKeyError:
                     transaction.rollback()
                     form.add_error(None, 'Error de Integridad, El nombre del Slug de la actividad ya existe, intenta otro nombre')
                     return render(request, 'activitytree/create_course.html', {'form': form})
@@ -175,7 +166,7 @@ def update_course_view(request, course_id):
                         course.metadata['type'] = 'course'
 
                         try:
-                            ## Is a new activity Generate a Global ID
+                            # Is a new activity Generate a Global ID
                             message = activities_collection.update(
                                 {'_id': course.metadata['_id'], 'author': course.metadata['author']},
                                 course.metadata, upsert=True)
@@ -187,7 +178,7 @@ def update_course_view(request, course_id):
                     print(form.errors)
                     return render(request, 'activitytree/create_course.html', {'form': form})
 
-                except pymongo.errors.DuplicateKeyError as e:
+                except pymongo.errors.DuplicateKeyError:
                     transaction.rollback()
                     form.add_error(None,
                                    'Error de Integridad, El nombre del Slug de la actividad ya existe, intenta otro nombre')
@@ -199,7 +190,7 @@ def update_course_view(request, course_id):
                 print("Forma Inválida", form.errors)
                 return render(request, 'activitytree/create_course.html', {'form': form})
         else:
-            #get activity from field
+            # get activity from field
             if course.metadata['duration']:
                 duration_json = course.metadata['duration']
                 duration =  "{}:{}:{}".format( duration_json[4:6], duration_json[7:9],duration_json[-3:-1])
@@ -215,70 +206,57 @@ def update_course_view(request, course_id):
         # please log in
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
-def instructor_profile(request,user_id):
 
-    queryset =  AuthorProfile.objects.filter(user_id = 1)
-    author   =  get_object_or_404(queryset, user_id = 1)
+def instructor_profile(request, user_id):
+
+    queryset = AuthorProfile.objects.filter(user_id=1)
+    author = get_object_or_404(queryset, user_id=1)
 
     courses = Course.objects.filter(author=author.user)
 
     return render(request, 'activitytree/instructor_profile.html',
-                                  {'courses': courses, 
-                                   'author': author
-                                   # , 'plus_scope':plus_scope,'plus_id':plus_id
-                                   })
+                           {'courses': courses, 'author': author})
+
 
 def welcome(request):
     courses = Course.objects.all()
-    
     if request.user.is_authenticated and request.user != 'AnonymousUser':
         return render(request,
                       'activitytree/welcome.html',
-                                   { 'courses': courses
-                                   # , 'plus_scope':plus_scope,'plus_id':plus_id
-                                   } )
+                      {'courses': courses})
     else:
-        return render(request,'activitytree/welcome.html',
-                                  {'user_name': None, 'courses': courses
-                                   # ,'plus_scope':plus_scope,'plus_id':plus_id
-                                   } )
+        return render(request, 'activitytree/welcome.html',
+                               {'user_name': None, 'courses': courses})
 
 
 def course_list(request):
-
-    tags  = request.GET.get('tags', '')
-    sort  = request.GET.get('sort', '')
+    tags = request.GET.get('tags', '')
+    sort = request.GET.get('sort', '')
     levels = request.GET.get('levels', '')
     courses = None
 
-    query = {'metadata__status':'published'} # only published
-    
+    query = {'metadata__status': 'published'}  # only published
+
     if (tags):
         query['metadata__tags__has_any_keys'] = tags.split(',')
-    if (levels): 
+    if (levels):
         query['metadata__level__in'] = tuple(levels.split(','))
     if (sort):
-        order = {'new': ''  }
-    
-    order = '?' #random order
-    courses =  Course.objects.filter(**query).order_by(order)
+        order = {'new': ''}
 
-
+    order = '?'  # random order
+    courses = Course.objects.filter(**query).order_by(order)
     count = Course.objects.filter(metadata__status='published').count()
 
-    tag_checkbox = [ { 'tag':tag, 'checked':tag in tags} for tag, _  in CourseForm.TAGS ]
-    level_checkbox = [ { 'level':level, 'checked':level in levels} for level, _  in CourseForm.LEVEL_CHOICES ]
+    tag_checkbox = [{'tag': tag, 'checked': tag in tags} for tag, _ in CourseForm.TAGS]
+    level_checkbox = [{'level': level, 'checked': level in levels} for level, _ in CourseForm.LEVEL_CHOICES]
 
-    
-
-    
     if request.user.is_authenticated and request.user != 'AnonymousUser':
-
-        return render(request,'activitytree/course_list.html',
+        return render(request, 'activitytree/course_list.html',
                                   {'courses': courses, 
-                                    'count': count,
-                                    'tags':tag_checkbox,
-                                    'levels':level_checkbox
+                                   'count': count,
+                                   'tags': tag_checkbox,
+                                   'levels': level_checkbox
                                    })
     else:
         return render(request,'activitytree/course_list.html',
@@ -851,33 +829,32 @@ def path_activity(request, path_id, uri):
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
 
-def activity(request, uuid, type = None):
+def activity(request, uuid, type=None):
     if request.method == 'GET':
         if False:
             return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
-        print('type:',type)
-         
+        print('type:',  type)
+
         _id = None
         if type:
             _id = "/activity/{type}/{uuid}".format(uuid=uuid, type=type)
         else:
             _id =  "/activity/{uuid}".format(uuid=uuid)
-        
-        
+
         print(_id)
         activity_content = Activity.get(_id)
-        
+        print(activity_content)
 
         if activity_content:
-            template = { 'video':'activitytree/video.html', None:'activitytree/activity.html' }
+            template = {'video': 'activitytree/video.html', None: 'activitytree/activity.html'}
 
-            learning_activity_local, created = LearningActivityLocal.objects.get_or_create(uri=_id, title=activity_content['title'])
+            # learning_activity_local, created = LearningActivityLocal.objects.get_or_create(uri=_id, title=activity_content['title'])
             
             return render(request,template[type],
                                         {
                                         'uri': _id,
                                         'content': activity_content,
-                                        'learning_activity':learning_activity_local,
+                                        #'learning_activity':learning_activity_local,
                                         'current_site': get_current_site(request)
                                         })
 
@@ -944,7 +921,7 @@ def path_test(request, path_id, uri):
             learning_activity__uri=requested_activity.learning_activity.uri).aggregate(Count('rating'), Avg('rating'))
 
         breadcrumbs = s.get_current_path(requested_activity)
-
+        test = Activity.get(requested_activity.learning_activity.uri)
         if feedback:
 
             for q in test['questions']:
@@ -954,7 +931,6 @@ def path_test(request, path_id, uri):
                     if q['interaction'] in ['choiceInteraction', 'simpleChoice']:
                         q['feedback_options'] = zip(q['options'], feedback[q_id]['user_answer'],
                                                     feedback[q_id]['checked'])
-
         return render(request,'activitytree/' + (requested_activity.learning_activity.uri).split('/')[1] + '.html',
                                   {'XML_NAV': XML,
                                    'uri': requested_activity.learning_activity.uri,
