@@ -22,7 +22,7 @@ idna==2.10
 Markdown==3.3.4
 markdown2==2.4.0
 packaging==20.9
-Pillow==8.1.2
+Pillow==9.3
 psycopg2-binary==2.9.4
 pymongo==3.11.3
 pyparsing==2.4.7
