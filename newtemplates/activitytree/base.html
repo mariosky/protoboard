@@ -1,0 +1,891 @@
+{% load gravatar %}
+{% load auth_extras %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Libs CSS -->
+  
+<!-- <link href="{{ STATIC_URL }}assets/fonts/feather/feather.css" rel="stylesheet" />
+<link href="{{ STATIC_URL }}assets/libs/dragula/dist/dragula.min.css" rel="stylesheet" />
+<link href="{{ STATIC_URL }}assets/libs/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet" />
+<link href="{{ STATIC_URL }}assets/libs/dropzone/dist/dropzone.css" rel="stylesheet" />
+<link href="{{ STATIC_URL }}assets/libs/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}assets/libs/@yaireo/tagify/dist/tagify.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}assets/libs/tippy.js/dist/tippy.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}assets/libs/tiny-slider/dist/tiny-slider.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}assets/libs/magnific-popup/dist/magnific-popup.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tag-it/2.0/css/jquery.tagit.min.css" integrity="sha256-lcQWHHJYwmgE3yVHk/xkDggrFXTlO/4BhoCp2LgM8s4=" crossorigin="anonymous" />
+<link rel="stylesheet" href="{{ STATIC_URL }}app/styles/activity_tree.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}assets/css/theme.min.css">
+-->
+<link href="{{ STATIC_URL }}assets/libs/prismjs/themes/prism.css" rel="stylesheet" />
+<link href="{{ STATIC_URL }}assets/css/output.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-numbers/prism-line-numbers.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-highlight/prism-line-highlight.min.css" />
+
+  <!-- Favicon icon-->
+<link rel="icon" type="image/png" href="{{ STATIC_URL }}assets/images/favicon/favicon.png"> 
+  {% if metadescription %}
+        <meta name="Description" content="{{ metadescription }}">
+  {% else %}
+        <meta name="Description" content="En aulacode.com | Aprenderás Programación, con actividades y ejercicios en Python, C#, Java, GO, Perl6, Javascript, conoce más lenguajes aquí">
+  {% endif %}
+
+    <title> tailwind-aulacode.com </title>
+
+
+    <!-- Latest compiled and minified CSS -->
+
+
+
+    <!-- Custom styles for derived templates -->
+     <style>
+
+         {% block style %}
+
+         {% endblock style %}
+      </style>
+  </head>
+
+  <body>
+
+
+<div class="relative bg-white">
+  <div class="mx-auto max-w-screen-xl px-2">
+    <div class="flex justify-between border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
+      <div class="flex justify-start lg:w-0 lg:flex-1">
+        <a href="#">
+          <span class="sr-only">Your Company</span>
+          <img class="h-8 w-auto sm:h-10" src="{{ STATIC_URL }}assets/images/brand/logo/logo-aulacode.svg" alt="">
+        </a>
+      </div>
+      <div class="-my-2 -mr-2 md:hidden">
+        <button type="button" class="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-expanded="false">
+          <span class="sr-only">Open menu</span>
+          <!-- Heroicon name: outline/bars-3 -->
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
+      </div>
+      <nav class="hidden space-x-10 py-2 md:flex">
+        <div class="relative">
+          <!-- Item active: "text-gray-900", Item inactive: "text-gray-500" -->
+          <button id="solutions-btn" type="button" class="text-gray-500 group inline-flex items-center
+            rounded-md bg-white text-base font-medium hover:text-gray-900 
+            focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" aria-expanded="false">
+            <span>Solutions</span>
+            <!--
+              Heroicon name: mini/chevron-down
+
+              Item active: "text-gray-600", Item inactive: "text-gray-400"
+            -->
+            <svg class="text-gray-400 ml-2 h-5 w-5 group-hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </button>
+
+          <!--
+            'Solutions' flyout menu, show/hide based on flyout menu state.
+
+            Entering: "transition ease-out duration-200"
+              From: "opacity-0 translate-y-1"
+              To: "opacity-100 translate-y-0"
+            Leaving: "transition ease-in duration-150"
+              From: "opacity-100 translate-y-0"
+              To: "opacity-0 translate-y-1"
+          -->
+          <div id="solutions-menu" class="hidden absolute z-10 -ml-4 mt-3 w-screen max-w-md transform px-2 sm:px-0 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2">
+            <div class="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+              <div class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
+                <a href="#" class="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50">
+                  <!-- Heroicon name: outline/chart-bar -->
+                  <svg class="h-6 w-6 flex-shrink-0 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                  </svg>
+                  <div class="ml-4">
+                    <p class="text-base font-medium text-gray-900">Analytics</p>
+                    <p class="mt-1 text-sm text-gray-500">Get a better understanding of where your traffic is coming from.</p>
+                  </div>
+                </a>
+
+                <a href="#" class="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50">
+                  <!-- Heroicon name: outline/cursor-arrow-rays -->
+                  <svg class="h-6 w-6 flex-shrink-0 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243l-1.59-1.59" />
+                  </svg>
+                  <div class="ml-4">
+                    <p class="text-base font-medium text-gray-900">Engagement</p>
+                    <p class="mt-1 text-sm text-gray-500">Speak directly to your customers in a more meaningful way.</p>
+                  </div>
+                </a>
+
+                <a href="#" class="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50">
+                  <!-- Heroicon name: outline/shield-check -->
+                  <svg class="h-6 w-6 flex-shrink-0 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                  </svg>
+                  <div class="ml-4">
+                    <p class="text-base font-medium text-gray-900">Security</p>
+                    <p class="mt-1 text-sm text-gray-500">Your customers&#039; data will be safe and secure.</p>
+                  </div>
+                </a>
+
+                <a href="#" class="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50">
+                  <!-- Heroicon name: outline/squares-2x2 -->
+                  <svg class="h-6 w-6 flex-shrink-0 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                  </svg>
+                  <div class="ml-4">
+                    <p class="text-base font-medium text-gray-900">Integrations</p>
+                    <p class="mt-1 text-sm text-gray-500">Connect with third-party tools that you&#039;re already using.</p>
+                  </div>
+                </a>
+
+                <a href="#" class="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50">
+                  <!-- Heroicon name: outline/arrow-path -->
+                  <svg class="h-6 w-6 flex-shrink-0 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                  </svg>
+                  <div class="ml-4">
+                    <p class="text-base font-medium text-gray-900">Automations</p>
+                    <p class="mt-1 text-sm text-gray-500">Build strategic funnels that will drive your customers to convert</p>
+                  </div>
+                </a>
+              </div>
+              <div class="space-y-6 bg-gray-50 px-5 py-5 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8">
+                <div class="flow-root">
+                  <a href="#" class="-m-3 flex items-center rounded-md p-3 text-base font-medium text-gray-900 hover:bg-gray-100">
+                    <!-- Heroicon name: outline/play -->
+                    <svg class="h-6 w-6 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+                    </svg>
+                    <span class="ml-3">Watch Demo</span>
+                  </a>
+                </div>
+
+                <div class="flow-root">
+                  <a href="#" class="-m-3 flex items-center rounded-md p-3 text-base font-medium text-gray-900 hover:bg-gray-100">
+                    <!-- Heroicon name: outline/phone -->
+                    <svg class="h-6 w-6 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                    </svg>
+                    <span class="ml-3">Contact Sales</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+<div class="relative rounded-md shadow-sm border-2 text-gray-500">
+ <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+      <span class="text-gray-500 bg-gray-200 sm:text-sm">B </span>
+    </div>
+          <input type="text" name="price" id="price" class="block w-full rounded-md border-gray-300 ring-violet-200
+              pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="">
+</div> 
+        <a href="#" class="text-base font-medium text-gray-500 hover:text-gray-900">Pricing</a>
+        <a href="#" class="text-base font-medium text-gray-500 hover:text-gray-900">Docs</a>
+
+        <div class="relative">
+          <!-- Item active: "text-gray-900", Item inactive: "text-gray-500" -->
+          <button id="more-btn" type="button" class="text-gray-500 group inline-flex items-center 
+            rounded-md bg-white text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" aria-expanded="false">
+            <span>More</span>
+            <!--
+              Heroicon name: mini/chevron-down
+
+              Item active: "text-gray-600", Item inactive: "text-gray-400"
+            -->
+            <svg class="text-gray-400 ml-2 h-5 w-5 group-hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </button>
+
+          <!--
+            'More' flyout menu, show/hide based on flyout menu state.
+
+            Entering: "transition ease-out duration-200"
+              From: "opacity-0 translate-y-1"
+              To: "opacity-100 translate-y-0"
+            Leaving: "transition ease-in duration-150"
+              From: "opacity-100 translate-y-0"
+              To: "opacity-0 translate-y-1"
+          -->
+          <div id="more-menu" class="hidden absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 transform px-2 sm:px-0">
+            <div class="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+              <div class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
+                <a href="#" class="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50">
+                  <!-- Heroicon name: outline/lifebuoy -->
+                  <svg class="h-6 w-6 flex-shrink-0 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.712 4.33a9.027 9.027 0 011.652 1.306c.51.51.944 1.064 1.306 1.652M16.712 4.33l-3.448 4.138m3.448-4.138a9.014 9.014 0 00-9.424 0M19.67 7.288l-4.138 3.448m4.138-3.448a9.014 9.014 0 010 9.424m-4.138-5.976a3.736 3.736 0 00-.88-1.388 3.737 3.737 0 00-1.388-.88m2.268 2.268a3.765 3.765 0 010 2.528m-2.268-4.796a3.765 3.765 0 00-2.528 0m4.796 4.796c-.181.506-.475.982-.88 1.388a3.736 3.736 0 01-1.388.88m2.268-2.268l4.138 3.448m0 0a9.027 9.027 0 01-1.306 1.652c-.51.51-1.064.944-1.652 1.306m0 0l-3.448-4.138m3.448 4.138a9.014 9.014 0 01-9.424 0m5.976-4.138a3.765 3.765 0 01-2.528 0m0 0a3.736 3.736 0 01-1.388-.88 3.737 3.737 0 01-.88-1.388m2.268 2.268L7.288 19.67m0 0a9.024 9.024 0 01-1.652-1.306 9.027 9.027 0 01-1.306-1.652m0 0l4.138-3.448M4.33 16.712a9.014 9.014 0 010-9.424m4.138 5.976a3.765 3.765 0 010-2.528m0 0c.181-.506.475-.982.88-1.388a3.736 3.736 0 011.388-.88m-2.268 2.268L4.33 7.288m6.406 1.18L7.288 4.33m0 0a9.024 9.024 0 00-1.652 1.306A9.025 9.025 0 004.33 7.288" />
+                  </svg>
+                  <div class="ml-4">
+                    <p class="text-base font-medium text-gray-900">Help Center</p>
+                    <p class="mt-1 text-sm text-gray-500">Get all of your questions answered in our forums or contact support.</p>
+                  </div>
+                </a>
+
+                <a href="#" class="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50">
+                  <!-- Heroicon name: outline/bookmark-square -->
+                  <svg class="h-6 w-6 flex-shrink-0 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75h1.5m9 0h-9" />
+                  </svg>
+                  <div class="ml-4">
+                    <p class="text-base font-medium text-gray-900">Guides</p>
+                    <p class="mt-1 text-sm text-gray-500">Learn how to maximize our platform to get the most out of it.</p>
+                  </div>
+                </a>
+
+                <a href="#" class="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50">
+                  <!-- Heroicon name: outline/calendar -->
+                  <svg class="h-6 w-6 flex-shrink-0 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                  </svg>
+                  <div class="ml-4">
+                    <p class="text-base font-medium text-gray-900">Events</p>
+                    <p class="mt-1 text-sm text-gray-500">See what meet-ups and other events we might be planning near you.</p>
+                  </div>
+                </a>
+
+                <a href="#" class="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50">
+                  <!-- Heroicon name: outline/shield-check -->
+                  <svg class="h-6 w-6 flex-shrink-0 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                  </svg>
+                  <div class="ml-4">
+                    <p class="text-base font-medium text-gray-900">Security</p>
+                    <p class="mt-1 text-sm text-gray-500">Understand how we take your privacy seriously.</p>
+                  </div>
+                </a>
+              </div>
+              <div class="bg-gray-50 px-5 py-5 sm:px-8 sm:py-8">
+                <div>
+                  <h3 class="text-base font-medium text-gray-500">Recent Posts</h3>
+                  <ul role="list" class="mt-4 space-y-4">
+                    <li class="truncate text-base">
+                      <a href="#" class="font-medium text-gray-900 hover:text-gray-700">Boost your conversion rate</a>
+                    </li>
+
+                    <li class="truncate text-base">
+                      <a href="#" class="font-medium text-gray-900 hover:text-gray-700">How to use search engine optimization to drive traffic to your site</a>
+                    </li>
+
+                    <li class="truncate text-base">
+                      <a href="#" class="font-medium text-gray-900 hover:text-gray-700">Improve your customer experience</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="mt-5 text-sm">
+                  <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+                    View all posts
+                    <span aria-hidden="true"> &rarr;</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div class="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
+        <a href="#" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">Sign in</a>
+        <a href="#" class="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border 
+          border-transparent bg-violet-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-violet-700">Sign up</a>
+      </div>
+    </div>
+  </div>
+
+  <!--
+    Mobile menu, show/hide based on mobile menu state.
+
+    Entering: "duration-200 ease-out"
+      From: "opacity-0 scale-95"
+      To: "opacity-100 scale-100"
+    Leaving: "duration-100 ease-in"
+      From: "opacity-100 scale-100"
+      To: "opacity-0 scale-95"
+  -->
+  <div class="absolute inset-x-0 top-0 origin-top-right transform p-2 transition md:hidden">
+    <div class="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+      <div class="px-5 pt-5 pb-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company">
+          </div>
+          <div class="-mr-2">
+            <button type="button" class="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+              <span class="sr-only">Close menu</span>
+              <!-- Heroicon name: outline/x-mark -->
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="mt-6">
+          <nav class="grid gap-y-8">
+            <a href="#" class="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50">
+              <!-- Heroicon name: outline/chart-bar -->
+              <svg class="h-6 w-6 flex-shrink-0 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+              </svg>
+              <span class="ml-3 text-base font-medium text-gray-900">Analytics</span>
+            </a>
+
+            <a href="#" class="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50">
+              <!-- Heroicon name: outline/cursor-arrow-rays -->
+              <svg class="h-6 w-6 flex-shrink-0 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243l-1.59-1.59" />
+              </svg>
+              <span class="ml-3 text-base font-medium text-gray-900">Engagement</span>
+            </a>
+
+            <a href="#" class="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50">
+              <!-- Heroicon name: outline/shield-check -->
+              <svg class="h-6 w-6 flex-shrink-0 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+              </svg>
+              <span class="ml-3 text-base font-medium text-gray-900">Security</span>
+            </a>
+
+            <a href="#" class="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50">
+              <!-- Heroicon name: outline/squares-2x2 -->
+              <svg class="h-6 w-6 flex-shrink-0 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+              </svg>
+              <span class="ml-3 text-base font-medium text-gray-900">Integrations</span>
+            </a>
+
+            <a href="#" class="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50">
+              <!-- Heroicon name: outline/arrow-path -->
+              <svg class="h-6 w-6 flex-shrink-0 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+              </svg>
+              <span class="ml-3 text-base font-medium text-gray-900">Automations</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="space-y-6 py-6 px-5">
+        <div class="grid grid-cols-2 gap-y-4 gap-x-8">
+          <a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">Pricing</a>
+
+          <a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">Docs</a>
+
+          <a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">Help Center</a>
+
+          <a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">Guides</a>
+
+          <a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">Events</a>
+
+          <a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">Security</a>
+        </div>
+        <div>
+          <a href="#" class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Sign up</a>
+          <p class="mt-6 text-center text-base font-medium text-gray-500">
+            Existing customer?
+            <a href="#" class="text-indigo-600 hover:text-indigo-500">Sign in</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<nav class="navbar navbar-expand-lg navbar-default">
+	<div class="container-fluid px-0">
+	   <a class="navbar-brand" href="/">
+	   <img src="{{ STATIC_URL }}assets/images/brand/logo/logo-aulacode.svg" alt=""/></a>
+	   <!-- Mobile view nav wrap -->
+
+	   <!-- USER Dropdown -->
+	   <ul	class="navbar-nav navbar-right-wrap ms-auto d-lg-none d-flex nav-top-wrap ">
+        {% if not user.is_authenticated %}
+                        
+        {% else %}
+        <!-- USER Dropdown -->
+           <li class="dropdown stopevent">
+			 <a
+				class="rounded-circle"
+				href="#"
+				role="button"
+				id="dropdownUser"
+				data-bs-toggle="dropdown"
+				aria-haspopup="true"
+				aria-expanded="false"
+				>
+				<div class="avatar avatar-md avatar-indicators avatar-online">
+				   <img
+					  alt="avatar"
+					  src="{% gravatar_url user.email 50%}"
+					  class="rounded-circle"
+					  />
+				</div>
+			 </a>
+			 <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="dropdownUser">
+				<div class="dropdown-item">
+				   <div class="d-flex">
+					  <div class="avatar avatar-md avatar-indicators avatar-online">
+						 <img
+							alt="avatar"
+							src="{% gravatar_url user.email 50%}"
+							class="rounded-circle"
+							/>
+					  </div>
+					  <div class="ms-3 lh-1">
+                        {% if user.first_name %}
+                             <h5 class="mb-1">{{ user.first_name }} {{ user.last_name }}</h5>
+
+                        {% else %}
+                             <h5 class="mb-1">{{ user.username }} </h5>
+
+                       {% endif %}
+						 <p class="mb-0 text-muted">{{ user.email }} </p>
+					  </div>
+				   </div>
+
+				</div>
+				<div class="dropdown-divider"></div>
+		
+	
+		<ul class="list-unstyled">
+					  <li>
+						 <a
+							class="dropdown-item"
+							href="/me"
+							>
+						 <i class="fe fe-user me-2"></i>Perfil
+						 </a>
+					  </li>
+					  <li>
+						 <a
+							class="dropdown-item"
+							href="/student"
+							>
+						 <i class="fa fa-pencil me-2"></i>Mis Cursos
+						 </a>
+					  </li>
+            {% if user.is_authenticated %}
+                {% if user|has_group:"author" %}
+                  <li>
+						 <a
+							class="dropdown-item"
+							href="/instructor"
+							>
+						<i class="fa fa-graduation-cap me-2"></i> Author
+						 </a>
+				 </li>
+
+                {% endif %}
+
+            {% endif %}
+
+				   </ul>
+				   <div class="dropdown-divider"></div>
+				   <ul class="list-unstyled">
+					  <li>
+						 <a class="dropdown-item" href="/accounts/logout">
+						 <i class="fe fe-power me-2"></i>Salir
+						 </a>
+					  </li>
+				   </ul>
+			 </div>
+		  </li>
+        {% endif %}
+	   </ul>
+	   <!-- Button -->
+
+  
+	   <button
+		  class="navbar-toggler collapsed"
+		  type="button"
+		  data-bs-toggle="collapse"
+		  data-bs-target="#navbar-default"
+		  aria-controls="navbar-default"
+		  aria-expanded="false"
+		  aria-label="Toggle navigation"
+		  >
+	   <span class="icon-bar top-bar mt-0"></span>
+	   <span class="icon-bar middle-bar"></span>
+	   <span class="icon-bar bottom-bar"></span>
+	   </button>
+      
+	   <!-- Collapse  -->
+	   <div class="collapse navbar-collapse" id="navbar-default">
+		  <ul class="navbar-nav">
+		  	 <!-- Lenguajes  -->
+			 <li class="nav-item dropdown">
+				<a
+				   class="nav-link dropdown-toggle"
+				   href="#"
+				   id="navbarBrowse"
+				   data-bs-toggle="dropdown"
+				   aria-haspopup="true"
+				   aria-expanded="false"
+				   data-display="static"
+				   >
+				Lenguajes
+				</a>
+				<ul
+				   class="dropdown-menu dropdown-menu-arrow"
+				   aria-labelledby="navbarBrowse"
+				   >
+				   <li>
+					  <a href="/search/?tag=python" class="dropdown-item" >
+					  Python <span class="badge bg-success ms-1">Nuevo</span>
+					  </a>
+				   </li>
+				   <li>
+					  <a
+						 href="/search/?tag=csharp"
+						 class="dropdown-item"
+						 >
+					  C#
+					  </a>
+				   </li>
+				   <li>
+					  <a
+						 href="/search/?tag=java"
+						 class="dropdown-item"
+						 >
+					  Java
+					  </a>
+				   </li>
+				   <li>
+					  <a
+						 href="/search/?tag=raku"
+						 class="dropdown-item"
+						 >
+					  Raku
+					  </a>
+				   </li>
+				   <li>
+					  <a
+						 href="/search/?tag=go"
+						 class="dropdown-item"
+						 >
+                    Go
+					  </a>
+				   </li>
+
+				</ul>
+			 </li>
+			<!-- Cursos  -->
+             <li class="nav-item dropdown">
+				<a
+				   class="nav-link dropdown-toggle"
+				   href="#"
+				   id="navbarLanding"
+				   data-bs-toggle="dropdown"
+				   aria-haspopup="true"
+				   aria-expanded="false"
+				   >
+				Cursos
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="navbarLanding">
+				  <li>
+					<a href="/courses/" class="dropdown-item">
+				   Todos
+					</a>				   
+				   
+				   <li>
+					<a href="/courses/?tags=curso" class="dropdown-item">
+				   Cursos
+					</a>
+				 </li>
+                 <li>
+					<a href="/courses/?tags=tutorial" class="dropdown-item">
+				   Tutoriales
+					</a>
+				 </li>
+                 <li>
+					<a href="/courses/?tags=reto" class="dropdown-item">
+				   Retos
+					</a>
+				 </li>
+
+				</ul>
+             </li>
+          
+	
+		  
+		  
+		  </ul>
+		     <!-- Search bar  -->
+		  <form id="navBarSearchForm" class="mt-3 mt-lg-0 ms-lg-3 d-flex align-items-center">
+			 <span class="position-absolute ps-3 search-icon">
+			 <i class="fe fe-search"></i>
+			 </span>
+			 <input
+			    id="searchText"
+				type="search"
+				class="form-control ps-6"
+				placeholder="Busca Actividades"
+				/>
+		  </form>
+
+		  <div class="ms-auto mt-2 mt-lg-0  d-sm-block  d-md-block d-lg-none">
+                            <a href="/accounts/login" class="btn btn-white shadow-sm me-1">Inicia sesión </a>
+                             <a href="/accounts/register" class="btn btn-primary">Crea tu cuenta</a>
+          </div>
+
+
+		  <ul class="navbar-nav navbar-right-wrap ms-auto d-none d-lg-block">
+
+          {% if not user.is_authenticated %}
+                    {% if not hidde_login_link %}
+                        <div class="ms-auto mt-3 mt-lg-0  d-none d-lg-block">
+                            <a href="/accounts/login" class="btn btn-white shadow-sm me-1">Inicia sesión</a>
+                             <a href="/accounts/register" class="btn btn-primary">Crea tu cuenta</a>
+                        </div>
+                {% endif %}
+            {% else %}
+
+			 <li class="dropdown ms-2 d-inline-block">
+				<a
+				   class="rounded-circle"
+				   href="#"
+				   role="button"
+				   id="dropdownUserProfile"
+				   data-bs-toggle="dropdown"
+				   aria-haspopup="true"
+				   aria-expanded="false"
+				   >
+				   <div class="avatar avatar-md avatar-indicators avatar-online">
+					  <img
+						 alt="avatar"
+						 src="{% gravatar_url user.email 50%}"
+						 class="rounded-circle"
+						 />
+				   </div>
+				</a>
+				<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUserProfile" >
+				   <div class="dropdown-item">
+					  <div class="d-flex">
+						 <div class="avatar avatar-md avatar-indicators avatar-online">
+							<img
+							   alt="avatar"
+							   src="{% gravatar_url user.email 50%}"
+							   class="rounded-circle"
+							   />
+						 </div>
+						 <div class="ms-3 lh-1">
+
+                         {% if user.first_name %}
+                             <h5 class="mb-1">{{ user.first_name }} {{ user.last_name }}</h5>
+
+                        {% else %}
+                             <h5 class="mb-1">{{ user.username }} </h5>
+
+                         {% endif %}
+
+
+							<p class="mb-0 text-muted">{{ user.email }} </p>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="dropdown-divider"></div>
+				   <ul class="list-unstyled">
+
+					  <li>
+						 <a
+							class="dropdown-item"
+							href="/me"
+							>
+						 <i class="fe fe-user me-2"></i>Perfil
+						 </a>
+					  </li>
+					  <li>
+						 <a
+							class="dropdown-item"
+							href="/student"
+							>
+						 <i class="fa fa-pencil me-2"></i> Mis Cursos
+						 </a>
+					  </li>
+            {% if user.is_authenticated %}
+                {% if user|has_group:"author" %}
+                  <li>
+						 <a
+							class="dropdown-item"
+							href="/instructor"
+							>
+						 <i class="fa fa-graduation-cap me-2"></i> Author
+						 </a>
+				 </li>
+
+                {% endif %}
+
+            {% endif %}
+
+				   </ul>
+				   <div class="dropdown-divider"></div>
+				   <ul class="list-unstyled">
+					  <li>
+						 <a class="dropdown-item" href="/accounts/logout">
+						 <i class="fe fe-power me-2"></i>Salir
+						 </a>
+					  </li>
+				   </ul>
+				</div>
+			 </li>
+          {% endif %}
+		  </ul>
+	   </div>
+	
+	</div>
+ </nav>
+
+
+
+            {% block content %}
+
+
+
+
+
+
+            {% endblock content %}
+
+
+
+{% block footer%}
+  <div class="footer">
+    <div class="container">
+        <div class="row align-items-center no-gutters border-top py-2">
+            <!-- Desc -->
+            <div class="col-md-6 col-12 text-center text-md-left">
+
+        El contenido de los cursos es: <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> y
+            otras licencias abiertas.
+         Esta aplicación es software libre (plantillas de estilo básicas). Disponible en: <a href="https://github.com/mariosky/protoboard">github.com/mariosky/protoboard </a>
+
+            </div>
+              <!-- Links -->
+            <div class="col-12 col-md-6">
+                <nav class="nav nav-footer justify-content-center justify-content-md-end">
+                    <a class="nav-link active ps0" href="#">Aviso de privacidad</a>
+                    <a class="nav-link" href="#">Retroalimentación</a>
+                    <a class="nav-link" href="#">Soporte</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock footer %}
+
+<script  src="{{ STATIC_URL }}app/scripts/proto-main.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.0/mustache.js"></script>
+
+  <!-- Libs JS -->
+<script src="{{ STATIC_URL }}assets/libs/jquery/dist/jquery.min.js"></script>
+<script src="{{ STATIC_URL }}assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"  crossorigin="anonymous"></script>
+<script src="{{ STATIC_URL }}assets/libs/odometer/odometer.min.js"></script>
+<script src="{{ STATIC_URL }}assets/libs/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="{{ STATIC_URL }}assets/libs/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+<script src="{{ STATIC_URL }}assets/libs/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+<script src="{{ STATIC_URL }}assets/libs/flatpickr/dist/flatpickr.min.js"></script>
+<script src="{{ STATIC_URL }}assets/libs/inputmask/dist/jquery.inputmask.min.js"></script>
+<script src="{{ STATIC_URL }}assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+<script src="{{ STATIC_URL }}assets/libs/quill/dist/quill.min.js"></script>
+<script src="{{ STATIC_URL }}assets/libs/file-upload-with-preview/dist/file-upload-with-preview.min.js"></script>
+<script src="{{ STATIC_URL }}assets/libs/dragula/dist/dragula.min.js"></script>
+<script src="{{ STATIC_URL }}assets/libs/bs-stepper/dist/js/bs-stepper.min.js"></script>
+<script src="{{ STATIC_URL }}assets/libs/dropzone/dist/min/dropzone.min.js"></script>
+<script src="{{ STATIC_URL }}assets/libs/jQuery.print/jQuery.print.js"></script>
+<!--
+<script src="{{ STATIC_URL }}assets/libs/prismjs/prism.js"></script>
+
+<script src="{{ STATIC_URL }}assets/libs/prismjs/components/prism-scss.min.js"></script>
+-->
+<script src="{{ STATIC_URL }}assets/libs/@yaireo/tagify/dist/tagify.min.js"></script>
+<script src="{{ STATIC_URL }}assets/libs/tiny-slider/dist/min/tiny-slider.js"></script>
+<script src="{{ STATIC_URL }}assets/libs/@popperjs/core/dist/umd/popper.min.js"></script>
+<script src="{{ STATIC_URL }}assets/libs/tippy.js/dist/tippy-bundle.umd.min.js"></script>
+<script src="{{ STATIC_URL }}assets/libs/typed.js/lib/typed.min.js"></script>
+<!-- clipboard -->
+<script src="https://cdn.tiny.cloud/1/xx8nzkt2jtpbzgu2mjrpau4zxfip5fw2sei5hcgnooifnpt9/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://use.fontawesome.com/65a490b609.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script> 
+<script  src="{{ STATIC_URL }}app/scripts/jquery-sortable-lists.min.js"></script>
+<script  src="{{ STATIC_URL }}app/scripts/proto-main.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.0/mustache.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/prism.min.js" data-autoloader-path="{{ STATIC_URL }}prism/"></script>
+
+<!-- 
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-abap.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-csharp.min.js" type="text/javascript" charset="utf-8"></script>
+-->
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/autoloader/prism-autoloader.min.js" 
+         data-autoloader-path="{{ STATIC_URL }}prism/" type="text/javascript" charset="utf-8"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-numbers/prism-line-numbers.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/tag-it/2.0/js/tag-it.js" integrity="sha256-3b21BEf0mIK6w5JmLWAF896urJN+KLXmpZW+lAww0Kw=" crossorigin="anonymous"></script>
+<script src="{{ STATIC_URL }}assets/js/theme.min.js"></script>
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
+  {% block scripts %}
+<script> 
+
+   document.querySelector("#solutions-btn").onclick = () => 
+    { document.querySelector("#solutions-menu").classList.toggle("hidden")}
+
+  document.querySelector("#more-btn").onclick = () => 
+    { document.querySelector("#more-menu").classList.toggle("hidden")}
+
+
+{% comment%}
+Must create 
+db.activities_collection.createIndex( { title: "text", description: "text" } )
+{% endcomment %}
+  Prism.plugins.autoloader.languages_path = "{{ STATIC_URL }}prism/"
+
+ $( document ).ready(function() {
+		$("#navBarSearchForm").submit(function(e){
+			e.preventDefault();
+			
+			var txt = $("#searchText").val();
+			var tags = []
+			var terms = []
+			var query = "" 
+
+			txt.split(" ").forEach( (term) =>
+ 				{
+				   if (term == "") 
+				     return false; // move on 
+				   if (term.startsWith("#")) // tag? 
+						tags.push(term.replace('#',''));
+				   else // term
+				   		terms.push(term);
+
+			   	}
+
+			)	
+			  
+
+						
+			query = "?tag=" + tags.join(",")
+			if (terms.length)
+				query+= "&query=" + terms.join(",")  
+
+			//location.replace("/search/" + query);
+			window.location.href = "/search/" + query
+			//form.submit();
+		});
+
+});
+
+</script>
+
+
+  {% endblock scripts %}
+
+</body>
+</html>

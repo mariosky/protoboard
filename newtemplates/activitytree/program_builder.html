@@ -1,0 +1,1097 @@
+{% extends 'activitytree/base.html' %}
+
+
+{% block style %}
+
+/*
+ * Editor
+ */
+
+  #instructionsEditor{
+
+        height: 600px;
+        width: 200;
+
+    }
+
+
+  #initialCodeEditor{
+        height: 600px;
+        width: 200;
+    }
+
+
+  #UnitTestEditor {
+      height: 600px;
+      width: 200;
+    }
+
+  #RegExpEditor {
+      height: 600px;
+      width: 200;
+    }
+
+  #correctCodeEditor{
+        height: 600px;
+        width: 200;
+    }
+
+    #HTMLEditor{
+        height: 600px;
+        width: 200;
+    }
+
+ p.test_error, p.test_failure {
+    color:#d9534f;
+    }
+
+ p.test_success{
+    color:#5cb85c;
+    }
+
+  .alert{
+    margin:10px;
+    margin-bottom:0px;
+    }
+{% endblock style %}
+
+
+
+{% block content %}
+<div class="row">
+<div class="col-md-9">
+
+  {% if d %}
+       {{ title }}
+  {% endif %}
+
+  <ul class="nav nav-tabs" id="tab-menu">
+      <ul class="nav nav-tabs">
+        <li class="nav-item"> <a class="nav-link active" href="#instructions" id="instructions-id"  data-bs-toggle="tab">Instrucciones</a></li>
+        <li class="nav-item"> <a class="nav-link " href="#initial-code" id="initial-code-id"  data-bs-toggle="tab">Código inicial</a></li>
+        <li class="nav-item"> <a class="nav-link" href="#test" id="testid"  data-bs-toggle="tab">Prueba</a></li>
+        <li class="nav-item"> <a class="nav-link" href="#regexp" id="regexpid"  data-bs-toggle="tab">RegExp</a></li>
+        <li class="nav-item"> <a class="nav-link" href="#correct-code" id="correct-code-id"  data-bs-toggle="tab">Solución</a></li>
+        <li class="nav-item"> <a class="nav-link" href="#htmltab" id="htmla"  data-bs-toggle="tab">HTML Generado</a></li>
+        <li class="nav-item"><button value="Help" class="btn btn-info" id="helpbtn">Ayuda</button></li>
+      </ul>
+
+  </ul>
+
+  <div class="tab-content">
+    <!--
+    instructions
+    -->
+    <div class="tab-pane fade show active" id="instructions" >
+        <div style="width: 100%">
+            <div class="myHTMLeditor" id="instructionsEditor" style="border:3px solid lightgrey">
+
+            </div>
+
+        </div>
+    </div>
+   <!--
+    initial code
+    -->
+    <div class="tab-pane fade" id="initial-code" >
+        <div style="width: 100%">
+            <div class="myeditor" id="initialCodeEditor" style="border:3px solid lightgrey">
+
+            </div>
+        </div>
+    </div>
+    <!--
+    test
+    -->
+    <div class="tab-pane fade" id="test" >
+        <div style="width: 100%" >
+
+         <div class="myeditor" id="UnitTestEditor" style="border:3px solid lightgrey">
+
+           </div>
+         </div>
+    </div>
+    <!--
+    Regular Expresions
+    -->
+    <div class="tab-pane fade" id="regexp" >
+        <div style="width: 100%" >
+
+         <div class="myeditor" id="RegExpEditor" style="border:3px solid lightgrey">
+
+           </div>
+         </div>
+    </div>
+
+
+<!--
+correct-Code
+-->
+        <div class="tab-pane fade" id="correct-code" >
+            <div style="width: 100%">
+                <div class="myeditor" id="correctCodeEditor" style="border:3px solid lightgrey">
+
+               </div>
+
+           </div>
+        </div>
+
+<!--
+htmltab
+-->
+        <div class="tab-pane fade" id="htmltab">
+            <div style="width: 100%" >
+                <div id="jquery-content"  style="text-align: center">
+                    <div class="panel panel-info" style="width:60%;display: inline-block">
+                        <div class="panel-heading">
+
+                        </div>
+                        <div id="jquery-body" class="panel-body">
+                           JQuery
+
+                        </div>
+                    </div>
+                </div>
+
+            <div class="myHTMLeditor" id="HTMLEditor" style="border:3px solid lightgrey">
+HTML Content
+            </div>
+            </div><br>
+
+        </div>
+
+
+
+
+
+
+</div>
+</div>
+
+<div class="col-md-3">
+
+            <form id="formadetailp" onsubmit="return false">
+                 <div class="mb-3">
+                 <label for="idprog">ID</label>
+                <input type="text" readonly="readonly" class="form-control" id="idprog" name="_id">
+                 </div>
+                <div class="mb-3">
+                 <label for="displayprog">Nombre</label>
+                <input type="text" id="displayprog" name="title" class="form-control">
+                 </div>
+                <div class="mb-3">
+                 <label for="descriptionprog">Descripción </label>
+                <textarea class="form-control" id="descriptionprog" name="description" rows="3" ></textarea>
+                 </div>
+                <div class="mb-3">
+                    <label for="authorhtml">Autor</label>
+                    <input type="text" class="form-control" id="authorhtml" name="author" value="{{ user.first_name}} {{user.last_name}}">
+                    <small class="form-text text-muted"> Nombre del autor principal del material.</small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="autorphoto">Foto del autor</label>
+                    <input type="url" class="form-control" id="autorphoto" name="author_image">
+                    <small class="form-text text-muted"> Puedes incluir aquí la dirección de la foto del autor.</small>
+                </div>
+
+                <div class="mb-3">
+                  <label for="tagsprog">Hashtags</label>
+                <input class="form-control" id="tagsprog" name="tags">
+                 </div>
+                <div class="mb-3">
+                 <label for="txtLang">Lenguaje de programación</label>
+                <select id="txtLang" name="lang" class="form-control">
+                    <option value="python">Python</option>
+                    <option value="javascript">Javascript</option>
+                    <option value="csharp">C# 3.1</option>
+                    <option value="java">Java</option>
+                    <option value="perl6">Perl 6</option>
+                    <option value="golang">Go</option>
+                    <option value="jquery">Jquery</option>
+                    <option value="cplusplus">C++</option>
+                    <option value="c">C</option>
+                    <option value="clojure">Clojure</option>
+                    <option value="ruby">Ruby</option>
+                    <option value="Kotlin">Kotlin</option>
+                    <option value="sql">SQL</option>
+                </select>
+                 </div>
+                                <div class="mb-3" id="test-buttons" align="center">
+                    <input type="button" id="probarProg" class="btn btn-primary" value="Test">
+                    <input type="button" id="refreshHtml" class="btn btn-default" value="Refresh HTML">
+                </div>
+
+                <div class="mb-3">
+                  <label for="rightsprog">Licencia</label>
+                  <input type="text" class="form-control" id="rightsprog" name="rights">
+                  <small class="form-text text-muted"> Especifica el tipo de licencia del material. En caso de que estés utilizando algún material
+                                            que no hayas hecho tu, debes indicar la Licencia original. Te sugerimos una licencia que permite a otros utilizar libremente
+                                            tu apotación para hacer nuevos trabajos. Puedes elegir como tu propia licencia en:
+                                                <a href="https://creativecommons.org/choose/">https://creativecommons.org/choose/</a> </small>
+                 </div>
+                <div class="mb-3">
+                    <label for="rightsurlhtml">URL Licencia</label>
+                    <input type="url" class="form-control" id="rightsurlhtml" name="rights_url">
+                    <small class="form-text text-muted"> Puedes incluir aquí la dirección de la licencia.</small>
+                </div> 
+                <div class="mb-3">
+                 <label for="externalprog">URL Externo</label>
+                <input type="text" class="form-control" id="externalprog" name="external_url">
+                     <small class="form-text text-muted"> Puedes incluir aquí una dirección externa referente al material original.</small>
+                 </div>
+
+                <div class="mb-3">
+                <label for="publisherprog">Publisher</label>
+                <input type="text" class="form-control" id="publisherprog" name="publisher">
+                <small class="form-text text-muted"> Entidad responsable del material.</small>
+                 </div>
+
+                <div class="mb-3">
+                   <label for="iconprog">Ícono</label>
+                <select id="iconprog" name="icon" >
+             <option value="coffee">Tasa de Café</option>
+                                                <option value="file" selected>Archivo</option>
+                                                <option value="youtube-play">Youtube</option>
+                                                <option value="puzzle-piece">Pieza de Rompecabezas</option>
+                </select>
+                    <small class="form-text text-muted"> Elige el ícono que acompañará al nombre del recurso.</small>
+                 </div>
+                <div class="mb-3">
+                    <label for="is_privatehtml">Es público</label>
+                    <select id="is_privatehtml" name="is_private">
+                    <option value="true">Si</option>
+                    <option value="false">No</option>
+                    </select>
+                    <small class="form-text text-muted"> Indica si el material puede ser visto desde la biblioteca.</small>
+                </div>
+                 <div class="mb-3">
+                <label for="levelprog">Nivel</label>
+                <select id="levelprog" name="level">
+                    <option value="principiante">Principiante</option>
+                    <option value="intermedio">Intermedio</option>
+                    <option value="avanzado">Avanzado</option>
+                </select>
+                      <small class="form-text text-muted"> Esta es una etiqueta que puede servir para filtrar el tipo de material por niveles. </small>
+                 </div>
+                <div class="mb-3">
+                    <label for="datehtml">Fecha de creación</label>
+                    <input type="text" class="form-control" id="datehtml" name="creation_date">
+                    <small class="form-text text-muted"> Fecha de creación (DD/MM/AAAA) </small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="durationhtml">Duración estimada</label>
+                    <input type="text" class="form-control" id="durationhtml" name="duration">
+                    <small class="form-text text-muted"> Duración estimada del recurso. (HH:MM:SS) </small>
+                </div> 
+                <div class="mb-3">
+                                        <label for="image_url">URL de Ímagen</label>
+                                        <input type="text" class="form-control" id="image_url" name="image_url">
+                                        <small class="form-text text-muted"> Puedes especificar una imagen externa que describa al recurso.
+                                             Debes tener derechos sobre la ímagen. Puedes utilizar servicios como: imageshack.us o Amazon S3.
+
+                                         </small>
+                                    </div>
+                <input type="hidden" name="type" value="prog">
+              
+
+
+
+        </form>
+
+
+    <div class="mb-3" align="center">
+
+        <input type="button" class="btn btn-secondary" id="cancelProg" value="Cancelar">
+        <input type="submit" class="btn btn-primary" id="submitProg" value="Guardar">
+    </div>
+</div>
+
+
+
+</div>
+
+
+
+
+<div id="confirmProg" class="modal fade">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header" align="center">
+            Confirm <i class="fa fa-upload"></i>
+        </div>
+        <div class="modal-body">
+            Upload Activity?
+        </div>
+        <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn btn-primary" id="acceptBtn">Submit</button>
+            <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+        </div>
+    </div>
+</div>
+</div>
+
+    <div id="testprog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" align="center">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4>Test program</h4>
+                </div>
+                <div id="test_info" class="modal-body">
+
+                </div>
+                <div class="modal-footer" align="center">
+                    <div class="mb-3" align="center">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="help-modal" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" align="center">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4>Help</h4>
+                </div>
+                <div id="help_info" class="modal-body">
+                   <div id="example-vertical">
+                       <h3>Unit Test</h3>
+                       <section>
+                           <p>En programación, una prueba unitaria es una forma de comprobar el correcto funcionamiento de un módulo de código.
+                               Esto sirve para asegurar que cada uno de los módulos funcione correctamente por separado.</p>
+                           <p>En <a href="https://codigo.uno">codigo.uno</a>, utilizamos <a href="https://qunitjs.com/">QUnit </a>para realizar la evaluación con pruebas unitarias. </p>
+                           <p>En los ejercicios de programación, las pruebas unitarias son las que se encargarán de verificar que el código que el usuario programó haya realizado
+                           lo que se requirió en el ejercicio.</p>
+                           <p>Por ejemplo:</p>
+                           <p>1.- Escribe una función llamada <code>suma</code> la cual tome dos argumentos <code>a</code> y <code>b</code> y regrese la
+                                        suma de ambos.</p>
+                           <p><code>QUnit.test("JQuery", function( assert ){<br>
+                        assert.equal(suma(2,3), 5, "Debe sumar positivos");<br>
+                        assert.equal(suma(2,-3), -1, "Debe sumar negativos");<br>
+                        });</code></p>
+                           <p>Esta prueba unitaria se encargará de evaluar la función <code>suma</code> que el usuario haya creado, y la probará para los dos casos especificados(suma de positivos y negativos).</p>
+                           <p>QUnit cuenta con mas funciones para realizar pruebas. <a href="http://api.qunitjs.com/category/assert/">Ver.</a></p>
+                           <p>La función <code>suma</code> se debera crear en la siguiente sección, <b>Correct Code.</b></p>
+                       </section>
+                       <h3>Correct Code</h3>
+                       <section>
+                           <p><b>Correct Code</b> es donde se escribirá  el código o función que cumpla con los requerimientos del ejercicio.</p>
+                           <p>En el ejemplo que se puso en el paso anterior, se pidio crear una función llamada <code>suma</code>, la cual reciba
+                           dos numeros enteros, y regrese la suma de ambos; en este caso, el código correcto seria:</p>
+                           <p><code>function suma(a, b){<br>
+                                    c = a + b;<br>
+                                    return c;<br>
+                            }</code></p>
+                           <p>Al probar este código, la <b>unit test</b> probará con los dos casos que se especificarón (positivos y negativos), y en este caso
+                           nos dara un mensaje de que las dos pruebas fueron exitosas.</p>
+
+                       </section>
+                       <h3>Initial Code</h3>
+                       <section>
+                           <p><b>Initial code</b> es donde se escribirá  una version incorrecta del código <b>Correct Code</b> que el usuario
+                           tendra que corregir para poder pasar la prueba.</p>
+                           <p><b>Initial code</b> no es mandatoria, pero es útil si el ejercicio es muy largo o complicado.</p>
+                           <p>Un ejemplo de <b>Initial code</b> para el ejercicio de ejemplo (<code>suma</code>) podria ser el siguiente:</p>
+                           <p><code>function suma(a, b){<br>
+                                    return;<br>
+                           }</code></p>
+
+                       </section>
+                       <h3>HTML Code</h3>
+                       <section>
+                           <p>Si el ejercicio de programación que se escribirá es de lenguaje Jquery o Javascript, y se evaluaran controles como cajas de texto
+                           o botones, en esta sección crearemos dichos controles.</p>
+                           <p>Por ejemplo, se busca que el usuario cree una función que al dar click en un botón llamado <code>Accion</code>,
+                           aparezca una label con nombre <code>Mensaje</code> desplegando el texto <em>"Hola"</em></p>
+                           <p>Para este caso, necesitaremos crear los controles HTML de la siguiente manera:<br></p>
+                           <p><code>
+                               &lt;div id='contenido'&gt;<br>
+                                   &lt;label id=&quot;Mensaje&quot;&gt;&lt;/label&gt;<br>
+                                   &lt;input type=&quot;button&quot; id=&quot;Accion&quot; value=&quot;Click&quot;&gt;<br>
+                               &lt;/div&gt;
+                           </code></p>
+                           <p>Estos controles seran evaluados junto con <b>Correct Code</b> por las <b>Unit Test</b> para verificar si el usuario cumplió con lo
+                           especificado por el ejercicio.</p>
+                       </section>
+                   </div>
+                </div>
+                <div class="modal-footer" align="center">
+                    <div class="mb-3" align="center">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<h3 style="color:red"></h3>
+
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="http://code.jquery.com/qunit/qunit-1.18.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/javascript.js" type="text/javascript" charset="utf-8"></script>
+    <script>tinymce.init(
+        { selector:'tinytext', 
+          height:"220", 
+          automatic_uploads:true, 
+          plugins: "image link code", 
+          toolbar:" undo redo| styleselect | bold italic | alignleft aligncenter alignright | link image | code " })</script>
+
+    <script src="{{ STATIC_URL }}app/scripts/proto-main.js"></script>
+
+
+    <script id="test_aviso" type="x-tmpsmustache">
+         <div class="panel panel-success container-fluid">
+            <div class="panel-heading row">
+                <div class="col-xs-15 text-center">
+                <h4>Test Result: [[result]]</h4>
+                </div>
+            </div>
+             <div class="panel-body">
+             <h5 style="color:green">Message</h5>
+             [[#totals]]
+
+                [[#.]]
+                    [[.]]<br>
+                [[/.]]
+              [[/totals]]
+              [[^totals]]
+              <br>
+
+              [[/totals]]
+
+
+              [[#successes]]
+                <h5 style="color:green">Success</h5>
+                    [[#.]]
+                        <b>[[.]]</b><br>
+                    [[/.]]
+              [[/successes]]
+              [[^successes]]
+              <br>
+
+              [[/successes]]
+
+               [[#errors]]
+               <h5 style="color:red">Error</h5>
+                    [[#.]]
+                        <b>[[.]]</b><br>
+                    [[/.]]
+               [[ /errors]]
+               [[^errors]]
+                    <br>
+               [[/errors]]
+
+            <p>
+
+              [[#failures]]
+              <h5 style="color:gray">Failure</h5>
+                    [[#.]]
+                        <b>[[.]]</b><br>
+                    [[/.]]
+              [[/failures]]
+              [[^failures]]
+              <br>
+
+              [[/failures]]
+
+            </p>
+            </div>
+       </div>
+        </script>
+
+    <script>
+
+
+
+
+
+    //if updating an existing program activity, loads parameter from url and sends it to get_activity function
+    $(document).ready(function(){
+        $("#tagsprog").tagit({
+            fieldName: "tags"
+        });
+        var url = getParameterByName('id');
+        number_of_tries = 0;
+        if (url != null){
+            var type = 'prog';
+            $("#tagsprog").tagit("removeAll");
+            get_activity(url,type);
+        }
+        else {
+            console.log(url)
+        }
+    });
+
+
+    $(function(){
+        //when user inputs title for activity, a id is generated and then checks if id already exists on db
+        $('#displayprog').on('change', function(){
+            //var id = '/program/' + this.value.replace(/ /g, '_');
+            //check(id);
+            // $('#idprog').val(id);
+        });
+
+        //initializes all ace editors on page
+        var editor;
+        $('.myeditor').each(function(){
+            editor = ace.edit(this.id);
+            editor.setTheme("ace/theme/dawn");
+            editor.getSession().setMode('ace/mode/python');
+            editor.setShowPrintMargin(false);
+        });
+
+        $('.myHTMLeditor').each(function(){
+            editor = ace.edit(this.id);
+            editor.setTheme("ace/theme/monokai");
+            editor.getSession().setMode('ace/mode/html');
+            editor.setShowPrintMargin(false);
+        });
+
+
+        //if submit button is clicked, checks if certain key values where input, if true, confirmation message is displayed
+        $('#submitProg').click(function(e){
+            var val = check_ifempty(e);
+            if (val == true){
+
+
+                $("#confirmProg").modal();
+            }
+            else {
+
+            }
+        });
+
+
+
+        //
+        $("#helpbtn").click(function(){
+            $("#help-modal").modal()
+        });
+
+        $("#example-vertical").steps({
+            headerTag: "h3",
+            bodyTag: "section",
+            transitionEffect: "slideLeft",
+            stepsOrientation: "horizontal",
+            enableAllSteps: true
+        });
+
+        $("#wizard_embedded").steps({
+            enableAllSteps: true,
+            stepsOrientation: "vertical"
+        });
+        //
+
+        //if user confirms submission of activity, submitProg function is loaded
+        $('#acceptBtn').click(function(e){
+            submitProg()
+        });
+
+        //Refreshes the HTML Rendered
+        $("#refreshHtml").click(function(e){
+            $("#jquery-body").empty();
+            var HTMLEditor = ace.edit("HTMLEditor");
+            var html = HTMLEditor.getValue();
+            $("#jquery-body").append(html);
+        });
+
+        //if user cancels submission of activity, forms are reset
+        $('#cancelProg').click(function(){
+            $('#formadetailp')[0].reset();
+            tinyMCE.activeEditor.setContent('');
+            window.location.href = "/build_program";
+
+        });
+
+        //when txtLang is changed, this changes the session of every editor and html tab is enabled or disabled depending on value
+        $('#txtLang').on('change', function(){
+            var lang = this.value;
+            $('body .myeditor').each(function(){
+                editor = ace.edit(this.id);
+                editor.setTheme("ace/theme/chrome");
+                editor.getSession().setMode('ace/mode/'+ lang);
+            });
+            if (lang == 'jquery' || lang == 'javascript'){
+                $('body li[id=htmlli]').removeClass('disabled');
+                $('body li[id=htmlli]').addClass('enabled');
+                $('body a[id=htmla]').attr(' data-bs-toggle','tab')
+            }
+            else{
+                $('body li[id=htmlli]').removeClass('enabled');
+                $('body li[id=htmlli]').addClass('disabled');
+                $('body a[id=htmla]').attr(' data-bs-toggle','')
+            }
+        });
+
+        $('#probarProg').click(function(){
+            $(this).button('loading');
+            var lang = $("#txtLang").val();
+            if (lang == "javascript" || lang == "jquery"){
+                test_js()
+            }
+            else{
+                test_prog()
+            }
+        });
+
+        //goes back to first value of editor if clicked
+        $('#borrarProg').click(function(){
+            var editor = ace.edit("UnitTestEditor");
+            editor.setValue(codigo);
+        });
+
+
+
+    });
+
+
+
+    //loads parameter from url if user is updating an existing program activity
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+//load activity to be updated or modified
+    function get_activity(id,type){
+        $.ajax({
+            type: 'get',
+            url: '/get_id/',
+            crossDomain: false, // obviates need for same origin test
+            beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                var csrftoken = getCookie('csrftoken');
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+            },
+             data: { _id: id,
+                    user: '{{ user.email }}',
+                    type: type},
+            success: function (data){
+                var obj = jQuery.parseJSON(data);
+                if (jQuery.isEmptyObject(obj)){
+                    alert("No se encontró esta actividad");
+                    window.location.href = "http://localhost:8000/activitybuilder";
+                }
+                else{
+                    var activity = obj[0];
+                    load_progdata(obj);
+
+                }
+
+
+
+
+
+            },
+            error: function(data){
+                console.log(data)
+            }
+    });
+}
+
+    //if activity is going to be updated, loads data to controls
+    function load_progdata(obj){
+
+        var instructionsEditor = ace.edit("instructionsEditor");
+        var editor = ace.edit("UnitTestEditor");
+        var RegExpEditor = ace.edit("RegExpEditor");
+        var correctCodeEditor = ace.edit("correctCodeEditor");
+        var initialCodeEditor = ace.edit("initialCodeEditor");
+        var HTMLEditor = ace.edit("HTMLEditor");
+        $.each(obj[0], function(key, value){
+            console.log(key);
+            $('#formadetailp [name='+key+']').val(value);
+
+            if (key == 'unit_test'){
+                editor.setValue(value,1)
+            }
+            else if (key == "instructions"){
+                instructionsEditor.setValue(value,1)
+            }
+            else if (key == "initial_code"){
+                initialCodeEditor.setValue(value,1)
+            }
+            else if (key == "HTML_code"){
+
+                HTMLEditor.setValue(value,1);
+                $("#jquery-body").empty().append(value);
+
+            }
+            else if (key == 'tags'){
+                $('#tagsprog').val("");
+                for (var i=0; i < value.length ; i++){
+                    $("#tagsprog").tagit("createTag", value[i]);
+                }
+            }
+            else if (key == 'correct_code'){
+               correctCodeEditor.setValue(value,1);
+            }
+            else if (key == 'reg_exp'){
+               RegExpEditor.setValue(value,1);
+            }
+            else if (key == 'description'){
+                $("#descriptionprog").val(value)
+            }
+
+            if (key == 'lang' && (value=='jquery' || value=='javascript')){
+                $('body li[id=htmlli]').removeClass('disabled');
+                $('body li[id=htmlli]').addClass('enabled');
+                $('body a[id=htmla]').attr(' data-bs-toggle','tab')
+            }
+
+    });
+    }
+
+    //validates that title control isn't empty
+    function check_ifempty(e){
+        var isValid = true;
+        if ($.trim($('#displayprog').val()) == ''){
+            isValid = false;
+            $('#displayprog').css({
+                "border": "1px solid red",
+                "background": "#FFCECE"
+                    });
+            }
+        else {
+            $('#displayprog').css({
+                "border": "",
+                "background": ""
+                    });
+        }
+
+            if (isValid == false){
+                e.preventDefault();
+                return false;
+                }
+            else {
+
+                return true
+        }
+
+    }
+
+
+    //gets data from all forms and send it to server
+    function submitProg(){
+        tinyMCE.triggerSave();
+        var data = $('#formadetailp').serializeArray();
+        var editor_data = progData();
+        data.push(editor_data.instructions,editor_data.initial_code,editor_data.unit_test,editor_data.HTML_code,editor_data.correct_code,editor_data.reg_exp);
+
+
+
+        data=indexdata(data);
+        console.log(data);
+        $.ajax({
+            type: 'post',
+            url: '/upload_activity/',
+            crossDomain: false, // obviates need for sameOrigin test
+            beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                var csrftoken = getCookie('csrftoken');
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+            },
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (info) {
+                info = jQuery.parseJSON(info);
+                if (info.updatedExisting == true){
+                    alert("Actividad modificada");
+                    $('#formadetailp')[0].reset();
+                    window.location.href = "/activitybuilder";
+                }
+                else if (info.updatedExisting == false){
+                    alert("Actividad agregada");
+                    $('#formadetailp')[0].reset();
+                    window.location.href = "/activitybuilder";
+                }
+                else if (info.message == "Duplicated"){
+                    alert("Duplicated Entry");
+                    $('#formadetailp')[0].reset();
+                    window.location.href = "/build_program";
+                }
+            },
+            error: function(info) {
+
+                alert("Error. La actividad no se agregó")
+
+            }
+        });
+
+    }
+
+    //gets data from ace editors and stores it in objects for json conversion
+    function progData(){
+        var editor = ace.edit("UnitTestEditor");
+        var instructionsEditor = ace.edit("instructionsEditor");
+        var correctCodeEditor = ace.edit("correctCodeEditor");
+        var RegExpEditor = ace.edit("RegExpEditor");
+        var initialCodeEditor = ace.edit("initialCodeEditor");
+        var HTMLEditor = ace.edit("HTMLEditor");
+
+
+
+        var correct_code={
+            'name': 'correct_code',
+            'value': correctCodeEditor.getValue()
+        };
+
+        var reg_exp={
+            'name': 'reg_exp',
+            'value': RegExpEditor.getValue()
+        };
+
+        var instructions={
+            'name': 'instructions',
+            'value': instructionsEditor.getValue()
+        };
+
+
+
+
+        var initial_code={
+              'name': 'initial_code',
+            'value': initialCodeEditor.getValue()
+        };
+        var unit_test={
+            'name': 'unit_test',
+            'value': editor.getValue()
+        };
+        var HTML_code={
+            'name': 'HTML_code',
+            'value': HTMLEditor.getValue()
+        };
+
+        return {instructions:instructions,correct_code:correct_code,initial_code:initial_code,unit_test:unit_test,
+            HTML_code:HTML_code,reg_exp:reg_exp};
+
+    }
+
+//sends unit test and correct code to server and process is queued
+    function test_prog(){
+        var data=[];
+        var obj = progData();
+        var lang = {
+            'name': 'lang',
+            'value': $("#txtLang").val()
+        };
+        data.push(obj.correct_code,obj.unit_test,lang);
+        data = indexdata(data);
+
+        $.ajax({
+            type: 'post',
+            url: '/test_program/',
+            crossDomain: false, // obviates need for sameOrigin test
+            beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                var csrftoken = getCookie('csrftoken');
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+            },
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (data) {
+                info = jQuery.parseJSON(data);
+                if (info != "Error"){
+                    task_id = info.id;
+                    poll()
+                }
+                else{
+                    alert("Connection Error")
+                }
+            },
+            error: function(data) {
+                alert("Error. La actividad no se agregó")
+            }
+        });
+    }
+
+    //checks server for results, if there is a result, it displays it
+    function poll(){
+        $.ajax({ url: '/get_result/',
+            type: "POST",
+            contentType: "application/json",
+            crossDomain: false, // obviates need for sameOrigin test
+            beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                var csrftoken = getCookie('csrftoken');
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+            },
+            data: JSON.stringify({"jsonrpc": "2.0", "method": "_execute", "id": task_id }),
+            success: function(data){
+                number_of_tries++;
+                $("body #test_info").empty();
+                Mustache.tags = ['[[', ']]'];
+                var activities_template = $('#test_aviso').html();
+                Mustache.parse(activities_template);
+                if (data.outcome != -1)
+                {
+                    result = data.result;
+                    rendered = Mustache.render(activities_template, {
+                            result: result.result,
+                            errors: result.errors.filter(Boolean),
+                            failures:result.failures,
+                            successes: result.successes});
+                    if (result.result == "Failure")
+                    {
+                        $("#testprog").modal();
+
+                        $("body #test_info").append(rendered);
+                        //console.log("No pasó las pruebas");
+                        $("#probarProg").button('reset');
+                    }
+                    else if (result.result == "ProcessError")
+                    {
+                        $("#testprog").modal();
+
+                        $("body #test_info").append(rendered);
+                        //console.log("Error al procesar las pruebas");
+                        $("#probarProg").button('reset');
+                    }
+
+                    else if (result.result == "Success")
+                    {
+                        $("#testprog").modal();
+
+                        $("body #test_info").append(rendered);
+                        //console.log("Pruebas exitosas");
+                        $("#probarProg").button('reset');
+                    }
+                }
+                else
+                {
+
+                }
+            //console.log(data.outcome);
+            }, dataType: "json",
+
+            complete: function (jqXHR,textStatus ){
+               var data = $.parseJSON(jqXHR.responseText);
+               //console.log(data.outcome);
+               //console.log(data);
+               if (data.outcome == -1)
+               {
+                   if (number_of_tries < 150)
+                   {
+                        poll()
+                   }
+
+                   else
+                   {
+                        $("#probarProg").button('reset');
+                   }
+               }
+            },
+            timeout: 5000,
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert ("Lo sentimos, hubo un error al recibir el resultado de la ejecución. El error fué (en lenguaje informático): " +errorThrown);
+                $("#probarProg").button('reset');
+            },
+            fail: function(xhr, textStatus, errorThrown) {
+                alert ("Lo sentimos, hubo un error al recibir el resultado de la ejecución. El error fué (en lenguaje informático): " +errorThrown);
+                $("#probarProg").button('reset');
+            }
+
+        });
+    }
+
+    //function used to test javascript and jquery scripts
+    function test_js(){
+
+        var obj = progData();
+
+        var result =
+         {
+            result:"ProcessError",
+            errors: [],
+            failures: [],
+            successes:[],
+             totals:[]
+         };
+
+        var s = document.createElement("script");
+        s.id ="test_script";
+        s.type = "";
+        s.innerHTML = obj.obj1['value'];
+
+        try{
+            $("head").append(s);
+        }
+        catch (err)
+        {   $("#probarProg").button('reset');
+            console.log(err);
+            result.errors.push(err.message);
+                //poner mensajes de error
+
+        }
+        QUnit.config.testTimeout = 2000;
+
+        QUnit.log(function( details ) {
+            if (details.result ){
+                result.successes.push(details.message);
+            }else{
+                result.failures.push(details.message);
+            }
+        });
+
+        QUnit.testDone(function( details ) {
+            if (details.failed > 0)
+            {
+                result.result = "Failure";
+            }
+            else if(details.passed == details.total)
+            {  result.result = "Success";
+                }
+            //result.totals = "Total de pruebas: " + details.total +"\nFallidas: "+  details.failed + "\nExitosas: " +  details.passed;
+            result.totals.push("Total de pruebas: " + details.total);
+            result.totals.push("Fallidas: "+  details.failed);
+            result.totals.push("Exitosas: " +  details.passed);
+            $("#test_script").innerHTML="";
+        });
+
+        try{
+            eval(obj.obj3['value']);
+        }
+        catch (err){
+
+        }
+
+        $("#probarProg").button('reset');
+
+        $("body #test_info").empty();
+        Mustache.tags = ['[[', ']]'];
+        var activities_template = $('#test_aviso').html();
+        Mustache.parse(activities_template);
+        rendered = Mustache.render(activities_template, {
+            result: result.result,
+            errors: result.errors.filter(Boolean),
+            failures:result.failures,
+            totals: result.totals});
+        $("#testprog").modal();
+        $("body #test_info").append(rendered);
+
+    }
+    </script>
+    <link rel="stylesheet" type="text/css" href="https://996335ed525284d53512e1eb1aaa0f534628fbff.googledrive.com/host/0B4KIaVIuZK2JcUhzbl9mQzBNazQ/jquery-steps.css">
+
+
+
+{% endblock %}

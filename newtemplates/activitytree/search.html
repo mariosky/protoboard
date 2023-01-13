@@ -1,0 +1,365 @@
+{% extends "activitytree/base.html" %}
+
+
+{% block content %}
+
+
+
+
+
+
+
+    <div class="row">
+        <div class="col-md-12  col-sm-12">
+            <nav class="navbar navbar-expand-md navbar-light">
+                <div class="container">
+                    <a class="navbar-brand" href="#">Biblioteca</a>
+
+                    <input id="txtname" class="form-control me-sm-2" type="search" placeholder="Buscar por #hashtag o palabra" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+
+    <div class="container py-5" >
+        <div class="row" id='actividades'>
+     
+
+
+        </div>
+    </div>
+
+
+
+   <div class="row">
+       <div class="col-md-10  col-md-offset-1 col-sm-12 m-t-1">
+              <div class="card-deck-wrapper">
+                  <div id='activiSdades' class="card-columns">
+
+                 </div>
+              </div>
+       </div>
+   </div>
+
+
+
+       <div class="col" id="paginator">
+
+       </div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+{{ block.super}}
+
+
+<script id="activities_template" type="x-tmpsmustache">
+<div class="col-xl-4 col-lg-4 col-md-6 col-12  mb-6">
+                    <!-- Card -->
+                    <div class="card card-hover ">
+                        <a href="blog-single.html">
+                        <img src="[[image_url]]"class="img-fluid  rounded-top" alt=""></a>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <a href="/search/?tag=[[type]]" class="badge bg-info mb-3">  <i class="fa fa-[[icon]] text-muted"> </i>   [[type]]</a>
+                            <h3><a href="[[id]]" class="text-inherit">
+                               [[title]]
+                                </a>
+                            </h3>
+                            <p>[[description]]</p>
+                              
+                              <i class="fa fa-tags"></i>
+                              [[#tags]]
+                                    
+                                    [[#.]]
+                                        <span class="label text-inherit"><a href="/search/?tag=[[.]]" >[[.]]</a></span>
+                                    [[/.]]
+                               [[/tags]]
+                                
+
+
+                            <!-- Media Content -->
+                            <div class="row align-items-center g-0 mt-4">
+                                <div class="col-auto">
+                                <img src="[[author_image]]" alt="" class="rounded-circle avatar-sm me-2">
+                                </div>
+                                <div class="col lh-1">
+                                <h5 class="mb-1">[[author]]</h5>
+                                <p class="font-size-xs mb-0">[[creation_date]]</p>
+                                </div>
+                                <div class="col-auto">
+                                <p class="font-size-xs mb-0"> [[duration]] </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+</script>
+
+<script id="activities_template_b" type="x-tmpsmustache">
+<div class="col-md-4">
+            <div class="card mb-4 box-shadow">
+            [[#image_url]]
+                <img class="card-img-top" src="[[image_url]]" alt="[[title]]">
+            [[/image_url]]
+                <div class="card-body">
+                 <h5 class="card-title"><i class="fa fa-[[icon]] text-muted"> </i> <a href="[[id]]">[[title]]</a> </h5>
+                    <p class="card-text">[[description]]</p>
+            
+            [[#tags]]
+              [[#.]]
+                  <span class="label label-primary"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">#[[.]]</a></span>
+              [[/.]]
+
+              [[^.]]
+              [[/.]]
+            [[/tags]]
+
+                </div>
+            </div>
+        </div>
+</div>
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<script id="paginator_template" type="x-tmpsmustache">
+
+<nav aria-label="Page navigation example">
+
+    <ul class="pagination  justify-content-center">
+
+    [[#prev]]
+     <li class="page-item" data-page='[[prevPage]]'>
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+        <span class="sr-only">Previous</span>
+      </a>
+    </li>
+
+    [[/prev]]
+
+       [[#pages]]
+          [[#page]]
+                <li class="page-item [[#active]]active[[/active]]" data-page=[[page]]><a class="page-link"  href="#">[[page]]</a></li>
+
+          [[/page]]
+
+          [[^.]]
+          [[/.]]
+       [[/pages]]
+
+    [[#next]]
+    <li class="page-item" data-page=[[nextPage]]>
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+        <span class="sr-only">Next</span>
+      </a>
+    </li>
+
+
+    [[/next]]
+ </ul>
+</nav>
+</script>
+
+
+
+
+
+
+
+
+ <script src="{{ STATIC_URL }}app/scripts/proto-main.js"></script>
+<script type="text/javascript">
+    $(function(){
+        //if parameter is submitted on url, gets the value and send it to loadifurl function, if not, loads all activities in db
+        loadURI("#txtname" );
+        var query = { page:0, type: {'type': {'$in':['text','video','quiz','prog','course']} } };
+        query = load_query("#txtname",query);
+       // $("#actividades").empty();
+        buscar(query);
+
+
+
+
+function get_duration_format( duration )
+    {
+            
+            if ( typeof duration !== "undefined")
+                {
+                var li = duration.split(":");
+                var hours = parseInt(li[0]);  
+                var minutes = parseInt(li[1]);  
+                var totalMinutes = hours * 60 + minutes;
+                return `${totalMinutes} minutos`
+                }
+            else
+            {
+                return " "
+            }
+             
+    }
+
+function get_date_format( date )
+    {
+         if ( typeof date !== "undefined")
+            {
+                const months = {
+                    1: 'Enero',
+                    2: 'Febrero',
+                    3: 'Marzo',
+                    4: 'Abril',
+                    5: 'Mayo',
+                    6: 'Junio',
+                    7: 'Julio',
+                    8: 'Agosto',
+                    9: 'Septiembre',
+                    10: 'Octubre',
+                    11: 'Noviembre',
+                    12: 'Diciembre'
+                    }
+            
+           
+                var li     = date.split("-");
+                var year   = parseInt(li[0]);  
+                var month  = parseInt(li[1]);
+                var day    = parseInt(li[1]);
+                  
+                
+                return `${day} de ${months[month]}, ${year}`;
+                }
+                else
+                {
+                    return " "
+                }
+             
+    }
+
+
+
+
+function buscar(query){
+        var MONGO_PAGE_SIZE = 20;
+        $.ajax({
+        type: 'POST',
+        url: '/search_prueba/',
+        crossDomain: false, // obviates need for sameOrigin test
+        beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
+        data: JSON.stringify(query),
+        success: function (data) {
+            var obj = jQuery.parseJSON( data );
+            if (obj == "null" || obj[0].count == 0){
+                $("#paginator").empty();
+                $("#actividades").append('<h3 style="color:lightgray">No hay actividades</h3>');
+                count = 0;
+              
+            }
+            else{
+
+                console.log(obj);    
+
+                Mustache.tags = ['[[', ']]'];
+                var activities_template = $('#activities_template').html();
+                Mustache.parse(activities_template);
+                $.each(obj, function( index, value ) {
+                    if (value.count){
+                        count = value.count;
+                    }
+                    else{
+                        switch(value.type) {
+                            case 'prog':
+                            value.type =  'programa'
+                            break;
+                            case 'video':
+                            value.type =  'video'
+                            break;
+                            case 'text':
+                            value.type =  'lectura'
+                            break;  
+                            default:
+                            // code block
+                        }
+
+
+                        rendered = Mustache.render(activities_template, {
+                            title: value.title,
+                            id: value._id,
+                            icon:value.icon,
+                            description: value.description,
+                            lang:value.lang,
+                            level:value.level,
+                            author:value.author,
+                            author_image:value.author_image,
+                            publisher:value.publisher,
+                            type:value.type,
+                            tags:value.tags,
+                            duration:get_duration_format(value.duration),
+                            creation_date:get_date_format(value.creation_date),
+                            image_url: value.image_url || "" ,
+                            has_tags:(value.tags.length > 0)});
+                        $("#actividades").append(rendered);
+                    }
+                });
+
+                renderPaginator( query['page']+1, Math.floor((count + MONGO_PAGE_SIZE -1)/MONGO_PAGE_SIZE), MONGO_PAGE_SIZE, on_click );
+                $('#actividades').val(data);
+
+            }
+        },
+        error: function(data) {
+            console.log("Error");
+        }
+    });
+    }
+
+
+$("#txtname").on('change', function(){
+   $("#actividades").empty();
+   $("#row").show();
+   var query =  load_query( "#txtname" ,{ page:0, type: {'type': {'$in':['text','video','quiz','prog']}}});
+    buscar(query);
+ });
+
+
+
+
+var on_click = function(){
+        var pagenum = $( this ).attr('data-page');
+        $("#actividades").empty();
+        $("#paginator").empty();
+        var query =  load_query( "#txtname" ,{ page:0, type: {'type': {'$in':['text','video','quiz','prog']}}});
+        query.page =  (pagenum - 1);
+        buscar(query);
+    }
+
+
+   });
+
+
+
+
+
+
+    </script>
+
+
+
+{% endblock %}

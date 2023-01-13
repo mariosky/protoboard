@@ -1,0 +1,87 @@
+{% extends "activitytree/nav_base.html" %}
+{% load comments %}
+{% load comments_xtd %}
+
+
+{% block style %}
+
+{% endblock style %}
+
+    
+{% block activity %}
+
+
+
+<div class="mt-4">
+      <div class="container-fluid">
+        <div class="row justify-content-left">
+          <div class="col-lg-10 mt-4">
+            <div class="text-center mb-4">
+              <h1 class="display-3 font-weight-bold mb-4">{{content.title}}</h1>
+              <span class="mb-3 d-inline-block"><span class="text-primary">{{content.rights}}</span></span>
+            </div>
+            <!-- Media -->
+            <div class="d-flex justify-content-between align-items-center mb-5">
+              <div class="d-flex align-items-center">
+                <img src="{{content.external_url}}" alt="" class="rounded-circle avatar-md">
+                <div class="ms-2 lh-1">
+                  <h5 class="mb-1 ">{{content.publisher}}</h5>
+                <!--  <span class="text-primary">{{content.rights}}</span> -->
+                </div>
+              </div>
+              <div>
+                <span class="me-2 text-muted">Comparte</span>
+                <a href="#" class="me-2 text-muted"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="me-2 text-muted"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="me-2 text-muted "><i class="fab fa-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row justify-content-left">
+          <div class="col-lg-10">
+              {{content.content|safe}}
+      
+          </div>
+        </div>
+      </div>
+
+
+
+
+ 
+{% comment %}
+{% if rating_totals %}
+            <div class="row">
+                 <div class="col-md-6 col-md-offset-3 m-b-1 m-t-1">
+                               <div class="panel panel-default">
+                                    <div class="panel-body">
+
+                                        <p>Califica este recurso: <span id="rating-info"> </span>
+
+                                            {% if rating_totals.rating__avg %}
+                                            ({{ rating_totals.rating__avg|floatformat:2 }}/5)
+                                            {% endif %}
+                                            {{ rating_totals.rating__count }} voto(s).
+
+
+
+                                        </p>
+                                  </div>
+                               </div>
+                        </div>
+            </div>
+{% endif %}
+{% endcomment %}
+
+
+
+
+
+</div>
+
+
+
+
+{% endblock activity %}

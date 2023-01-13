@@ -1,0 +1,470 @@
+{% extends "activitytree/base.html" %}
+{% load comments %}
+{% load comments_xtd %}
+
+{% block content %}
+<div class='container-fluid mb-4'>
+    <div class="row ">
+        <!-- Right Nav Column -->
+        {% if XML_NAV %}
+
+        <div class="col-lg-3 ps1  mt-4 ">
+            <div class="card" id="courseAccordion">
+                <div>
+                    <!-- List group -->
+                    <ul id="activity_tree" class="list-group list-group-flush mt-2 mb-2">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <!-- gutter space or maybe ads> -->
+        <div class="col-lg-2 ps1  mt-4 ">
+
+        </div>
+
+        {% endif %}
+
+        <!-- Content Column -->
+        <div class="col-lg-9 mt-2">
+            {% block activity%}
+
+            {% endblock %}
+            <div class="row justify-content-center">
+
+                <div class="col-lg-9 mt-6">
+                    <div class="card mb-5">
+
+                        {% if learning_activity %}
+                        {% get_comment_count for learning_activity as comment_count %}
+                        <div class="py-4 text-center">
+                            <b> {{ comment_count }} comentari{{ comment_count|pluralize:"o,os"}} </b>
+                            {% if not user.is_authenticated %}
+                            <p> Regístrate para agregar un comentario </p>
+                            {% endif %}
+                        </div>
+
+
+                        {% if user.is_authenticated %}
+                        <div class="comment">
+                            <h4 class="text-center">Agrega un comentario</h4>
+                            <div class="well">
+                                {% render_comment_form for learning_activity %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if comment_count %}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <ul class="media-list ps2">
+                                        {% render_xtdcomment_tree for learning_activity allow_flagging allow_feedback show_feedback %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+
+
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Nav Row
+    Removed 
+    -->
+    {% comment %}
+    {% if XML_NAV %}
+    <div class="row">
+        <div class="col-md-4 col-sm-12 m-b-1">
+
+
+            <form id="nav_form" role="form" action="{{ root_id }}{{root}}" method="POST">{% csrf_token %}
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end">
+                        <a class="page-link previous" href="#" tabindex="-1"> <span class="nav_prev"> &larr;
+                                Anterior</span></a>
+
+                        <a class="page-link next" href="#"><span class="nav_next"> Continuar &rarr;</span></a>
+                        </li>
+                    </ul>
+                </nav>
+
+
+
+            </form>
+
+        </div>
+    </div>
+    {% endif %}
+    {% endcomment %}
+
+
+
+
+    {% endblock content %}
+</div>
+{% block footer%}
+
+{% endblock footer %}
+
+
+
+{% block scripts %}
+
+{{block.super}}
+<script>
+    // Setup comments 
+    // Responsive images 
+    $(".content").find("img").addClass("img-fluid")
+
+    // MDE
+    var simplemde = new SimpleMDE({
+        forceSync: true,
+        element: $("#id_comment")[0],
+        toolbar: [{
+            name: "bold",
+            action: SimpleMDE.toggleBold,
+            className: "fa fa-bold",
+            title: "Negritas",
+        },
+        {
+            name: "italic",
+            action: SimpleMDE.toggleItalic,
+            className: "fa fa-italic",
+            title: "Itálicas",
+        },
+        {
+            name: "heading-1",
+            action: SimpleMDE.toggleHeading1,
+            className: "fa fa-header fa-header-x fa-header-1",
+            title: "Encabezado H1",
+        },
+        {
+            name: "heading-2",
+            action: SimpleMDE.toggleHeading2,
+            className: "fa fa-header fa-header-x fa-header-2",
+            title: "Encabezado H2",
+        },
+        {
+            name: "heading-3",
+            action: SimpleMDE.toggleHeading3,
+            className: "fa fa-header fa-header-x fa-header-3",
+            title: "Encabezado H3",
+        },
+        {
+            name: "unordered-list",
+            action: SimpleMDE.toggleUnorderedList,
+            className: "fa fa-list-ul",
+            title: "Viñetas",
+        },
+        {
+            name: "ordered-list",
+            action: SimpleMDE.toggleOrderedList,
+            className: "fa fa-list-ol",
+            title: "Enumeración",
+        },
+        {
+            name: "code",
+            action: SimpleMDE.toggleCodeBlock,
+            className: "fa fa-code",
+            title: "Código",
+        },
+        {
+            name: "link",
+            action: SimpleMDE.drawLink,
+            className: "fa fa-link",
+            title: "Crear enlace ",
+        },
+            "|",
+        {
+            name: "preview",
+            action: SimpleMDE.togglePreview,
+            className: "fa fa-eye no-disable",
+            title: "Vista previa",
+        }
+
+        ],
+        spellChecker: false,
+        status: false,
+    });
+</script>
+{% if XML_NAV %}
+
+<script id="activity_folder" type="x-tmpsmustache">
+  <li class="list-group-item p-0">
+        <!-- Toggle -->
+        <a class="h4 mb-0 d-flex align-items-center text-inherit text-decoration-none py-3 px-4 [[^current_container]] collapsed [[/current_container]]" 
+         data-bs-toggle="collapse" href="#course[[path_id]]" role="button" aria-expanded="[[current_container]]" 
+        aria-controls="course[[path_id]]">
+        
+        <div class="me-auto">
+            [[name]]
+            <p class="mb-0 text-muted font-size-xs mt-1 font-weight-normal"> [[num_activties]] Actividades 
+            </p>
+        </div>
+        <!-- Chevron -->
+        <span class="chevron-arrow ms-4">
+            <i class="fe fe-chevron-down font-size-md"></i>
+        </span>
+        </a>
+        <!-- Row -->
+        <!-- Collapse -->
+        <div class="collapse [[#current_container]] show [[/current_container]]" id="course[[path_id]]" data-bs-parent="#courseAccordion">
+        <!-- List group item -->
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+            <div>
+                <div class="progress" style="height: 6px;">
+                <div class="progress-bar bg-success" role="progressbar" style="width: [[percent]]%;" aria-valuenow="[[percent]]" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <small>Avance [[percent]]%</small>
+            </div>
+            </li>
+
+            <!-- List group item -->
+        [[#children_activities]]
+            <li class="list-group-item [[#current]]  active   [[/current]] [[#disabled]]  disabled [[/disabled]]">
+            <a href="/[[path_id]][[uri]]" class="d-flex justify-content-between align-items-center text-inherit  [[#current]]  text-white [[/current]] text-decoration-none">
+                <div class="text-truncate">
+                [[#current]]
+                <span class="icon-shape bg-light  text-primary icon-sm rounded-circle me-2"><i  class="fa [[icon]] font-size-md"></i></span>
+                [[/current]]
+
+                [[^current]]
+                <span class="icon-shape bg-light  [[^disabled]]  text-secondary  [[/disabled]]     [[#disabled]]  text-muted  [[/disabled]]      icon-sm rounded-circle me-2">
+                <i  class="fa [[icon]] font-size-md"></i></span>
+                [[/current]]
+
+                <span>[[heading]]</span>
+                </div>
+                <div class="text-truncate">
+                [[^current]]
+                 <span  >  [[#completed]] <i class="fa fa-check [[#disabled]] text-secondary [[/disabled]]" aria-hidden="true"></i>  [[/completed]]   </span>
+                [[/current]]
+
+                </div>
+            </a>
+            </li>
+        [[/children_activities]]
+        </ul>
+        </div>
+    </li>
+</script>
+<script type="text/javascript" charset="utf-8">
+
+
+    function get_icon(uri_string) {
+
+        if (uri_string.lastIndexOf("/test/", 0) === 0)
+            return {icon: "fa fa-pencil", activity_type: "Quiz"};
+        else if (uri_string.lastIndexOf("/survey/", 0) === 0)
+            return {icon: "fa fa-pencil-square-o", activity_type: "Encuesta"};
+        else if (uri_string.lastIndexOf("/activity/video/", 0) === 0)
+            return {icon: "fa fa-youtube-play", activity_type: "Video"};
+        else if (uri_string.lastIndexOf("/activity/", 0) === 0)
+            return {icon: "fa fa-book", activity_type: "Lectura"};
+        else if (uri_string.lastIndexOf("/program/", 0) === 0)
+            return {icon: "fa fa-code", activity_type: "Ejercicio en Consola"};
+
+    }
+
+
+    function get_children_activities(element) {
+        var children = [];
+
+        function traverse(element) {
+            $(element).children().each(function (index) {
+                if (this.getAttribute("pre_condition") != "hidden" && this.getAttribute("is_visible") == "True") {
+                    var uri_string = this.getAttribute("uri");
+                    var icon = {};
+
+                    if (this.getAttribute("is_container") == "True")
+                        traverse(this);
+
+                    else {
+                        icon = get_icon(uri_string);
+
+                        if (this.getAttribute("progress_status") == "completed") {
+                            //icon.icon = icon.icon + " fa fa-check";
+                        }
+
+                        if (this.getAttribute("pre_condition") == "disabled") {
+                            icon.icon = "fa fa-lock";
+                        }
+
+                        children[children.length] = {
+                            heading: this.getAttribute("name"),
+                            uri: uri_string,
+                            path_id: this.getAttribute("id"),
+                            icon: icon.icon,
+                            current: (this.getAttribute("is_current") == 'True'),
+                            disabled: (this.getAttribute("pre_condition") == "disabled"),
+                            completed: (this.getAttribute("progress_status") == "completed")
+                        };
+                    }
+
+                }
+
+            });
+        }
+        traverse(element);
+        return children;
+    }
+
+
+
+    $(document).ready(function () {
+        Mustache.tags = ['[[', ']]'];
+        activity_folder_template = $('#activity_folder').html();
+        activity_template = $('#activity_template').html();
+        Mustache.parse(activity_folder_template);   // optional, speeds up future uses
+        Mustache.parse(activity_template);
+        //Let's put the parent folders first   
+        var $current = $xml.find("item[is_current|='True']");
+        var $root = $xml.find("item[parent_id|=None]");
+        $root.children().each(function (index) {
+            var rendered = "";
+            var uri_string = this.getAttribute("uri");
+            var recommended_value = this.getAttribute("recomended_value");
+            if (recommended_value == "None" || recommended_value == "0")
+                recommended_value = 0;
+
+            var template;
+
+            if (this.getAttribute("pre_condition") == "hidden")
+                return false; // continue
+
+            if (this.getAttribute("is_container") == "True") {
+                if (this.getAttribute("is_visible") == "True") {
+                    var current_container = false;
+                    if ($(this).find("item[is_current='True']").length) // One of the descendents is the acurrent activity?
+                    {
+                        current_container = true;
+                    }
+
+                    containers = $(this).find("item[is_container='True']").length;
+                    activities = $(this).find("item[is_container='False']");
+                    completed = $(this).find("item[progress_status='completed']").length - containers;
+                    console.log(completed);
+                    console.log(activities.length);
+                    percent = Math.floor((completed / activities.length) * 100);
+
+                    rendered = Mustache.render(activity_folder_template, {
+                        name: this.getAttribute("name"),
+                        num_activties: activities.length,
+                        current_container: current_container,
+                        uri: uri_string,
+                        percent: percent,
+                        path_id: this.getAttribute("id"),
+                        id: this.getAttribute("activity"),
+                        children_activities: get_children_activities(this),
+                        progress_status: (this.getAttribute("progress_status") == "completed")
+                    });
+
+                }
+
+            }
+
+
+
+
+            $("#activity_tree").append(rendered);
+        });
+
+    });
+</script>
+
+
+<script defer type="text/javascript" charset="utf-8">
+    // Mustache.tags = ['[[', ']]'];
+
+    in_path = true;
+
+    XML_NAV = "{{XML_NAV|safe}}";
+    xmlDoc = $.parseXML(XML_NAV);
+    $xml = $(xmlDoc);
+
+
+    $(document).ready(function () {
+
+        var puntos_totales = 0;
+        $xml.find("item[objective_measure!='None']").each(function () {
+            var val = this.getAttribute("objective_measure");
+            if (isNaN(val) == false) {
+                puntos_totales += Number(val);
+            }
+        });
+
+
+        $("#user_points").html("(" + Math.floor(puntos_totales) + " puntos)");
+
+
+
+        $(document).on("click", ".nav_next", function (event) {
+
+            var form = $("#nav_form");
+            form.append($('<input>').attr({
+                type: 'hidden',
+                name: 'nav_event',
+                value: 'next'
+            }));
+
+            form.submit();
+
+
+
+        });
+
+        $(document).on("click", ".nav_prev", function (event) {
+            var form = $("#nav_form");
+            form.append($('<input>').attr({
+                type: 'hidden',
+                name: 'nav_event',
+                value: 'prev'
+            }));
+
+            form.submit();
+
+
+        });
+
+    });
+
+
+    $(document).ready(function () {
+
+
+        $("#nav_form").submit(function () {
+            this.submit();
+            $(".nav_next").prop("disabled", true);
+            $(".nav_prev").prop("disabled", true);
+            console.log("disabled");
+            return false;
+        });
+
+    });
+
+
+
+      // in_path = false;
+
+
+</script>
+
+{% endif %}
+
+
+
+
+
+
+{% endblock scripts %}

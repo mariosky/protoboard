@@ -1,0 +1,37 @@
+{% extends "activitytree/base.html" %}
+
+
+
+{% block content %}
+
+
+<div class="row">
+<table class="table">
+<tr>
+    <th>User name</th>
+    <th>email</th>
+    <th>First name</th>
+     <th>Last name</th>
+  </tr>
+
+{% for user in users %}
+<tr>
+    <td>{{ user.username }}</td>
+    <td><a href="/users/{{ user.id }}">{{ user.email }}</a></td>
+    <td><a href="/users/{{ user.id }}">{{ user.first_name }}</a></td>
+    <td>{{ user.last_name }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+
+{{block.super}}
+
+{% endblock scripts %}
