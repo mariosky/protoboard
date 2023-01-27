@@ -39,7 +39,6 @@
 
     <title> tailwind-aulacode.com </title>
 
-    {% include "activitytree/header.html" %} 
 
      <style>
 
@@ -50,36 +49,17 @@
   </head>
 
   <body>
-            {% block content %}
 
-            {% endblock content %}
+    {% include "activitytree/header.html" %} 
+
+    {% block content %}
+    {% endblock content %}
 
 
 
-{% block footer%}
-<!--   <div class="footer"> -->
-<!--     <div class="container"> -->
-<!--         <div class="row align-items-center no-gutters border-top py-2"> -->
-<!--             <!-- Desc --> -->
-<!--             <div class="col-md-6 col-12 text-center text-md-left"> -->
-<!---->
-<!--         El contenido de los cursos es: <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> y -->
-<!--             otras licencias abiertas. -->
-<!--          Esta aplicación es software libre (plantillas de estilo básicas). Disponible en: <a href="https://github.com/mariosky/protoboard">github.com/mariosky/protoboard </a> -->
-<!---->
-<!--             </div> -->
-<!--               <!-- Links --> -->
-<!--             <div class="col-12 col-md-6"> -->
-<!--                 <nav class="nav nav-footer justify-content-center justify-content-md-end"> -->
-<!--                     <a class="nav-link active ps0" href="#">Aviso de privacidad</a> -->
-<!--                     <a class="nav-link" href="#">Retroalimentación</a> -->
-<!--                     <a class="nav-link" href="#">Soporte</a> -->
-<!--                 </nav> -->
-<!--             </div> -->
-<!--         </div> -->
-<!--     </div> -->
-<!-- </div> -->
-{% endblock footer %}
+    {% block footer%}
+
+    {% endblock footer %}
 
 <!-- <script  src="{{ STATIC_URL }}app/scripts/proto-main.js"></script> -->
 <!-- <script  src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.0/mustache.js"></script> -->

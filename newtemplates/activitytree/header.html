@@ -1,15 +1,74 @@
-<div class="relative bg-white">
-  <div class="mx-auto max-w-screen-xl px-2">
-    <div class="flex justify-between border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
-            <div class="text-2xl">
-                    hola
-            </div>
-      {% comment %}<div class="flex w-14 lg:w-0 lg:flex-1">
-        <a href="#">
-          <span class="sr-only">aulacode.com</span>
-          <img class="h-8 w-auto sm:h-10" src="{{ STATIC_URL }}assets/images/brand/logo/logo-aulacode.svg" alt="">
-        </a>
+{% load gravatar %}
+  <div class="md:mx-auto md:max-w-screen-xl px-2">
+    <div class="flex flex-col md:flex-row md:justify-between  border-b-2 border-gray-100 py-6 md:space-x-10">
+       <div class="flex pb-3 justify-center">
+          <a href="#">
+            <span class="sr-only">aulacode.com</span>
+            <img class="h-8 w-auto sm:h-10" src="{{ STATIC_URL }}assets/images/brand/logo/logo-aulacode.svg" alt="aulacode">
+         </a>
       </div>
+
+       <nav class="space-x-20 grow">
+         <div class="rounded-md shadow-sm border-2 text-gray-500">
+            <input type="text" name="search" id="search" class="rounded-md border-gray-300 
+                focus:border-indigo-500  max-h-full w-full sm:text-sm align-middle  p-2.5 bg-gray-50" placeholder="Buscar">
+        </div> 
+      </nav>
+          {% if not user.is_authenticated %}
+              <div class="flex flex-row justify-center pt-5 md:pt-0 md:flex-1 items-center md:justify-end  lg:w-0">
+                  <a href="/accounts/login" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">Inicia sesión</a>
+                  <a href="/accounts/register" class="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border
+          border-transparent bg-violet-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-violet-700">Crea tu cuenta</a>
+              </div>
+
+         {% else %}
+              <div class="flex flex-row justify-center pt-5 md:pt-0 md:flex-1 items-center md:justify-end  lg:w-0">
+                  <a href="/accounts/logout" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">Salir</a>
+                 <img class="w-10 h-10 rounded-full" src="{% gravatar_url user.email 50%}" alt="Gravatar">
+
+             <div class="relative inline-block text-left">
+                  <div>
+                    <button type="button" class="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4
+                    py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2
+                    focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                    <div class="flex flex-column w-full ">
+                       <div class="text-xs">Hola</div>
+                        <div>Hola</div>
+                    </div>
+
+                      <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                      </svg>
+                    </button>
+                  </div>
+
+  <!--
+    Dropdown menu, show/hide based on menu state.
+
+    Entering: "transition ease-out duration-100"
+      From: "transform opacity-0 scale-95"
+      To: "transform opacity-100 scale-100"
+    Leaving: "transition ease-in duration-75"
+      From: "transform opacity-100 scale-100"
+      To: "transform opacity-0 scale-95"
+  -->
+  <div class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+    <div class="py-1" role="none">
+      <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+      <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Account settings</a>
+      <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">Support</a>
+      <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-2">License</a>
+      <form method="POST" action="#" role="none">
+        <button type="submit" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+      </form>
+    </div>
+  </div>
+</div>
+              </div>
+         {% endif %}
+    {% comment %}
+    <div class="flex w-14 lg:w-0 lg:flex-1">
+              </div>
       <div class="-my-2 -mr-2 md:hidden">
         <button type="button" class="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-expanded="false">
           <span class="sr-only">Open menu</span>
@@ -37,46 +96,5 @@
   </div>
 
 
-  <!--
-    Mobile menu, show/hide based on mobile menu state.
 
-    Entering: "duration-200 ease-out"
-      From: "opacity-0 scale-95"
-      To: "opacity-100 scale-100"
-    Leaving: "duration-100 ease-in"
-      From: "opacity-100 scale-100"
-      To: "opacity-0 scale-95"
-  -->
-  <div class="absolute inset-x-0 top-0 origin-top-right transform p-2 transition md:hidden">
-    <div class="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-      <div class="px-5 pt-5 pb-6">
-        <div class="flex items-center justify-between">
-          <div>
-            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company">
-          </div>
-          <div class="-mr-2">
-            <button type="button" class="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-              <span class="sr-only">Cierra el menú</span>
-              <!-- Heroicon name: outline/x-mark -->
-              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-        <div>
-          <a href="#" class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Sign up</a>
-          <p class="mt-6 text-center text-base font-medium text-gray-500">
-            Ya estás registrado?
-            <a href="#" class="text-indigo-600 hover:text-indigo-500">Regístrate</a>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<p class="text-2xl">
-    hola
-</p><h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Back End Developer</h2>
