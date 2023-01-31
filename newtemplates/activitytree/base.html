@@ -61,6 +61,8 @@
 
     {% endblock footer %}
 
+  
+    <script src="https://unpkg.com/htmx.org@1.8.5" integrity="sha384-7aHh9lqPYGYZ7sTHvzP1t3BAfLhYSTy9ArHdP3Xsr9/3TlGurYgcPBoFmXX2TX/w" crossorigin="anonymous"></script>
 <!-- <script  src="{{ STATIC_URL }}app/scripts/proto-main.js"></script> -->
 <!-- <script  src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.0/mustache.js"></script> -->
 <!---->
@@ -114,13 +116,23 @@
 
   {% block scripts %}
 <script> 
+// Toggle profile menu
+   document.querySelector("#profile-btn").onclick = () => 
+    { document.querySelector("#profile-menu").classList.toggle("hidden");}
 
-   document.querySelector("#solutions-btn").onclick = () => 
-    { document.querySelector("#solutions-menu").classList.toggle("hidden")}
-
-  document.querySelector("#more-btn").onclick = () => 
-    { document.querySelector("#more-menu").classList.toggle("hidden")}
-
+// Close the dropdown menus if the user clicks outside of them
+window.onclick = function(event) {
+  if (event.target.closest('.drop-btn') === null) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (!openDropdown.classList.contains('hidden')) {
+        openDropdown.classList.add('hidden');
+      }
+    }
+  }
+} 
 
 {% comment%}
 Must create 
