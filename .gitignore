@@ -28,3 +28,6 @@ debug.log
 .log
 
 .env
+
+# Tailwind css 
+output.css

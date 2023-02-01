@@ -1,2 +1,12 @@
-<div class="flex">
+<div class="md:mx-auto md:w-1/5" >
+  <h4 class="font-semibold mt-3">Tags populares</h4>
+   {% if tags %} 
+       <div class="flex flex-row flex-wrap justify-left m-5">
+        {%for tag in tags%}
+        <a class=" bg-sky-200 rounded px-1.5 pb-1 m-1.5 text-sm text-slate-600 hover:bg-sky-300" href="/search/?tag={{tag}}"> {{tag}} </a> 
+        {% endfor %} 
+   {% else %}
+        <div class="text-sm">No tags</div>   
+   {% endif %}
+</div>
 </div>
