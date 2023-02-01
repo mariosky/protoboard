@@ -1,14 +1,20 @@
-{% extends "activitytree/base.html" %}
+{% extends "activitytree/headerless.html" %}
 {% load widget_tweaks %}
 
 {% block content %}
 
-<div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-  <div  class="border shadow-md rounded-xl px-8 pt-6 pb-8 mb-4 flex flex-col" >
-    
+<div class=" flex justify-center md:mx-auto md:max-w-screen-xl px-2">
+  <div class="mt-6 mx-auto">
+     <a class="" href="/">
+        <span class="sr-only">aulacode.com</span>
+        <img class="h-10 w-auto sm:h-10" src="{{ STATIC_URL }}assets/images/brand/logo/logo-aulacode.svg" alt="aulacode">
+     </a>
+  </div>
+</div>
 
-  <img class="h-8 w-auto sm:h-10" src="{{ STATIC_URL }}assets/images/brand/logo/logo-aulacode.svg" alt="aulacode">
-  <div class="mt-6 text-left text-3xl font-bold text-gray-500" > 
+<div class="flex min-h-full  justify-center py-10 px-4 sm:px-6 lg:px-8">
+    <div  class="border shadow-md rounded-xl px-8 pt-6 pb-8 mb-4 flex flex-col" >
+    <div class="mt-6 text-left text-3xl font-bold text-gray-500" > 
     Inicia sesión
   </div>
     {% if form.errors %}  
