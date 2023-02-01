@@ -13,6 +13,10 @@
     <link href="{{ STATIC_URL }}assets/css/output.css" rel="stylesheet" />
      <!-- Favicon icon-->
     <link rel="icon" type="image/png" href="{{ STATIC_URL }}assets/images/favicon/favicon.png"> 
+
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.8.5" integrity="sha384-7aHh9lqPYGYZ7sTHvzP1t3BAfLhYSTy9ArHdP3Xsr9/3TlGurYgcPBoFmXX2TX/w" crossorigin="anonymous"></script>
+    
     {% if metadescription %}
 	  <meta name="Description" content="{{ metadescription }}">
     {% else %}
