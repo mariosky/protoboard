@@ -6,17 +6,12 @@
     <meta charset="utf-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link href="{{ STATIC_URL }}assets/libs/prismjs/themes/prism.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-numbers/prism-line-numbers.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-highlight/prism-line-highlight.min.css" />
 
     <link href="{{ STATIC_URL }}assets/css/output.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+    <link rel="stylesheet" title="GitHub" href="{{ STATIC_URL }}assets/css/github.css">
      <!-- Favicon icon-->
     <link rel="icon" type="image/png" href="{{ STATIC_URL }}assets/images/favicon/favicon.png"> 
-
-    <!-- HTMX -->
-    <script src="https://unpkg.com/htmx.org@1.8.5" integrity="sha384-7aHh9lqPYGYZ7sTHvzP1t3BAfLhYSTy9ArHdP3Xsr9/3TlGurYgcPBoFmXX2TX/w" crossorigin="anonymous"></script>
-    
     {% if metadescription %}
 	  <meta name="Description" content="{{ metadescription }}">
     {% else %}
@@ -51,13 +46,20 @@
 
   
     <script src="https://unpkg.com/htmx.org@1.8.5" integrity="sha384-7aHh9lqPYGYZ7sTHvzP1t3BAfLhYSTy9ArHdP3Xsr9/3TlGurYgcPBoFmXX2TX/w" crossorigin="anonymous"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
   {% block scripts %}
-<script> 
+<script>
+// alternative to DOMContentLoaded
+document.onreadystatechange = function () {
+    if (document.readyState == "interactive") {
+        // Initialize your application or run some code.
+	hljs.highlightAll()
+
+    }
+}
 // Toggle profile menu
    document.querySelector("#profile-btn").onclick = () => 
     { document.querySelector("#profile-menu").classList.toggle("hidden");}
-
 // Close the dropdown menus if the user clicks outside of them
 window.onclick = function(event) {
   if (event.target.closest('.drop-btn') === null) {
@@ -71,7 +73,6 @@ window.onclick = function(event) {
     }
   }
 } 
-
 {% comment%}
 Must create 
 db.activities_collection.createIndex( { title: "text", description: "text" } )
@@ -79,6 +80,8 @@ db.activities_collection.createIndex( { title: "text", description: "text" } )
   Prism.plugins.autoloader.languages_path = "{{ STATIC_URL }}prism/"
 
  $( document ).ready(function() {
+		hljs.highlightAll();
+
 		$("#navBarSearchForm").submit(function(e){
 			e.preventDefault();
 			
