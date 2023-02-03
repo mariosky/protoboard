@@ -219,14 +219,27 @@ def instructor_profile(request, user_id):
 
 
 def welcome(request):
+    tags = ['python', 'csharp', 'class', 'java']
+
     courses = Course.objects.all()
     if request.user.is_authenticated and request.user != 'AnonymousUser':
         return render(request,
                       'activitytree/welcome.html',
-                      {'courses': courses})
+                      {'courses': courses,
+                       'tags': tags
+                       })
     else:
+        # return render(request, 'activitytree/welcome.html',
+        #                        {'user_name': None, 'courses': courses})
         return render(request, 'activitytree/welcome.html',
-                               {'user_name': None, 'courses': courses})
+                               {'user_name': None, 'courses': courses,
+                                'tags': tags})
+
+def welcome_courses(request):
+    courses = Course.objects.all()
+
+    return render(request, 'activitytree/welcome_courses.html',
+                    {'user_name': None, 'courses': courses})
 
 
 def course_list(request):

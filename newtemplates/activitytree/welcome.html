@@ -1,0 +1,440 @@
+{% extends "activitytree/base.html" %}
+{% load gravatar %}
+{% load auth_extras %}
+
+
+{% block style %}
+
+
+{% endblock style %}
+
+
+{% block content %}
+  <!-- Hero Section -->
+   <!-- <div class="bg-primary">
+    <div class="container">
+      <div class="row align-items-center g-0">
+        <div class="col-xl-5 col-lg-6 col-md-12">
+          <div class="py-5 py-lg-0">
+            <h1 class="text-white display-4 font-weight-bold">¡A programar!
+            </h1>
+            <p class="text-white-50 mb-4 lead">
+             Aquí encontrarás tutoriales, videos, ejercicios de programación y cursos para que subas tu nivel.
+
+            </p>
+            <a href="/search/" class="btn btn-success mb-2">Consulta la biblioteca</a>
+            <a href="/courses/" class="btn btn-white mb-2"> Cursos que ofrecemos </a>
+          </div>
+        </div>
+        <div class=" col-xl-7 col-lg-6 col-md-12 text-lg-right text-center">
+          <img src="https://evo.sfo2.digitaloceanspaces.com/codigo.uno/gnu.jpg" alt="" class="img-fluid" />
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  {% include "activitytree/hero_section.html" %}
+
+
+<div class="bg-white py-4 shadow-sm">
+    <div class="container">
+      <div class="row align-items-center g-0">
+        <!-- Features -->
+        <div class="col-xl-4 col-lg-4 col-md-6 mb-lg-0 mb-4">
+          <div class="d-flex align-items-center">
+            <span
+              class="icon-sahpe icon-lg bg-light-warning rounded-circle text-center text-dark-warning font-size-md "> <i
+                class="fe fe-video"> </i></span>
+            <div class="ms-3">
+              <h4 class="mb-0 font-weight-semi-bold">Cursos en línea</h4>
+              <p class="mb-0">De principiante a avanzado</p>
+            </div>
+          </div>
+        </div>
+        <!-- Features -->
+        <div class="col-xl-4 col-lg-4 col-md-6 mb-lg-0 mb-4">
+          <div class="d-flex align-items-center">
+            <span
+              class="icon-sahpe icon-lg bg-light-warning rounded-circle text-center text-dark-warning font-size-md "> <i
+                class="fe fe-users"> </i></span>
+            <div class="ms-3">
+              <h4 class="mb-0 font-weight-semi-bold">Recursos Creative Commons</h4>
+              <p class="mb-0">Reutilízalos según la licencia</p>
+            </div>
+          </div>
+        </div>
+        <!-- Features -->
+        <div class="col-xl-4 col-lg-4 col-md-12">
+          <div class="d-flex align-items-center">
+            <span
+              class="icon-sahpe icon-lg bg-light-warning rounded-circle text-center text-dark-warning font-size-md "> <i
+                class="fe fe-clock"> </i></span>
+            <div class="ms-3">
+              <h4 class="mb-0 font-weight-semi-bold">Aprende a tu ritmo</h4>
+              <p class="mb-0">Consulta un video o haz un reto de programación.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="pt-lg-12 pb-lg-3 pt-8 pb-6">
+    <div class="container">
+            <div class="row mb-4">
+                <div class="col">
+                    <h2 class="mb-0">Últimos Cursos</h2>
+                </div>
+            </div>
+            <div class="position-relative">
+                <ul class="controls " id="sliderFirstControls">
+                    <li class="prev">
+                        <i class="fe fe-chevron-left"></i>
+                    </li>
+                    <li class="next">
+                        <i class="fe fe-chevron-right"></i>
+                    </li>
+                </ul>
+                <div class="sliderFirst">
+
+                {% for c in courses %}
+                  <div class="item">
+                        <!-- Card -->
+                      <div class="card  mb-4 card-hover">
+                    <a href="/course_info/{{c.id}}" class="card-img-top"><img src="{{ c.metadata.image_url }}" alt=""
+                        class="card-img-top rounded-top"></a>
+                    <!-- Card body -->
+                    <div class="card-body">
+                      <h4 class="mb-2 text-truncate-line-2 "><a href="/course_info/{{c.id}}" class="text-inherit">{{c.metadata.title}}</a>
+                      </h4>
+                       <!-- List inline -->
+                      <ul class="mb-3 list-inline">
+                        <li class="list-inline-item"><i class="fa fa-clock me-1"></i>
+                             {% if c.metadata.duration is not None %}
+                                {{c.metadata.duration|duration}}
+                            {% endif %}
+                        </li>
+                        {% if c.metadata.level == "principiante" %}
+                        <li class="list-inline-item"><svg class="me-1 mt-n1" width="16" height="16" viewBox="0 0 16 16"
+                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE">
+                            </rect>
+                            <rect x="7" y="5" width="2" height="9" rx="1" fill="#DBD8E9">
+                            </rect>
+                            <rect x="11" y="2" width="2" height="12" rx="1" fill="#DBD8E9">
+                            </rect>
+                          </svg> Principiante
+                        </li>
+                        {% endif %}
+                        {% if c.metadata.level == 'intermedio'%}
+                        <li class="list-inline-item">
+                          <svg class="me-1 mt-n1" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE" />
+                            <rect x="7" y="5" width="2" height="9" rx="1" fill="#754FFE" />
+                            <rect x="11" y="2" width="2" height="12" rx="1" fill="#DBD8E9" />
+                          </svg>
+                          Intermedio
+                        </li>
+                        {% endif %}
+                        {% if c.metadata.level == 'avanzado'%}
+                         <li class="list-inline-item">
+                          <svg class="me-1 mt-n1" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE" />
+                            <rect x="7" y="5" width="2" height="9" rx="1" fill="#754FFE" />
+                            <rect x="11" y="2" width="2" height="12" rx="1" fill="#754FFE" />
+                          </svg>
+                          Avanzado
+                        </li>
+                        {% endif %}  
+
+                      </ul>
+                    <!--  <div class="lh-1">
+                        <span>
+                          <i class="mdi mdi-star text-warning me-n1"></i>
+                          <i class="mdi mdi-star text-warning me-n1"></i>
+                          <i class="mdi mdi-star text-warning me-n1"></i>
+                          <i class="mdi mdi-star text-warning me-n1"></i>
+                          <i class="mdi mdi-star text-warning"></i>
+                        </span>
+                        <span class="text-warning">4.5</span>
+                        <span class="font-size-xs text-muted">(7,700)</span>
+                      </div>-->
+
+                    </div>
+                    <!-- Card footer -->
+                    <div class="card-footer">
+                       <!-- Row -->
+
+                      <div class="row align-items-center g-0">
+                        <div class="col-auto">
+                          <img src="{{ c.author.authorprofile.image }}" class="rounded-circle avatar-xs" alt="">
+                        </div>
+                        <div class="col ms-2">
+                         <a href="/instructor_info/{{c.author.id}}">
+                          <span>{{c.author.first_name }} {{ c.author.last_name }}</span>
+                          </a>
+                        </div>
+                        <div class="col-auto">
+                      <!--    <a href="#" class="text-muted bookmark">
+                        <i class="fe fe-bookmark  "></i>
+                        </a> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                    </div>
+                {% endfor %}
+
+
+                </div>
+            </div>
+    </div>
+  </div>
+
+  <div hx-get="/welcome_courses" hx-trigger="load" hx-target="#lastCourses">
+
+  </div>
+
+  <section id="lastCourses" class="flex itemx-center text-gray-600">
+
+  </section>
+
+<div class="pt-lg-8 pb-lg-3 py-6">
+    <div class="container">
+      <div class="row mb-4">
+        <div class="col">
+          <h2 class="mb-0">Recomendados</h2>
+        </div>
+      </div>
+      <div class="position-relative">
+        <ul class="controls " id="sliderRC">
+          <li class="prev">
+                  <i class="fe fe-chevron-left"></i>
+                </li>
+                <li class="next">
+                  <i class="fe fe-chevron-right"></i>
+                </li>
+        </ul>
+        <div id="s3" class="sliderR">
+       
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+{% endblock content %}
+
+
+
+{% block scripts %}
+
+{{ block.super}}
+
+  <script type="text/javascript" charset="utf-8">
+
+  $(document).ready(function() {
+    $.get( '/get_frontpage/',  function (data) {
+
+        Mustache.tags = ['[[', ']]'];
+        var activities_template = $('#activities_template').html();
+        Mustache.parse(activities_template);
+        var obj = jQuery.parseJSON( data );
+
+
+            $.each(obj, function( index, value ) {
+
+                switch(value.type) {
+                case 'prog':
+                  value.type =  'Programa'
+                  break;
+                case 'video':
+                  value.type =  'Video'
+                  break;
+                case 'text':
+                  value.type =  'Lectura'
+                  break;  
+                default:
+                  // code block
+              }
+
+              var is_principiante = false;
+              var is_intermedio = false;
+              var is_avanzado = false;
+
+              switch(value.level) {
+                case 'principiante':
+                  is_principiante =  true;
+                  break;
+                case 'intermedio':
+                  is_intermedio = true;
+                  break;
+                case 'avanzado':
+                  is_avanzado = true;
+                  break;  
+                default:
+                  // code block
+              }
+
+                rendered = Mustache.render(activities_template, {
+                    is_principiante:is_principiante ,
+                    is_intermedio:is_intermedio,
+                    is_avanzado:is_avanzado, 
+                    title: value.title,
+                    uri: value._id,
+                    icon:value.icon,
+                    description: truncate.apply(value.description, [160, true]),
+                    lang:value.lang,
+                    level:value.level,
+                    author:value.author,
+                    author_image:value.author_image,
+                    publisher:value.publisher,
+                    external_url:value.external_url,
+                    type:value.type,
+                    index:index,
+                    tags:value.tags,
+                    has_tags:(value.tags.length > 0),
+                    image_url: value.image_url || ""
+
+                });
+
+            
+            $("#s3").append(rendered);
+            });
+       var slider = tns({
+              container: '.sliderR',
+              loop: false,
+              startIndex: 1,
+              items: 1,
+              nav: false,
+              autoplay: true,
+              swipeAngle: false,
+              speed: 400,
+              autoplayButtonOutput: false,
+              mouseDrag: true,
+              lazyload: true,
+              gutter: 20,
+              controlsContainer: "#sliderRC",
+              responsive: {
+                768: {
+                  items: 2
+                },
+
+                990: {
+                  items: 4
+                }
+              }
+
+            });  
+
+    });
+
+
+
+ });
+
+
+
+</script>
+
+
+
+
+
+
+
+<script id="activities_template" type="x-tmpsmustache">
+          <div class="item" >
+            <!-- Card -->
+            <div class="card  mb-4 card-hover">
+              <a href="[[uri]]" class="card-img-top">
+                  [[#image_url]]
+              <img src="[[image_url]]" alt=""  class="rounded-top card-img-top"></a>
+                  [[/image_url]]
+              <!-- Card Body -->
+              <div class="card-body">
+                <h4 class="mb-2 text-truncate-line-2 ">
+                <a href="[[uri]]" class="text-inherit"> [[title]] </a></h4>
+                
+                <!-- List -->
+                <ul class="mb-3 list-inline">
+                  <li class="list-inline-item"><i class="fa fa-[[icon]] text-muted"> </i> [[type]]  </li>
+                  [[#is_principiante]]
+                  <li class="list-inline-item">
+                    <svg class="me-1 mt-n1" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE" />
+                      <rect x="7" y="5" width="2" height="9" rx="1" fill="#DBD8E9" />
+                      <rect x="11" y="2" width="2" height="12" rx="1" fill="#DBD8E9" />
+                    </svg>
+                    Principiante
+                  </li>
+                  [[/is_principiante]]
+                  [[#is_intermedio]]
+                  <li class="list-inline-item">
+                    <svg class="me-1 mt-n1" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE" />
+                      <rect x="7" y="5" width="2" height="9" rx="1" fill="#754FFE" />
+                      <rect x="11" y="2" width="2" height="12" rx="1" fill="#DBD8E9" />
+                    </svg>
+                    Intermedio
+                  </li>
+                  [[/is_intermedio]]
+                  [[#is_avanzado]]
+                  <li class="list-inline-item">
+                    <svg class="me-1 mt-n1" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE" />
+                      <rect x="7" y="5" width="2" height="9" rx="1" fill="#754FFE" />
+                      <rect x="11" y="2" width="2" height="12" rx="1" fill="#754FFE" />
+                    </svg>
+                    Avanzado
+                  </li>
+                  [[/is_avanzado]]
+                </ul>
+                
+                <div class="lh-1">
+                 <i class="fa fa-tags"></i>
+                          [[#tags]]
+                          [[#.]]
+                          <a href="/search/?tag=[[.]]" class="text-muted"><span >#[[.]]</span></a>
+                          [[/.]]
+                          [[^.]]
+                          [[/.]]
+                          [[/tags]]
+                </div>
+                        
+                
+              </div>
+              <!-- Card Footer -->
+              <div class="card-footer">
+                <div class="row align-items-center g-0">
+                  <div class="col-auto">
+                    <img src="[[author_image]]" class="rounded-circle avatar-xs" alt="">
+                  </div>
+                  <div class="col ms-2">
+                    <span>[[author]]</span>
+                  </div>
+                  {% comment %}
+                  <div class="col-auto">
+                    <a href="#" class="text-muted bookmark">
+                      <i class="fe fe-bookmark  "></i>
+                    </a>
+                  </div>
+                 {% endcomment %} 
+                </div>
+              </div>
+            </div>
+          </div>
+
+</script>
+
+{% endblock scripts %}

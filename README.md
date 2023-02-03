@@ -49,7 +49,6 @@ DEBUG=TRUE
 En este caso se muestran valores para una configuración local 
 de desarrollo.
 
-</details>
 #### Carga un Backup de MongoDB y PostgreSQL. 
 Utilizando un script podemos cargar un respaldo de actividades y cursos de prueba.
 
@@ -61,4 +60,7 @@ Utilizando un script podemos cargar un respaldo de actividades y cursos de prueb
 brew install redis
 ```
 
+#### Tailwind (en el branch tailwind-templates) 
+Instalar Tailwind (no requerimos node) desde [tailwindcss.com](https://tailwindcss.com/blog/standalone-cli)
+Seguimos las instrucciones en [stackoverflow](https://stackoverflow.com/questions/63392426/how-to-use-tailwindcss-with-django)
 

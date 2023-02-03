@@ -1,0 +1,547 @@
+{% extends "activitytree/base.html" %}
+
+
+
+
+  {% block style %}
+
+.title-list{
+      margin-bottom:0.4em;
+      margin-top:0.4em;
+
+      }
+.course-list-card{
+      padding-top:10px;
+      padding-bottom:10px;
+
+      }
+
+.ellipsis {
+  text-overflow: ellipsis;
+
+  /* Required for text-overflow to do anything */
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
+  {% endblock style %}
+
+
+        {% block content %}
+
+    
+
+<div class='container-fluid mb-4'>
+    <div class="row ">
+        <!-- Right Nav Column --> 
+        <div class="col-12 col-md-3  order-2 ps1  mt-1 bg-white "> 
+                    <div class="sticky-top">
+                    <!--
+                    {%if breadcrumbs%}    
+                    <div class="my-2">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                {% for l in breadcrumbs %}
+                                    {% if forloop.last %}
+                                        <li class="breadcrumb-item active">{{l.name}}</li>
+                                    {%else%}
+                                        <li class="breadcrumb-item" ><a href="/{{ l.id }}{{ l.uri }}">{{l.name}}</a></li>
+
+                                    {% endif%}
+                                {% endfor%}
+                            </ol>
+                        </nav>
+                    </div> 
+                    {%endif%}
+                    -->
+                        <div class="card" id="courseAccordion">
+                        <div class="my-2">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                {% for l in breadcrumbs %}
+                                    {% if forloop.last or not l.is_visible %}
+                                    
+                                    {% else %}
+                                        <li class="breadcrumb-item" ><a href="/{{ l.id }}{{ l.uri }}">{{l.name|truncatechars:25}}</a></li> 
+                                    {% endif%}
+                                {% endfor%}
+                            </ol>
+                        </nav>
+                    </div> 
+                            <ul id="navlist" class="list-group list-group-flush">
+                             <a href="/[[path_id]][[uri]]" class="list-group-item list-group-item-action ">
+                                    <div class="d-flex w-100  justify-content-between ellipsis">
+                                            <h3 class="mb-1 text-primary "> Introducción </h3>
+                                    </div>
+
+                                    <p class="mb-1 text-muted"> Descripción</p>
+
+                                    <small class="[[^progress_status]] text-muted [[/progress_status]] [[#progress_status]]  text-success     [[/progress_status]]           "><i class="[[icon]]"></i> [[activity_type]] </small>
+                              </a>
+
+                            </ul>    
+                        </div>
+                </div>
+        </div>
+
+         <!-- Content Column -->     
+        <div class="col-12 col-md-9 mt-2">
+                        {% block  activity%}
+                            
+                        {% endblock %}      
+        </div>
+    </div>
+
+
+    <!-- Nav Row-->
+    {% if XML_NAV %}
+          <div class="row">
+              <div class="col-md-4 col-sm-12 m-b-1">
+
+
+                  <form id="nav_form"   role="form" action="{{ root_id }}{{root}}" method = "POST">{% csrf_token %}
+                      <nav aria-label="Page navigation example">
+                          <ul class="pagination justify-content-end">
+                              <a class="page-link previous" href="#" tabindex="-1"> <span class="nav_prev" > &larr; Anterior</span></a>
+
+                              <a class="page-link next" href="#"><span class="nav_next">  Continuar &rarr;</span></a>
+                              </li>
+                          </ul>
+                      </nav>
+
+
+
+                  </form>
+
+              </div>
+          </div>
+
+    {% endif %}
+{% endblock content %}
+</div>
+
+
+        
+
+
+
+
+{% block footer%}
+
+{% endblock footer %}
+
+
+
+{% block scripts %}
+<script id="container_template" type="x-tmpsmustache">
+
+ <a href="/[[path_id]][[uri]]" class="list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100  justify-content-between">
+
+      <h5 class="mb-1 text-primary"> [[name]] </h5>
+      <i class="fa fa-folder-open-o  text-primary" aria-hidden="true"></i>
+    </div>
+     <p class="mb-1 text-muted">[[description]]</p>
+
+    [[#progress_status]]
+           <small class="text-success">  <i class="fa fa-folder text-success"></i> Folder </small>
+    [[/progress_status]]
+    [[^progress_status]]
+         <small>   <i class="fa fa-folder text-primary"></i> </small>
+    [[/progress_status]]
+
+  </a>
+</script>
+
+
+
+
+
+
+<script id="activity_template" type="x-tmpsmustache">
+ <a href="/[[path_id]][[uri]]" class="list-group-item list-group-item-action [[#is_current]] active [[/is_current]]">
+    <div class="d-flex w-100  justify-content-between">
+
+      <h4 class="mb-1  ellipsis [[^is_current]] text-primary [[/is_current]]   [[#is_current]] text-white [[/is_current]]        "> [[name]]</h4>
+
+    </div>
+
+     <small class="[[^progress_status]] text-muted [[/progress_status]] [[#progress_status]]  text-success     [[/progress_status]]           ">
+     <i class="[[icon]] [[#is_current]] text-white [[/is_current]]" ></i> <span class="text-secondary [[#is_current]] text-white [[/is_current]]" > [[activity_type]] </span> </small>
+ </a>
+</script>
+
+
+
+<script id="disabled_activity_template" type="x-tmpsmustache">
+ <a href="#" class="list-group-item disabled flex-column align-items-start">
+    <div class="d-flex w-100  justify-content-between">
+
+      <h5 class="mb-1 text-muted "> [[name]] </h5>
+      [[#show_objective_measure]]
+          <small class="text-muted">[[objective_measure]] PUNTOS</small>
+       [[/show_objective_measure]]
+    </div>
+
+     <p class="mb-1 text-muted">[[description]]</p>
+
+     <small class="text-muted"><i class="[[icon]]"></i> [[activity_type]] </small>
+
+  </a>
+
+</script>
+
+
+
+
+
+
+<script type="text/javascript" charset="utf-8">
+
+
+    function get_icon(uri_string)
+    {
+
+        if (uri_string.lastIndexOf("/test/", 0) === 0)
+            return {icon:"fa fa-pencil",activity_type: "Quiz"} ;
+        else if (uri_string.lastIndexOf("/survey/", 0) === 0)
+            return {icon:"fa fa-pencil-square-o",activity_type: "Encuesta"} ;
+        else if (uri_string.lastIndexOf("/activity/video/", 0) === 0)
+            return {icon:"fa fa-video-camera",activity_type: "Video"} ;
+        else if (uri_string.lastIndexOf("/activity/", 0) === 0)
+            return {icon:"fa fa-book",activity_type: "Lectura"} ;
+        else if (uri_string.lastIndexOf("/program/", 0) === 0)
+            return {icon:"fa fa-coffee",activity_type: "Ejercicio en Consola"} ;
+
+    }
+
+    function get_children_activities( element)
+    {
+        var children = [];
+        $(element).children().each(function (index) {
+
+            if (this.getAttribute("pre_condition")!="hidden" && this.getAttribute("is_visible")=="True" ) {
+
+                var uri_string = this.getAttribute("uri");
+
+                var icon = {};
+
+                if (this.getAttribute("is_container") == "True")
+                    icon.icon =  "fa fa-folder-open";
+                else
+                    icon = get_icon(uri_string);
+
+                if (this.getAttribute("progress_status")=="completed")
+                    {
+                    icon.icon = icon.icon + " fa fa-check";
+                    }
+                children[children.length] =  {
+                    heading: this.getAttribute("name"),
+                    uri:uri_string,
+                    path_id: this.getAttribute("id"),
+                    icon:icon.icon,
+                    disabled:(this.getAttribute("pre_condition")=="disabled"),
+                    progress_status:(this.getAttribute("progress_status")=="completed")
+                    };
+                }
+
+        });
+
+
+        return children;
+    }
+
+    
+
+    $( document ).ready(function() {
+
+        Mustache.tags = ['[[', ']]'];
+        var container_template = $('#container_template').html();
+        var activity_template = $('#activity_template').html();
+        var disabled_activity_template = $('#disabled_activity_template').html();
+        var disabled_container_template = $('#disabled_activity_template').html();
+        Mustache.parse(container_template);   // optional, speeds up future uses
+        Mustache.parse(activity_template);   
+        Mustache.parse(disabled_activity_template);   
+        Mustache.parse(activity_template);   
+        var $current = $xml.find("item[is_current|='True']");
+
+        var $items;
+        if ($current[0].getAttribute("is_container") == "True")
+          {
+           $items =  $current.children();
+          }
+        else
+        {
+            // Go to first visble parent
+            $parent =  $current.parents("[is_visible='True']").filter(':first');
+            $items =  $parent.children();
+        }  
+
+
+         $items.each(function (index){
+
+
+                 
+                var rendered = "";
+                var uri_string = this.getAttribute("uri");
+                var recommended_value = this.getAttribute("recomended_value");
+                if (recommended_value == "None" || recommended_value == "0")
+                    recommended_value = 0;
+
+                var template;
+                if (this.getAttribute("pre_condition") != "hidden" && this.getAttribute("is_visible") == "True") {
+                    
+                    // Normal containers enabled or not
+                    if (this.getAttribute("is_container") == "True") {
+                        if (this.getAttribute("pre_condition") == "disabled")
+                            template = disabled_container_template;
+                        else
+                            template = container_template;
+
+                        rendered = Mustache.render(template, {
+                            name: this.getAttribute("name"),
+                            uri: uri_string,
+                            path_id:this.getAttribute("id"),
+                            icon: "fa fa-folder-open",
+                            image: this.getAttribute("image"),
+                            description: this.getAttribute("description"),
+                            activity_type: this.getAttribute("secondary_text"),
+                            id: this.getAttribute("activity"),
+                            rating: recommended_value,
+                            children_activities: get_children_activities(this),
+                            progress_status: (this.getAttribute("progress_status") == "completed")
+
+                        });
+                    }
+                    // Normal activities enabled or not    
+                    else {
+                        var activity_type = get_icon(uri_string);
+
+                        if (this.getAttribute("pre_condition") == "disabled")
+                            template = disabled_activity_template;
+                        else
+                            template = activity_template;
+
+                        var is_current = this.getAttribute('is_current') == "True";
+                        console.log(this.getAttribute(is_current) );
+
+                        var show_attempts = !(uri_string.lastIndexOf("/activity/", 0) === 0);
+
+                        var completed = this.getAttribute("progress_status") == "completed";
+                        var has_objective_measure = this.getAttribute("objective_measure") != "None";
+
+
+                        rendered = Mustache.render(template, {
+                            name: this.getAttribute("name"),
+                            uri: uri_string,
+                            icon: activity_type.icon,
+                            is_current:is_current,
+                            image: this.getAttribute("image"),
+                            description: this.getAttribute("description"),
+                            activity_type: activity_type.activity_type,
+                            id: this.getAttribute("activity"),
+                            path_id: this.getAttribute("id"),
+                            rating: recommended_value,
+                            num_attempts: this.getAttribute("num_attempts"),
+                            attempt_limit: this.getAttribute("attempt_limit"),
+
+                            progress_status: completed,
+                            objective_measure: Math.floor(this.getAttribute("objective_measure")),
+                            show_objective_measure: has_objective_measure,
+                            show_attempts: show_attempts
+
+
+                        });
+
+
+                    }
+                }
+                // Hidden folders  
+                if (this.getAttribute("is_visible") == "False"
+                        && this.getAttribute("is_container") == "True"
+                        && this.getAttribute("pre_condition") != "disabled") {
+
+                    $(this).children().each(function (index) {
+                        var rendered = "";
+                        var uri_string = this.getAttribute("uri");
+                        var recommended_value = this.getAttribute("recomended_value");
+                        if (recommended_value == "None" || recommended_value == "0")
+                            recommended_value = 0;
+
+                        var template;
+                        if (this.getAttribute("pre_condition") != "hidden" && this.getAttribute("is_visible") == "True") {
+                            if (this.getAttribute("is_container") == "True") {
+
+                                if (this.getAttribute("pre_condition") == "disabled")
+                                    template = disabled_container_template;
+                                else
+                                    template = container_template;
+
+                                rendered = Mustache.render(template, {
+                                    name: this.getAttribute("name"),
+                                    uri: uri_string,
+                                    icon: "fa fa-folder-open",
+                                    image: this.getAttribute("image"),
+                                    description: this.getAttribute("description"),
+                                    activity_type: activity_type.activity_type,
+                                    id: this.getAttribute("activity"),
+                                    path_id: this.getAttribute("id"),
+                                    rating: recommended_value,
+                                    children_activities: get_children_activities(this),
+                                    progress_status: (this.getAttribute("progress_status") == "completed")
+
+                                });
+                            }
+
+
+                            else {
+                                var activity_type = get_icon(uri_string);
+
+                                if (this.getAttribute("pre_condition") == "disabled")
+                                    template = disabled_activity_template;
+                                else
+                                    template = activity_template;
+
+
+                                var show_attempts = !(uri_string.lastIndexOf("/activity/", 0) === 0);
+
+                                var is_satisfied = this.getAttribute("progress_status") == "completed";
+                                var has_objective_measure = this.getAttribute("objective_measure") != "None";
+
+                                
+                                var is_current = this.getAttribute('is_current') == "True";
+
+                                console.log(this.getAttribute(is_current) ); 
+                                rendered = Mustache.render(template, {
+                                            name: this.getAttribute("name"),
+                                            uri: uri_string,
+                                            icon: activity_type.icon,
+                                            image: this.getAttribute("image"),
+                                            description: this.getAttribute("description"),
+                                            activity_type: activity_type.activity_type,
+                                            id: this.getAttribute("activity"),
+                                            rating: recommended_value,
+                                            is_current:is_current,
+                                            num_attempts: this.getAttribute("num_attempts"),
+                                            attempt_limit: this.getAttribute("attempt_limit"),
+                                            path_id: this.getAttribute("id"),
+                                            progress_status: is_satisfied,
+                                            objective_measure: Math.floor(this.getAttribute("objective_measure")),
+                                            show_objective_measure: has_objective_measure,
+                                            show_attempts: show_attempts}
+                                );
+                            }
+                         $("#navlist").append(rendered);
+                        }
+                    });
+                }
+
+                $("#navlist").append(rendered);
+                if (recommended_value) {
+                    $('#rating-' + this.getAttribute("activity")).raty({
+                        path: '{{MEDIA_URL}}images',
+                        score: recommended_value,
+                        readOnly: true
+                    });
+                }
+
+
+
+    });
+       
+    });
+</script>
+
+
+  <script defer type="text/javascript" charset="utf-8">
+
+
+     // Mustache.tags = ['[[', ']]'];
+
+      {% if XML_NAV  %}
+            in_path = true;
+
+            XML_NAV = "{{XML_NAV|safe}}";
+            xmlDoc= $.parseXML(XML_NAV);
+            $xml = $(xmlDoc);
+
+
+            $( document ).ready(function() {
+
+                var puntos_totales = 0;
+                $xml.find("item[objective_measure!='None']").each(function() {
+                    var val =  this.getAttribute("objective_measure");
+                    if (isNaN(val)==false)
+                    {
+                    puntos_totales += Number(val);
+                    }
+                });
+
+
+                $("#user_points").html("("+ Math.floor(puntos_totales)+" puntos)");
+
+
+
+                $(document).on("click",".nav_next",function( event ) {
+
+                       var form =  $("#nav_form");
+                       form.append( $('<input>').attr({ type: 'hidden',
+                                                        name: 'nav_event',
+                                                        value:'next'
+                                                      }));
+
+                      form.submit();
+
+
+
+                 });
+
+                $(document).on("click",".nav_prev",function( event ) {
+                       var form =  $("#nav_form");
+                       form.append( $('<input>').attr({ type: 'hidden',
+                                                        name: 'nav_event',
+                                                        value:'prev'
+                                                      }));
+
+                      form.submit();
+
+
+                });
+
+                });
+
+
+            $(document).ready(function() {
+
+
+            $("#nav_form").submit(function(){
+                this.submit();
+                $(".nav_next").prop("disabled", true);
+                  $(".nav_prev").prop("disabled", true);
+                console.log("disabled");
+                return false;
+              });
+
+               });
+
+          {% else %}
+
+          in_path = false;
+
+
+    {% endif  %}
+          {% if user.is_authenticated %}
+
+
+        {% else %}
+
+        {% endif %}
+
+    </script>
+
+
+
+
+{% endblock scripts %}

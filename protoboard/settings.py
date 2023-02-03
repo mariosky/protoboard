@@ -41,7 +41,7 @@ DATABASES = {
 
 }
 
-TEMPLATE_DIR="mytemplates"
+TEMPLATE_DIR="newtemplates"
 #BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 BASE_DIR = Path(__file__).resolve().parent.parent
 

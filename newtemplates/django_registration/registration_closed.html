@@ -1,0 +1,27 @@
+{% extends "activitytree/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Registration is closed" %}{% endblock %}
+
+{% block content %}
+<div class="container d-flex flex-column">
+		<div class="row align-items-top justify-content-center g-0 min-vh-100">
+			<div class="col-lg-5 col-md-8 py-8 py-xl-0">
+				<!-- Card -->
+				<div class="card shadow">
+					<!-- Card body -->
+					<div class="card-body p-6">
+						<div class="mb-4">
+							<a href="../index.html"><img src="../assets/images/brand/logo/logo-icon.svg" class="mb-4" alt="" /></a>
+							<h2 class="mb-1 font-weight-bold"> Cerrado :( </h2>
+							<p> {% trans "Sorry, but registration is closed at this moment. Come back later." %} </p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<p></p>
+{% endblock %}

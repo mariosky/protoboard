@@ -10,6 +10,7 @@ from django.contrib import admin
 
 urlpatterns = [
       path('',views.welcome),
+      path('welcome_courses/',views.welcome_courses, name="welcome_courses"),
       path('admin/', admin.site.urls),
       path('delete-course/<int:course_id>/', views.delete_course_view, name='delete_course_view'),
       path('update-course/<int:course_id>/', views.update_course_view, name='update_course_view'),
