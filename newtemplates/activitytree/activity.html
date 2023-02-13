@@ -1,4 +1,4 @@
-{% extends "activitytree/base.html" %}
+{% extends "activitytree/nav_base.html" %}
 {% load comments %}
 {% load comments_xtd %}
 
@@ -7,23 +7,5 @@
 
 {% endblock style %}
     
-{% block content %}
-<div class="py-2 flex flex-col justify-center relative overflow-hidden lg:py-10 ">
-  <div class="mt-2 prose prose-slate lg:prose-lg mx-auto bg-gray-50  prose-pre:bg-gray-50">
-    <div class="w-full px-6 py-2 bg-white shadow-xl 
-       shadow-slate-700/10 ring-1 ring-gray-900/5 md:max-w-3xl md:mx-auto lg:max-w-4xl lg:pt-1 lg:pb-28">
-                 <h2> {{content.title}} </h2>
-
-        {{content.content|safe}}
-        <div class="flex items-center space-x-4">
-          <img class="w-12 h-12 rounded-full" src="{{content.external_url}}" alt="">
-          <div class="font-medium">
-              <div>{{content.author}}</div>
-              <div class="text-sm text-gray-500 dark:text-gray-400">{{content.rights}}</div>
-          </div>
-         </div>
-
-    </div>
-  </div>
-</div>
-{% endblock content %}
+{% block activity %}
+{% endblock activity %}
