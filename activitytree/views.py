@@ -1411,9 +1411,11 @@ def get_new_activities(request):
 def get_front_page_activities(request):
     activities = Activity.get_frontpage()
     json_docs = [doc for doc in activities]
+    docs = json_docs[0:4]
+
     # return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
     context = {
-      "docs": json_docs
+      "docs": docs 
     }
     return render(request, "activitytree/welcome_recomendations.html", context)
 
