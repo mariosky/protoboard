@@ -764,11 +764,11 @@ def path_activity(request, path_id, uri):
                 return HttpResponseRedirect(
                     '/%s%s' % (next_activity.learning_activity.id, next_activity.learning_activity.uri))
 
-        _XML = s.get_nav(root)
-
+        XML = s.get_nav(root, as_dict=True)
+        print(XML)
 
         # Escape for javascript
-        XML = ET.tostring(_XML, encoding='unicode').replace('"', r'\"')
+        # XML = ET.tostring(_XML, encoding='unicode').replace('"', r'\"')
         #print('XML:', XML)
         breadcrumbs = s.get_current_path(requested_activity)
 
@@ -825,6 +825,7 @@ def path_activity(request, path_id, uri):
                                           'breadcrumbs': breadcrumbs})
         else:
             learning_activity_local, created = LearningActivityLocal.objects.get_or_create(uri=requested_activity.learning_activity.uri, title=activity_content['title'])
+            print('render activity')
             return render(request,'activitytree/activity.html',
 
                                       {'XML_NAV': XML,
@@ -836,7 +837,8 @@ def path_activity(request, path_id, uri):
                                        'root': requested_activity.learning_activity.get_root().uri,
                                        'root_id': '/%s' % requested_activity.learning_activity.get_root().id,
                                        'breadcrumbs': breadcrumbs,
-                                       'rating_totals': rating_totals})
+                                       'rating_totals': rating_totals,
+                                       'nav': True})
 
     else:
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
