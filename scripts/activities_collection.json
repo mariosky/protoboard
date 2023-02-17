@@ -1,0 +1,1190 @@
+[{
+  "_id": "/activity/7330df52-0b40-11e7-9249-0401663b8f01",
+  "publisher": "",
+  "level": "principiante",
+  "rights": "Attribution-ShareAlike 4.0 International",
+  "description": "Se explica el concepto de clase en c#",
+  "icon": "file",
+  "author": "mariosky@gmail.com",
+  "tags": [
+    "clase",
+    "csharp"
+  ],
+  "content": "<h3>Clase</h3>\r\n<h4>Introducci&oacute;n ses&nbsp;</h4>\r\n<p>El es una estructuras. &nbsp;</p>\r\n<h2>Importancia de redefinir operadores</h2>\r\n<pre><code class=\"language-css\">p { color: red }</code></pre>\r\n<p>El hecho de que C# y otros lenguajes soporten la sobrecarga de operadores no es un capricho, a trav&eacute;s de esta caracter&iacute;stica podemos realizar operaciones complejas a trav&eacute;s de argumentos de funciones y nos permite escribir c&oacute;digo mucho m&aacute;s instuitivo y legible. En realidad definir la sobrecarga de un operador es muy similar a la declaraci&oacute;n y definici&oacute;n de una funci&oacute;n o m&eacute;todo cualquiera. Suponiendo que tenemos una clase&nbsp;<em style=\"margin: 0px; padding: 0px;\">Point</em>, veamos el siguiente c&oacute;digo:</p>\r\n<p><a title=\"Link\" href=\"https://msdn.microsoft.com/es-mx/library/x9afc042.aspx\" target=\"_blank\" rel=\"noopener noreferrer\">Clase en MSDN</a></p>",
+  "image_url": "",
+  "title": "Definción de Clase ",
+  "type": "text",
+  "external_url": ""
+},{
+  "_id": "/activity/b8d27e7a-1203-11e7-898e-0401663b8f01",
+  "publisher": "EcuRed",
+  "level": "principiante",
+  "rights": "Attribution-NonCommercial-ShareAlike 3.0 Unported",
+  "description": "Se define el concepto de sobrecarga de operadores en C#",
+  "icon": "file",
+  "author": "adriana.arias@tectijuana.edu.mx",
+  "tags": [
+    "sobrecarga",
+    "operadores",
+    "binarios",
+    "unarios",
+    "csharp"
+  ],
+  "content": "<h1><strong>Sobrecarga de Operadores</strong></h1>\r\n<p><br />Se llama sobrecarga de operadores cuando reutilizando el mismo operador con un n&uacute;mero de usos diferentes, y el compilador decide como usar ese operador dependiendo sobre qu&eacute; opera.</p>\r\n<p>&nbsp;</p>\r\n<h3>Operadores binarios</h3>\r\n<p>Pueden ser sobrecargados de dos formas:</p>\r\n<ol>\r\n<li>Declarando una&nbsp;funci&oacute;n&nbsp;miembro no est&aacute;tica que acepte un argumento</li>\r\n<li>Declarando una funci&oacute;n no miembro (generalmente friend) que acepte dos argumentos.</li>\r\n</ol>\r\n<p>Dependiendo de la declaraci&oacute;n, si @ representa el operador binario, la expresi&oacute;n x @ y entre miembros de una clase C puede ser interpretada como cualquiera de las dos formas:</p>\r\n<ol>\r\n<li>x.operator@(y)</li>\r\n<li>operator@(x, y)</li>\r\n</ol>\r\n<p>Si han sido declaradas ambas formas, se aplica la congruencia est&aacute;ndar de argumentos para resolver cualquier posible ambig&uuml;edad.<br /><br />Para ver un ejemplo, haga clic en el siguiente link:&nbsp;<a title=\"Sobrecarga del operador suma ( + )\" href=\"https://www.ecured.cu/Sobrecarga_de_operadores_binarios_(Programaci%C3%B3n)\" target=\"_blank\" rel=\"noopener noreferrer\">Sobrecarga del operador suma ( + )</a></p>\r\n<p>&nbsp;</p>\r\n<h3>Operadores unarios</h3>\r\n<p>Los operadores unarios susceptibles de sobrecarga son:</p>\r\n<ul>\r\n<li>Operadores unarios <strong>+</strong> y <strong>-</strong></li>\r\n<li>Operadores unarios de <em>incremento</em> <strong>++</strong> y <em>decremento</em> <strong>--</strong></li>\r\n<li>Operadores de puntero: <em>referencia</em> <strong>&amp;&nbsp;</strong>e <em>indirecci&oacute;n</em> <strong>*</strong></li>\r\n<li>Operador de manejo de bits&nbsp;(\"bitwise\") complemento a uno <strong>~</strong></li>\r\n<li>Operador de negaci&oacute;n l&oacute;gica <strong>!</strong></li>\r\n<li>Asignaci&oacute;n y desasignaci&oacute;n din&aacute;mica de memoria:&nbsp;<strong>new</strong>&nbsp;y&nbsp;<strong>delete</strong></li>\r\n</ul>\r\n<p>Para ver un ejemplo haga clic en el siguiente link:&nbsp;<a title=\"Sobrecarga de operadores unarios\" href=\"https://www.ecured.cu/Sobrecarga_de_operadores_unarios_(Programaci%C3%B3n)\" target=\"_blank\" rel=\"noopener noreferrer\">Sobrecarga de operadores unarios</a></p>\r\n<p>&nbsp;</p>",
+  "image_url": "",
+  "title": "Sobrecarga de operadores",
+  "type": "text",
+  "external_url": "https://www.ecured.cu/Sobrecarga_de_operadores"
+},{
+  "_id": "/activity/bienvenidos",
+  "publisher": "",
+  "level": "principiante",
+  "rights": "Attribution-ShareAlike 4.0 International",
+  "description": "Descripción de la técnica utilizada para secuenciar a las actividades en un curso.",
+  "icon": "file",
+  "author": "mariosky@gmail.com",
+  "tags": [
+    "secuenciado"
+  ],
+  "content": "<h3>Introducci&oacute;n</h3>\r\n<p>Aprender a programar de forma autodid&aacute;cta puede ser una tarea dif&iacute;cil. No sabemos por donde empezar, &iquest;que material debo leer primero?, &iquest;que ejercicios son los adecuados, para mi habilidad actual?, &iquest;que necesito instalar para empezar?,&iquest;veo videos o leo?. Uno de los problemas de la Web es que nos podemos perder entre tanta informaci&oacute;n, todos los recursos necesarios pueden estar ah&iacute;, pero &iquest;cual podr&iacute;a ser una secuencia adecuada para visitarlos?.</p>\r\n<p>Para Protoboard nos basamos en una especificaci&oacute;n llamada <a href=\"http://www.imsglobal.org/simplesequencing/\"> IMS Simple Sequencing Specification (SS) </a>, la cual sirve para <em>representar el comportamiento deseado en una experiencia de aprendizaje </em>, b&aacute;sicamente es una manera de especificar como se deber&iacute;an ir entregando las actividades de aprendizaje a los alumnos. No pretendemos cumplir totalmente con la especificaci&oacute;n y m&aacute;s bien se ha ido adaptando a nuestras necesidades. Trabajaremos en lograr que el sequenciado se adapte a los usuarios utilizando t&eacute;cnicas de personalizaci&oacute;n y sistemas de recomendaci&oacute;n. Por ejemplo:</p>\r\n<ul>\r\n<li>Agregando reglas difusas para especificar el secuenciado.</li>\r\n<li>Implementando un sistema de recomendaci&oacute;n h&iacute;brido para proponer actividades de aprendizaje.</li>\r\n<li>Proponiendo un modelo para medir de manera indirecta el nivel de fluidez que experimenta el estudiante para sugerirle ejercicios adecuados</li>\r\n<li>Considerar informaci&oacute;n contexto en los algoritmos de recomendaci&oacute;n</li>\r\n</ul>\r\n<p>Con este demo iremos probando la funcionalidad b&aacute;sica de la plataforma sin agregar todav&iacute;a los m&oacute;dulos de personalizaci&oacute;n, ya que &eacute;sta es una nueva versi&oacute;n en desarrollo.</p>\r\n<p>Se ir&aacute;n explicando a lo largo del demo las capacidades de secuenciado y el tipo de actividades de aprendizaje implementadas. En las explicaciones se tratar&aacute; de reducir al m&iacute;nimo el uso de t&eacute;rminos t&eacute;cnicos de computaci&oacute;n. Bueno ya empezamos mal.</p>\r\n<h3>Arbol de Secuencia</h3>\r\n<p>Cuando un instructor planea un curso en l&iacute;nea o presencial, podr&iacute;a empezar por decidir y organizar los temas y objetivos did&aacute;cticos que cubrir&aacute; en el curso. Adecuarlos al tiempo disponible y nivel acad&eacute;mico de sus alumnos. Una forma muy com&uacute;n de organizaci&oacute;n es emplear un &aacute;rbol de tres niveles: Unidad-Tema-Actividades, las plataformas m&aacute;s populares de cursos en l&iacute;nea utilizan esta estructura. En la especificaci&oacute;n SS se generaliza la soluci&oacute;n a un &aacute;rbol de <strong>n</strong> niveles. Solo las hojas del arbol representan actividades de aprendizaje o recursos did&aacute;cticos con los que interactuar&aacute;n los alumnos. Estas actividades de aprendizaje se llaman tambi&eacute;n objetos de aprendizaje ya que son auto contenidos y pueden reutilizarse en varios cursos. A los otros nodos podemos verlos como contenedores, igual que en las carpatas de archivos en la computadora. Los contenedores pueden corresponder a objetivos de aprendizaje o niveles jer&aacute;rquicos de organizaci&oacute;n como unidades, temas, subtemas, etc.</p>\r\n<p>Una secuencia de dichas actividades puede establecerse al recorrer el &aacute;rbol en pre-orden. Utilizando reglas de secuencia se pueden omitir algunos nodos con todo y sus descendientes. Por ejemplo en la figura se puede omitir el recurso <code> AAB </code> o el contenedor <code>AB</code></p>\r\n<p><img class=\"img-fluid\" src=\"https://s3.amazonaws.com/mariogarcia/images/ActivityTree.png\" alt=\"Responsive image\" /></p>\r\n<p>Las reglas se estipulan en el lenguaje python y pueden hacer referencia al <em> &aacute;rbol de secuenciado</em> un &aacute;rbol donde se lleva el avance que a tenido el alumno en un curso en particular. Por ejemplo la regla:</p>\r\n<pre>pre_condition_rule = \"\"\"\r\nif get_attr('/activity/SecuenciadoSimple','progress_status') == 'completed':\r\n    activity['pre_condition'] = 'hidden'\r\nelse:\r\n    activity['pre_condition'] = ''\r\n\"\"\",\r\n        </pre>\r\n<p>Ocultar&iacute;a esta actividad despu&eacute;s de visitarla una vez.</p>\r\n<p>This work is licensed under a <a href=\"http://creativecommons.org/licenses/by/3.0/\" rel=\"license\">Creative Commons Reconocimiento 3.0 Unported License</a>.</p>",
+  "image_url": "",
+  "title": "Introducción al Secuenciado Simple",
+  "type": "text",
+  "external_url": ""
+},{
+  "_id": "/activity/f4bf79d8-cb2a-11e8-9810-0e1899e09571",
+  "title": "Constructores C#",
+  "description": "Vemos la sintaxis en C# y sobrecargado de constructores.",
+  "author": "Alan Castellanos",
+  "author_image": "https://evo.sfo2.digitaloceanspaces.com/uno/autores/alan.jpg",
+  "publisher": "",
+  "tags": [
+    "csharp",
+    "frontpage"
+  ],
+  "type": "text",
+  "content": "<h3>Constructores</h3>\r\n<p>Cuando creamos un objeto, debemos establecer cual ser&aacute; su estado inicial. Recordemos que el estado de un objeto est&aacute; dado por los valores actuales de sus propiedades. Por ejemplo, si creamos un nuevo usuario, debemos inicializar como m&iacute;nimo: su nombre, contrase&ntilde;a y correo electr&oacute;nico. Hay otros casos en los que los valores por defecto, como en un videojuego, al crear un nuevo nivel el puntaje inicial debe ser cero y la vida de los personajes debe estar en 100%. Estas son las tareas que hacen los constructores, son m&eacute;todos a los que les pasamos los valores iniciales y ellos se encargan de asignarlos a las propiedades correspondientes. Por esto, al momento de crear a un objeto llamamos a un constructor.</p>\r\n<h4>Sintaxis para definir a un constructor</h4>\r\n<p>Un constructor es un m&eacute;todo con restricciones especiales. La primera restricci&oacute;n establece que <strong>el nombre del m&eacute;todo debe ser el mismo que el de la clase a la que pertenece</strong>. Como vemos en el <code> Ejemplo 1</code>, el constructor se llama <code> Persona</code> por que la clase tambi&eacute;n se llama <code>Persona</code>. Una diferencia que tienen los constructores con otro tipo de m&eacute;todos es que en ellos <strong> no se debe especificar un tipo de retorno</strong>. Tambi&eacute;n un constructor <strong> debe ser <code>public</code> </strong> para que permita a la clase crear instancias. Un constructor definido correctamente debe de resultar en un objeto con un estado <strong>v&aacute;lido</strong>, por ejemplo una <code>Persona</code> con un correo escrito incorrectamente.</p>\r\n<pre class=\"line-numbers\" data-line=\"9-13\"><code class=\"language-csharp\">// Ejemplo 1\t\r\npublic class Persona\r\n{\r\n    private string apellido;\r\n\tprivate string nombre;\r\n\r\n\t// Constructor\r\n\tpublic Persona(string ap, string nom)\r\n\t\t{\r\n\t\tapellido = ap;\r\n\t\tnombre = nom;\r\n\t\t}\r\n\t\t\t\t\t   \r\n\t// Otros miembros de la clase Persona\r\n}\t\t\t\t\r\n\t\t\t\t\t</code></pre>\r\n<p>Por convenci&oacute;n vamos a definir que el orden de los argumentos del constructor sea el mismo que el de las propiedades en la clase.</p>\r\n<h4>Constructores por defecto</h4>\r\n<p>La mayor&iacute;a de los lenguajes nos permiten <strong> sobrecargar</strong> al constructor, de tal manera que una clase puede tener varios constructores, con diferentes par&aacute;metros cada uno. Si un programador no escribe un constructor, la mayor&iacute;a de los lenguajes agregan un constructor por defecto. En el caso de C#, el constructor por defecto inicializa a los campos tambi&eacute;n a sus valores por defecto. En la siguiente tabla se muestran algunos valores por defecto:</p>\r\n<table class=\"table\">\r\n<thead>\r\n<tr>\r\n<th scope=\"col\">Tipo valor</th>\r\n<th scope=\"col\">Valor por defecto</th>\r\n</tr>\r\n</thead>\r\n<tbody>\r\n<tr>\r\n<th><code>bool</code></th>\r\n<td><code>false</code></td>\r\n</tr>\r\n<tr>\r\n<th><code>char</code></th>\r\n<td>'\\0'</td>\r\n</tr>\r\n<tr>\r\n<th><code>decimal</code></th>\r\n<td>0M</td>\r\n</tr>\r\n<tr>\r\n<th><code>int</code></th>\r\n<td>0</td>\r\n</tr>\r\n<tr>\r\n<th><code>enum</code></th>\r\n<td>El primer elemento (correspondiente a la posici&oacute;n 0)</td>\r\n</tr>\r\n</tbody>\r\n</table>\r\n<h4>Utilizando a los constructores</h4>\r\n<p>Vamos a considerar la clase <code>Vector2D</code> la cual tiene dos constructores. Para probar la funcionalidad creamos dos instancias, al momento de crear los objetos el operador <code>new</code> llama a los constructores una vez que el reserv&oacute; memoria para el nuevo objeto.</p>\r\n<p>En este caso se utiliza un constructor por defecto para inicializar al vector en (1f, 1f) y como vemos se llama sin par&aacute;metros. En el segundo caso, el constructor recibe las dos coordenadas como argumento.</p>\r\n<pre class=\"line-numbers\"><code class=\"language-csharp\">// Ejemplo 2\r\n\t\t\t\t\t\r\npublic class Vector2D\r\n{\r\n    public float x;\r\n\tpublic float y;\r\n\t\r\n\t// Constructor por defecto\r\n\tpublic Vector2D()\r\n\t\t{\r\n\t\tx = 1f;\r\n\t\ty = 1f;\r\n\t\t}\r\n\t\r\n\t// Constructor\r\n\tpublic Vector2D(float coordenada_x, float coordenada_y)\r\n\t\t{\r\n\t\tx = coordenada_x;\r\n\t\ty = coordenada_y;\r\n\t\t}\t\t\t\t\t\t\t\t\t\t   \r\n// Otros miembros de la clase \r\n}\r\n\t\t\t\t\t\r\nclass TestVector2D\r\n{\r\n    static void Main()\r\n    {\r\n        Vector2D vector1 = new Vector2D();\r\n        Vector2D vector2 = new Vector2D(32.2f,53.1f);\r\n        Console.WriteLine(\"vector 1:{0},{1}\", vector1.x, vector1.y);\r\n        Console.WriteLine(\"vector 2:{0},{1}\", vector2.x, vector2.y);\r\n    }\r\n}\r\n</code></pre>\r\n<p>En el caso de que no hubiera ning&uacute;n constructor los vectores se inicializar&iacute;an en la posici&oacute;n (0f, 0f) ya que <code>0f</code> es el valor por defecto para el tipo <code>float</code>. Ahora si borramos el constructor <code>Vector2D()</code> habr&iacute;a un error ya que el compilador solo genera el constructor por defecto en la ausencia de constructores. Como en este caso ya tenemos uno, el constructor <code>Vector2D()</code> no se genera.</p>",
+  "rights": "Attribution-ShareAlike 4.0 International",
+  "rights_url": "",
+  "external_url": "",
+  "duration": "",
+  "creation_date": "",
+  "icon": "file",
+  "level": "principiante",
+  "is_private": "true",
+  "image_url": "https://evo.sfo2.digitaloceanspaces.com/codigo.uno/wrestler-python.jpg"
+},{
+  "_id": "/activity/video/1b7370bc-1299-11e7-82b3-0401663b8f01",
+  "publisher": "mariosky",
+  "level": "principiante",
+  "rights": "Licencia estándar de YouTube",
+  "description": "Tutorial de C#",
+  "icon": "youtube-play",
+  "author": "mariosky@gmail.com",
+  "tags": [
+    "clase",
+    "csharp"
+  ],
+  "startSeconds": null,
+  "content": "Snatch por Oleksiy Torokhtiy",
+  "endSeconds": null,
+  "youtube_id": "UBc5N_-xdqo",
+  "title": "Como ejecutar el Snatch por Oleksiy",
+  "type": "video",
+  "image_url": "https://evo.sfo2.digitaloceanspaces.com/codigo.uno/wrestler-python.jpg",
+  "author_image": "https://evo.sfo2.digitaloceanspaces.com/uno/autores/mario.jpg",
+  "external_url": "http:://youtube.com/"
+},{
+  "_id": "/activity/video/2e0bac06-12b4-11e7-82b3-0401663b8f01",
+  "publisher": "Rataman´s Channel",
+  "level": "principiante",
+  "rights": "Licencia estándar de YouTube",
+  "description": "Tutorial en C# de Rataman´s Channel",
+  "icon": "youtube-play",
+  "author": "adriana.arias@tectijuana.edu.mx",
+  "url": "https://www.youtube.com/watch?v=AY_O7zw-I1E",
+  "tags": [
+    "operadores",
+    "binarios",
+    "unarios",
+    "csharp",
+    "poo"
+  ],
+  "startSeconds": "",
+  "content": "Tutorial en C# de Rataman´s Channel",
+  "endSeconds": "",
+  "youtube_id": "AY_O7zw-I1E",
+  "title": "Operadores unarios y binarios en C#",
+  "type": "video",
+  "image_url": "",
+  "external_url": "https://www.youtube.com/channel/UC8gaQikSFieLdD70xQ4MHjA"
+},{
+  "_id": "/activity/video/528f4870-11e8-11e7-898e-0401663b8f01",
+  "publisher": "nicosiored",
+  "level": "principiante",
+  "rights": "Licencia estándar de YouTube",
+  "description": "Tutorial en C# de nicosiored",
+  "icon": "youtube-play",
+  "author": "adriana.arias@tectijuana.edu.mx",
+  "url": "https://www.youtube.com/watch?v=9lfG_zzZXpI",
+  "tags": [
+    "declararclase",
+    "csharp",
+    "poo"
+  ],
+  "startSeconds": "",
+  "content": "Tutorial en C# de nicosiored",
+  "endSeconds": "",
+  "youtube_id": "9lfG_zzZXpI",
+  "title": "Declaración de Clases en c#",
+  "type": "video",
+  "image_url": "",
+  "external_url": "http://nicosio.com/"
+},{
+  "_id": "/activity/video/5cba7760-12b1-11e7-9249-0401663b8f01",
+  "publisher": "Jose Alfredo Garcia Guirado",
+  "level": "principiante",
+  "rights": "Licencia estándar de YouTube",
+  "description": "Tutorial en C# de Jose Alfredo Garcia Guirado",
+  "icon": "youtube-play",
+  "author": "adriana.arias@tectijuana.edu.mx",
+  "url": "https://www.youtube.com/watch?v=XHKNpK_Nvnk",
+  "tags": [
+    "sobrecargaOperadores",
+    "csharp",
+    "poo"
+  ],
+  "startSeconds": "",
+  "content": "Tutorial en C# de Jose Alfredo Garcia Guirado",
+  "endSeconds": "",
+  "youtube_id": "XHKNpK_Nvnk",
+  "title": "Sobrecarga de Operadores en C#",
+  "type": "video",
+  "image_url": "",
+  "external_url": "https://www.youtube.com/channel/UCwiTMGiJz4fQb6nHWCiivZA/videos"
+},{
+  "_id": "/activity/video/6ca3fd92-81f5-11e6-a0af-0401663b8f01",
+  "publisher": "Khan Academy",
+  "level": "principiante",
+  "rights": "Licencia estándar de YouTube",
+  "description": "Escribiendo un programa básico en Python 2. Tipos de datos, variables e instrucciones condicionales.",
+  "icon": "youtube-play",
+  "author": "mariosky@gmail.com",
+  "url": "https://www.youtube.com/watch?v=husPzLE6sZc",
+  "tags": [
+    "principiante",
+    "video",
+    "python",
+    "khan"
+  ],
+  "startSeconds": "",
+  "content": "Escribiendo un programa básico en Python 2. Tipos de datos, variables e instrucciones condicionales.",
+  "endSeconds": "",
+  "youtube_id": "husPzLE6sZc",
+  "title": "Introducción a la programación, tipos de datos y variables",
+  "type": "video",
+  "image_url": "https://s3.amazonaws.com/mariogarcia/images/khan-academy.png",
+  "external_url": "https://www.youtube.com/channel/UC4a-Gbdw7vOaccHmFo40b9g"
+},{
+  "_id": "/activity/video/71771ca2-353f-11e7-82b3-0401663b8f01",
+  "title": "Clase derivada y clase base en Java",
+  "description": "Tutorial en Java de Vladimir Cusatti",
+  "author": "adriana.arias@tectijuana.edu.mx",
+  "author_image": "",
+  "tags": [
+    "clasebase",
+    "clasederivada",
+    "java",
+    "poo",
+    "frontpage"
+  ],
+  "type": "video",
+  "youtube_id": "qwpXO6zdTv8",
+  "url": "https://www.youtube.com/watch?v=qwpXO6zdTv8",
+  "startSeconds": "",
+  "endSeconds": "",
+  "rights": "Licencia estándar de YouTube",
+  "rights_url": "",
+  "external_url": "https://www.youtube.com/user/C3turotime/videos",
+  "publisher": "Vladimir Cusatti",
+  "icon": "youtube-play",
+  "level": "principiante",
+  "is_private": "true",
+  "creation_date": "",
+  "duration": "",
+  "image_url": "",
+  "content": "Tutorial en Java de Vladimir Cusatti"
+},{
+  "_id": "/activity/video/7788fb1e-12b8-11e7-9249-0401663b8f01",
+  "publisher": "nicosiored",
+  "level": "principiante",
+  "rights": "Licencia estándar de YouTube",
+  "description": "Tutorial en C# sobre métodos que reciben parámetros y regresan valor de nicosiored",
+  "icon": "youtube-play",
+  "author": "adriana.arias@tectijuana.edu.mx",
+  "url": "https://www.youtube.com/watch?v=uAtJExARILU",
+  "tags": [
+    "return",
+    "csharp",
+    "poo"
+  ],
+  "startSeconds": "",
+  "content": "Tutorial en C# sobre métodos que reciben parámetros y regresan valor de nicosiored",
+  "endSeconds": "",
+  "youtube_id": "uAtJExARILU",
+  "title": "Valor de retorno en C#",
+  "type": "video",
+  "image_url": "",
+  "external_url": "http://www.nicosio.com"
+},{
+  "_id": "/activity/video/7e76cca8-36d5-11e7-82b3-0401663b8f01",
+  "publisher": "nicosiored",
+  "level": "principiante",
+  "rights": "Licencia estándar de YouTube",
+  "description": "Tutorial en C# de nicosiored",
+  "icon": "youtube-play",
+  "author": "adriana.arias@tectijuana.edu.mx",
+  "url": "https://www.youtube.com/watch?v=MKPQ4IdqEG8",
+  "tags": [
+    "variablepolimorfica",
+    "csharp",
+    "poo"
+  ],
+  "startSeconds": "",
+  "content": "Tutorial en C# de nicosiored",
+  "endSeconds": "",
+  "youtube_id": "MKPQ4IdqEG8",
+  "title": "Variables Polimórficas en C#",
+  "type": "video",
+  "image_url": "",
+  "external_url": "https://www.youtube.com/channel/UCzDDzgwtrEYfIlv0VlrBu0Q"
+},{
+  "_id": "/activity/video/8b1c4842-1205-11e7-82b3-0401663b8f01",
+  "publisher": "LearnWtutorials",
+  "level": "principiante",
+  "rights": "Licencia estándar de YouTube",
+  "description": "Tutorial en C# de LearnWtutorials",
+  "icon": "youtube-play",
+  "author": "adriana.arias@tectijuana.edu.mx",
+  "url": "https://www.youtube.com/watch?v=IIDxofmYOTs",
+  "tags": [
+    "excepciones",
+    "trycatch",
+    "csharp",
+    "poo"
+  ],
+  "startSeconds": "",
+  "content": "Tutorial en C# de LearnWtutorials",
+  "endSeconds": "",
+  "youtube_id": "IIDxofmYOTs",
+  "title": "Manejo de excepciones en C#",
+  "type": "video",
+  "image_url": "",
+  "external_url": "http://www.learnwtutorials.comlu.com/"
+},{
+  "_id": "/activity/video/a508542e-129d-11e7-9249-0401663b8f01",
+  "publisher": "codigofacilito",
+  "level": "principiante",
+  "rights": "Licencia estándar de YouTube",
+  "description": "Tutorial en C# de codigofacilito",
+  "icon": "youtube-play",
+  "author": "adriana.arias@tectijuana.edu.mx",
+  "url": "https://www.youtube.com/watch?v=IXK6MFCXqVQ",
+  "tags": [
+    "crearobjeto",
+    "csharp",
+    "poo"
+  ],
+  "startSeconds": "",
+  "content": "Tutorial en C# de codigofacilito",
+  "endSeconds": "",
+  "youtube_id": "IXK6MFCXqVQ",
+  "title": "Creación de objetos en C#",
+  "type": "video",
+  "image_url": "",
+  "external_url": "http://codigofacilito.com/"
+},{
+  "_id": "/activity/video/b1004f46-11f0-11e7-898e-0401663b8f01",
+  "publisher": "LearnWtutorials",
+  "level": "principiante",
+  "rights": "Licencia estándar de YouTube",
+  "description": "Tutorial en C# de LearnWtutorials",
+  "icon": "youtube-play",
+  "author": "adriana.arias@tectijuana.edu.mx",
+  "url": "https://www.youtube.com/watch?v=Foo8ChDmobU",
+  "tags": [
+    "instanciarclase",
+    "csharp",
+    "poo"
+  ],
+  "startSeconds": "",
+  "content": "Tutorial en C# de LearnWtutorials",
+  "endSeconds": "",
+  "youtube_id": "Foo8ChDmobU",
+  "title": "Instanciación de una Clase en C#",
+  "type": "video",
+  "image_url": "",
+  "external_url": "http://www.learnwtutorials.comlu.com/"
+},{
+  "_id": "/activity/video/ba9970e4-3538-11e7-9249-0401663b8f01",
+  "publisher": "Kevin Arnold Arias Figueroa",
+  "level": "principiante",
+  "rights": "Licencia estándar de YouTube",
+  "description": "Tutorial en C# de Kevin Arnold Arias Figueroa",
+  "icon": "youtube-play",
+  "author": "adriana.arias@tectijuana.edu.mx",
+  "url": "https://www.youtube.com/watch?v=-aqulzgCVn8",
+  "tags": [
+    "herenciasimple",
+    "csharp",
+    "poo"
+  ],
+  "startSeconds": "",
+  "content": "Tutorial en C# de Kevin Arnold Arias Figueroa",
+  "endSeconds": "",
+  "youtube_id": "-aqulzgCVn8",
+  "title": "Herencia simple en C#",
+  "type": "video",
+  "image_url": "",
+  "external_url": "https://www.youtube.com/channel/UCqtNrn-qCpl7hvVNlhfq7Nw"
+},{
+  "_id": "/activity/video/c3cf7e96-12b6-11e7-82b3-0401663b8f01",
+  "publisher": "Unity Tutors",
+  "level": "principiante",
+  "rights": "Licencia estándar de YouTube",
+  "description": "Tutorial en C# de Unity Tutors",
+  "icon": "youtube-play",
+  "author": "adriana.arias@tectijuana.edu.mx",
+  "url": "https://www.youtube.com/watch?v=vVptZcKlSF8",
+  "tags": [
+    "estructurametodo",
+    "csharp",
+    "poo"
+  ],
+  "startSeconds": "",
+  "content": "Tutorial en C# de Unity Tutors",
+  "endSeconds": "",
+  "youtube_id": "vVptZcKlSF8",
+  "title": "Estructura de un método en C#",
+  "type": "video",
+  "image_url": "",
+  "external_url": "https://www.youtube.com/channel/UCrLbdD2qt00bC3phy0UuqsQ"
+},{
+  "_id": "/activity/video/caef9d0e-129e-11e7-9249-0401663b8f01",
+  "publisher": "gavilanch2",
+  "level": "principiante",
+  "rights": "Licencia estándar de YouTube",
+  "description": "Tutorial en C# de gavilanch2",
+  "icon": "youtube-play",
+  "author": "adriana.arias@tectijuana.edu.mx",
+  "url": "https://www.youtube.com/watch?v=Fs2ii77at9s",
+  "tags": [
+    "especificadoresAcceso",
+    "csharp",
+    "poo"
+  ],
+  "startSeconds": "",
+  "content": "Tutorial en C# de gavilanch2",
+  "endSeconds": "",
+  "youtube_id": "Fs2ii77at9s",
+  "title": "Especificadores de acceso en C#",
+  "type": "video",
+  "image_url": "",
+  "external_url": "https://www.youtube.com/channel/UCKBzTmM4xXBp4YjyVuNGa2w"
+},{
+  "_id": "/activity/video/cfb5ed78-3537-11e7-9249-0401663b8f01",
+  "publisher": "zadyOne",
+  "level": "principiante",
+  "rights": "Licencia estándar de YouTube",
+  "description": "Tutorial en C++ de zadyOne",
+  "icon": "youtube-play",
+  "author": "adriana.arias@tectijuana.edu.mx",
+  "url": "https://www.youtube.com/watch?v=FIT2TCUTsZY",
+  "tags": [
+    "herenciamultipleC++",
+    "poo"
+  ],
+  "startSeconds": "",
+  "content": "Tutorial en C++ de zadyOne",
+  "endSeconds": "",
+  "youtube_id": "FIT2TCUTsZY",
+  "title": "Herencia simple y múltiple en C++",
+  "type": "video",
+  "image_url": "",
+  "external_url": "https://www.youtube.com/channel/UCrTRWyaJSy88Yuod1t0IuwQ"
+},{
+  "_id": "/activity/video/d5860796-36d2-11e7-898e-0401663b8f01",
+  "publisher": "KaizenForce",
+  "level": "principiante",
+  "rights": "Licencia estándar de YouTube",
+  "description": "Tutorial en C# de KaizenForce",
+  "icon": "youtube-play",
+  "author": "adriana.arias@tectijuana.edu.mx",
+  "url": "https://www.youtube.com/watch?v=kRxjxwWlysw",
+  "tags": [
+    "interface",
+    "csharp",
+    "poo"
+  ],
+  "startSeconds": "",
+  "content": "Tutorial en C# de KaizenForce",
+  "endSeconds": "",
+  "youtube_id": "kRxjxwWlysw",
+  "title": "Interfaces en C#",
+  "type": "video",
+  "image_url": "",
+  "external_url": "https://www.youtube.com/channel/UCdyp8Penv8WdkbqVepleRog"
+},{
+  "_id": "/activity/video/eaf6a4dc-81f1-11e6-b1c1-0401663b8f01",
+  "publisher": "Khan Academy",
+  "level": "principiante",
+  "rights": "Licencia estándar de YouTube",
+  "description": "Esta lección demuestra como escribir un programa que calcula el factorial de un número en Python 2 utilizando un ciclo \"for\". ",
+  "icon": "youtube-play",
+  "author": "mariosky@gmail.com",
+  "url": "https://www.youtube.com/watch?v=ZyYp1V84Xqc",
+  "tags": [
+    "python",
+    "factorial",
+    "khan",
+    "video"
+  ],
+  "startSeconds": "",
+  "content": "Esta lección demuestra como escribir un programa que calcula el factorial de un número en Python 2 utilizando un ciclo \"for\". ",
+  "endSeconds": "",
+  "youtube_id": "ZyYp1V84Xqc",
+  "title": "Ciclos \"for\" en Python 2: Escribiendo un programa que calcula el Factorial de un número. ",
+  "type": "video",
+  "image_url": "https://s3.amazonaws.com/mariogarcia/images/khan-academy.png",
+  "external_url": ""
+},{
+  "_id": "/activity/video/ebc6ea3c-353f-11e7-898e-0401663b8f01",
+  "publisher": "Kevin Arnold Arias Figueroa",
+  "level": "principiante",
+  "rights": "Licencia estándar de YouTube",
+  "description": "Tutorial en C# de Kevin Arnold Arias Figueroa",
+  "icon": "youtube-play",
+  "author": "adriana.arias@tectijuana.edu.mx",
+  "url": "https://www.youtube.com/watch?v=VXEpYQ7W1rw",
+  "tags": [
+    "claseabstracta",
+    "csharp",
+    "poo"
+  ],
+  "startSeconds": "",
+  "content": "Tutorial en C# de Kevin Arnold Arias Figueroa",
+  "endSeconds": "",
+  "youtube_id": "VXEpYQ7W1rw",
+  "title": "Clase abstracta en C#",
+  "type": "video",
+  "image_url": "",
+  "external_url": "https://www.youtube.com/user/KAAF7/playlists"
+},{
+  "_id": "/activity/video/ed8faa70-0b41-11e7-82b3-0401663b8f01",
+  "title": "try catch en c# ",
+  "description": "Tutorial de C# de LearnWtutorials",
+  "tags": [
+    "csharp",
+    "frontpage"
+  ],
+  "type": "video",
+  "author": "mariosky@gmail.com",
+  "youtube_id": "IIDxofmYOTs",
+  "url": "https://www.youtube.com/watch?v=IIDxofmYOTs",
+  "startSeconds": "25",
+  "endSeconds": "73",
+  "rights": "Licencia estándar de YouTube",
+  "external_url": "http://www.learnwtutorials.comlu.com/",
+  "publisher": "LearnWtutorials",
+  "icon": "youtube-play",
+  "level": "principiante",
+  "image_url": "",
+  "content": "Tutorial de C# de LearnWtutorials"
+},{
+  "_id": "/activity/video/intro",
+  "content": "\n                <p>Una introducción al lenguaje python.</p>\n                  ",
+  "author": "mariosky@gmail.com",
+  "icon": "youtube-play",
+  "title": "Python para principiantes: Video I",
+  "url": "http://www.youtube.com/embed/qM5nKU40KVg?rel=0",
+  "description": "Una introducción al lenguaje python.",
+  "tags": [
+    "python",
+    "principiantes"
+  ],
+  "youtube_id": "qM5nKU40KVg"
+},{
+  "_id": "/program/0418c1ca-55fa-11e7-ba0a-0401663b8f01",
+  "lang": "perl6",
+  "publisher": "",
+  "level": "principiante",
+  "initial_code": "\n\n    sub is_leap_year($year) {\n        \n    }",
+  "description": "Dado un año, regresa verdadero si es un año bisiesto.",
+  "icon": "coffee",
+  "rights": "MIT",
+  "reg_exp": "\n\n           ",
+  "tags": [
+    "perl6"
+  ],
+  "correct_code": "\n\n               ",
+  "image_url": "",
+  "author": "mariosky@gmail.com",
+  "HTML_code": "\nHTML Content\n            ",
+  "title": "Año Bisiesto -Perl 6",
+  "instructions": "\n\n<h2> Año Bisiesto  </h2>\n\n<p>Dado un año, regresa verdadero si es un año bisiesto.</p>\n\n<div class=\"alert alert-warning\" role=\"alert\">\nLo capcioso de este problema es que no basta ver si un año es divisible entre cuatro ya que un año bisiesto ocurre: \n<pre>    <code>\ncada año que es divisible entre cuatro\nexcepto los años que también son divisibles entre 100\na menos que también sea divisible entre 400\t\t\n    </code>\n</pre>\n\n</div>\n\n<p>    \nPor ejemplo, 1997 no es año bisiesto, pero 1996 lo es. 1900 no es año bisiesto, pero 2000 si.\n</p>\n\n<h2>Instrucciones</h2>\n\n<p> Completa el método llamado <code>is_leap_year()</code> el cual toma el año y regresa <code> true </code> si lo es y <code> false </code>de lo contrario.\n</p>",
+  "type": "prog",
+  "unit_test": "\n\n# .... tests\n    is is_leap_year(2015),          True, 'Año no divisible entre 4';\n    is is_leap_year(2016),          False, 'Año divisible entre 4, no entre 100';\n    is is_leap_year(2100),          True, 'Año divisible entre 100 no entre 400';\n    is is_leap_year(2000),          False, 'Año divisible entre 400'; ",
+  "external_url": ""
+},{
+  "_id": "/program/0a32a5ec-cbda-11e8-9810-0e1899e09571",
+  "title": "Escribe el constructor",
+  "description": "Debes escribir un constructor básico.",
+  "author": "mariosky@gmail.com",
+  "author_image": "",
+  "tags": [
+    "csharp",
+    "frontpage"
+  ],
+  "lang": "csharp",
+  "rights": "",
+  "rights_url": "",
+  "external_url": "",
+  "publisher": "",
+  "icon": "coffee",
+  "is_private": "true",
+  "level": "principiante",
+  "creation_date": "",
+  "duration": "",
+  "image_url": "https://evo.sfo2.digitaloceahttps://evo.sfo2.digitaloceanspaces.com/codigo.uno/wrestler-python.jpgnspaces.com/codigo.uno/wrestler-python.jpg",
+  "type": "prog",
+  "instructions": "<h4>Escribe el constructor</h4>\n\n <p> A la clase <code>Producto</code> le hace falta el constructor, queremos crear nuestros objetos de\n          la siguiente manera:</p> \n          \n\n<pre class=\"line-numbers\"><code class=\"language-csharp\">\n   public class Program\n  {\n    static void Main()\n    {\n    Producto p = new Producto(1, \"Libro de Texto C# Avanzado\", 730.20m, 2);\n    p.Imprime()\n\n    }\n  }\n</code>\n</pre>\n\n<p>Agrega el constructor correspondiente, este debe tomar cuatro argumentos para establecer el estado inicial del objeto. </p>\n\n           ",
+  "initial_code": "using System;\nusing System.IO;\n\npublic class Producto\n{\n    private int id;\n\tprivate string nombre;\n\tprivate decimal precio;\n\tprivate int cantidad;\n\n\t// Constructor aquí\n\t\n\t\n\t\n\t// Imprime()\n\tpublic void Imprime()\n\t{\n\t\tConsole.WriteLine(\"id:{0} nombre:{1} precio:{2}\", id, nombre, precio);\n\t}\n\t\t\t\n}\n\n",
+  "unit_test": "\n\n[TestFixture]\npublic class ProductoTest\n{\n\n    [Test, Description(\"Prueba del Constructor\")]\n    public void Constructor()\n    {\n        Producto p = new Producto(1,\"p\",12.2m,2);\n        // Constraint Syntax\n        Assert.NotNull(p);\n    }\n    \n     [Test, Description(\"Imprimir la Descripción\")]\n    public void ImprimeTest()\n    {\n        Producto p = new Producto(1,\"p\",12.2m,2);\n        p.Imprime();\n\n        using (StringWriter sw = new StringWriter())\n        {\n            Console.SetOut(sw);\n\n\n            p.Imprime();\n\n        string expected = \"id:1 nombre:p precio:12.2\";\n        StringAssert.StartsWith(expected, sw.ToString());\n\n\n        }\n\n    }\n\n\n}\n\n           ",
+  "HTML_code": "\nHTML Content\n            ",
+  "correct_code": "\n\n               ",
+  "reg_exp": "\n\n           "
+},{
+  "_id": "/program/23ff2258-424b-11e7-bd86-0401663b8f01",
+  "lang": "python",
+  "publisher": "JavaRanch Cattle Drive, exercise 3 http://www.javaranch.com/leap.jsp",
+  "level": "principiante",
+  "initial_code": "\n\ndef is_leap_year(year):\n    return True\n    ",
+  "description": "Dado un año, regresa verdadero si es un año bisiesto.",
+  "icon": "coffee",
+  "rights": "MIT",
+  "reg_exp": "\n\n           ",
+  "tags": [
+    "python",
+    "ejercicio"
+  ],
+  "correct_code": "\n\n               ",
+  "image_url": "",
+  "author": "mariosky@gmail.com",
+  "HTML_code": "\nHTML Content\n            ",
+  "title": "Año Bisiesto",
+  "instructions": "\n\n<h2> Año Bisiesto  </h2>\n\n<p>Dado un año, regresa verdadero si es un año bisiesto.</p>\n\n<div class=\"alert alert-warning\" role=\"alert\">\nLo capcioso de este problema es que no basta ver si un año es divisible entre cuatro ya que un año bisiesto ocurre: \n\n<ul>\n    <li> Cada año que es divisible entre cuatro </li>\n    <li> Excepto los años que también son divisibles entre 100 </li>\n    <li> A menos que también sea divisible entre 400\t </li>\n</ul>\n\t\n\n\n</div>\n\n<p>    \nPor ejemplo, 1997 no es año bisiesto, pero 1996 lo es. 1900 no es año bisiesto, pero 2000 si.\n</p>\n\n<h2>Instrucciones</h2>\n\n<p> Completa el método llamado <code>is_leap_year()</code> el cual toma el año y regresa <code> True </code> si lo es y <code>de lo contrario.</code> </p>\n\n",
+  "type": "prog",
+  "unit_test": "\n\n\nclass Test(unittest.TestCase):\n    def setUp(self):\n        pass\n  \n    def test_year_not_divisible_by_4(self):\n        self.assertFalse(is_leap_year(2015))\n\n    def test_year_divisible_by_4_not_divisible_by_100(self):\n        self.assertTrue(is_leap_year(2016))\n\n    def test_year_divisible_by_100_not_divisible_by_400(self):\n        self.assertFalse(is_leap_year(2100))\n\n    def test_year_divisible_by_400(self):\n        self.assertTrue(is_leap_year(2000))",
+  "external_url": "http://exercism.io/"
+},{
+  "_id": "/program/5fca4f8a-55fe-11e7-ac1e-0401663b8f01",
+  "lang": "golang",
+  "publisher": "",
+  "level": "principiante",
+  "initial_code": "\n\npackage leap\n\nfunc IsLeapYear(year int ) bool {\n  \n     \n    }",
+  "description": "Dado un año, regresa verdadero si es un año bisiesto.",
+  "icon": "coffee",
+  "rights": "MIT",
+  "reg_exp": "\n\n           ",
+  "tags": [
+    "go"
+  ],
+  "correct_code": "\n\n               ",
+  "image_url": "",
+  "author": "mariosky@gmail.com",
+  "HTML_code": "\nHTML Content\n            ",
+  "title": "Año Bisiesto",
+  "instructions": "\n\n<h2> Año Bisiesto  </h2>\n\n<p>Dado un año, regresa verdadero si es un año bisiesto.</p>\n\n<div class=\"alert alert-warning\" role=\"alert\">\nLo capcioso de este problema es que no basta ver si un año es divisible entre cuatro ya que un año bisiesto ocurre: \n<pre>    <code>\ncada año que es divisible entre cuatro\nexcepto los años que también son divisibles entre 100\na menos que también sea divisible entre 400\t\t\n    </code>\n</pre>\n\n</div>\n\n<p>    \nPor ejemplo, 1997 no es año bisiesto, pero 1996 lo es. 1900 no es año bisiesto, pero 2000 si.\n</p>\n\n<h2>Instrucciones</h2>\n\n<p> Completa el método llamado <code>is_leap_year()</code> el cual toma el año y regresa <code> True\n</code> si lo es y <code>de lo contrario.</code> </p>        ",
+  "type": "prog",
+  "unit_test": "package leap\n\nimport \"testing\"\n\nvar testCases = []struct {\n\tyear        int\n\texpected    bool\n\tdescription string\n}{\n\t{2015, false, \"year not divisible by 4: common year\"},\n\t{2016, true, \"year divisible by 4, not divisible by 100: leap year\"},\n\t{2100, false, \"year divisible by 100, not divisible by 400: common year\"},\n\t{2000, true, \"year divisible by 400: leap year\"},\n}\n\n\nfunc TestLeapYears(t *testing.T) {\n\tfor _, test := range testCases {\n\t\tobserved := IsLeapYear(test.year)\n\t\tif observed != test.expected {\n\t\t\tt.Fatalf(\"IsLeapYear(%d) = %t, want %t (%s)\",\n\t\t\t\ttest.year, observed, test.expected, test.description)\n\t\t}\n\t}\n}\n\n",
+  "external_url": ""
+},{
+  "_id": "/program/Mutantes",
+  "lang": "python",
+  "publisher": "Mario García Valdez",
+  "level": "principiante",
+  "initial_code": "\ndef activa_usuario(usr):\n    pass\n",
+  "description": "Parametros Mutantes",
+  "icon": "coffee",
+  "rights": "Attribution 4.0 International",
+  "tags": [
+    "python",
+    "mutable"
+  ],
+  "correct_code": "\ndef activa_usuario(usr):\n    usr[2] = 'Activo'\n    return usr",
+  "image_url": "",
+  "author": "mariosky@gmail.com",
+  "HTML_code": "\nHTML Content\n            ",
+  "title": "Mutantes",
+  "instructions": "<p> Un sistema externo nos envía en una lista información sobre usuarios,\naquí un ejemplo: <code> ['812202', 'Ana', 'Activo'] </code> \nlos elementos corresponden a Identificador, Nombre y Status. \nStatus puede tener dos valores:<code> 'Activo'</code>  e <code> 'Inactivo'</code>.\nEscribe un método llamado <code> activa_usuario(usr) </code> que reciba\na un usuario representado como lista, modifique su \testado a  <code>'Activo'</code> y regrese la lista.</p>\n\n<div class=\"alert alert-warning\"> Para usuarios más avanzados: Como el usuario es una lista,\nal pasarse como argumento la modificación se realiza a la  referencia por lo que no es necesario regresar la\nlista. Si está en chino no te preocupes, ésto lo explicaremos más adelante.</div>\n",
+  "type": "prog",
+  "unit_test": "\nimport sys\nimport unittest\nimport json\n\nclass ResultadoPrueba(unittest.TestResult):\n    def __init__(self):\n         super(ResultadoPrueba, self).__init__()\n         self.success = []\n    def addSuccess(self, test):\n         self.success.append(test)\n    def shouldStop(self, test):\n         return False\n\n\nclass Test(unittest.TestCase):\n    def setUp(self):\n        pass\n    def test_Action(self):\n        self.assertEqual(activa_usuario(['2', 'A', 'Inactivo']) , ['2', 'A', 'Activo'])\n\n\n",
+  "external_url": ""
+},{
+  "_id": "/program/PPP/10",
+  "lang": "python",
+  "publisher": "Mario García Valdez",
+  "level": "principiante",
+  "initial_code": "\ndef es_accion(pelicula):\n    pass\n",
+  "description": "Elementos de una Lista",
+  "icon": "coffee",
+  "rights": "Attribution 4.0 International",
+  "tags": [
+    "python"
+  ],
+  "correct_code": " ",
+  "image_url": "",
+  "author": "mariosky@gmail.com",
+  "HTML_code": "\nHTML Content\n            ",
+  "title": "¡Pura Acción!",
+  "instructions": "<p> Un sistema externo nos envía en una lista información sobre peliculas,\n             aquí un ejemplo: <code> ['tt1877832', 'X-Men: Days of Future Past', 2014,\n\t\t\t['Action', 'Adventure', 'Fantasy'], 8.1,  14740 ] </code>  los elementos corresponden secuencialmente a\n\t\t\tIdentificador, Titulo, Año, Lista de Generos, Calificación Promedio y Número de votos. Escribe un método\n\t\t\tllamado <code> es_accion(pelicula) </code> que reciba una pelicula representada como lista y regrese\n\t\t\t<code> True </code> si es pelicula de acción, y <code> False </code> si no lo es.Por ejemplo para la pelicula anterior regresaría\n\t\t\t<code>True </code>, pero para la pelicula <code>['tt2004420', 'Neighbors', 2014, ['Comedy'], 7.2,  26920]</code>\n\t\t\t  regresaría  <code> False </code>.</p>\n            ",
+  "type": "prog",
+  "unit_test": "\nimport sys\nimport unittest\nimport json\n\nclass ResultadoPrueba(unittest.TestResult):\n    def __init__(self):\n         super(ResultadoPrueba, self).__init__()\n         self.success = []\n    def addSuccess(self, test):\n         self.success.append(test)\n    def shouldStop(self, test):\n         return False\n\n\nclass Test(unittest.TestCase):\n    def setUp(self):\n        pass\n    def test_Action(self):\n        self.assertEqual(es_accion(['tt', 'X', 1, ['Action'], 1,  1 ]), True)\n    def test_Not_Action(self):\n        self.assertEqual(es_accion(['tt', 'X', 1, ['Otra'], 1,  1 ]), False)\n\n\n",
+  "external_url": ""
+},{
+  "_id": "/program/PPP/12",
+  "lang": "python",
+  "publisher": "Mario García Valdez",
+  "level": "principiante",
+  "initial_code": "\n# Funcion que ordena una lista, puedes utilizar sort()\ndef solution(lista):\n    pass\n",
+  "description": "Ordena una Lista en python",
+  "icon": "coffee",
+  "rights": "Attribution 4.0 International",
+  "tags": [
+    "python",
+    "listas"
+  ],
+  "correct_code": "# Solution:\ndef solution(l):\n    if l is None:\n        return []\n    else:\n        l.sort()\n        return l",
+  "image_url": "",
+  "author": "mariosky@gmail.com",
+  "HTML_code": "\nHTML Content\n            ",
+  "title": "Ordena la Lista",
+  "instructions": "<p>Escribe una función llamada <code>solution</code> la cual reciba como parámetro\n                una lista y regrese la lista ordenada.</p>\n            <p>En caso de recibir como parámetro el valor <code>None</code> debe regresar una lista vacía. </p>\n            \n<div class=\"card card-block bg-faded\"><code>\n<pre>&gt;&gt;&gt; solution([4,3,5,1])\n[1, 3, 4, 5]\n&gt;&gt;&gt; solution(None)\n[]\n</pre></code>\n</div>\n\n            \n        ",
+  "type": "prog",
+  "unit_test": "\nimport sys\nimport unittest\nimport json\n\nclass ResultadoPrueba(unittest.TestResult):\n    def __init__(self):\n         super(ResultadoPrueba, self).__init__()\n         self.success = []\n    def addSuccess(self, test):\n         self.success.append(test)\n    def shouldStop(self, test):\n         return False\n\n\nclass Test(unittest.TestCase):\n    def setUp(self):\n        pass\n    def test_order(self):\n        self.assertEqual(solution([2,6,1,5]),[1,2,5,6])\n    def test_none(self):\n        self.assertEqual(solution(None),[])\n\n\n",
+  "external_url": ""
+},{
+  "_id": "/program/PPP/13",
+  "lang": "python",
+  "publisher": "Mario García Valdez",
+  "level": "principiante",
+  "initial_code": "\ndef producto(l1,l2):\n    pass\n",
+  "description": "Producto punto entre dos vectores",
+  "icon": "coffee",
+  "rights": "Attribution 4.0 International",
+  "tags": [
+    "python"
+  ],
+  "correct_code": " ",
+  "image_url": "",
+  "author": "mariosky@gmail.com",
+  "HTML_code": "\nHTML Content\n            ",
+  "title": "Producto punto",
+  "instructions": "<p> Escribe un método llamado <code> producto(l1, l2) </code> el cual reciba\n              dos listas de enteros del mismo tamaño y regrese el producto escalar entre ellas. El producto escalar\n              se calcula de la siguiente manera: Tenemos <b>a</b> = [a<sub>1</sub>, a<sub>2</sub> , ... ,a<sub>n</sub>] y\n            <b>b</b>  =  [b<sub>1</sub>, b<sub>2</sub> , ... , b<sub>n</sub>] entonces\n            <b> a</b> ·<b> b </b>= a<sub>1</sub>b<sub>1</sub> + a<sub>2</sub>b<sub>2</sub> + .. + a<sub>n</sub>b<sub>n</sub> Se suman\n             los productos de los elementos con el mismo indice, el primero con el primero, segundo con el segundo, etc.\n\n            </p>\n          <div class=\"alert alert-warning\"> Puedes utilizar <code>map</code> y <code>zip</code></div>\n\n            ",
+  "type": "prog",
+  "unit_test": "\nimport sys\nimport unittest\nimport json\n\nclass ResultadoPrueba(unittest.TestResult):\n    def __init__(self):\n         super(ResultadoPrueba, self).__init__()\n         self.success = []\n    def addSuccess(self, test):\n         self.success.append(test)\n    def shouldStop(self, test):\n         return False\n\n\nclass Test(unittest.TestCase):\n    def setUp(self):\n        pass\n    def test_Action(self):\n        self.assertEqual(producto([2, 1, 3], [2, 3, 1]), 10)\n\n",
+  "external_url": ""
+},{
+  "_id": "/program/PPP/3",
+  "initial_code": "\n# Funcion que suma dos números\ndef suma():\n    pass\n",
+  "description": "Suma dos números",
+  "icon": "coffee",
+  "tags": [
+    "python"
+  ],
+  "unit_test": "\nclass Test(unittest.TestCase):\n    def setUp(self):\n        pass\n    def test_suma_positivos(self):\n        self.assertEqual(suma(3,9),12)\n    def test_negativos(self):\n        self.assertEqual(suma(5,-12),-7)\n",
+  "instructions": "<p>Escribe una función llamada <code> suma() </code> la cual reciba como parámetros\n                dos enteros y regrese la suma de ambos.</p>\n            <code>\n                <p>>>> suma(3,4)</p>\n                <p>7</p>\n                <p>>>> suma(3,-4)</p>\n                <p>-1</p>\n            </code>",
+  "lang": "python",
+  "correct_code": "# Solution:\ndef suma(a,b):\n    return a + b",
+  "level": "principiante",
+  "title": "Suma dos números",
+  "author": "mariosky@gmail.com",
+  "type": "unit_test"
+},{
+  "_id": "/program/PPP/4",
+  "initial_code": "\ndef distancia():\n    pass\n",
+  "description": "Valor absoluto de la diferencia",
+  "icon": "coffee",
+  "tags": [
+    "python"
+  ],
+  "unit_test": "\nclass Test(unittest.TestCase):\n    def setUp(self):\n        pass\n    def test_distancia_positivos(self):\n        self.assertEqual(distancia(3,9),6)\n    def test_negativos(self):\n        self.assertEqual(distancia(5,-12),17)\n",
+  "instructions": "<p>Escribe una función llamada <code> distancia() </code> la cual reciba como parámetros\n                dos enteros y regrese el valor absoluto de la diferencia entre ambos</p>\n            <code>\n                <p>>>> distancia(3,4)</p>\n                <p>1</p>\n                <p>>>> distancia(3,-4)</p>\n                <p>7</p>\n            </code>",
+  "lang": "python",
+  "correct_code": " ",
+  "level": "principiante",
+  "title": "distancia()",
+  "author": "mariosky@gmail.com",
+  "type": "prog"
+},{
+  "_id": "/program/PPP/5",
+  "initial_code": "\ndef mayor():\n    pass\n",
+  "description": "Regresa el mayor de dos números",
+  "icon": "coffee",
+  "tags": [
+    "python"
+  ],
+  "unit_test": "\nimport sys\nimport unittest\nimport json\n\nclass ResultadoPrueba(unittest.TestResult):\n    def __init__(self):\n         super(ResultadoPrueba, self).__init__()\n         self.success = []\n    def addSuccess(self, test):\n         self.success.append(test)\n    def shouldStop(self, test):\n         return False\n\n\nclass Test(unittest.TestCase):\n    def setUp(self):\n        pass\n    def test_mayor_positivos(self):\n        self.assertEqual(mayor(3,9),9)\n    def test_negativos(self):\n        self.assertEqual(mayor(5,-12),5)\n\nsuite = unittest.TestLoader().loadTestsFromTestCase(Test)\nResultado = ResultadoPrueba()\nsuite.run(Resultado)\nresult = {}\n\nif Resultado.wasSuccessful():\n    result['result'] = \"Success\"\nelse:\n    result['result'] = \"Failure\"\nresult['errors']=  [str(e[0])   for e in Resultado.errors]\nresult['failures']=  [str(e[0]) for e in Resultado.failures]\nresult['successes']=  [str(e)  for e in Resultado.success]\nprint \"!!!---\"\nprint json.dumps(result)\n",
+  "instructions": "<p>Escribe una función llamada <code> mayor() </code> la cual reciba como parámetros\n                dos enteros y regrese el mayor entre ellos.</p>\n            <code>\n                <p>>>> mayor(3,4)</p>\n                <p>4</p>\n                <p>>>> mayor(2,-4)</p>\n                <p>2</p>\n            </code>",
+  "lang": "python",
+  "correct_code": " ",
+  "level": "principiante",
+  "title": "mayor()",
+  "author": "mariosky@gmail.com",
+  "type": "prog"
+},{
+  "_id": "/program/PPP/6",
+  "title": "mayor()",
+  "description": "Mayor de una lista",
+  "tags": [
+    "python"
+  ],
+  "lang": "python",
+  "rights": "",
+  "external_url": "",
+  "publisher": "",
+  "icon": "coffee",
+  "level": "principiante",
+  "image_url": "",
+  "type": "prog",
+  "author": "mariosky@gmail.com",
+  "instructions": "<p>Escribe una función llamada <code> regresa_lista </code> la cual regrese la siguiente lista:\n           <code> [\"Tom\", 2.23, 12]  </code>.\n</p>",
+  "initial_code": "\ndef regresa_lista():\n    return None\n",
+  "unit_test": "\nimport sys\nimport unittest\nimport json\n\nclass ResultadoPrueba(unittest.TestResult):\n    def __init__(self):\n         super(ResultadoPrueba, self).__init__()\n         self.success = []\n    def addSuccess(self, test):\n         self.success.append(test)\n    def shouldStop(self, test):\n         return False\n\n\nclass Test(unittest.TestCase):\n    def setUp(self):\n        pass\n    def test_lista(self):\n        self.assertEqual(type(regresa_lista()),type([1,2]))\n    def test_Tom(self):\n        self.assertEqual(regresa_lista()[0],\"Tom\")\n    def test_float(self):\n        self.assertEqual(regresa_lista()[1],2.23)\n    def test_int(self):\n        self.assertEqual(regresa_lista()[2],12)\n    def test_len(self):\n        self.assertEqual(len(regresa_lista()),3)\n\nsuite = unittest.TestLoader().loadTestsFromTestCase(Test)\nResultado = ResultadoPrueba()\nsuite.run(Resultado)\nresult = {}\n\nif Resultado.wasSuccessful():\n    result['result'] = \"Success\"\nelse:\n    result['result'] = \"Failure\"\nresult['errors']=  [str(e[0])   for e in Resultado.errors]\nresult['failures']=  [str(e[0]) for e in Resultado.failures]\nresult['successes']=  [str(e)  for e in Resultado.success]\nprint (\"!!!---\")\nprint (json.dumps(result))\n",
+  "HTML_code": "\nHTML Content\n            ",
+  "correct_code": " ",
+  "reg_exp": "\n\n           "
+},{
+  "_id": "/program/PPP/7",
+  "initial_code": "\ndef regresa_tupla(a,b,c):\n    pass\n",
+  "description": "Crear una tupla",
+  "icon": "coffee",
+  "tags": [
+    "python"
+  ],
+  "unit_test": "\nimport sys\nimport unittest\nimport json\n\nclass ResultadoPrueba(unittest.TestResult):\n    def __init__(self):\n         super(ResultadoPrueba, self).__init__()\n         self.success = []\n    def addSuccess(self, test):\n         self.success.append(test)\n    def shouldStop(self, test):\n         return False\n\n\nclass Test(unittest.TestCase):\n    def setUp(self):\n        pass\n    def test_tupla(self):\n        self.assertEqual(type(regresa_tupla(1,2,3)),type((1,2)))\n    def test_primero(self):\n        self.assertEqual(regresa_tupla(1,2,3)[0],1)\n    def test_segundo(self):\n        self.assertEqual(regresa_tupla(1,2,3)[1],2)\n    def test_tercero(self):\n        self.assertEqual(regresa_tupla(1,2,3)[2],3)\n    def test_len(self):\n        self.assertEqual(len(regresa_tupla(1,2,3)),3)\nsuite = unittest.TestLoader().loadTestsFromTestCase(Test)\nResultado = ResultadoPrueba()\nsuite.run(Resultado)\nresult = {}\n\nif Resultado.wasSuccessful():\n    result['result'] = \"Success\"\nelse:\n    result['result'] = \"Failure\"\nresult['errors']=  [str(e[0])   for e in Resultado.errors]\nresult['failures']=  [str(e[0]) for e in Resultado.failures]\nresult['successes']=  [str(e)  for e in Resultado.success]\nprint(\"!!!---\")\nprint(json.dumps(result))\n",
+  "instructions": "<p>Escribe una función llamada <code> regresa_tupla </code>\n             la cual tome tres parámetros y regrese una tupla con los tres valores.\n             </p>\n            ",
+  "lang": "python",
+  "correct_code": " ",
+  "level": "principiante",
+  "title": "Dame una tupla",
+  "author": "mariosky@gmail.com",
+  "type": "prog"
+},{
+  "_id": "/program/PPP/8",
+  "title": "Solo una tajada",
+  "description": "Slicing o tajadas de una lista",
+  "tags": [
+    "python"
+  ],
+  "lang": "python",
+  "rights": "",
+  "external_url": "",
+  "publisher": "",
+  "icon": "coffee",
+  "level": "principiante",
+  "image_url": "",
+  "type": "prog",
+  "author": "mariosky@gmail.com",
+  "instructions": "<p> Un sistema externo nos envía en una lista información sobre peliculas,\n             aquí un ejemplo: <code> ['tt1877832', 'X-Men: Days of Future Past', 2014,\n\t\t\t['Action', 'Adventure', 'Fantasy'], 8.1,  14740 ] </code>  los elementos corresponden secuencialmente a\n\t\t\tIdentificador, Titulo, Año, Lista de Generos y Calificación Promedio, Número de votos. Escribe un método\n\t\t\tllamdo <code> recorta(pelicula) </code> que reciba una pelicula representada como lista y regrese\n\t\t\totra lista que solo incluya Identificador, Titulo y Año. Por ejemplo para la pelicula anterior regresaría\n\t\t\t<code> ['tt1877832', 'X-Men: Days of Future Past', 2014] </code> </p>\n            ",
+  "initial_code": "\ndef recorta(pelicula):\n    pass\n",
+  "unit_test": "\nimport sys\nimport unittest\nimport json\n\nclass ResultadoPrueba(unittest.TestResult):\n    def __init__(self):\n         super(ResultadoPrueba, self).__init__()\n         self.success = []\n    def addSuccess(self, test):\n         self.success.append(test)\n    def shouldStop(self, test):\n         return False\n\n\nclass Test(unittest.TestCase):\n    def setUp(self):\n        pass\n    def test_corte(self):\n        self.assertEqual(recorta(['tt', 'X', 1, [], 1,  1 ]), ['tt', 'X', 1])\n\nsuite = unittest.TestLoader().loadTestsFromTestCase(Test)\nResultado = ResultadoPrueba()\nsuite.run(Resultado)\nresult = {}\n\nif Resultado.wasSuccessful():\n    result['result'] = \"Success\"\nelse:\n    result['result'] = \"Failure\"\nresult['errors']=  [str(e[0])   for e in Resultado.errors]\nresult['failures']=  [str(e[0]) for e in Resultado.failures]\nresult['successes']=  [str(e)  for e in Resultado.success]\nprint (\"!!!---\")\nprint (json.dumps(result))\n",
+  "HTML_code": "\nHTML Content\n            ",
+  "correct_code": " ",
+  "reg_exp": "\n\n           "
+},{
+  "_id": "/program/PPP/9",
+  "lang": "python",
+  "publisher": "Mario García Valdez",
+  "level": "principiante",
+  "initial_code": "\ndef recorta(pelicula):\n    pass\n",
+  "description": "Solo una tajadita",
+  "icon": "coffee",
+  "rights": "Attribution 4.0 International",
+  "tags": [
+    "python",
+    "slicing",
+    "listas"
+  ],
+  "correct_code": " ",
+  "image_url": "",
+  "author": "mariosky@gmail.com",
+  "HTML_code": "\nHTML Content\n            ",
+  "title": "Solo una tajadita",
+  "instructions": "<p> Un sistema externo nos envía en una lista información sobre peliculas,\n             aquí un ejemplo: <code> ['tt1877832', 'X-Men: Days of Future Past', 2014,\n\t\t\t['Action', 'Adventure', 'Fantasy'], 8.1,  14740 ] </code>  los elementos corresponden secuencialmente a\n\t\t\tIdentificador, Titulo, Año, Lista de Generos y Calificación Promedio, Número de votos. Escribe un método\n\t\t\tllamado <code> recorta(pelicula) </code> que reciba una pelicula representada como lista y regrese\n\t\t\totra lista que solo incluya Titulo y Año. Por ejemplo para la pelicula anterior regresaría\n\t\t\t<code> ['X-Men: Days of Future Past', 2014] </code> </p>\n          ",
+  "type": "prog",
+  "unit_test": "\nimport sys\nimport unittest\nimport json\n\nclass ResultadoPrueba(unittest.TestResult):\n    def __init__(self):\n         super(ResultadoPrueba, self).__init__()\n         self.success = []\n    def addSuccess(self, test):\n         self.success.append(test)\n    def shouldStop(self, test):\n         return False\n\n\nclass Test(unittest.TestCase):\n    def setUp(self):\n        pass\n    def test_corte(self):\n        self.assertEqual(recorta(['tt', 'X', 1, [], 1,  1 ]), [ 'X', 1])\n\n",
+  "external_url": ""
+},{
+  "_id": "/program/a195eff0-7bac-11e6-b769-0401663b8f01",
+  "lang": "java",
+  "publisher": "Carlos Hurtado",
+  "level": "principiante",
+  "initial_code": "public class ImprimeString {\n\tpublic static void main(String[] args) {\n\t\tSystem.out.println();\n\t}\n}",
+  "description": "Programa que despliega la palabra Hola mundo",
+  "icon": "coffee",
+  "rights": "",
+  "tags": [
+    "java",
+    "FundDeProgramacion"
+  ],
+  "correct_code": "public class ImprimeString {\n\tpublic static void main(String[] args) {\n\t\tSystem.out.println(\"Hola mundo\");\n\t}\n}",
+  "image_url": "",
+  "author": "icarloshurtado@gmail.com",
+  "HTML_code": "\nHTML Content\n            ",
+  "title": "Hola mundo",
+  "instructions": "<h1>¡Hola mundo!</h1>\n<h2>Instrucciones</h2>\n<p>Vamos a empezar con un ejemplo clasico de programacion: imprimir el texto \n    Hola mundo dentro de los parentesis de la linea de código:</p>\n<p class=\"bg-success\">System.out.println();</p> \n<p>Agregue el texto \"Hola mundo\" incluyendo las comillas.</p>\n<p>Click en Ejecuta el codigo para ver el resultado.</p>",
+  "type": "prog",
+  "unit_test": "//ImprimeStringTest\nimport java.io.ByteArrayOutputStream;\nimport java.io.OutputStream;\nimport java.io.PrintStream;\n\nimport junit.framework.TestCase;\n\npublic class ImprimeStringTest extends TestCase {\n\tpublic void testMain(){\n\n\t\tOutputStream os=new ByteArrayOutputStream();\n\t\tPrintStream ps=new PrintStream(os);\n\t\tSystem.setOut(ps);\n\n\t\tImprimeString.main(null);\n\t\tassertEquals(\"Hola mundo\\n\",os.toString());\n\t}\n}",
+  "external_url": ""
+},{
+  "_id": "/program/b20ad5de-4024-11e7-9249-0401663b8f01",
+  "title": "Ejercicio operador new",
+  "description": "Ejercicio completar el código, para crear una instancia de una clase.",
+  "tags": [
+    "csharp",
+    "poo"
+  ],
+  "lang": "csharp",
+  "rights": "",
+  "external_url": "",
+  "publisher": "Mario García",
+  "icon": "coffee",
+  "level": "principiante",
+  "image_url": "",
+  "type": "prog",
+  "author": "adriana.arias@tectijuana.edu.mx",
+  "instructions": "<h2>Creando la instancia de una clase</h2>\n<p> Crea un objeto de la clase <code>Puerta</code> al que llamaremos <code>puerta</code>. Ordénale al objeto que imprima lo siguiente:</p>\n<pre><code>\nLa puerta se cerró\nLa puerta se abrió   \n</code></pre>\n\n\n<p>Completa y ejecuta el codigo para que funcione.</p>\n\n<pre class=\"line-numbers\"><code class=\"language-csharp\">\n    class Puerta\n    {\n      \n        public void Cerrar()\n        {\n            Console.WriteLine(\"La puerta se cerró\");\n        }\n\n        public void Abrir()\n        {\n            Console.WriteLine(\"La puerta se abrió\");\n        }\n    }\n    class Program\n    {\n        static void Main(string[] args)\n        {\n            \n            // Agrega el código aquí   \n            \n            puerta.Cerrar();\n            puerta.Abrir();\n            Console.ReadKey();  \n}    }\n</code>\n</pre>\n",
+  "initial_code": "using System.IO;\nusing System;\nclass Puerta\n    {\n      \n        public void Cerrar()\n        {\n            Console.WriteLine(\"La puerta se cerró\");\n        }\n\n        public void Abrir()\n        {\n            Console.WriteLine(\"La puerta se abrió\");\n        }\n    }\n    class Program\n    {\n        static void Main(string[] args)\n        {\n            \n            // Agrega el código aquí   \n            \n            puerta.Cerrar();\n            puerta.Abrir();\n            Console.ReadKey();  \n}    }\n\n\n            ",
+  "unit_test": "\n\n           ",
+  "HTML_code": "\nHTML Content\n            ",
+  "correct_code": "class Puerta\n    {\n        public string color = \"Blanco\";\n\n        public void Cerrar()\n        {\n            Console.WriteLine(\"La puerta se cerro\");\n        }\n\n        public void Abrir()\n        {\n            Console.WriteLine(\"La puerta se abrio\");\n        }\n    }\n    class Program\n    {\n        static void Main(string[] args)\n        {\n            Puerta puerta = new Puerta();\n            puerta.Cerrar();\n            puerta.Abrir();\n            Console.ReadKey();  \n}    }\n\n\n               ",
+  "reg_exp": "\n\n           "
+},{
+  "_id": "/program/csharp/1",
+  "initial_code": "\nusing System.IO;\nusing System;\npublic class Product\n{\n        public   code;\n        public   desc;\n\n        public Product(int c, string d)\n        {\n        code=c;\n        desc=d;\n        }\n\n        public void Print()\n        {\n        Console.WriteLine(\"Producto {0}: {1}\", code,desc);\n        }\n\n}\n",
+  "description": "Completa la definción de una clase sencilla",
+  "icon": "puzzle-piece",
+  "tags": [
+    "csharp"
+  ],
+  "unit_test": "\n[TestFixture]\npublic class ProductTest\n{\n\n    [Test, Description(\"Prueba del Constructor\")]\n    public void Constructor()\n    {\n        Product p = new Product(1,\"hola\");\n        // Constraint Syntax\n        Assert.AreEqual(p.code,1);\n    }\n\n\n    [Test, Description(\"Imprimir la Descripción\")]\n    public void PrintTest()\n    {\n        Product p = new Product(1,\"hola\");\n        p.Print();\n\n        using (StringWriter sw = new StringWriter())\n        {\n            Console.SetOut(sw);\n\n\n            p.Print();\n\n        string expected = \"Producto 1: hola\";\n        StringAssert.StartsWith(expected, sw.ToString());\n\n\n        }\n\n    }\n}",
+  "instructions": "\n\n\n\n\n<h4>La clase <code>Product</code> tiene errores</h4>\n  <p>\n       La clase <code>Product</code> se utiliza en un programa de la siguiente manera:\n  </p>\n\n<pre>\nProduct p = new Product(1, \"iPhone 6\");\np.Print();\n</pre>\n  <p>\n       Completa el código para que funcione.\n  </p>\n\n<row>\n<button class=\"btn btn-info\" type=\"button\" data-toggle=\"collapse\" data-target=\"#collapseExample\" aria-expanded=\"false\" aria-controls=\"collapseExample\">\n  Ayuda\n</button>\n</row>\n<div class=\"collapse\" id=\"collapseExample\">\n  <div class=\"well\">\n  <p>\n    En C# al declarar los campos debes indicar su tipo de dato. Por ejemplo:\n    </p>\n<pre>\npublic int intentos;\npublic string email;</pre>\n  </div>\n</div>\n\n\n\n             ",
+  "lang": "csharp",
+  "correct_code": " ",
+  "level": "principiante",
+  "title": "Product.cs",
+  "author": "mariosky@gmail.com",
+  "type": "complete"
+},{
+  "_id": "/program/e0d25d72-7966-11e6-a5a6-0401663b8f01",
+  "title": "Error en el constructor",
+  "description": "Ejercicio de encontrar el error y corregirlo.",
+  "tags": [
+    "csharp",
+    "frontpage"
+  ],
+  "lang": "csharp",
+  "rights": "Creative Commons",
+  "external_url": "",
+  "publisher": "",
+  "icon": "coffee",
+  "level": "principiante",
+  "image_url": "https://evo.sfo2.digitaloceanspaces.com/codigo.uno/bin.jpg",
+  "type": "prog",
+  "author": "mariosky@gmail.com",
+  "instructions": "\n\n\t\t\t\t\t<h4>La clase <code>Producto</code> tiene errores</h4>\n\t\t\t\t\t\n\t\t\t\t\t<p>El constructor de la clase <code>Producto</code> se utiliza en un programa de la siguiente manera:</p>\n\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t   \t<pre>\t\t\t\t\t    \n<code class=\"language-csharp\">\nProducto p = new Producto(1, \"iPhone XX\");\np.Print();</code>\n\t\t\t\t\t\t</pre>\n\t\t\t\t\n\t\t\t\t\t<p>Completa el código para que funcione.</p>\n\t\t\t\t\t\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<a aria-controls=\"collapseExample\" aria-expanded=\"false\" class=\"btn btn-primary\" data-toggle=\"collapse\" href=\"#collapseExample\" role=\"button\">\n\t\t\t\t\t\t  Ayuda\n\t\t\t\t\t\t</a>\n\t\t\t\t\t</p>\n\n\t\t\t\t\t\n\t\t\t\t\t<div class=\"collapse\" id=\"collapseExample\">\n\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<p>En C# al declarar los campos debes indicar su tipo de dato. Por ejemplo:</p>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<pre><code class=\"language-csharp\">public int intentos;\npublic string email;</code></pre>\n\t\t\t\t\t\t</div>",
+  "initial_code": "\nusing System.IO;\nusing System;\npublic class Producto\n{\n        public   code;\n        public   desc;\n\n        public Producto(int c, string d)\n        {\n        code=c;\n        desc=d;\n        }\n\n        public void Print()\n        {\n        Console.WriteLine(\"Producto {0}: {1}\", code,desc);\n        }\n\n}\n",
+  "unit_test": "public class ProductoTest{    [Fact]    public void Constructor()    {        Producto p = new Producto(1,\"hola\");        // Constraint Syntax        Assert.Equal(1, p.code);    }    [Fact]    public void PrintTest()    {        Producto p = new Producto(1,\"hola\");        p.Print();        using (StringWriter sw = new StringWriter())        {            Console.SetOut(sw);            p.Print();        string expected = \"Producto 1: hola\";        Assert.StartsWith(expected, sw.ToString());        }    }}",
+  "HTML_code": "\nHTML Content\n            ",
+  "correct_code": "\nusing System.IO;\nusing System;\npublic class Product\n{\n        public  double code;\n        public string  desc;\n\n        public Product(int c, string d)\n        {\n        code=c;\n        desc=d;\n        }\n\n        public void Print()\n        {\n        Console.WriteLine(\"Producto {0}: {1}\", code,desc);\n        }\n\n}",
+  "reg_exp": "\n\n           "
+},{
+  "_id": "/program/java/1",
+  "lang": "java",
+  "publisher": "",
+  "level": "intermedio",
+  "initial_code": "\npublic class Calculator {\n\n  public int evaluate(String expression) {\n\n\n    return 1;\n  }\n",
+  "description": "Utiliza split() para procesar una lista elementos",
+  "icon": "coffee",
+  "rights": "asdf",
+  "tags": [
+    "java"
+  ],
+  "correct_code": " \npublic class Calculator {\n\n  public int evaluate(String expression) {\n\n\n    return 1;\n  }\n}\n",
+  "image_url": "",
+  "author": "mariosky@gmail.com",
+  "HTML_code": "\nHTML Content\n            ",
+  "title": "Calculator.class",
+  "instructions": "<p>Completa el método <code> evaluate </code> de la clase <code>Calculator</code>. Este\n              método toma como parámetro una cadena con número enteros y el operador de adición, por ejemplo: <code>\"2+2+4+4\"</code>\n             y regresa un entero con la suma\n              de los números, para el caso de ejemplo sería 12.</p>",
+  "type": "prog",
+  "unit_test": "//CalculatorTest\nimport static org.junit.Assert.assertEquals;\nimport org.junit.Test;\n\npublic class CalculatorTest {\n  @Test\n  public void evaluatesExpression() {\n    Calculator calculator = new Calculator();\n    int sum = calculator.evaluate(\"1+2+3\");\n    assertEquals(1, sum);\n  }\n}",
+  "external_url": ""
+},{
+  "_id": "/program/js/1",
+  "initial_code": "//Completa el código\n\n function suma(a, b){\n    return ;\n }\n                                ",
+  "description": "Programa una función sencilla",
+  "icon": "coffee",
+  "tags": [
+    "javascript"
+  ],
+  "unit_test": "\n                    QUnit.test(\"JQuery\", function( assert ) {\n                        assert.equal(suma(2,3), 5, \"Debe sumar positivos\");\n                        assert.equal(suma(2,-3), -1, \"Debe sumar negativos\");\n                        });",
+  "instructions": "<p>Escribe una función llamada <code>suma</code> la cual tome dos argumentos <code>a</code> y <code>b</code> y regrese la\n                                        suma de ambos.</p> </code>",
+  "lang": "javascript",
+  "correct_code": "",
+  "level": "principiante",
+  "title": "suma.js",
+  "author": "mariosky@gmail.com",
+  "type": "prog"
+},{
+  "_id": "/program/js/2",
+  "lang": "javascript",
+  "correct_code": "\n                                    ",
+  "initial_code": "//Corrige el código\n\n$('.panel-title').html(\"Hola\");\n                                ",
+  "description": "¿Como cambiar el titulo de una página con jQuery?",
+  "icon": "code",
+  "title": "titulo.js",
+  "hint": "\n                Recuerda que se utiliza el selector <code> . </code> para encontrar los elementos que tienen cierta clase.\n                En este caso buscamos un <code>id</code>. Algo como:\n                <pre>\n$('<strong>#</strong>nombre_del_elemento');\n                </pre>\n                ",
+  "level": "principiante",
+  "tags": [
+    "jquery"
+  ],
+  "unit_test": "\n                    QUnit.test(\"JQuery\", function( assert ) {\n                        assert.equal($('#titulo').html(), \"Hola JQuery\", \"El titulo debe decir 'Hola JQuery'\");\n\n                        });",
+  "author": "mariosky@gmail.com",
+  "HTML_code": " <h3 id='titulo'> Hola </h3> ",
+  "type": "jQuery",
+  "CSS": "\n\n                ",
+  "instructions": "\n                <h4> Modificando el texto dentro de un elemento</h4>\n\n                <p> Podemos utilizar JQuery para cambiar el texto de un elemento en particular.  Primero buscamos el\n                elemento, si el elemento tiene un <code> id </code> es fácil, lo encontramos con el selector <code> # </code>.\n                Una vez que lo tenemos  modificamos el texto con la función <code>html()</code>.\n\n                <h4> Instrucciones</h4>\n\n                Cambia el titulo del HTML Renderizado en la parte superior, en lugar de Hola debería decir: <strong>Hola JQuery</strong>.</p>\n\n                <h5> El HTML original es el siguiente:</h5>\n                "
+},{
+  "_id": "/test/999a224c-fd75-11e8-9810-0e1899e09571",
+  "title": "Quiz Constructores",
+  "tags": [
+    "quiz"
+  ],
+  "satisfied_at_least": "0",
+  "rights": "",
+  "description": "",
+  "external_url": "",
+  "publisher": "Mario García",
+  "icon": "file",
+  "level": "principiante",
+  "image_url": "",
+  "type": "quiz",
+  "author": "mariosky@gmail.com",
+  "questions": [
+    {
+      "question": " ¿En que líneas se ejecuta el constructor por defecto?",
+      "options": [
+        " En la línea 27.",
+        " En la línea 28.",
+        " En las líneas 8-12."
+      ],
+      "answer": [
+        1,
+        0,
+        0
+      ],
+      "type": "radio",
+      "interaction": "simpleChoice",
+      "hints": "",
+      "id": 3,
+      "answer_text": [
+        " En la línea 27."
+      ]
+    },
+    {
+      "question": " ¿Qué características tienen un constructor en C#?",
+      "options": [
+        " Al declararse no se especifíca un tipo de dato de retorno.",
+        " Debe ser público. ",
+        " Debe tener el mismo nombre que la clase."
+      ],
+      "answer": [
+        1,
+        0,
+        1
+      ],
+      "type": "multi",
+      "interaction": "choiceInteraction",
+      "hints": "",
+      "id": 7,
+      "answer_text": [
+        " Al declararse no se especifíca un tipo de dato de retorno.",
+        " Debe tener el mismo nombre que la clase."
+      ]
+    },
+    {
+      "question": "¿En lugar de private que tipo de acceso pueden tener los atributos de la clase Vector2D para que no falle el programa el programa?",
+      "options": "",
+      "answer": [
+        "public"
+      ],
+      "type": "str",
+      "interaction": "textEntryInteraction",
+      "hints": [
+        "Debe ser visible desde en el método Main()"
+      ],
+      "id": 10,
+      "answer_text": [
+        "public"
+      ]
+    }
+  ],
+  "content": "\n\n<h4>Quiz Constructores</h4>\n<p>Analiza la clase <code>Vector2D</code> y contesta correctamente.\n</p>\n<pre class=\"line-numbers\"><code class=\"language-csharp\">\t\t\t\t\t\npublic class Vector2D\n{\n    public float x;\n\tpublic float y;\n\t\n\t// Constructor por defecto\n\tpublic Vector2D()\n\t\t{\n\t\tx = 1f;\n\t\ty = 1f;\n\t\t}\n\t\n\t// Constructor\n\tpublic Vector2D(float coordenada_x, float coordenada_y)\n\t\t{\n\t\tx = coordenada_x;\n\t\ty = coordenada_y;\n\t\t}\t\t\t\t\t\t\t\t\t\t   \n// Otros miembros de la clase \n}\n\t\t\t\t\t\nclass TestVector2D\n{\n    static void Main()\n    {\n        Vector2D vector1 = new Vector2D();\n        Vector2D vector2 = new Vector2D(32.2f,53.1f);\n        Console.WriteLine(\"vector 1:{0},{1}\", vector1.x, vector1.y);\n        Console.WriteLine(\"vector 2:{0},{1}\", vector2.x, vector2.y);\n    }\n}\n</code></pre>",
+  "quiz_as_text": "\n>> ¿En que líneas se ejecuta el constructor por defecto?<<\n(x) En la línea 27.\n() En la línea 28.\n() En las líneas 8-12.\n\n>> ¿Qué características tienen un constructor en C#?<<\n[x] Al declararse no se especifíca un tipo de dato de retorno.\n[] Debe ser público. \n[x] Debe tener el mismo nombre que la clase.\n\n>>¿En lugar de private que tipo de acceso pueden tener los atributos de la clase Vector2D para que no falle el programa el programa?<<\n{{Debe ser visible desde en el método Main()}}\n=public="
+},{
+  "_id": "/activity/reto-listas-de-python",
+  "title": "Reto de listas de python",
+  "uri": "reto-listas-de-python",
+  "description": "Este es un ejercicio que consiste en realizar varios programas para poner a prueba tus conocimientos de listas en python.",
+  "author": "Mario García Valdez",
+  "author_image": "https://evo.sfo2.digitaloceanspaces.com/uno/autores/mario.jpg",
+  "rights": "Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)",
+  "is_private": false,
+  "rights_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "level": "principiante",
+  "external_url": "",
+  "current_price": 0,
+  "image_url": "https://evo.sfo2.digitaloceanspaces.com/codigo.uno/wrestler-python.jpg",
+  "video_url": "",
+  "duration": "2:00:00",
+  "html_description": "",
+  "tags": [
+    "curso",
+    "python"
+  ],
+  "status": "published",
+  "start_date": null,
+  "type": "course"
+},{
+  "_id": "/program/7330df52-0b40-11e7-9249-0401663b8331",
+  "publisher": null,
+  "level": "principiante",
+  "rights": "Attribution-ShareAlike 4.0 International",
+  "description": "Este es el primer ejemplo de un programa desde archivos",
+  "icon": "coffee,",
+  "author": "mariosky@gmail.com",
+  "tags": [
+    "completa",
+    "csharp"
+  ],
+  "image_url": null,
+  "title": "Completa el programa",
+  "type": "prog",
+  "lang": "csharp",
+  "external_url": null,
+  "correct_code": "using System.IO;\nusing System;\npublic class Producto\n{\n        public int  code;\n        public string  desc;\n\n        public Producto(int c, string d)\n        {\n        code=c;\n        desc=d;\n        }\n\n        public void Print()\n        {\n        Console.WriteLine(\"Producto {0}: {1}\", code,desc);\n        }\n\n}\n\n\n",
+  "initial_code": "using System.IO;\nusing System;\npublic class Producto\n{\n        public   code;\n        public   desc;\n\n        public Producto(int c, string d)\n        {\n        code=c;\n        desc=d;\n        }\n\n        public void Print()\n        {\n        Console.WriteLine(\"Producto {0}: {1}\", code,desc);\n        }\n\n}\n\n",
+  "instructions": "<h3 id=\"este-es-el-titulo-del-ejercicio\">Este es el titulo del\nejercicio</h3>\n<p>Un poco de html para ver si se actualiza:</p>\n<p>\n<a class=\"btn btn-primary\" data-bs-toggle=\"collapse\" href=\"#collapseExample\" role=\"button\" aria-expanded=\"false\" aria-controls=\"collapseExample\">\nAyuda </a>\n</p>\n<div id=\"collapseExample\" class=\"collapse\">\n<div class=\"card card-body\">\nSome placeholder content for the collapse component. This panel is\nhidden by default but revealed when the user activates the relevant\ntrigger.\n</div>\n</div>\n<p>En caso de que ocupes ver la solución:</p>\n<p>\n<a class=\"btn btn-primary\" data-bs-toggle=\"collapse\" href=\"#collapseExample2\" role=\"button\" aria-expanded=\"false\" aria-controls=\"collapseExample\">\nSolución </a>\n</p>\n<div id=\"collapseExample2\" class=\"collapse\">\n<div class=\"card card-body\">\nSome placeholder content for the collapse component. This panel is\nhidden by default but revealed when the user activates the relevant\ntrigger.\n</div>\n</div>\n",
+  "reg_exp": "",
+  "unit_test": "\npublic class ProductoTest\n{\n\n    [Fact]\n    public void Constructor()\n    {\n        Producto p = new Producto(1,\"hola\");\n        // Constraint Syntax\n        Assert.Equal(1, p.code);\n    }\n\n\n    [Fact]\n    public void PrintTest()\n    {\n        Producto p = new Producto(1,\"hola\");\n        p.Print();\n\n        using (StringWriter sw = new StringWriter())\n        {\n            Console.SetOut(sw);\n\n\n            p.Print();\n\n        string expected = \"Producto 1: hola\";\n        Assert.StartsWith(expected, sw.ToString());\n\n\n        }\n\n    }\n}\n"
+},{
+  "_id": "/program/7330df52-0b40-11e7-9249-2401663b3331",
+  "publisher": null,
+  "level": "principiante",
+  "rights": "Attribution-ShareAlike 4.0 International",
+  "description": "Este es el primer ejemplo de un programa desde archivos",
+  "icon": "coffee,",
+  "author": "mariosky@gmail.com",
+  "tags": [
+    "completa",
+    "csharp"
+  ],
+  "image_url": null,
+  "title": "Completa el programa",
+  "type": "prog",
+  "lang": "csharp",
+  "external_url": null,
+  "correct_code": "using System.IO;\nusing System;\npublic class Producto\n{\n        public int  code;\n        public string  desc;\n\n        public Producto(int c, string d)\n        {\n        code=c;\n        desc=d;\n        }\n\n        public void Print()\n        {\n        Console.WriteLine(\"Producto {0}: {1}\", code,desc);\n        }\n\n}\n\n\n",
+  "initial_code": "using System.IO;\nusing System;\npublic class Producto\n{\n        public   code;\n        public   desc;\n\n        public Producto(int c, string d)\n        {\n        code=c;\n        desc=d;\n        }\n\n        public void Print()\n        {\n        Console.WriteLine(\"Producto {0}: {1}\", code,desc);\n        }\n\n}\n\n",
+  "instructions": "<h3 id=\"este-es-el-titulo-del-ejercicio\">Este es el titulo del\nejercicio</h3>\n<p>Un poco de html:</p>\n<p>\n<a class=\"btn btn-primary\" data-bs-toggle=\"collapse\" href=\"#collapseExample\" role=\"button\" aria-expanded=\"false\" aria-controls=\"collapseExample\">\nAyuda </a>\n</p>\n<div id=\"collapseExample\" class=\"collapse\">\n<div class=\"card card-body\">\nSome placeholder content for the collapse component. This panel is\nhidden by default but revealed when the user activates the relevant\ntrigger.\n</div>\n</div>\n<p>En caso de que ocupes ver la solución:</p>\n<p>\n<a class=\"btn btn-primary\" data-bs-toggle=\"collapse\" href=\"#collapseExample2\" role=\"button\" aria-expanded=\"false\" aria-controls=\"collapseExample\">\nSolución </a>\n</p>\n<div id=\"collapseExample2\" class=\"collapse\">\n<div class=\"card card-body\">\nSome placeholder content for the collapse component. This panel is\nhidden by default but revealed when the user activates the relevant\ntrigger.\n</div>\n</div>\n",
+  "reg_exp": "",
+  "unit_test": "\npublic class ProductoTest\n{\n\n    [Fact]\n    public void Constructor()\n    {\n        Producto p = new Producto(1,\"hola\");\n        // Constraint Syntax\n        Assert.Equal(1, p.code);\n    }\n\n\n    [Fact]\n    public void PrintTest()\n    {\n        Producto p = new Producto(1,\"hola\");\n        p.Print();\n\n        using (StringWriter sw = new StringWriter())\n        {\n            Console.SetOut(sw);\n\n\n            p.Print();\n\n        string expected = \"Producto 1: hola\";\n        Assert.StartsWith(expected, sw.ToString());\n\n\n        }\n\n    }\n}\n"
+},{
+  "_id": "/test/8213ff52-0b40-11e7-9249-0401663b8331",
+  "title": "Definción de Clase",
+  "level": "principiante",
+  "publisher": null,
+  "rights": "Attribution-ShareAlike 4.0 International",
+  "description": "Se explica el concepto de clase en c#",
+  "icon": "file",
+  "author": "mariosky@gmail.com",
+  "tags": [
+    "clase",
+    "csharp"
+  ],
+  "image_url": null,
+  "type": "quiz",
+  "external_url": null,
+  "satisfied_at_least": 0,
+  "questions": [
+    {
+      "question": " ¿En que líneas se ejecuta el constructor por defecto?",
+      "options": [
+        " En la línea 27.",
+        " En la línea 28.",
+        " En las líneas 8-12."
+      ],
+      "answer": [
+        1,
+        0,
+        0
+      ],
+      "type": "radio",
+      "interaction": "simpleChoice",
+      "hints": "",
+      "id": 3,
+      "answer_text": [
+        " En la línea 27."
+      ]
+    },
+    {
+      "question": " ¿Qué características tienen un constructor en C#?",
+      "options": [
+        " Al declararse no se especifíca un tipo de dato de retorno.",
+        " Debe ser público. ",
+        " Debe tener el mismo nombre que la clase."
+      ],
+      "answer": [
+        1,
+        0,
+        1
+      ],
+      "type": "multi",
+      "interaction": "choiceInteraction",
+      "hints": "",
+      "id": 7,
+      "answer_text": [
+        " Al declararse no se especifíca un tipo de dato de retorno.",
+        " Debe tener el mismo nombre que la clase."
+      ]
+    },
+    {
+      "question": "¿En lugar de private que tipo de acceso pueden tener los atributos de la clase Vector2D para que no falle el programa el programa?",
+      "options": "",
+      "answer": [
+        "public"
+      ],
+      "type": "str",
+      "interaction": "textEntryInteraction",
+      "hints": [
+        "Debe ser visible desde en el método Main()"
+      ],
+      "id": 10,
+      "answer_text": [
+        "public"
+      ]
+    }
+  ],
+  "content": "<h3 id=\"quiz-constructores\">Quiz Constructores</h3>\n<p>Analiza la clase <code>Vector 2D</code> y contesta correctamente:</p>\n<pre class=\"language-csharp line-numbers\"><code>\npublic class Vector2D\n{\n    public float x;\n    public float y;\n    \n    // Constructor por defecto\n    public Vector2D()\n        {\n        x = 1f;\n        y = 1f;\n        }\n    \n    // Constructor\n    public Vector2D(float coordenada_x, float coordenada_y)\n        {\n        x = coordenada_x;\n        y = coordenada_y;\n        }                                          \n// Otros miembros de la clase \n}\n                    \nclass TestVector2D\n{\n    static void Main()\n    {\n        Vector2D vector1 = new Vector2D();\n        Vector2D vector2 = new Vector2D(32.2f,53.1f);\n        Console.WriteLine(&quot;vector 1:{0},{1}&quot;, vector1.x, vector1.y);\n        Console.WriteLine(&quot;vector 2:{0},{1}&quot;, vector2.x, vector2.y);\n    }\n}\n</code></pre>\n"
+}]
