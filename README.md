@@ -53,6 +53,10 @@ de desarrollo.
 #### Carga un Backup de MongoDB y PostgreSQL. 
 Utilizando un script podemos cargar un respaldo de actividades y cursos de prueba.
 
+```
+psql -U django postgres < backup.sql
+```
+
 ### Para los ejercicios de programación debemos instalar el sandbox
 
 #### Redis
