@@ -837,8 +837,7 @@ def path_activity(request, path_id, uri):
                                        'root': requested_activity.learning_activity.get_root().uri,
                                        'root_id': '/%s' % requested_activity.learning_activity.get_root().id,
                                        'breadcrumbs': breadcrumbs,
-                                       'rating_totals': rating_totals,
-                                       'nav': True})
+                                       'rating_totals': rating_totals)
 
     else:
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)

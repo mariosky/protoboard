@@ -4,8 +4,7 @@
 
 {% block content %}
 
-{% if nav %} 
-
+{% if XML_NAV %} 
 <div class="flex flex-wrap-reverse md:mx-auto md:max-w-screen-xl mt-2 px-2">
     <div class="flex flex-none w-64 relative left-0">
       <ul class="flex-col top-30 w-full pr-3">
@@ -18,11 +17,11 @@
 {% else %}
 
 {% endif %}
-    
-{% block activity %}
-{% endblock activity %}
 
-
+     <div class="grow  justify-center relative overflow-hidden md:max-w-screen-xl md:mx-auto">
+        {% block activity %}
+        {% endblock activity %}
+    </div>
 
 
 
