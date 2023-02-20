@@ -78,9 +78,8 @@ window.onclick = function(event) {
 {% comment%}
 Must create 
 db.activities_collection.createIndex( { title: "text", description: "text" } )
-{% endcomment %}
-  Prism.plugins.autoloader.languages_path = "{{ STATIC_URL }}prism/"
 
+ 
  $( document ).ready(function() {
 		hljs.highlightAll();
 
@@ -117,7 +116,7 @@ db.activities_collection.createIndex( { title: "text", description: "text" } )
 		});
 
 });
-
+{% endcomment %}
 </script>
 
 

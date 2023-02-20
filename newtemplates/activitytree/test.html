@@ -2,13 +2,8 @@
 
 {% block activity %}
 
-<div class="container">
 
-
-<div class = "row">
-  <div class="col-md-8 col-md-offset-2 col-sm-12">
-
-    <form id="learning_activity_form"    role="form"  action="{{ uri_id }}{{ uri }}" method="POST" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
+   <form id="learning_activity_form"    role="form"  action="{{ uri_id }}{{ uri }}" method="POST" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
 
 
         {% if attempts_left < 100 %}
@@ -27,23 +22,71 @@
             {% endif %}
 
         {% endif %}
+ <div class="mt-3 prose prose-slate lg:prose-lg mx-auto prose-pre:bg-gray-50">
 
 
         {{ content.content|safe }}
+ </div>
 
+<div class="flex flex-col gap-y-4 pt-6 mb-8 mx-auto max-w-prose">
 
-    {% if feedback %}
-
+{% if not feedback %}
+    {% for q in content.questions %}
+        <div class=" ">
+                <h4 class="text-lg font-semibold">
+                    {{q.question}}
+                </h4>
+                    {% if q.options %}
+                        {% for o in q.options %}
+                            {% if q.interaction == 'choiceInteraction' %}
+                             <div class="checkbox{{ q.inline|yesno:"-inline,," }} pl-3">
+                                 <label>
+                                    <input type="checkbox" value="option_{{ forloop.counter0 }}" name="{{q.id}}">
+                                    {{ o }}
+                                 </label>
+                            </div>
+                            {% elif q.interaction == 'simpleChoice' %}
+                                <div class="radio{{ q.inline|yesno:"-inline,," }} pl-3">
+                                 <label>
+                                    <input type="radio" value="option_{{ forloop.counter0 }}" name="{{q.id}}">
+                                    {{ o }}
+                                 </label>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% elif q.interaction == 'textEntryInteraction' %}
+                            <input type="textarea" class="block mt-3 p-2 w-full text-sm text-gray-900 bg-gray-50 border" placeholder="Escribe tu respuesta" name="{{q.id}}">
+                            </input>
+                    {% endif %}
+         </div>
+    {% endfor %}
+{% else %}
+   
         {% for q in content.questions %}
-            {% if q.feedback.correct %}
-            <h4 class="question"> <span><i class="fa fa-check"></i></span> {{q.question}} </h4>
-            {% else %}
-            <h4 class="question">  <span><i class="fa fa-times"></i></span></span> {{q.question}} </h4>
-            {% endif %}
+         <div class=" ">
+            <div class="flex text-lg font-semibold">
+                <div class="flex-none w-5 mr-2 pt-1"> 
+                {% if q.feedback.correct %}
+                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 stroke-green-700">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                   </svg>
+                {% else %}
+                    
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 stroke-red-500">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                {% endif %}
+                </div>
+
+                <h4 class="flex text-lg font-semibold">
+                        {{q.question}}
+                </h4>
+             </div>
+
             {% if q.options %}
                 {% for o in q.feedback_options %}
                  {% if q.interaction == 'choiceInteraction' %}
-                    <div class="checkbox{{ q.inline|yesno:"-inline,," }}">
+                    <div class="checkbox{{ q.inline|yesno:"-inline,," }} pl-3">
                         <label>
                             <input type="checkbox" value="option_{{ forloop.counter0 }}" name="{{q.id}}" {{ o.1|yesno:"checked,," }}  />
                             {{ o.0 }}
@@ -51,7 +94,7 @@
                     </div>
 
                  {% elif q.interaction == 'simpleChoice' %}
-                    <div class="radio{{ q.inline|yesno:"-inline,," }}">
+                    <div class="radio{{ q.inline|yesno:"-inline,," }} pl-3">
                      <label>
                         <input type="radio" value="option_{{ forloop.counter0 }}" name="{{q.id}}" {{ o.1|yesno:"checked,," }}  />
                             {{ o.0 }}
@@ -64,93 +107,58 @@
 
                 {% else %}
                     {% if q.hints|length != 0 %}
-                    <a class="hint-btn" id="tools-{{ q.id }}" ><i class="fa fa-comments" aria-hidden="true"></i> Una pista </a><br>
-                    <div class="alert alert-info" id="div-{{ q.id }}" style="display:none;">
-                        <em>
+                    <div class="font-semibold mt-2 pl-3"> Pistas:</div>
+                                            <em>
                         {% for hint in q.hints %}
                             {{ hint }}<br>
                         {% endfor %}
                         </em>
-                    </div>
-                    {% endif %}
+                        {% endif %}
                 {% endif %}
 
             {% elif q.interaction == 'textEntryInteraction' %}
-                    <input type="text" class="form-control" placeholder="Escribe tu respuesta" name="{{q.id}}" value="{{ q.feedback.user_answer }}">
+                    <input type="textarea" class="block mt-3 p-2 w-full text-sm text-gray-900 bg-gray-50 border" 
+                            placeholder="Escribe tu respuesta" name="{{q.id}}" value="{{ q.feedback.user_answer }}">
                     {% if q.feedback.correct %}
                     {% else %}
                         {% if q.hints|length != 0 %}
-                            <a class="hint-btn" id="tools-{{ q.id }}" style="font-size: large"><i class="fa fa-comments" aria-hidden="true"></i> Hint Available</a><br>
-                            <div class="alert alert-info" id="div-{{ q.id }}">
+                        <div class="font-semibold mt-2 pl-3"> Pistas: </div>
                             <em>
                             {% for hint in q.hints %}
                                 {{ hint }}<br>
                             {% endfor %}
                             </em>
-                            </div>
-                        {% endif %}
+                         {% endif %}
                     {% endif %}
             {% endif %}
+         </div>
         {% endfor %}
 
-    {% else %}
 
 
-    {% for q in content.questions %}
-        <h4 class="question">{{q.question}} </h4>
-            {% if q.options %}
-                {% for o in q.options %}
-                    {% if q.interaction == 'choiceInteraction' %}
-                     <div class="checkbox{{ q.inline|yesno:"-inline,," }}">
-                         <label>
-                            <input type="checkbox" value="option_{{ forloop.counter0 }}" name="{{q.id}}">
-                            {{ o }}
-                         </label>
-                    </div>
-                    {% elif q.interaction == 'simpleChoice' %}
-                        <div class="radio{{ q.inline|yesno:"-inline,," }}">
-                         <label>
-                            <input type="radio" value="option_{{ forloop.counter0 }}" name="{{q.id}}">
-                            {{ o }}
-                         </label>
-                    </div>
-                    {% endif %}
-                {% endfor %}
-            {% elif q.interaction == 'textEntryInteraction' %}
-                    <input type="text" class="form-control" placeholder="Escribe tu respuesta" name="{{q.id}}">
-                    </input>
-            {% endif %}
-
-        {% endfor %}
-
+    
 
     {% endif %}
-
+{% if attempts_left %}
+        <input type="submit" name="check" value="{{ feedback|yesno:"Re-Enviar,Enviar,Enviar" }}" class="mt-6 rounded-lg bg-sky-500 text-white font-semibold h-10 w-48">
+{% endif %}
         {{content.bye|safe}}
-
-     {% if attempts_left %}
-
-        {% if feedback %}
-
-        <input type="submit" name="check" value="Re-Enviar" class="btn btn-primary question-submit">
-
-
-        {% else %}
+ </div>
 
 
 
-         <input type="submit" name="check" value="Enviar" class="btn btn-primary question-submit">
 
-        {% endif %}
-    {% endif %}
 
+
+
+     
 		</form>
 
 
-        </div>
-    </div>
 
-</div>
+
+
+
 
 {% endblock activity %}
 

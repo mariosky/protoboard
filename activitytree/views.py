@@ -837,8 +837,7 @@ def path_activity(request, path_id, uri):
                                        'root': requested_activity.learning_activity.get_root().uri,
                                        'root_id': '/%s' % requested_activity.learning_activity.get_root().id,
                                        'breadcrumbs': breadcrumbs,
-                                       'rating_totals': rating_totals)
-
+                                       'rating_totals': rating_totals})
     else:
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
@@ -928,9 +927,9 @@ def path_test(request, path_id, uri):
 
                     # Gets the current navegation tree as HTML
 
-        _XML = s.get_nav(root)
+        XML = s.get_nav(root, as_dict=True)
+
         # Escape for javascript
-        XML = ET.tostring(_XML, encoding='unicode').replace('"', r'\"')  # navegation_tree = s.nav_to_html(nav)
         rating_totals = LearningActivityRating.objects.filter(
             learning_activity__uri=requested_activity.learning_activity.uri).aggregate(Count('rating'), Avg('rating'))
 
@@ -985,9 +984,7 @@ def path_program(request, path_id, uri):
             _set_current(request, requested_activity, root, s)
 
         # Gets the current navegation tree as XML
-        _XML = s.get_nav(root)
-        # Escape for javascript
-        XML = ET.tostring(_XML, encoding='unicode').replace('"', r'\"')
+        XML = s.get_nav(root, as_dict=True)
 
         breadcrumbs = s.get_current_path(requested_activity)
         program_quiz = Activity.get(requested_activity.learning_activity.uri)
@@ -1002,6 +999,8 @@ def path_program(request, path_id, uri):
             template = 'activitytree/programjs.html'
         else:
             template = 'activitytree/program.html'
+            print(template)
+            print(XML)
 
         return render(request,template, {'program_quiz': program_quiz,
                                              'activity_uri': requested_activity.learning_activity.uri,
