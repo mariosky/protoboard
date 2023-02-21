@@ -8,8 +8,8 @@
 */
 
 #code-editor {
-
-height: 540px;
+ width: 100%;
+ height: 540px; 
  position: absolute;
         top: 0;
         right: 0;
@@ -48,9 +48,16 @@ margin-bottom:0px;
 
 {% block activity %}
 
-<div class="flex flex-row  md:max-w-4xl md:mx-auto"> 
+<div class="flex flex-row flex-wrap-reverse  w-full"> 
+  <div class="flex flex-row w-full"> 
+    <div class="font-bold md:w-1/3"> {{program_quiz.title}} </div>
+    <div class="flex  md:w-2/3 justify-between"> 
+      <div class="font-bold"> Instrucciones </div>
+      <div class="font-bold"> Instrucciones </div>
+    </div>
+  </div>
 
-  <div class="flex flex-col prose prose-sm md:w-1/3   "> 
+  <div class="flex flex-col prose prose-sm md:w-1/3"> 
       <div class="p-2 bg-sky-400"> 
         <div class="font-bold"> Instrucciones </div>
         {{ program_quiz.instructions|safe }}
@@ -61,7 +68,8 @@ margin-bottom:0px;
       </div>
   </div>
 
-  <div class="md-w-2/3 bg-red-300 relative ">
+  <div class="inline-block relative md:w-2/3 bg-red-300 text-base w-screen">
+
 
     <div id="code-editor">{{program_quiz.initial_code}}</div>
 
