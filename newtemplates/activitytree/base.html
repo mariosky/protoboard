@@ -29,7 +29,7 @@
       </style>
   </head>
 
-  <body>
+  <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% block header %}
       {% include "activitytree/header.html" %} 
     {% endblock header %}
@@ -38,8 +38,7 @@
     {% block content %}
     {% endblock content %}
 
-    {% include "activitytree/tags.html" %} 
-
+   
 
 
     {% block footer%}

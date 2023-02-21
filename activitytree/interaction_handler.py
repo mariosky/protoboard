@@ -81,7 +81,8 @@ class SimpleSequencing(object):
         else:
             return None
 
-    def get_path(self,current):
+    def get_path(self, current):
+        print('path', type(current))
         while current.parent:
             yield current
             current = current.parent

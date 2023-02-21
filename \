@@ -765,7 +765,7 @@ def path_activity(request, path_id, uri):
                     '/%s%s' % (next_activity.learning_activity.id, next_activity.learning_activity.uri))
 
         XML = s.get_nav(root, as_dict=True)
-        print(XML)
+ 
 
         # Escape for javascript
         # XML = ET.tostring(_XML, encoding='unicode').replace('"', r'\"')
@@ -837,7 +837,8 @@ def path_activity(request, path_id, uri):
                                        'root': requested_activity.learning_activity.get_root().uri,
                                        'root_id': '/%s' % requested_activity.learning_activity.get_root().id,
                                        'breadcrumbs': breadcrumbs,
-                                       'rating_totals': rating_totals})
+                                       'rating_totals': rating_totals)
+
     else:
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
@@ -927,10 +928,7 @@ def path_test(request, path_id, uri):
 
                     # Gets the current navegation tree as HTML
 
-        XML = s.get_nav(root, as_dict=True)
-
-        # Escape for javascript
-        rating_totals = LearningActivityRating.objects.filter(
+        XML = s.get_nav(root, as_dict=True)      rating_totals = LearningActivityRating.objects.filter(
             learning_activity__uri=requested_activity.learning_activity.uri).aggregate(Count('rating'), Avg('rating'))
 
         breadcrumbs = s.get_current_path(requested_activity)
@@ -983,8 +981,10 @@ def path_program(request, path_id, uri):
             # if choice_exit consider complete
             _set_current(request, requested_activity, root, s)
 
-        # There is no space for Nav in Program, only breadcrumbs 
-        # XML = s.get_nav(root, as_dict=True)
+        # Gets the current navegation tree as XML
+        _XML = s.get_nav(root)
+        # Escape for javascript
+        XML = ET.tostring(_XML, encoding='unicode').replace('"', r'\"')
 
         breadcrumbs = s.get_current_path(requested_activity)
         program_quiz = Activity.get(requested_activity.learning_activity.uri)
@@ -1008,7 +1008,7 @@ def path_program(request, path_id, uri):
                                              'breadcrumbs': breadcrumbs,
                                              'root': requested_activity.learning_activity.get_root().uri,
                                              'root_id': '/%s' % requested_activity.learning_activity.get_root().id,
-                                              'rating_totals': rating_totals
+                                             'XML_NAV': XML, 'rating_totals': rating_totals
                                              })
 
     else:
@@ -1082,16 +1082,16 @@ def test_program(request):
 
 @csrf_protect
 def execute_queue(request):
-
     # logger.error("VIEW execute_queue")
     if request.method == 'POST':
         # Read RPC message from client
-        # rpc = json.loads(request.body)
+        rpc = json.loads(request.body)
+
         # Get params
         # Code to execute
-        code = request.POST['code']
+        code = rpc["params"][0]
         # URI of Activity
-        activity_uri = request.POST['method']
+        activity_uri = rpc["method"]
 
         # Get Activity from MongoDB
         program_test = Activity.get(activity_uri)
