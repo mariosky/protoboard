@@ -1123,11 +1123,15 @@ def execute_queue(request):
         task = {"id": None, "method": "exec", "params": {"code": code, "test": unit_test}}
         logger.debug(task)
         task_id = None
+        # Try to enqueue the program
         try:
             task_id = server.enqueue(**task)
         except Exception as err:
-            result = {"result": "error", "error": "Server error: {0}".format(err), "id": task_id,"success": False}
-            return HttpResponse(json.dumps(result), content_type='application/javascript', status=503)
+            template = 'activitytree/response_modal.html'
+        return render(request,template, {
+            'message': 'Error al tratar de agregar el ejercicio a la cola de mensajes',
+            'description': 'Es probable que Redis no esté activo, instalado o vivo. Intenta de nuevo. Si sale este error, tranquilo, puedes hacer otra actividad'
+        })
 
 
         logger.debug(task_id)
@@ -1145,7 +1149,6 @@ def execute_queue(request):
                 event.save()
             except ObjectDoesNotExist:
                 # Assume is a non assigned program
-
                 pass
         result = {"result": "added", "error": None, "id": task_id}
         return HttpResponse(json.dumps(result), content_type='application/javascript')
