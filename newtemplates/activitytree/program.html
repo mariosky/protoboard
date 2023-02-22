@@ -23,6 +23,8 @@
 {% block activity %}
 
 
+
+
 <div class="flex flex-row gap-x-3 mt-4 mb-3 ml-2 md:w-1/2 font-semibold"> 
   {% for activity in breadcrumbs %}
     {% if forloop.first %} 
@@ -40,26 +42,21 @@
   </div>
   
   <div class="flex flex-col prose prose-sm md:w-1/3"> 
-  
-  <div class="flex flex-row" id="execute-buttons" > 
-        <button type="button" hx-post="/execute_queue/" hx-target="#execute-buttons" hx-swap="innerHTML" class="inline-flex w-full mb-3 bg-green-600 border rounded-md border-gray-300  px-3 py-1  
+    <div id="program-exec" > 
+      <div class="flex flex-row"> 
+        <button type="button" hx-post="/execute_queue/" hx-target="#program-exec" hx-swap="outerHTML" class="inline-flex w-full mb-3 bg-green-600 border rounded-md border-gray-300  px-3 py-1  
                   shadow-sm font-medium justify-center text-sm text-white sm:ml-3 sm:w-auto hover:bg-green-200"> Ejecuta el código </button>
 
         <button type="button"    class="inline-flex w-full mb-3 border rounded-md border-gray-300  px-3 py-1  
-                  shadow-sm font-medium justify-center text-sm text-gray-700 sm:ml-3 sm:w-auto"> Reinicial el código </button>
-  </div>
-
+                  shadow-sm font-mediur justify-center text-sm text-gray-700 sm:ml-3 sm:w-auto"> Reinicial el código </button>
+      </div>
+    </div>
+    
     <div class="p-2 ml-3"> 
         <div class="font-bold"> {{program_quiz.title}} </div>
         {{ program_quiz.instructions|safe }}
     </div>
 
-    <div class="flex flex-col text-white p-1 ml-3 mt-2"> 
-      <h4> Resultado </h4>
-      <pre class="w-full"> 
->_
-      </pre> 
-    </div>
   </div>
 </div>
 

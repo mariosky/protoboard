@@ -1,0 +1,15 @@
+<div id="program-exec" > 
+<div hx-target="#program-exec"
+  hx-get="/get_result/?task={{task_id}}&count={{count}}" 
+    hx-trigger="load delay:600ms" 
+    hx-swap="innerHTML">
+      <div class="flex flex-col text-white p-1 ml-3 mt-2"> 
+                <h4>Ejecutando</h4>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+          <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{percentege}}%"></div>
+                </div>
+        
+      </div>
+</div>
+</div>
+

@@ -1127,33 +1127,39 @@ def execute_queue(request):
         try:
             task_id = server.enqueue(**task)
         except Exception as err:
+            print(err)
             template = 'activitytree/response_modal.html'
-        return render(request,template, {
+
+            return render(request, template, {
             'message': 'Error al tratar de agregar el ejercicio a la cola de mensajes',
             'description': 'Es probable que Redis no esté activo, instalado o vivo. Intenta de nuevo. Si sale este error, tranquilo, puedes hacer otra actividad'
-        })
+            })
 
 
         logger.debug(task_id)
-        rpc['task_id'] = task_id
 
-        if request.user.is_authenticated and 'id' in rpc:
+        if request.user.is_authenticated and 'id' in request.POST:
             ula = None
             try:
-                ula = UserLearningActivity.objects.get(learning_activity__id=rpc["id"], user=request.user)
+                ula = UserLearningActivity.objects.get(learning_activity__id=request.POST['id'], user=request.user)
 
                 s = SimpleSequencing(context=get_context(request))
                 s.update(ula)
                 ## Mouse Dynamics
-                event = ULA_Event.objects.create(ULA=ula, context=rpc)
-                event.save()
+                # event = ULA_Event.objects.create(ULA=ula, context=request.POST)
+                # event.save()
             except ObjectDoesNotExist:
                 # Assume is a non assigned program
                 pass
-        result = {"result": "added", "error": None, "id": task_id}
-        return HttpResponse(json.dumps(result), content_type='application/javascript')
+        template = 'activitytree/program_polling.html'
 
+        return render(request, template, {
+            'percentege': 2,
+            'task_id': task_id,
+            'count': 0
+        })
 
+   
 @csrf_protect
 def javascript_result(request):
     if request.method == 'POST':
@@ -1186,12 +1192,11 @@ def javascript_result(request):
 
 @csrf_protect
 def get_result(request):
-    if request.method == 'POST':
-        rpc = json.loads(request.body)
+    if request.method == 'GET':
         # We only need the Task identifier
         # TO DO:
-
-        task_id = rpc["id"]
+        
+        task_id = request.GET["task"]
 
         # No ID, Task Not Found
         if not task_id:
@@ -1228,13 +1233,29 @@ def get_result(request):
                     except Exception as e:
                         print ("update ULA", e)
 
-                result = json.dumps({'result': string_json, 'outcome': t.result[1]})
-                return HttpResponse(result, content_type='application/javascript')
+                result = {'result': string_json, 'outcome': t.result[1]}
+                template = 'activitytree/program_success.html'
+
+                return render(request, template, result)
 
             else:
                 return HttpResponse(json.dumps({'outcome': -1}), content_type='application/javascript')
         else:
-            return HttpResponse(json.dumps({'outcome': -1}), content_type='application/javascript')
+            count = int(request.GET["count"])+1
+            if count < 11:
+                template = 'activitytree/program_polling.html'
+                return render(request, template, {
+                    'percentege': 10*count,
+                    'task_id': task_id, 
+                    'count':count})
+            else:
+                template = 'activitytree/program_timeout.html'
+                return render(request, template, {
+                    'percentege': 100,
+                    'task_id': task_id, 
+                    'count':count})
+
+
 
 
 def _get_learning_activity(uri):
