@@ -89,13 +89,11 @@
     editor.setTheme("ace/theme/github");
     editor.session.setMode("ace/mode/{{ program_quiz.lang }}");
 
- document.body.addEventListener('htmx:responseError', function(evt) {
-          console.log('Error en la petición'); 
-  }); 
 document.body.addEventListener('htmx:configRequest', function(evt) {
+  if (evt.detail.verb == 'post') {
     evt.detail.parameters['code'] =  editor.getValue(); // add a new parameter into the mix
     evt.detail.parameters['method'] = "{{ activity_uri }}"; // add a new parameter into the mix
-     
+  } 
 });
 
 </script>

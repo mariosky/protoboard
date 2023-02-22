@@ -1213,9 +1213,9 @@ def get_result(request):
 
             if t.result:
 
-                string_json = ""
+                result = None
                 try:
-                    string_json = json.loads(t.result[0])
+                    result = json.loads(t.result[0])
                 except Exception as e:
                     print ("string_json exception", e)
 
@@ -1225,7 +1225,7 @@ def get_result(request):
                                                                user=request.user)
                         s = SimpleSequencing(context=get_context(request))
 
-                        if string_json['result'] == 'Success':
+                        if result['result'] == 'Success':
                             s.update(ula, progress_status='completed', objective_measure=30, attempt=True)
 
                         else:
@@ -1233,9 +1233,9 @@ def get_result(request):
                     except Exception as e:
                         print ("update ULA", e)
 
-                result = {'result': string_json, 'outcome': t.result[1]}
+                result = {'result': result, 'outcome': t.result[1]}
                 template = 'activitytree/program_success.html'
-
+                print('res:', result)
                 return render(request, template, result)
 
             else:

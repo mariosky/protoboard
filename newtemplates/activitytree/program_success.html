@@ -2,13 +2,21 @@
 
 <div id="program-exec"> 
   <div class="flex flex-col text-white p-1 ml-3 mt-2"> 
-                  <h4>Ejecutando</h4>
+    {% if result.result == 'Failure' %} 
+      
+    <h4> Tu código no pasó las pruebas </h4>
+
+    {% elif result.result == 'Success' %} 
+
+    <h4>Tu código pasó todas las pruebas</h4>
+    {% endif %} 
+
 
     <h4> Resultado </h4>
               <pre class="w-full"> 
-      {{result}}
+      {{result.result}}
               </pre> 
-
+ 
               <h4> Resultado </h4>
               <pre class="w-full"> 
         >_
