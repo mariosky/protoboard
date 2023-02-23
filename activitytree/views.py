@@ -1145,21 +1145,23 @@ def execute_queue(request):
 
                 s = SimpleSequencing(context=get_context(request))
                 s.update(ula)
-                ## Mouse Dynamics
+                # Mouse Dynamics
                 # event = ULA_Event.objects.create(ULA=ula, context=request.POST)
                 # event.save()
             except ObjectDoesNotExist:
                 # Assume is a non assigned program
                 pass
         template = 'activitytree/program_polling.html'
-
-        return render(request, template, {
+        context = {
             'percentege': 2,
             'task_id': task_id,
-            'count': 0
-        })
+            'count': 0}
 
-   
+        if 'id' in request.POST:
+            context['id'] = request.POST['id']
+
+        return render(request, template, context)
+
 @csrf_protect
 def javascript_result(request):
     if request.method == 'POST':
@@ -1232,6 +1234,8 @@ def get_result(request):
                             s.update(ula, attempt=True)
                     except Exception as e:
                         print ("update ULA", e)
+                if 'stdout' in result:
+                    result['stdout'] = "\n".join(result['stdout'])
 
                 result = {'result': result, 'outcome': t.result[1]}
                 template = 'activitytree/program_success.html'
@@ -1249,11 +1253,9 @@ def get_result(request):
                     'task_id': task_id, 
                     'count':count})
             else:
-                template = 'activitytree/program_timeout.html'
+                template = 'activitytree/program_success.html'
                 return render(request, template, {
-                    'percentege': 100,
-                    'task_id': task_id, 
-                    'count':count})
+                    'result': {'result':'TimeOut'} })
 
 
 
