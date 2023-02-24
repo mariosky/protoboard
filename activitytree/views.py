@@ -1223,12 +1223,12 @@ def get_result(request):
 
                 if request.user.is_authenticated:
                     try:
-                        ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["params"][0],
+                        ula = UserLearningActivity.objects.get(learning_activity_id=request.GET["id"],
                                                                user=request.user)
                         s = SimpleSequencing(context=get_context(request))
 
                         if result['result'] == 'Success':
-                            s.update(ula, progress_status='completed', objective_measure=30, attempt=True)
+                            s.update(ula, progress_status='completed', objective_measure=100, attempt=True)
 
                         else:
                             s.update(ula, attempt=True)
