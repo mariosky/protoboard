@@ -1235,7 +1235,8 @@ def get_result(request):
                     except Exception as e:
                         print ("update ULA", e)
                 if 'stdout' in result:
-                    result['stdout'] = "\n".join(result['stdout'])
+                    if type(result['stdout']) == list: 
+                        result['stdout'] = "\n".join(result['stdout'])
 
                 result = {'result': result, 'outcome': t.result[1]}
                 template = 'activitytree/program_success.html'
