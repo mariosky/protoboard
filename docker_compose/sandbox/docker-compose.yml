@@ -19,7 +19,7 @@ services:
     command: python3 /home/sandbox/worker.py
     environment:
       - PYTHONUNBUFFERED=1
-      - REDIS_HOST=redis
+      - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=6380
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - PL=python
@@ -42,7 +42,7 @@ services:
     command: python3 /home/sandbox/worker.py
     environment:
       - PYTHONUNBUFFERED=1
-      - REDIS_HOST=redis
+      - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=6380
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - PL=csharp

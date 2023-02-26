@@ -31,7 +31,7 @@ while True:
         t.put_result(worker)
     else:
         pass
-
+    print("sending heartbeat")
     worker.send_heartbeat()
 
 
