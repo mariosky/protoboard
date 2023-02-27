@@ -1436,13 +1436,13 @@ def get_new_activities(request):
 def get_front_page_activities(request):
     activities = Activity.get_frontpage()
     json_docs = [doc for doc in activities]
-    docs = json_docs[0:4]
+    docs = json_docs[0:10]
 
     # return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
     context = {
       "docs": docs 
     }
-    return render(request, "activitytree/welcome_recomendations.html", context)
+    return render(request, "activitytree/welcome_activity_recomendations.html", context)
 
 @login_required
 def my_activities(request):  # view used by activity_builder, returns all activities by user

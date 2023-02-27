@@ -1,7 +1,27 @@
 <div class="container px-5 py-2 mx-auto">
-  <div class="flex flex-wrap">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    {% for doc in docs %}
+      <div class="flex items-center m-2 mt-5 space-x-4
+        rounded-xl cursor-pointer hover:bg-gray-100 hover:scale-105
+        transition transform duration-200 ease-out">
+        <!-- Left -->
+        <div class="relative h-12 w-12">
+          {% if doc.image_url %}
+          
+            <img class="h-full w-full rounded-sm" src="{{doc.image_url}}" alt="blog">
+          {% endif %}
+        </div>
 
-  {% for doc in docs %}
+        <!-- Right -->
+        <div>
+          <h2>{{ doc.title }}</h2>
+          <h3 class="text-gray-500">{{doc.level}}</h3>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+  <!-- {% for doc in docs %}
  <div class="p-4 sm:w-1/2 md:w-1/3 lg:w-1/3">
       <div class="h-auto border-2 border-gray-200 border-opacity-60 
         rounded-lg overflow-hidden">
@@ -37,7 +57,5 @@
       </div>
     </div>
 
-  {% endfor %}
+  {% endfor %} -->
 
-  </div>
-</div>
