@@ -16,9 +16,3 @@ def duration(td):
     return "{}h {}m".format(td[4:6], td[7:9])
 
 
-@register.filter
-def icon(uri):
-    icon = ""
-    if "/activity/video/" in uri:
-        icon = "video"
-    return icon
