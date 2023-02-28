@@ -64,17 +64,26 @@
     <div class="font-bold  text-2xl mt-4 mb-3">Zona Horaria </div>
         <div class="overflow-hidden shadow sm:rounded-md p-3">
             <div class="text-base font-semibold mt-2">
-            Si guardas tu zona horaria permitirás a los autores ofrecerte recursos didácticos de acuerdo a tu horario y día de la semana.
+            Si guardas tu zona horaria permitirás a los autores ofrecerte recursos didácticos de 
+            acuerdo a tu horario y día de la semana. No te preocupes si no se imprime tu ciudad exactamente, es solo la zona horaria.
             </div>
                 <div class="flex flex-row flex-wrap">
                     <div class="flex flex-col w-1/2">
+                    <div id="saved-time-zone" hx-get="/me/profile/tz/" hx-trigger="load"
+                        class="mt-6 text-green-500 text-center text-xl font-bold">
+
+                        </div>
                         <div class="text-base mt-2">
                             Esta es la zona horaria guardada actualmente en
-                            tu perfil. No te preocupes si no se imprime tu ciudad exactamente, es solo la zona horaria.
+                            tu perfil.
                         </div>
                     </div>
 
                     <div class="flex flex-col w-1/2">
+                   <h4  _="on load get jstz.determine().name() put it into me" 
+                       class="mt-6 text-slate-500 text-center text-xl font-bold">
+                   </h4>
+
                         <div class="text-base mt-2">
                             Esta es la zona horaria que reporta tu navegador.
                             Si deseas actualizar tu perfil presiona Guardar. 
@@ -153,9 +162,10 @@
 
 
 
-                        <h4 id="saved-time-zone" class="text-success">
+                        <h4   _="on load put 'hola' into me" class="text-success">
 
                         </h4>
+
 
                         <p class="card-text"><small class="text-muted"> Esta es la zona horaria guardada actualmente en
                             tu perfil. No te preocupes si no se imprime tu ciudad exactamente, es solo la zona horaria.</small></p>
@@ -198,42 +208,17 @@
 
 
 <script>
+document.onreadystatechange = function () {
+    if (document.readyState == "interactive") {
+        // Initialize your application or run some code.
+	hljs.highlightAll()
+        var timezone = jstz.determine();
+        console.log(timezone.name()) ;
 
-            function getCookie(name) {
-                var cookieValue = null;
-                if (document.cookie && document.cookie != '') {
-                    var cookies = document.cookie.split(';');
-                    for (var i = 0; i < cookies.length; i++) {
-                        var cookie = jQuery.trim(cookies[i]);
-                        // Does this cookie string begin with the name we want?
-                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
-
-    function csrfSafeMethod(method) {
-                // these HTTP methods do not require CSRF protection
-                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-            }
-
-            $.ajaxSetup({
-               // crossDomain: false, // obviates need for sameOrigin test
-                beforeSend: function(xhr, settings) {
-                    if (!csrfSafeMethod(settings.type)) {
-                        var csrftoken = getCookie('csrftoken');
-
-
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
-                }
-            });
-
-
-
+    }
+}
+            
+   
 
 //
 // When READY
