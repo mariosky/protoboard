@@ -3,10 +3,95 @@
 {% load gravatar %}
 
 {% block content %}
+<div class="pt-5  mx-auto mt-2  max-w-screen-xl relative border-b-1 border-gray-500 lg:px-12">
+  <div class="flex flex-row flex-wrap border-b">
+    <div class="flex flex-col w-44">
+        <img src="{% gravatar_url user.email 150 %}"  class="rounded-full object-cover object-center w-18 h-18" alt="Gravatar"/>
 
+        <div class="mt-2 text-xl font-bold tracking-tight leading-none text-gray-900 md:text-xl lg:text-2xl">
+                          {% if user.first_name %}
+                               {{ user.first_name }} {{ user.last_name }}
+                          {% else %}
+                                  {{ user.username }}
+                          {% endif %}
+        </div>
+        <div class="text-sm">{{user.email}}</div>
+
+        <div class="text-base font-bold mt-4">Cambia tu foto</div>
+        <div class="text-sm">
+            Para mostrar tu foto en el sitio utilizamos el servicio externo
+            <a href="http://gravatar.com" class="text-blue-500"> Gravatar</a>. Para cambiar tu foto solo debes de 
+            registrarte y cambiar tu foto utilizando el mismo correo.
+        </div>
+     </div>
+
+    <div class="flex flex-col w-2/3 ml-16">
+    <div class="font-bold  text-2xl mt-4 mb-3">Perfil básico</div>
+      <form  id="login_form">
+        <div class="overflow-hidden shadow sm:rounded-md p-3">
+            <div class="grid grid-cols-6 gap-6">
+                <div class="col-span-6 sm:col-span-3">
+                    <label class="block text-sm font-medium text-gray-700" for="username">Usuario</label>
+                    <input type="text" class="mt-1 pl-3 block w-full rounded-md border 
+                                       border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" id="username" name="username"
+                               value="{{ user.username }}" placeholder="Usuario" readonly>
+                </div>
+                <div class="col-span-6 sm:col-span-3">
+                        <label class="block text-sm font-medium text-gray-700" for="username">Nombre</label>
+                        <input type="text" class="mt-1 pl-3 block w-full rounded-md border 
+                                       border-gray-300 shadow-sm focus:border-indigo-500 
+                                       focus:ring-indigo-500 sm:text-sm" id="first_name" name="first_name"
+                               value="{{  user.first_name }}" placeholder="Nombre">
+                </div>
+                <div class="col-span-6 sm:col-span-3">
+                        <label class="block text-sm font-medium text-gray-700"  for="username">Apellido</label>
+                        <input type="text" class="mt-1 pl-3 block w-full rounded-md border 
+                                       border-gray-300 shadow-sm focus:border-indigo-500 
+                                       focus:ring-indigo-500 sm:text-sm"  
+                                           id="last_name" name="last_name"
+                               value="{{  user.last_name }}" placeholder="Apellido">
+                </div>
+
+
+                   
+            </div>
+
+         <button id="form-submit" type="submit" class="inline-flex w-full mt-4 mb-3 bg-blue-600 border rounded-lg border-gray-300  px-5 py-2.5  
+                  shadow-sm font-medium justify-center text-sm text-white sm:ml-3 sm:w-auto hover:bg-blue-800"> Actualizar Perfil</button>
+          </div>
+      </form>
+
+    <div class="font-bold  text-2xl mt-4 mb-3">Zona Horaria </div>
+        <div class="overflow-hidden shadow sm:rounded-md p-3">
+            <div class="text-base font-semibold mt-2">
+            Si guardas tu zona horaria permitirás a los autores ofrecerte recursos didácticos de acuerdo a tu horario y día de la semana.
+            </div>
+                <div class="flex flex-row flex-wrap">
+                    <div class="flex flex-col w-1/2">
+                        <div class="text-base mt-2">
+                            Esta es la zona horaria guardada actualmente en
+                            tu perfil. No te preocupes si no se imprime tu ciudad exactamente, es solo la zona horaria.
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col w-1/2">
+                        <div class="text-base mt-2">
+                            Esta es la zona horaria que reporta tu navegador.
+                            Si deseas actualizar tu perfil presiona Guardar. 
+                        </div>
+                    </div>
+                </div>
+         <button id="" class="inline-flex w-full mt-4 mb-3 bg-blue-600 border rounded-lg border-gray-300  px-5 py-2.5  
+                  shadow-sm font-medium justify-center text-sm text-white sm:ml-3 sm:w-auto hover:bg-blue-800"> Guardar </button>
+      
+         <button id="" class="inline-flex w-full mt-4 mb-3 bg-gray-600 border rounded-lg border-gray-300  px-5 py-2.5  
+                  shadow-sm font-medium justify-center text-sm text-white sm:ml-3 sm:w-auto hover:bg-blue-800"> No Utilizar</button>
+        </div>
+    </div>
+  </div>
+</div>
     <div class="container">
         <div class="row">
-
 
             <div class="col-sm-2">
                 <img src="{% gravatar_url user.email 150 %}"  class="img-fluid" alt="Gravatar">
@@ -81,7 +166,8 @@
                         <p class="card-text"> <small class="text-muted"> Esta es la zona horaria que reporta tu navegador.
                             Si deseas actualizar tu perfil presiona Guardar.  </small>
                         </p>
-                        <a id="timezone-save" class="btn btn-primary">Guardar</a> <a id="timezone-delete"  class="btn btn-secondary">No utilizar</a>
+                        <a id="timezone-save" class="btn btn-primary">Guardar</a> 
+                        <a id="timezone-delete"  class="btn btn-secondary">No utilizar</a>
                     </div>
                 </div>
             </div>

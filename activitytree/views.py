@@ -309,11 +309,7 @@ def my_enrolled_courses(request):
 
     if request.user.is_authenticated and request.user != 'AnonymousUser':
         RootULAs = ActivityTree.objects.filter(user=request.user)
-        rows = []            
-        for row in range(1+len(RootULAs)%4):
-            rows.append(RootULAs[((row+1)*4)-4:(row+1)*4])
-
-        return render(request,'activitytree/my_enrolled_courses.html', {'courses': RootULAs, 'student': request.user, 'rows':rows})
+        return render(request,'activitytree/my_enrolled_courses.html', {'courses': RootULAs, 'student': request.user})
     else:
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
