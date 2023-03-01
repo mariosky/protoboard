@@ -359,39 +359,30 @@ def course(request, course_id=None):
 
 @login_required()
 def profile_tz(request):
-    if request.is_ajax():
-        if request.method == 'POST':
+    if request.method == 'POST':
+        if hasattr(request.user, 'userprofile'):
+            request.user.userprofile.timezone = request.POST.get('tz')
+            request.user.userprofile.save()
+            request.user.save()
+        else:
+            user_profile = UserProfile(timezone=request.POST.get('tz'),
+                                       user=request.user)
+            user_profile.save()
+        return HttpResponse(request.user.userprofile.timezone)
+    if request.method == 'DELETE':
+        if hasattr(request.user, 'userprofile'):
+            request.user.userprofile.timezone = None
+            request.user.userprofile.save()
+            request.user.save()
+        # Else dont bother
+        return HttpResponse("Sin Zona Horaria")
+    elif request.method == 'GET':
+        try:
+            tz = request.user.userprofile.timezone or "Sin Zona Horaria"
+            return HttpResponse(tz)
+        except ObjectDoesNotExist:
+            return HttpResponse("Sin Zona Horaria")
 
-            data = json.loads(request.body)
-
-
-            if data['method'] == 'upsert':
-                if hasattr(request.user, 'userprofile'):
-                    request.user.userprofile.timezone = data['tz']
-                    request.user.userprofile.save()
-                    request.user.save()
-                else:
-                    user_profile = UserProfile(timezone=data['tz'],user=request.user)
-                    user_profile.save()
-                return HttpResponse(json.dumps({"result": "success", "tz":data['tz'], "error": None}), content_type='application/json')
-            elif data['method'] == 'delete':
-                if hasattr(request.user, 'userprofile'):
-                    request.user.userprofile.timezone = None
-                    request.user.userprofile.save()
-                    request.user.save()
-                # Else dont bother
-                return HttpResponse(json.dumps({"result": "success", "error": None}),
-                                    content_type='application/json')
-        elif request.method == 'GET':
-            try:
-                request.user.userprofile
-                return HttpResponse(json.dumps({"result": "found",
-                                                "tz":request.user.userprofile.timezone,
-                                                "experience":request.user.userprofile.experience,
-                                                "reputation":request.user.userprofile.reputation
-                                                }), content_type='application/json')
-            except ObjectDoesNotExist:
-                return HttpResponse(json.dumps( {"result": "not_found", "error": None}), content_type='application/json')
 
 @login_required()
 def profile_experience(request):
@@ -1620,12 +1611,9 @@ def me(request):
             request.user.first_name = request.POST["first_name"]
             request.user.last_name = request.POST["last_name"]
             request.user.save()
-
         except:
-
-            return JsonResponse({"error": True})
-
-        return JsonResponse({"success": True, "error": None})
+            return HttpResponse("Error")
+        return HttpResponse("Cambio exitoso")
 
 
 @csrf_exempt
