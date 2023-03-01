@@ -1425,7 +1425,6 @@ def get_front_page_activities(request):
     json_docs = [doc for doc in activities]
     docs = json_docs
 
-    print(docs)
     # return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
     context = {
       "docs": docs 
