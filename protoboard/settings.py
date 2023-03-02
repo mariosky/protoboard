@@ -25,7 +25,9 @@ env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False), TEMPLATE_DEBUG=(bool, False)
 )
-
+INTERNAL_IPS = (
+    '127.0.0.1',
+)
 
 environ.Env.read_env()
 
