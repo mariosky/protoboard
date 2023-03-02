@@ -296,11 +296,7 @@ def my_enrolled_courses(request):
 
     if request.user.is_authenticated and request.user != 'AnonymousUser':
         RootULAs = ActivityTree.objects.filter(user=request.user)
-        rows = []            
-        for row in range(1+len(RootULAs)%4):
-            rows.append(RootULAs[((row+1)*4)-4:(row+1)*4])
-
-        return render(request,'activitytree/my_enrolled_courses.html', {'courses': RootULAs, 'student': request.user, 'rows':rows})
+        return render(request,'activitytree/my_enrolled_courses.html', {'courses': RootULAs, 'student': request.user})
     else:
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
@@ -350,39 +346,30 @@ def course(request, course_id=None):
 
 @login_required()
 def profile_tz(request):
-    if request.is_ajax():
-        if request.method == 'POST':
+    if request.method == 'POST':
+        if hasattr(request.user, 'userprofile'):
+            request.user.userprofile.timezone = request.POST.get('tz')
+            request.user.userprofile.save()
+            request.user.save()
+        else:
+            user_profile = UserProfile(timezone=request.POST.get('tz'),
+                                       user=request.user)
+            user_profile.save()
+        return HttpResponse(request.user.userprofile.timezone)
+    if request.method == 'DELETE':
+        if hasattr(request.user, 'userprofile'):
+            request.user.userprofile.timezone = None
+            request.user.userprofile.save()
+            request.user.save()
+        # Else dont bother
+        return HttpResponse("Sin Zona Horaria")
+    elif request.method == 'GET':
+        try:
+            tz = request.user.userprofile.timezone or "Sin Zona Horaria"
+            return HttpResponse(tz)
+        except ObjectDoesNotExist:
+            return HttpResponse("Sin Zona Horaria")
 
-            data = json.loads(request.body)
-
-
-            if data['method'] == 'upsert':
-                if hasattr(request.user, 'userprofile'):
-                    request.user.userprofile.timezone = data['tz']
-                    request.user.userprofile.save()
-                    request.user.save()
-                else:
-                    user_profile = UserProfile(timezone=data['tz'],user=request.user)
-                    user_profile.save()
-                return HttpResponse(json.dumps({"result": "success", "tz":data['tz'], "error": None}), content_type='application/json')
-            elif data['method'] == 'delete':
-                if hasattr(request.user, 'userprofile'):
-                    request.user.userprofile.timezone = None
-                    request.user.userprofile.save()
-                    request.user.save()
-                # Else dont bother
-                return HttpResponse(json.dumps({"result": "success", "error": None}),
-                                    content_type='application/json')
-        elif request.method == 'GET':
-            try:
-                request.user.userprofile
-                return HttpResponse(json.dumps({"result": "found",
-                                                "tz":request.user.userprofile.timezone,
-                                                "experience":request.user.userprofile.experience,
-                                                "reputation":request.user.userprofile.reputation
-                                                }), content_type='application/json')
-            except ObjectDoesNotExist:
-                return HttpResponse(json.dumps( {"result": "not_found", "error": None}), content_type='application/json')
 
 @login_required()
 def profile_experience(request):
@@ -751,11 +738,11 @@ def path_activity(request, path_id, uri):
                 return HttpResponseRedirect(
                     '/%s%s' % (next_activity.learning_activity.id, next_activity.learning_activity.uri))
 
-        _XML = s.get_nav(root)
-
+        XML = s.get_nav(root, as_dict=True)
+        print(XML)
 
         # Escape for javascript
-        XML = ET.tostring(_XML, encoding='unicode').replace('"', r'\"')
+        # XML = ET.tostring(_XML, encoding='unicode').replace('"', r'\"')
         #print('XML:', XML)
         breadcrumbs = s.get_current_path(requested_activity)
 
@@ -812,6 +799,7 @@ def path_activity(request, path_id, uri):
                                           'breadcrumbs': breadcrumbs})
         else:
             learning_activity_local, created = LearningActivityLocal.objects.get_or_create(uri=requested_activity.learning_activity.uri, title=activity_content['title'])
+            print('render activity')
             return render(request,'activitytree/activity.html',
 
                                       {'XML_NAV': XML,
@@ -824,7 +812,6 @@ def path_activity(request, path_id, uri):
                                        'root_id': '/%s' % requested_activity.learning_activity.get_root().id,
                                        'breadcrumbs': breadcrumbs,
                                        'rating_totals': rating_totals})
-
     else:
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
@@ -914,9 +901,9 @@ def path_test(request, path_id, uri):
 
                     # Gets the current navegation tree as HTML
 
-        _XML = s.get_nav(root)
+        XML = s.get_nav(root, as_dict=True)
+
         # Escape for javascript
-        XML = ET.tostring(_XML, encoding='unicode').replace('"', r'\"')  # navegation_tree = s.nav_to_html(nav)
         rating_totals = LearningActivityRating.objects.filter(
             learning_activity__uri=requested_activity.learning_activity.uri).aggregate(Count('rating'), Avg('rating'))
 
@@ -970,10 +957,8 @@ def path_program(request, path_id, uri):
             # if choice_exit consider complete
             _set_current(request, requested_activity, root, s)
 
-        # Gets the current navegation tree as XML
-        _XML = s.get_nav(root)
-        # Escape for javascript
-        XML = ET.tostring(_XML, encoding='unicode').replace('"', r'\"')
+        # There is no space for Nav in Program, only breadcrumbs 
+        # XML = s.get_nav(root, as_dict=True)
 
         breadcrumbs = s.get_current_path(requested_activity)
         program_quiz = Activity.get(requested_activity.learning_activity.uri)
@@ -997,7 +982,7 @@ def path_program(request, path_id, uri):
                                              'breadcrumbs': breadcrumbs,
                                              'root': requested_activity.learning_activity.get_root().uri,
                                              'root_id': '/%s' % requested_activity.learning_activity.get_root().id,
-                                             'XML_NAV': XML, 'rating_totals': rating_totals
+                                              'rating_totals': rating_totals
                                              })
 
     else:
@@ -1071,16 +1056,16 @@ def test_program(request):
 
 @csrf_protect
 def execute_queue(request):
+
     # logger.error("VIEW execute_queue")
     if request.method == 'POST':
         # Read RPC message from client
-        rpc = json.loads(request.body)
-
+        # rpc = json.loads(request.body)
         # Get params
         # Code to execute
-        code = rpc["params"][0]
+        code = request.POST['code']
         # URI of Activity
-        activity_uri = rpc["method"]
+        activity_uri = request.POST['method']
 
         # Get Activity from MongoDB
         program_test = Activity.get(activity_uri)
@@ -1112,33 +1097,44 @@ def execute_queue(request):
         task = {"id": None, "method": "exec", "params": {"code": code, "test": unit_test}}
         logger.debug(task)
         task_id = None
+        # Try to enqueue the program
         try:
             task_id = server.enqueue(**task)
         except Exception as err:
-            result = {"result": "error", "error": "Server error: {0}".format(err), "id": task_id,"success": False}
-            return HttpResponse(json.dumps(result), content_type='application/javascript', status=503)
+            print(err)
+            template = 'activitytree/response_modal.html'
+
+            return render(request, template, {
+            'message': 'Error al tratar de agregar el ejercicio a la cola de mensajes',
+            'description': 'Es probable que Redis no esté activo, instalado o vivo. Intenta de nuevo. Si sale este error, tranquilo, puedes hacer otra actividad'
+            })
 
 
         logger.debug(task_id)
-        rpc['task_id'] = task_id
 
-        if request.user.is_authenticated and 'id' in rpc:
+        if request.user.is_authenticated and 'id' in request.POST:
             ula = None
             try:
-                ula = UserLearningActivity.objects.get(learning_activity__id=rpc["id"], user=request.user)
+                ula = UserLearningActivity.objects.get(learning_activity__id=request.POST['id'], user=request.user)
 
                 s = SimpleSequencing(context=get_context(request))
                 s.update(ula)
-                ## Mouse Dynamics
-                event = ULA_Event.objects.create(ULA=ula, context=rpc)
-                event.save()
+                # Mouse Dynamics
+                # event = ULA_Event.objects.create(ULA=ula, context=request.POST)
+                # event.save()
             except ObjectDoesNotExist:
                 # Assume is a non assigned program
-
                 pass
-        result = {"result": "added", "error": None, "id": task_id}
-        return HttpResponse(json.dumps(result), content_type='application/javascript')
+        template = 'activitytree/program_polling.html'
+        context = {
+            'percentege': 2,
+            'task_id': task_id,
+            'count': 0}
 
+        if 'id' in request.POST:
+            context['id'] = request.POST['id']
+
+        return render(request, template, context)
 
 @csrf_protect
 def javascript_result(request):
@@ -1172,12 +1168,11 @@ def javascript_result(request):
 
 @csrf_protect
 def get_result(request):
-    if request.method == 'POST':
-        rpc = json.loads(request.body)
+    if request.method == 'GET':
         # We only need the Task identifier
         # TO DO:
-
-        task_id = rpc["id"]
+        
+        task_id = request.GET["task"]
 
         # No ID, Task Not Found
         if not task_id:
@@ -1194,33 +1189,50 @@ def get_result(request):
 
             if t.result:
 
-                string_json = ""
+                result = None
                 try:
-                    string_json = json.loads(t.result[0])
+                    result = json.loads(t.result[0])
                 except Exception as e:
                     print ("string_json exception", e)
 
                 if request.user.is_authenticated:
                     try:
-                        ula = UserLearningActivity.objects.get(learning_activity__uri=rpc["params"][0],
+                        ula = UserLearningActivity.objects.get(learning_activity_id=request.GET["id"],
                                                                user=request.user)
                         s = SimpleSequencing(context=get_context(request))
 
-                        if string_json['result'] == 'Success':
-                            s.update(ula, progress_status='completed', objective_measure=30, attempt=True)
+                        if result['result'] == 'Success':
+                            s.update(ula, progress_status='completed', objective_measure=100, attempt=True)
 
                         else:
                             s.update(ula, attempt=True)
                     except Exception as e:
                         print ("update ULA", e)
+                if 'stdout' in result:
+                    if type(result['stdout']) == list: 
+                        result['stdout'] = "\n".join(result['stdout'])
 
-                result = json.dumps({'result': string_json, 'outcome': t.result[1]})
-                return HttpResponse(result, content_type='application/javascript')
+                result = {'result': result, 'outcome': t.result[1]}
+                template = 'activitytree/program_success.html'
+                print('res:', result)
+                return render(request, template, result)
 
             else:
                 return HttpResponse(json.dumps({'outcome': -1}), content_type='application/javascript')
         else:
-            return HttpResponse(json.dumps({'outcome': -1}), content_type='application/javascript')
+            count = int(request.GET["count"])+1
+            if count < 11:
+                template = 'activitytree/program_polling.html'
+                return render(request, template, {
+                    'percentege': 10*count,
+                    'task_id': task_id, 
+                    'count':count})
+            else:
+                template = 'activitytree/program_success.html'
+                return render(request, template, {
+                    'result': {'result':'TimeOut'} })
+
+
 
 
 def _get_learning_activity(uri):
@@ -1398,11 +1410,13 @@ def get_new_activities(request):
 def get_front_page_activities(request):
     activities = Activity.get_frontpage()
     json_docs = [doc for doc in activities]
+    docs = json_docs
+
     # return HttpResponse(json.dumps(json_docs), content_type='application/javascript')
     context = {
-      "docs": json_docs
+      "docs": docs 
     }
-    return render(request, "activitytree/welcome_recomendations.html", context)
+    return render(request, "activitytree/welcome_activity_recomendations.html", context)
 
 @login_required
 def my_activities(request):  # view used by activity_builder, returns all activities by user
@@ -1583,12 +1597,9 @@ def me(request):
             request.user.first_name = request.POST["first_name"]
             request.user.last_name = request.POST["last_name"]
             request.user.save()
-
         except:
-
-            return JsonResponse({"error": True})
-
-        return JsonResponse({"success": True, "error": None})
+            return HttpResponse("Error")
+        return HttpResponse("Cambio exitoso")
 
 
 @csrf_exempt

@@ -1,0 +1,34 @@
+{% extends "activitytree/base.html" %}
+{% load comments %}
+{% load comments_xtd %}
+
+{% block content %}
+
+{% if XML_NAV %} 
+<div class="flex flex-wrap md:mx-auto md:max-w-screen-xl mt-2 px-2">
+    <div class="flex flex-none w-64 lg:block hidden  relative left-0">
+      <ul class="flex-col top-30 w-full pr-3">
+
+        {% for activity in XML_NAV.children %}
+            {% include "activitytree/nav_recursive.html" %} 
+        {% endfor %}
+     </ul>
+    </div>
+{% else %}
+
+{% endif %}
+
+     <div class="grow  justify-center relative  md:max-w-screen-xl md:mx-auto">
+        {% block activity %}
+        {% endblock activity %}
+    </div>
+
+
+
+
+</div>
+{% endblock content %}
+
+
+
+

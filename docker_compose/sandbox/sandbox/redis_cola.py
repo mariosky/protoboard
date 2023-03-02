@@ -13,7 +13,7 @@ WORKER_HEARTBEAT_INTERVAL = 1  #Time a worker waits for a Task before unblocking
 
 #TODO: Connection Exception
 
-
+print(HOST,PORT,PASSWORD)
 r = redis.Redis(host=HOST, port=PORT, password=PASSWORD)
 redis_ready = False
 while not redis_ready:

@@ -1,0 +1,67 @@
+
+
+<div id="program-exec"> 
+  <div class="flex flex-row"> 
+        <button type="button" hx-post="/execute_queue/" hx-target="#program-exec" hx-swap="outerHTML"
+      class="inline-flex w-full mb-3 bg-blue-600 border rounded-lg border-gray-300  px-5 py-2.5  
+                  shadow-sm font-medium justify-center text-sm text-white sm:ml-3 sm:w-auto hover:bg-blue-800"> Ejecuta el código </button>
+  </div>
+
+  <div class="flex flex-col text-white p-1 ml-3">
+    {% if result.result == 'Failure' %} 
+    <div class="rounded-lg bg-red-100 pb-4">
+       <div class="flex flex-row ml-5 mt-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-red-400">
+            <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd" />
+          </svg>
+
+          <div class="text-red-800 font-semibold ml-3 mb-2 w-full"> Tu código no pasó todas las pruebas </div>
+       </div>
+      <div class="flex flex-col text-red-700 p-1 ml-8">
+
+       {% for f in result.failures %}
+        <div> {{f}} </div>
+       {% endfor %}
+      </div>
+    </div>
+    {% elif result.result == 'TimeOut' %} 
+    <div class="rounded-lg bg-red-100 pb-4">
+     <div class="flex flex-row ml-5 mt-2">
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mt-5 text-red-400">
+        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd" />
+      </svg>
+
+       <div class="text-red-800 font-semibold ml-3 mb-2  w-full"> <p> Tu código tardó mucho tiempo 
+        en ejecutarse y alcanzó un Time Out, el contenedor en el que se estaba ejecutando se destruyó.
+        </p> <p>El Time Out podría haber sucedido por un problema ajeno a tu código.
+          </p> 
+ </div>
+     </div>
+      <div class="flex flex-col text-red-700 p-1 ml-8">
+        
+      </div>
+    </div>
+
+    {% elif result.result == 'Success' %} 
+
+    <div class="rounded-lg bg-green-100 pb-4">
+     <div class="flex flex-row ml-5 mt-2">
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mt-3 text-green-400">
+        <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+      </svg>
+
+        <div class="text-green-800 font-semibold ml-3 mt-3 mb-3"> Tu código pasó todas las pruebas.
+                </div>
+     </div>
+  
+    </div>
+    {% endif %} 
+ 
+      <h4> Salida de la terminal 'stdout'</h4>
+      <pre class="w-full whitespace-pre-wrap max-h-80"> {{result.stdout}}
+      </pre> 
+          
+  </div>
+  </div>

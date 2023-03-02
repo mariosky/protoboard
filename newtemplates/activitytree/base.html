@@ -1,0 +1,128 @@
+{% load gravatar %}
+{% load auth_extras %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <link href="{{ STATIC_URL }}assets/css/output.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+    <link rel="stylesheet" title="GitHub" href="{{ STATIC_URL }}assets/css/github.css">
+     <!-- Favicon icon-->
+    <link rel="icon" type="image/png" href="{{ STATIC_URL }}assets/images/favicon/favicon.png"> 
+    {% if metadescription %}
+	  <meta name="Description" content="{{ metadescription }}">
+    {% else %}
+	  <meta name="Description" content="En aulacode.com | Aprenderás Programación, con actividades y ejercicios en Python, C#, Java, GO, Perl6, Javascript, conoce más lenguajes aquí">
+    {% endif %}
+
+    {% block head %}
+
+    {% endblock head %}
+    <title> tailwind-aulacode.com </title>
+
+
+     <style>
+
+         {% block style %}
+
+         {% endblock style %}
+      </style>
+  </head>
+
+  <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    {% block header %}
+      {% include "activitytree/header.html" %} 
+    {% endblock header %}
+
+
+    {% block content %}
+    {% endblock content %}
+
+   
+
+
+    {% block footer%}
+
+    {% endblock footer %}
+
+  <script src="https://unpkg.com/hyperscript.org@0.9.7"></script>
+    <script src="https://unpkg.com/htmx.org@1.8.5" integrity="sha384-7aHh9lqPYGYZ7sTHvzP1t3BAfLhYSTy9ArHdP3Xsr9/3TlGurYgcPBoFmXX2TX/w" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  {% block scripts %}
+<script>
+// alternative to DOMContentLoaded
+document.onreadystatechange = function () {
+    if (document.readyState == "interactive") {
+        // Initialize your application or run some code.
+	hljs.highlightAll()
+
+    }
+}
+// Toggle profile menu
+   document.querySelector("#profile-btn").onclick = () => 
+    { document.querySelector("#profile-menu").classList.toggle("hidden");}
+// Close the dropdown menus if the user clicks outside of them
+window.onclick = function(event) {
+  if (event.target.closest('.drop-btn') === null) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (!openDropdown.classList.contains('hidden')) {
+        openDropdown.classList.add('hidden');
+      }
+    }
+  }
+} 
+{% comment%}
+Must create 
+db.activities_collection.createIndex( { title: "text", description: "text" } )
+
+ 
+ $( document ).ready(function() {
+		hljs.highlightAll();
+
+		$("#navBarSearchForm").submit(function(e){
+			e.preventDefault();
+			
+			var txt = $("#searchText").val();
+			var tags = []
+			var terms = []
+			var query = "" 
+
+			txt.split(" ").forEach( (term) =>
+ 				{
+				   if (term == "") 
+				     return false; // move on 
+				   if (term.startsWith("#")) // tag? 
+						tags.push(term.replace('#',''));
+				   else // term
+				   		terms.push(term);
+
+			   	}
+
+			)	
+			  
+
+						
+			query = "?tag=" + tags.join(",")
+			if (terms.length)
+				query+= "&query=" + terms.join(",")  
+
+			//location.replace("/search/" + query);
+			window.location.href = "/search/" + query
+			//form.submit();
+		});
+
+});
+{% endcomment %}
+</script>
+
+
+  {% endblock scripts %}
+
+</body>
+</html>

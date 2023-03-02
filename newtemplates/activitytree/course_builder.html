@@ -1,0 +1,2066 @@
+{% extends "activitytree/base.html" %}
+
+    {% block head %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ STATIC_URL }}app/styles/activity_tree.css">
+    {% endblock head %}
+{% block style %}
+
+
+.btn-clipboard {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    z-index: 10;
+    display: block;
+    padding: .25rem .5rem;
+    font-size: 75%;
+    color: #818a91;
+    cursor: pointer;
+    background-color: transparent;
+    border-radius: .25rem;
+}
+
+.btn-clipboard:hover {
+  color: #fff;
+  background-color: #027de7;
+  z-index: 10;
+}
+
+.card-search-activity{
+    margin-top:1rem;
+    }
+
+/*
+ * Editor
+ */
+    .bootstrap-timepicker-widget.dropdown-menu {
+    z-index: 1050!important;
+}
+
+
+    #courseDescHTML {
+
+        height: 600px;
+        width: ;
+
+
+    }
+
+ p.test_error, p.test_failure {
+    color:#d9534f;
+    }
+
+ p.test_success{
+    color:#5cb85c;
+    }
+
+  .alert{
+    margin:10px;
+    margin-bottom:0px;
+    }
+
+
+{% endblock style %}
+
+
+
+
+{% block content %}
+
+<div class="container">
+
+    <h3 >  {{ course_name }}            <!--     <small id="course-url"> {{ course_uri }}  </small> -->    </h3>
+
+    <ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="/instructor">Mis Cursos</a></li>
+  <li id="course-title" class="breadcrumb-item active">{{ course_name }} <!-- <small id="course-url"> {{ course_uri }}  </small> --> </li>
+</ol>
+
+
+    <ul class="nav">
+        <li class="nav-item">
+            <a id="newContainerBtn" class="nav-link active" href="#">Nuevo Contenedor</a>
+        </li>
+        <li class="nav-item">
+            <a id="newActivityBtn" class="nav-link" href="#">Nueva Actividad</a>
+        </li>
+
+        <li class="nav-item">
+            <a id="exportBtn" class="nav-link" href="#">Exportar</a>
+        </li>
+
+        <li class="nav-item">
+            <a id="uploadBtn" class="nav-link" href="#">Importar</a>
+        </li>
+<!--
+        <li class="nav-item">
+            <a id="courseSettingsBtn" class="nav-link" href="#">Configuración</a>
+        </li>
+
+        <li class="nav-item">
+            <a id="courseDeleteBtn" class="nav-link" href="#">Borrar</a>
+        </li>
+-->
+        <li class="nav-item">
+            <button id="saveChangesBtn" autocomplete="off" class="btn btn-primary" data-loading-text="Guardando...">
+                Guardar
+            </button>
+        </li>
+
+
+
+    </ul>
+
+    <div class="container mt-4">
+     <ul class="sTree2 listsClass" id="sTree2">
+
+
+
+    </ul>
+
+    </div>
+
+
+
+    <section>
+      <p>No olvides <strong> Guardar  </strong>los cambios.</p>
+        </section>
+
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+
+{{block.super}}
+
+
+    <script async="" src="{{ STATIC_URL }}app/scripts/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-github.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/snippets/javascript.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script  src="{{ STATIC_URL }}app/scripts/jquery-sortable-lists.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.0/mustache.js"></script>
+
+<!--
+  Container row template:
+  A container node in the activity tree
+ -->
+
+<script id="container_template" type="x-tmpsmustache">
+<li id="[[ container_id  ]]"  data-module="container">
+    <div>
+        <div class="btn-group">
+         <button type="button" class="btn btn-secondary dropdown-toggle clickable"  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             <span class="container_name"> [[container_name]]</span>
+          </button>
+          <div class="dropdown-menu">
+             <button type="button" class="dropdown-item clickable   containerEditBtn">Ajustes</button>
+             <button type="button" class="dropdown-item clickable   containerPrecondition">Regla de precondición</button>
+             <button type="button" class="dropdown-item danger  text-danger clickable  deleteBtn"> Borrar</button>
+          </div>
+         </div>
+    </div>
+</li>
+</script>
+
+<!--
+   Learning Activity row template:
+   A learning activity node in the activity tree
+
+ -->
+<script id="activity_template" type="x-tmpsmustache">
+ <li id="[[ activity_id  ]]"  data-module="activity" class="activity">
+    <div>
+        <div class="btn-group">
+         <button type="button" class="btn btn-primary dropdown-toggle clickable"  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-file"></i> <span class="container_name">[[activity_name]] </span>
+          </button>
+          <div class="dropdown-menu">
+
+             <button type="button" class="dropdown-item clickable   containerSearch"><i class="fa fa-search  clickable  containerSearch"></i> Buscar actividad</button>
+             <button type="button" class="dropdown-item clickable   containerEditBtn"><i class="fa fa-cog clickable containerEditBtn"></i> Ajustes</button>
+             <button type="button" class="dropdown-item clickable   containerPrecondition">Regla de precondición</button>
+             <button type="button" class="dropdown-item danger  clickable  deleteBtn"><i class="fa fa-trash-o clickable"></i> Borrar</button>
+          </div>
+        </div>
+    </div>
+ </li>
+
+</script>
+<script id="rules_template" type="x-tmpsmustache">
+            <div class="inline" id="rule" container="[[container_id]]">
+
+                [[#condiciones]]
+
+
+
+                <div id="[[id]]" style="border-bottom:2px dashed #EEEEEE;padding-bottom:2%;margin-bottom:2.5%;margin-left:3%;margin-top:2.5%;text-align:left;margin-right:3%">
+
+                [[#user]]
+                         <b> User </b> <code>HAS</code>  <em> [[option_txt]]</em> <b>[[operator_txt]]</b> [[value]] </span>
+                [[/user]]
+
+                [[#context]]
+                         <b> Context</b> <code>HAS</code>  <em> [[option_txt]]</em> <b>[[operator_txt]]</b> [[value]] </span>
+                [[/context]]
+
+
+
+                [[#activity]]
+                         <b> [[act_name]] </b>  <code>HAS</code>  <em> [[option_txt]]</em> <b>[[operator_txt]]</b> [[value]] </span>
+                [[/activity]]
+
+
+
+                <button type="button" condition-id="[[id]]" class="btn btn-danger  btn-sm deleteRuleBtn" style="float:right;margin-left:5px">Borrar</button>
+                </div>
+                [[/condiciones]]
+
+
+                <span id="span-rule" style="font-size: medium"></span>
+
+                <div class="container">
+                <div class="row">
+                <div class="col">
+                <label for="precondition-select"> <code>THEN precondition IS</code>  </label>
+                </div>
+                <div class="col">
+                    <select id="precondition-select" class="form-control selectThen" container="[[container_id]]" style="width:70%;margin-left:3%">
+                            <option value=""></option>
+                            <option value="skip">skip (saltar) </option>
+                            <option value="stopForwardTraversal"> stop forward  traversal (detener navegación) </option>
+                            <option value="disabled"> disabled (deshabilitada)</option>
+                            <option value="enabled"> enabled (habilitada)</option>
+                    </select>
+                </div>
+                </div>
+                </div>
+
+                <div class="container mt-1">
+                <div class="row">
+                <div class="col">
+                <label for="else-select"> <code>ELSE precondition IS</code>  </label>
+                </div>
+                <div class="col">
+                    <select id="else-select" class="form-control selectElse" container="[[container_id]]" style="width:70%;margin-left:3%">
+                            <option value=""></option>
+                            <option value="skip">skip (saltar) </option>
+                            <option value="stopForwardTraversal"> stop forward  traversal (detener navegación) </option>
+                            <option value="disabled"> disabled (deshabilitada)</option>
+                            <option value="enabled"> enabled (habilitada)</option>
+                    </select>
+                </div>
+                </div>
+                </div>
+
+
+
+</script>
+<script src="{{ STATIC_URL }}app/scripts/proto-main.js"></script>
+
+    <script type="text/javascript">
+  $(function()
+  {
+      var options = {
+      placeholderCss: {'background-color': '#ff8'},
+      hintCss: {'background-color':'#bbf'},
+      isAllowed: function(cEl, hint, target)
+      {
+        // Be carefull if you test some ul/ol elements here.
+        // Sometimes ul/ols are dynamically generated and so they have not some attributes as natural ul/ols.
+        // Be careful also if the hint is not visible. It has only display none so it is at the previous place where it was before(excluding first moves before showing).
+        if(hint.parents('li').first().data('module') === 'activity')
+        {
+          hint.css('background-color', '#ff9999');
+          return false;
+        }
+        else
+        {
+          hint.css('background-color', '#99ff99');
+          return true;
+        }
+      },
+      opener: {
+        active: true,
+        close: './images/Remove2.png',
+        open: './images/Add2.png',
+        openerCss: {
+          'display': 'inline-block',
+          'width': '18px',
+          'height': '18px',
+          'float': 'left',
+          'margin-left': '-35px',
+          'margin-right': '5px',
+          'background-position': 'center center',
+          'background-repeat': 'no-repeat'
+        },
+        openerClass: ''
+      },
+      ignoreClass: 'clickable'
+    };
+
+
+
+
+    $('#sTree2, #sTree').sortableLists(options);
+    $('body').css( 'position', 'static' );
+
+    var LearningActivity = function (uri, is_container)
+    {
+      this.name = "New Name";
+      this.description = "";
+      this.image =  "";
+      this.uri =  uri;
+      this.lom = null;
+      this.pre_condition_rule  =  null;
+      this.rollup_rule = "completed IF All completed";
+      this.choice_exit = !is_container ;  //If is container defaults to false, any other true
+      this.attempt_limit = 100;
+      this.rollup_progress = true;
+      this.available_from =  null;
+      this.available_until = null;
+      this.is_container = is_container;
+      this.is_visible = true;
+      this.rules = "";
+    };
+
+      learning_activities = [];
+      rules_activities = [];
+
+
+      get_course();
+
+
+
+
+     var course_root =  new LearningActivity( '/activity/'+'{{ course_id }}' ,true );
+     learning_activities['{{ course_id }}']=course_root;
+
+
+
+
+    // CREATE MODALS FROM TEMPLATES
+
+
+
+
+
+/*
+Main Save Changes
+ */
+    $('#saveChangesBtn').on('click', function(){
+
+        var $btn = $(this).prop('disabled', true);
+
+        var tree = tree_to_json( '#sTree2');
+
+
+
+        $.ajax(   {
+                    url: '/post_course/',
+                    type: "POST",
+                    crossDomain: false, // obviates need for sameOrigin test
+                    beforeSend: function(xhr, settings) {
+
+
+
+                    if (!csrfSafeMethod(settings.type)) {
+
+                        var csrftoken = getCookie('csrftoken');
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+
+
+                    },
+                    contentType: "application/json",
+                    data: JSON.stringify({"jsonrpc": "2.0", "method": "post_course", "params": [tree],
+                    "id": 1 }),
+                    dataType: "json",
+                    success: function(data, textStatus, jqXHR) {
+                        $("#saveChangesBtn").prop('disabled', false);
+                        alert('Changes are Saved');
+                        get_course();
+                        },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        $("#saveChangesBtn").prop('disabled', false);
+                        }
+                    });
+
+
+    });
+
+
+/*
+    Activity Tree to JSON
+*/
+
+  function tree_to_json(id_selector){
+
+       var order= 100;
+
+       tree =  $(id_selector).sortableListsToHierarchy();
+
+
+
+         function traverse(jsonObj) {
+           var i = 0;
+           if( typeof jsonObj == "object" ) $.each(jsonObj, function (k, v) {
+
+               if (typeof k == "number" && typeof v == "object") {
+                   traverse(v);
+               }
+               if (k == "id") {
+                   jsonObj.learning_activity = learning_activities[v];
+                   jsonObj.learning_activity.order_in_container = jsonObj.order;
+
+               }
+
+
+               if (k == "children" && typeof v == "object") {
+                   traverse(v);
+
+               }
+           });
+              else
+              {
+
+                // jsonOb is a number or string
+              }
+           }
+
+          traverse(tree);
+
+
+         var course = [{
+             "id": '{{ course_id }}',
+             "order": 0,
+             "children":tree,
+             "learning_activity":learning_activities['{{ course_id }}'],
+             "rules":rules_activities
+            }];
+
+
+          return JSON.stringify(course, null, 4);
+
+
+
+  }
+
+
+         //Export  button
+  body.on('click', '#exportBtn', function(){
+        var tree = tree_to_json( '#sTree2');
+        var blob = new Blob( [tree] , {type: "application/json;charset=utf-8"});
+        saveAs(blob, "course.json");
+  });
+
+function get_course() {
+
+
+
+
+              $.ajax(   {
+                    url: '/get_course/',
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({"jsonrpc": "2.0", "method": "get_course", "params": [{{ course_id }}],
+                    "id": 1 }),
+                   crossDomain: false, // obviates need for sameOrigin test
+                    beforeSend: function(xhr, settings) {
+                        if (!csrfSafeMethod(settings.type)) {
+                            var csrftoken = getCookie('csrftoken');
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                    },
+                    dataType: "json",
+                    success: function(data, textStatus, jqXHR) {
+                            console.log("c:",data);
+
+                            // Clear Main Conatainer
+                            $('#sTree2').empty();
+                            // Empty Array, please we must only reference this list with this name
+
+                           learning_activities = [];
+
+                            traverse(data);
+                            update_ruleselect();
+
+
+
+
+
+
+                        },
+                    error: function(jqXHR, textStatus, errorThrown) {
+
+
+
+                        }
+                    });
+
+
+
+
+
+     function traverse(jsonObj,parent_id) {
+
+
+        if( typeof jsonObj == "object" ) {
+
+
+          $.each(jsonObj, function(k,v) {
+
+            if (typeof k == "number" && typeof v == "object")
+            {
+              traverse(v, parent_id);
+            }
+            if ( k == "learning_activity")
+            {
+              //Extract the learning activity id
+              var activity_id = v.id;
+              jsonObj.id = activity_id;
+
+              learning_activities[activity_id]=v;
+
+              if ('{{ course_id }}' == activity_id )
+                {
+
+                      $("#course-title").html(learning_activities[activity_id].name /* + '  <small>'+ learning_activities[activity_id].uri  + '</small>'*/) ;
+
+                }
+
+
+
+
+              if (v.is_container == true){
+                  var container_template = $('#container_template').html();
+                  Mustache.tags = ['[[', ']]'];
+                  Mustache.parse(container_template);
+                  rendered = Mustache.render(container_template, { container_id:activity_id, container_name:v.name});
+
+
+                  if (parent_id == '{{ course_id }}') {
+                      $("#sTree2").append(rendered);
+
+                  }
+                  else
+                  {
+
+                    if ($("#" +parent_id).children("ul").length)
+                    {
+                      $("#" +parent_id).children("ul").append(rendered);
+
+                    }
+                    else
+                    {
+                     $("#" +parent_id).append("<ul></ul>");
+                     $("#" +parent_id).children("ul").append(rendered);
+
+                    }
+
+                  }
+
+
+
+
+                  if (jsonObj.children.length )
+                  {
+                  console.log("Before:");
+                  console.log(jsonObj.children);
+                  jsonObj.children.sort( function(a,b ){
+                              return a.learning_activity.order_in_container - b.learning_activity.order_in_container;
+                          }
+
+                  );
+                  console.log("After:");
+                  console.log(jsonObj.children);
+                  traverse(jsonObj.children,jsonObj.id);
+
+                  }
+
+
+                }
+                else{
+
+                  var activity_template = $('#activity_template').html();
+                  Mustache.tags = ['[[', ']]'];
+                  Mustache.parse(activity_template);
+                  rendered = Mustache.render(activity_template, { activity_id:activity_id, activity_name: v.name});
+
+                if (parent_id == '{{ course_id }}') {
+                  $("#sTree2").append(rendered);
+
+                }
+                else
+                {
+                  console.log(parent_id);
+
+                  if ($("#" +parent_id).children("ul").length)
+                  {
+                    $("#" +parent_id).children("ul").append(rendered);
+
+                  }
+                  else
+                  {
+                    $("#" +parent_id).append("<ul></ul>");
+                    $("#" +parent_id).children("ul").append(rendered);
+
+                  }
+
+                }
+
+
+
+              }
+
+
+
+
+
+            }
+
+
+          });
+        }
+        else
+        {
+          return;
+          // jsonOb is a number or string
+        }
+      }
+
+      //traverse(tree);
+
+
+
+    }
+
+
+
+    $('#newContainerBtn').on('click', function(){
+      var container_id = 'new-'+ generateUUID();
+      var container_template = $('#container_template').html();
+      Mustache.tags = ['[[', ']]'];
+      Mustache.parse(container_template);
+
+      var container = new LearningActivity( '/activity/'+container_id ,true );
+      learning_activities[container_id]=container;
+      learning_activities[container_id].state = "Added";
+
+      rendered = Mustache.render(container_template, { container_id:container_id, container_name:container.name});
+      $("#sTree2").append(rendered);
+    });
+
+
+
+
+    $('#newActivityBtn').on('click', function(){
+
+      var activity_template = $('#activity_template').html();
+      Mustache.tags = ['[[', ']]'];
+      Mustache.parse(activity_template);
+      var activity_id = 'new-'+generateUUID();
+      var activity = new LearningActivity( "/activity/"+activity_id, false );
+      learning_activities[activity_id]=activity;
+      learning_activities[activity_id].state = "Added";
+
+
+
+      rendered = Mustache.render(activity_template, { activity_id:activity_id, activity_name:"Activity Name"});
+      $("#sTree2").append(rendered);
+    });
+  });
+
+
+
+    $('body').on('click', '.deleteBtn', function(){
+
+
+        if ($(this).parentsUntil('li').parent().children("ul").length ) {
+            alert("Container must be empty for deletion");
+
+        }
+        else
+        {
+            var activity_to_delete = $(this).parentsUntil('li').parent().attr("id");
+            alert("Delete:" + activity_to_delete + learning_activities[activity_to_delete] );
+            learning_activities[activity_to_delete].state ="Deleted";
+            $( this).parentsUntil('li').parent().addClass("hidden");
+            rules_activities = $.grep(rules_activities,
+                   function(o,i) { return o.applyto === activity_to_delete; },
+                   true);
+
+        }
+    });
+
+
+
+
+
+
+
+    $('body').on('click', '.containerEditBtn', function(){
+
+        var container_id  = $( this).parentsUntil('li').parent().attr("id");
+        console.log('.containerEditBtn'+'click'+container_id);
+        containerEdit(container_id);
+
+    });
+
+
+
+    $('body').on('click', '#courseSettingsBtn', function(){
+
+
+
+        updateCourse('{{ course_id }}');
+
+    });
+
+
+   function updateCourse( course_id ){
+
+
+
+
+       var courseDescHTML = ace.edit("courseDescHTML");
+
+            courseDescHTML.setTheme("ace/theme/dawn");
+            courseDescHTML.getSession().setMode('ace/mode/html');
+            courseDescHTML.setShowPrintMargin(false);
+
+       var textarea = $('textarea[name="html_description"]').hide();
+            courseDescHTML.getSession().setValue(textarea.val());
+            courseDescHTML.getSession().on('change', function() {
+                textarea.val(courseDescHTML.getSession().getValue());
+            });
+
+
+     //  $('#modalUpdateCourse').modal();
+       
+     var modalUpdateCourse = new bootstrap.Modal(document.getElementById('modalUpdateCourse'));
+     modalUpdateCourse.show(); 
+
+   }
+
+
+
+
+
+    function containerEdit (container_id)
+    {
+      var learning_activity = learning_activities[container_id];
+
+        console.log(learning_activity);
+
+      if (learning_activity.is_container == true)
+      {
+        $("#modalContainer").find(".modal-title").text("Editar Contenedor");
+      }
+      else{
+        $("#modalContainer").find(".modal-title").text("Editar Actividad de Aprendizaje");
+
+      }
+
+      $('#name').val(learning_activity.name);
+      $('#description').val(learning_activity.description);
+      $('#image').val(learning_activity.image);
+      $('#maxAttempts').val(learning_activity.attempt_limit);
+      $('#Id').val(container_id);
+      $('#URI').val(learning_activity.uri);
+      $('#rollupRule').val(learning_activity.rollup_rule );
+        if (learning_activity.rollup_progress)
+        {
+
+          $('#rollupProgressCb').prop("checked",true);
+
+        }
+        else{
+
+          $('#rollupProgressCb').prop("checked",false);
+        }
+
+        $('#maxAttempts').val(learning_activity.attempt_limit);
+
+       if (learning_activity.choice_exit)
+      {
+
+        $('#activityExitCb').prop("checked",true);
+
+      }
+      else{
+        $('#activityExitCb').prop("checked",false);
+      }
+
+
+      if (learning_activity.is_visible)
+      {
+
+        $('#isVisible').prop("checked",true);
+
+      }
+      else{
+        $('#isVisible').prop("checked",false);
+      }
+
+    //$('#available-from').val(learning_activity.available_from);
+    //$('#available-until').val(learning_activity.available_until);
+
+
+
+      //$('#modalContainer').modal();
+
+     var modalContainer = new bootstrap.Modal(document.getElementById('modalContainer'));
+     modalContainer.show(); 
+
+    }
+
+
+
+ $('body').on('submit','#formaContainerEdit',function (e) {
+    e.preventDefault();
+
+      var container_id  = $('#Id').val();
+      learning_activities[container_id].name = $('#name').val();
+      learning_activities[container_id].description=$('#description').val();
+      learning_activities[container_id].image=$('#image').val();
+      learning_activities[container_id].uri =  $('#URI').val();
+      //learning_activities[container_id].available_from = $('#available-from').val();
+      //learning_activities[container_id].available_until =  $('#available-until').val();
+      learning_activities[container_id].rollup_rule = $('#rollupRule').val();
+      learning_activities[container_id].attempt_limit = $('#maxAttempts').val();
+
+
+        if ( $('#rollupProgressCb').prop("checked") == true)
+        {
+      learning_activities[container_id].rollup_progress = true;
+        }
+        else
+        {
+      learning_activities[container_id].rollup_progress = false;
+        }
+
+        if ( $('#activityExitCb').prop("checked") == true)
+        {
+      learning_activities[container_id].choice_exit = true;
+        }
+        else
+        {
+      learning_activities[container_id].choice_exit = false;
+        }
+
+
+        if ( $('#isVisible').prop("checked") == true)
+        {
+      learning_activities[container_id].is_visible = true;
+        }
+        else
+        {
+      learning_activities[container_id].is_visible = false;
+        }
+
+      if   ('{{ course_id }}' == container_id ) //is root container ?
+      {
+            $("#course-title").html(learning_activities[container_id].name + '  <small>'+ learning_activities[container_id].uri  + '</small>'        );
+      }
+      else
+      {
+      //Find the activity title and change it
+      var escaped_container_id = "#" + container_id.replace( "/", "\\/" );
+      $(escaped_container_id).find('.container_name').first().text(learning_activities[container_id].name);
+
+      }
+
+
+
+     update_ruleselect();
+     
+     // $('#modalContainer').modal('hide');
+     var myModal = bootstrap.Modal.getInstance(modalContainer)
+     myModal.hide(); 
+
+ });
+
+
+
+
+/*
+* Copy some info from Educational Resource
+* This is from the card element
+* */
+
+  $('body').on('click', ".btn-clipboard", function(){
+
+        learning_activities[container_id].name = $(this).data("title");
+        learning_activities[container_id].uri = $(this).data("id");
+        learning_activities[container_id].description = $(this).data("description");
+        learning_activities[container_id].image = $(this).data("image");
+
+        var myModal = bootstrap.Modal.getInstance(modalSearch)
+        myModal.hide(); 
+        
+       // $('#modalSearch').modal('hide');
+        
+
+        var escaped_container_id = "#" + container_id.replace( "/", "\\/" );
+        $(escaped_container_id).find('.container_name').first().text(learning_activities[container_id].name);
+
+
+
+  });
+
+
+
+
+
+
+  $('body').on('click', '.containerPrecondition', function(){
+
+    var container_id  = $( this).parentsUntil('li').parent().attr("id");
+    var learning_activity = learning_activities[container_id];
+    $("#modal-rulebuilder").find(".modal-title").text("Regla de Precondición - " + learning_activity.name);
+    $("#container_rule_id").val(container_id);
+      if (learning_activity.rules == ''){
+          rules = '';
+          conditions = [];
+          $("#rules-body").empty();
+          
+         var ModalRuleBuilder = new bootstrap.Modal(document.getElementById('modal-rulebuilder'));
+          ModalRuleBuilder.show(); 
+       //   $("#modal-rulebuilder").modal()
+      }
+      else{
+          try{
+              rules = JSON.parse(learning_activity.rules);
+              if (rules['conditions'] == undefined){
+                  conditions = [];
+              }
+              else{
+                  conditions = rules['conditions'];
+                  $("#deleteAllbtn").prop("disabled", false);
+              }
+              populate_conditions(rules, container_id);
+             var ModalRuleBuilder = new bootstrap.Modal(document.getElementById('modal-rulebuilder'));
+              ModalRuleBuilder.show();
+          }
+          catch(error){
+              console.log(error)
+          }
+      }
+
+  });
+
+
+  $('body').on('click','#savePreconditionBtn',function (e) {
+      var container_id  = $('#PreconditionURI').val();
+      var editor = ace.edit("editor1");
+
+      //learning_activities[container_id].pre_condition_rule = editor.getValue();
+      console.log(learning_activities[container_id]);
+      // $('#modalPrecondition').modal('hide');
+
+      var myModal = new bootstrap.Modal(document.getElementById('modalPrecondition'));
+      myModal.hide(); 
+
+
+
+  });
+
+
+  $('body').on('click', '#courseDeleteBtn', function(){
+
+      var myModal = new bootstrap.Modal(document.getElementById('modalDeleteCourse'));
+      myModal.show(); 
+
+  });
+
+  $('body').on('click', ".containerSearch", function(){
+      container_id  = $( this).parentsUntil('li').parent().attr("id");
+      var modalSearch = new bootstrap.Modal(document.getElementById('modalSearch'));
+      modalSearch.show(); 
+      
+  });
+
+
+
+ var body = $('body');
+
+  body.on('hidden.bs.modal', '#modal-rulebuilder', function(){
+      rules = '';
+      conditions = [];
+      $('.selection').prop('selectedIndex',0);
+      $('#activity-txt, #context-txt').hide();
+
+      $('#activity-value-select, #context-value-select, #contextime').show();
+      $("#context-operators").prop('disabled', true);
+      $("#activity-operators").prop('disabled', false);
+      $("#deleteAllbtn").prop("disabled", true);
+      console.log("hidden.bs.modal");
+  });
+
+
+
+  body.on('change', "#activity-options", function(){
+      if ($(this).val() == "progress_status"){
+          $("#activity-value-select").show();
+          $("#activity-txt").hide();
+          $("#activity-operators").val("==").prop('disabled', true);
+      }
+      else{
+          $("#activity-value-select").hide();
+          $("#activity-txt").show();
+          $("#activity-operators").val("==").prop('disabled', false);
+      }
+  });
+
+  //validates numeric fields
+  body.on('change', "#activity-txt", function(){
+      var regex = /^[0-9]*(?:\.\d{1,2})?$/;    // allow only numbers [0-9]
+      if( !regex.test( $(this).val()) ) {
+          $(this).popover({
+              title: "Error",
+              content: "Only numbers accepted",
+              placement: 'top'
+          });
+          $(this).popover('show');
+          $("#activity-submit").prop('disabled', true);
+      }
+      else{
+          $(this).popover('destroy');
+          $("#activity-submit").prop('disabled', false);
+      }
+  });
+
+  body.on('change', "#context-options", function(){
+      if ($(this).val() == "dayof"){
+          $("#context-value-select").show();
+          $("#context-txt, #contextime").hide();
+          $("#context-operators").val("==").prop('disabled', true);
+      }
+      else if ($(this).val() == "time"){
+          $("#context-value-select, #context-txt").hide();
+          $("#context-operators").val("==").prop('disabled', false);
+          $("#contextime").show();
+
+      }
+      else{
+          $("#context-value-select, #contextime").hide();
+          $("#context-txt").show();
+
+      }
+  });
+
+  //deletes rule but does not save til user click Save Changes button
+  body.on('click', '#uploadBtn', function(){
+  //$('#upload').modal('show')
+  var myModal = new bootstrap.Modal(document.getElementById('upload'));
+  myModal.show(); 
+
+
+  });
+
+
+
+  //deletes rule but does not save til user click Save Changes button
+  body.on('click', '#deleteAllbtn', function(){
+      $("#rule").remove();
+      rules = '';
+      conditions = [];
+      $(this).prop("disabled",true);
+  });
+
+  //fired when user adds a rule using Add Rule
+  body.on('click', '.submit-Btn' ,function(){
+      var btntype = $(this).attr('id').split('-')[0];
+      var act_name = $('#activity-select option:selected').html();
+      var uri = ($('#activity-select option:selected').attr('uri'));
+      var activity_id=$("#activity-select").val();
+      var container_id= $("#container_rule_id").val();
+      if (btntype == 'activity'){
+          var activity = true;
+          var option = $('#activity-options').val();
+          var option_txt = $('#activity-options option:selected').html();
+          var operator = $("#activity-operators").val();
+          var operator_text = $("#activity-operators option:selected").html();
+          if ($("#activity-value-select").is(":visible")){
+              var value = $("#activity-value-select").val();
+          }
+          else{
+              var txt = $("#activity-txt");
+              value = txt.val();
+              if (value == ''){
+                  txt.popover({
+                      title: "Error",
+                      content: "Submit a numeric value",
+                      placement: 'top'
+                  });
+                  txt.popover('show');
+                  return false;
+              }
+          }
+          $("#"+btntype+"-txt").val('');
+      }
+      else if (btntype == 'user'){
+          var user = true;
+          txt = $("#user-txt");
+          option = $('#user-options').val();
+          option_txt = $('#user-options option:selected').html();
+          operator = $("#user-operators").val();
+          operator_text = $("#user-operators option:selected").html();
+          value = txt.val();
+          if (value == ''){
+              txt.popover({
+                  title: "Error",
+                  content: "Submit value",
+                  placement: 'top'
+              });
+              txt.popover('show');
+              return false;
+          }
+          txt.val('');
+      }
+      else if (btntype == 'context'){
+          var context = true;
+          option = $('#context-options').val();
+          option_txt = $('#context-options option:selected').html();
+          operator = $("#context-operators").val();
+          operator_text = $("#context-operators option:selected").html();
+          if ($("#context-value-select").is(":visible")){
+              value = $("#context-value-select").val();
+          }
+          else if ($("#contextime").is(":visible")){
+              value = $("#context-time").val();
+              $("#context-time").val('00:00:00');
+          }
+          else{
+              txt = $("#context-txt");
+              value = txt.val();
+              if (value == ''){
+              txt.popover({
+                  title: "Error",
+                  content: "Submit value",
+                  placement: 'top'
+              });
+              txt.popover('show');
+              return false;
+              }
+          }
+          $("#"+btntype+"-txt").val('');
+      }
+
+      if ($.isPlainObject(rules)){
+          //pass
+      }
+      else{
+          rules = {'id': activity_id, 'conditions':conditions, 'applyto': container_id , 'operator':'and'};
+      }
+      var id = Math.random().toString(36).substr(2, 5);
+      var condition = {'id':id,'uri':uri, 'act_name':act_name ,
+                       'option':option,'option_txt':option_txt,
+                       'operator':operator,'operator_txt':operator_text,'value':value};
+      $("#rule").remove();
+
+      if (user == true){
+          condition['user']='true'
+      }
+      else if (context == true){
+          condition['context'] = 'true'
+      }
+      else if (activity == true){
+          condition['activity'] = 'true'
+      }
+
+      conditions.push(condition);
+      populate_conditions(rules, container_id);
+      $("#deleteAllbtn").prop("disabled",false);
+  });
+
+  //deletes individual rule/condition, but does not save til user click Save Changes button
+  body.on('click', '.deleteRuleBtn', function(){
+      var container = $(this).attr("condition-id");
+      $("#"+container).remove();
+      var index = rules.conditions.map(function(e) { return e.id; }).indexOf(container);
+      rules.conditions.splice(index,1);
+      if (rules.conditions.length == 0){
+          $("#rule").remove();
+          rules = '';
+          $("#deleteAllbtn").prop("disabled", true);
+      }
+    });
+
+  //saves selected precondition in rule
+  body.on('change', '.selectThen', function(){
+      var container_id = $("#container_rule_id").val();
+      rules['precondition'] = $(this).val();
+      populate_conditions(rules, container_id);
+  });
+
+    //saves selected precondition in rule
+  body.on('change', '.selectElse', function(){
+      var container_id = $("#container_rule_id").val();
+      rules['else'] = $(this).val();
+      populate_conditions(rules, container_id);
+  });
+
+  //saves rules in its learning activity
+  body.on('click',"#save-rules",function(){
+      var precondition = $("#precondition-select");
+      if (precondition.length != 0 && precondition.val()==""){
+          alert("Select a Precondition");
+      }
+      else{
+          rule_builder();
+         // $("#modal-rulebuilder").modal('hide');
+         var myModal = document.getElementById('modal-rulebuilder');
+         var modal = bootstrap.Modal.getInstance(myModal); 
+         
+         modal.hide(); 
+
+      }
+  });
+
+  //updates activity select dropdownlist with the different activities in the course (learning_activities)
+  function update_ruleselect(){
+      $("body #activity-select").empty();
+      if (learning_activities.length != 0) {
+              $.each(learning_activities, function (index, value) {
+                  if (typeof value === 'undefined' || value.root_id == null) return;
+                  $("body #activity-select").append($("<option></option>")
+                          .attr("value", value.id)
+                          .attr("uri", value.uri)
+                          .text(value.name));
+              })
+          }
+  }
+
+  //saves or clear precondition_rule, if user deleted the rule, the fields are emptied
+  function rule_builder(){
+      var container = $("#container_rule_id").val();
+      if (jQuery.type(rules) != 'object'){
+          rules = '';
+          learning_activities[container].pre_condition_rule = rules;
+          learning_activities[container].rules = rules;
+      }
+      else{
+          rules['applyto'] = container;
+          learning_activities[container].pre_condition_rule = JSON.stringify(rules);
+          learning_activities[container].rules = JSON.stringify(rules);
+          rules = '';
+      }
+
+  }
+
+  //receives a rule and container_id, and populates it on modal rulebuilder
+  function populate_conditions(regla, container_id){
+      $("#rules-body").empty();
+      Mustache.tags = ['[[', ']]'];
+      var rules_template = $('#rules_template').html();
+      Mustache.parse(rules_template);
+      rendered = Mustache.render(rules_template, {
+          condiciones: regla.conditions,
+          user: regla.user,
+          container_id: regla.applyto,
+          then: regla.precondition,
+          else: regla.else
+      });
+      $("#rules-body").append(rendered);
+      $("#precondition-select option[value="+regla.precondition+"]").prop("selected", "selected");
+      $("#else-select option[value="+regla.else+"]").prop("selected", "selected");
+
+    //  var modalRuleBuilder = new bootstrap.Modal(document.getElementById('modal-rulebuilder'));
+    //  modalRuleBuilder.show(); 
+      //$("#modal-rulebuilder").modal()
+
+  }
+
+
+
+
+
+
+
+//
+//  Search Activity
+//
+
+body.on('change',"#txtname",function(){
+   $("#actividades").empty();
+   $("#row").show();
+   var query =  load_query( "#txtname" ,{ page:0, type: {'type': {'$in':['text','video','quiz','prog']}}});
+    console.log('buscar actividades');
+    buscar(query);
+ });
+
+
+  function buscar(query){
+        $.ajax({
+        type: 'POST',
+        url: '/search_prueba/',
+        crossDomain: false, // obviates need for sameOrigin test
+        beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
+        data: JSON.stringify(query),
+        success: function (data) {
+            var obj = jQuery.parseJSON( data );
+            if (obj == "null" || obj[0].count == 0){
+                $("#paginator").empty();
+                $("#actividades").append('<h3 style="color:lightgray">No hay actividades</h3>');
+                count = 0
+            }
+            else{
+                Mustache.tags = ['[[', ']]'];
+                var activities_template = $('#searched_activities_template').html();
+                Mustache.parse(activities_template);
+                $.each(obj, function( index, value ) {
+                    if (value.count){
+                        count = value.count
+                    }
+                    else{
+                        rendered = Mustache.render(activities_template, {
+                            title: value.title,
+                            id: value._id,
+                            icon:value.icon,
+                            description: value.description,
+                            lang:value.lang,
+                            level:value.level,
+                            type:value.type,
+                            tags:value.tags,
+                            image_url:value.image_url});
+                        $("#actividades").append(rendered);
+                    }
+                });
+
+                renderPaginator( query['page']+1, Math.floor((count + 20 -1)/20), 20, on_click );
+                $('#actividades').val(data);
+
+            }
+        },
+        error: function(data) {
+            console.log("Error");
+        }
+    });
+    }
+
+
+
+var on_click = function(){
+        var pagenum = $( this ).attr('data-page');
+        $("#actividades").empty();
+        $("#paginator").empty();
+        var query =  load_query( "#txtname" ,{ page:0, type: {'type': {'$in':['text','video','quiz','prog']}}});
+        query.page =  (pagenum - 1);
+        buscar(query);
+    }
+
+
+
+
+function uploadFile() {
+  var xhr = new XMLHttpRequest();
+  var fd = new FormData(document.getElementById('uploadForm')) ;
+  /* event listners */
+  xhr.upload.addEventListener("progress", uploadProgress, false);
+  xhr.addEventListener("load", uploadComplete, false);
+  xhr.addEventListener("error", uploadFailed, false);
+  xhr.addEventListener("abort", uploadCanceled, false);
+  /* Be sure to change the url below to the url of your upload server side script */
+  xhr.open("POST", "/upload_course/");
+  /*Course ID SET IN the Server Side*/
+  fd.set("course_id","{{ course_id }}")
+  xhr.send(fd);
+       }
+     function uploadProgress(evt) {
+            if (evt.lengthComputable) {
+       var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+            document.getElementById('progressNumber').innerHTML = percentComplete.toString() + '%';
+             }
+            else {
+            document.getElementById('progressNumber').innerHTML = 'unable to compute';
+            }
+    }
+function uploadComplete(evt) {
+  /* This event is raised when the server send back a response */
+  alert(evt.target.responseText);
+}
+function uploadFailed(evt) {
+  alert("There was an error attempting to upload the file.");
+}
+function uploadCanceled(evt) {
+  alert("The upload has been canceled by the user or the browser dropped the connection.");
+}
+
+
+
+function fileSelected() {
+      var file = document.getElementById('fileToUpload').files[0];
+      if (file) {
+        var fileSize = 0;
+        if (file.size > 1024 * 1024)
+          fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+        else
+          fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+        document.getElementById('fileName').innerHTML = 'Name: ' + file.name;
+        document.getElementById('fileSize').innerHTML = 'Size: ' + fileSize;
+        document.getElementById('fileType').innerHTML = 'Type: ' + file.type;
+
+        if (file.size < 1024 * 1024) {
+          $("#uploadFileBtn").prop("disabled", false);
+          console.log("Not to big");
+          }
+        else
+        {
+            console.log(file.size);
+        }
+        }
+     }
+
+
+</script>
+
+
+<!--
+paginator_template
+COPY PASTE FROM search.html
+TO DO: Reuse mustache  templates
+-->
+
+
+<script id="paginator_template" type="x-tmpsmustache">
+
+<nav aria-label="Page navigation">
+
+    <ul class="pagination  justify-content-center">
+
+    [[#prev]]
+     <li class="page-item" data-page='[[prevPage]]'>
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+        <span class="sr-only">Previous</span>
+      </a>
+    </li>
+
+    [[/prev]]
+
+       [[#pages]]
+          [[#page]]
+                <li class="page-item [[#active]]active[[/active]]" data-page=[[page]]><a class="page-link"  href="#">[[page]]</a></li>
+
+          [[/page]]
+
+          [[^.]]
+          [[/.]]
+       [[/pages]]
+
+    [[#next]]
+    <li class="page-item" data-page=[[nextPage]]>
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+        <span class="sr-only">Next</span>
+      </a>
+    </li>
+
+
+    [[/next]]
+ </ul>
+</nav>
+</script>
+
+
+
+
+<script id="searched_activities_template" type="x-tmpsmustache">
+<div class="card mb-4 box-shadow">
+    [[#image_url]]
+            <img class="card-img-top center-block img-fluid" src="[[image_url]]" alt="[[title]]">
+        [[/image_url]]
+
+    <div class="card-body">
+
+        <span class="btn-clipboard"  data-id="[[id]]" data-title="[[title]]" data-description="[[description]]"  data-image="[[image_url]]"  >Copiar</span>
+
+        <h6 class="card-title card-search-activity"> <i class="fa fa-[[icon]]"> </i> <a href="[[id]]">[[title]]</a> </h6>
+        <p class="card-text"> [[description]]</p>
+
+    </div>
+
+</div>
+</script>
+
+
+
+
+
+<div class="modal fade" id="modalContainer">
+  <div class="modal-dialog  modal-lg">
+    <div class="modal-content">
+
+           <form id="formaContainerEdit" onsubmit="return false">
+
+      <div class="modal-header">
+
+        <h4 class="modal-title">Edit Container</h4>
+        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+      </div>
+
+
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="Id">ID Actividad de Aprendizaje</label>
+          <input type="text" class="form-control hidden" id="Id" placeholder="" disabled>
+        </div>
+
+        <div class="mb-3">
+          <label for="URI">URL Recurso Educativo</label>
+          <input type="text" class="form-control" id="URI" placeholder="" required pattern="^[\/a-zA-Z0-9._-]+$" >
+        </div>
+
+        <div class="mb-3">
+          <label for="name">Nombre de la Actividad</label>
+          <input type="text" class="form-control" id="name" placeholder="Container Name">
+        </div>
+
+
+        <div class="mb-3">
+          <label for="description">Descripción</label>
+          <textarea class="form-control" id="description" rows="3"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="image">URL de la imagen </label>
+          <input type="url" class="form-control" id="image" placeholder=""  pattern="https?://.+">
+
+        </div>
+
+        <div class="mb-3">
+          <div class="checkbox">
+            <label> <input id="isVisible" type="checkbox"> Visible </label>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="rollupRule">Regla de Rollup </label>
+          <small class="form-text text-muted"> <code> (completed | incomplete)   IF ( (All|Any|None) | ( (AT LEAST) (number) (PERCENT | COUNT) ) )
+               (completed | incomplete ) </code>  </small>
+          <input type="text"  required class="form-control" id="rollupRule" pattern="(completed|incomplete)\s*IF\s*((All|Any|None)|((AT LEAST)\s[0-9]+\s(PERCENT|COUNT)))\s*(completed|incomplete)" >
+
+            <small>Esta regla especifíca como se considerará el progreso de los contenedores con respecto los elementos que contiene.</small>
+        </div>
+
+        <div class="mb-3">
+          <div class="checkbox">
+            <label> <input id="rollupProgressCb" type="checkbox"> ¿Propagar el Avance? </label>
+            <small>Esta regla especifica si el elemento se considerará en la regla de Rollup superior.</small>
+          </div>
+        </div>
+
+          <div class="mb-3">
+          <div class="checkbox">
+            <label> <input id="activityExitCb" type="checkbox"> ¿Considerar terminada la actividad al salir?   </label>
+            <small> Indicará si la actividad se considerará como completa cuando el usuario navege a otra actividad.
+             </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="maxAttempts">Máximo número de intentos</label>
+          <input type="number"   class="form-control" id="maxAttempts" placeholder="" value="100">
+           <small> El valor de 100 es equivalente a un número de intentos ilimitado.</small>
+        </div>
+
+        <div class="form-inline">
+
+
+        <div class="mb-3">
+          <label for="available-from">Disponible desde</label>
+          <div  class="input-group date">
+            <input  id ="available-from" type="datetime-local" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="available-until">Disponible hasta</label>
+          <div class="input-group date">
+            <input  id ="available-until"  type="datetime-local" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+          </div>
+        </div>
+        <small> Funcionalidad no implementada.</small>
+        </div>
+
+
+      </div><!-- EDIT CONTAINER  .modal-body -->
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button id="saveContainerEditBtn" type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+               </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade bs-example-modal-lg" id="modalPrecondition">
+  <div class="modal-dialog modal-lg ">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h4 class="modal-title">Editar precondición</h4>
+     <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+      </div>
+
+
+      <div class="modal-body">
+
+        <div class="mb-3">
+
+          <input type="url" class="form-control hidden" id="PreconditionURI" placeholder="" required pattern="[\/a-zA-Z0-9._-]+" >
+        </div>
+
+        <div class="mb-3">
+            <label for="editor1">Regla de precondición</label>
+            <div class="myeditor" id="editor1">
+
+            </div>
+        </div>
+
+
+      </div><!-- /.modal-body -->
+
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+        <button id="savePreconditionBtn" type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+
+        </form>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+ <div class="modal fade" id="modalDeleteCourse">
+  <div class="modal-dialog">
+    <div class="modal-content">
+       <form action="/delete_course/{{ course_id }}" method="post">{% csrf_token %}
+        <div class="modal-header">
+
+        <h4 class="modal-title">Borrar curso</h4>
+        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+      </div>
+
+
+      <div class="modal-body">
+          <h4>Por favor confirma, todos los datos se borrarán</h4>
+
+
+
+      </div><!-- /.modal-body -->
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button id="createCourseBtn" type="submit" class="btn btn-danger">Borrar</button>
+      </div>
+           </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+    <div class="modal fade" id="modalSearch">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Buscar recursos educativos </h4>
+                    <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="container mt-3 mb-3">
+                    <div class="row m-t-1">
+                        <div class="col-md-12 col-sm-12">
+                            <form id="formSearch" onsubmit="return false">
+                                <div class="input-group">
+                                    <input id="txtname" type="text" class="form-control" placeholder="Search by Title or #Tag" >
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container mt-3 mb-3">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1 col-sm-12 m-t-1">
+
+                            <div class="card-deck">
+                                <div id='actividades' class="card-columns">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container mt-3 mb-3">
+                    <div class="row">
+                        <div class="col" id="paginator">
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+
+
+
+
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+
+    <div class="modal fade" id="modal-rulebuilder">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Regla de precondición</h4>
+                <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="container mt-3">
+
+                <ul class="nav nav-tabs">
+                    <li class="nav-item"> <a class="nav-link active" href="#activity-tab"   data-bs-toggle="tab">Actividad</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="#user-tab"   data-bs-toggle="tab">Usuario</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="#context-tab"   data-bs-toggle="tab">Contexto</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="activity-tab">
+
+                        <div class="container mt-3">
+                            <input type="hidden" id="container_rule_id" value="">
+
+                            <form>
+                                <div class="mb-3">
+                                    <label for="activity-select"><code>IF</code></label>
+                                    <select id="activity-select" class="form-control selection" style="width:60%">
+                                    </select>
+
+                                </div>
+                                <div class="mb-3">
+                                    <label for="activity-select"><code>HAS</code></label>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col col-md-3">
+                                        <select class="form-control selection" id="activity-options">
+                                            <option value="num_attempts">número de intentos</option>
+                                            <option value="progress_status">progreso</option>
+                                            <option value="objective_measure">calificación</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col col-md-3">
+                                        <select class="form-control selection" id="activity-operators">
+                                            <option value="==">igual a</option>
+                                            <option value=">">mayor que </option>
+                                            <option value="<">menor que</option>
+                                            <option value="!=">diferente de</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col col-md-2">
+                                        <select class="form-control selection" id="activity-value-select">
+                                            <option value="completed">complete</option>
+                                            <option value="incomplete">incomplete</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col col-md-2">
+                                        <input type="text" class="form-control" id="activity-txt" placeholder="Valor">
+                                    </div>
+
+                                    <div class="col col-md-2">
+                                        <input type="button" id="activity-submit" class="form-control btn-primary submit-Btn" value="Agregar">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="user-tab">
+                        <div class="container mt-3">
+                        <form>
+                            <div class="mb-3">
+                                    <label for="user-options"><code>IF Usuario [HAS|IS]</code></label>
+
+                               <div class="row">
+                                   <div class="col">
+                                          <select class="form-control selection" id="user-options">
+                                        <option value="experience">experiencia</option>
+                                        <option value="visual">visual</option>
+                                        <option value="aural">aural</option>
+                                        <option value="physical">físico</option>
+                                        <option value="logical">lógico</option>
+                                        <option value="social">social</option>
+                                        <option value="solitary">solitario</option>
+
+                                    </select>
+                                   </div>
+                                   <div class="col col-md-3">
+                                       <select class="form-control selection" id="user-operators" >
+                                        <option value="==">igual a</option>
+                                        <option value=">">mayor que</option>
+                                        <option value="<">menor que</option>
+                                        <option value="!=">diferente de</option>
+                                    </select>
+                                   </div>
+                                   <div class="col col-md-3">
+                                        <input type="text" class="form-control" id="user-txt" placeholder="Value" >
+
+                                   </div>
+                                   <div class="col col-md-3">
+                                       <input type="button" id="user-submit" class="form-control btn-primary submit-Btn" value="Agregar">
+
+                                   </div>
+                               </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+
+                    </div>
+                    <div class="tab-pane" id="context-tab">
+                        <div class="container mt-3">
+                            <div class="row">
+                                 <div class="col col-md-1">
+                                    <label for="context-options"><code>IF</code></label>
+                                 </div>
+                                 <div class="col col-md-4">
+                                     <select class="form-control selection" id="context-options" >
+                                        <option value="time">hora</option>
+                                            <option value="dayof">día de la semana</option>
+                                     </select>
+                                 </div>
+                            </div>
+                            </div>
+
+                            <div class="container mt-3">
+                            <div class="row">
+                                <div class="col col-md-2">
+                                    <select class="form-control selection" id="context-operators"  >
+                                <option value="==">igual a</option>
+                                <option value=">">mayor que</option>
+                                <option value="<">menor que</option>
+                                <option value="!=">diferene</option>
+                            </select>
+
+                                </div>
+                                <div class="col col-md-3">
+                                        <select class="form-control selection" id="context-value-select">
+                                <option value="Monday">lunes</option>
+                                <option value="Tuesday">martes</option>
+                                <option value="Wednesday">miércoles</option>
+                                <option value="Thursday">jueves</option>
+                                <option value="Friday">viernes</option>
+                                <option value="Saturday">sábado</option>
+                                <option value="Sunday">domingo</option>
+                            </select>
+
+                                </div>
+                                <div class="col col-md-3">
+                                    <div id="contextime" class="input-group bootstrap-timepicker timepicker" >
+                                    <input id="context-time" type="time" value="12:00:00" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col col-md-2">
+                                    <input type="text" class="form-control" id="context-txt" placeholder="Valor" >
+                                </div>
+                                <div class="col col-md-2">
+                                    <input type="button" id="context-submit" class="form-control btn-primary submit-Btn" value="Agregar">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container  mt-3 mb-3">
+
+
+                    <div class="card">
+
+                        <div class="card-body">
+
+                            <h5 class="card-title">
+                                Regla
+                            </h5>
+
+                            <p class="card-text">
+                                <code>IF</code>
+                            </p>
+                            <!--
+                                <a class="btn btn-danger btn-sm" href="#"  id="deleteAllbtn">Borrar todas las condiciones</a>
+                            -->
+                            <div id="rules-body" >
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="modal-footer" id="rulebuilder-footer">
+                    <input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Cancelar">
+                    <input type="button" class="btn btn-primary" id="save-rules" value="Guardar">
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    </div>
+
+
+
+<div class="modal fade" id="upload">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h4 class="modal-title">Subir curso</h4>
+<button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+
+  <form id="uploadForm" enctype="multipart/form-data" method="post" action="upload" accept-charset="UTF-8">
+  <div class="mb-3">
+    <label for="formGroupExampleInput">Selecciona el archivo</label>
+    <input type="file" name="fileToUpload" class="form-control" id="fileToUpload" onchange="fileSelected()">
+  </div>
+    <div id="fileName"></div>
+    <div id="fileSize"></div>
+    <div id="fileType"></div>
+    <div id="progressNumber"></div>
+</form>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button id="uploadFileBtn" type="button" class="btn btn-primary" onclick="uploadFile()" disabled >Guardar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+   <div class="modal fade" tabindex="-1" role="dialog" id="modalUpdateCourse">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+             <form action="/course-builder/" method="post">{% csrf_token %}
+                <div class="modal-header">
+                    <h4 class="modal-title">Actualizar curso</h4>
+                    <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"> <a class="nav-link active" href="#main"   data-bs-toggle="tab">Principal</a></li>
+                        <li class="nav-item"> <a class="nav-link" href="#detail"   data-bs-toggle="tab">Página HTML</a></li>
+                    </ul>
+                <br>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="main">
+                    <input type="hidden" name="action" value="update"/>
+                    <input type="hidden" name="course_id" value="{{course_id}}"/>
+
+                    <div class="mb-3">
+                        <label for="courseURI">Identificador del curso</label>
+                        <input type="text" name="course_uri" class="form-control" id="courseURI" placeholder="nombre-del-curso" required pattern="[A-Za-z0-9\/._-]+" value="/{{course.root.id }}{{course.root.uri }}">
+
+
+                        <small class="form-text text-muted"> Debes incluir un identificador del curso, éste
+                         será parte de la dirección con la que los usarios accederán al curso. Solo debe incluir números, letras y guiones. No espacios.
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="courseName">Nombre</label>
+                        <input type="text" name="course_name" class="form-control" id="courseName" required placeholder="" value="{{ course.root.name }}">
+                        <small class="form-text text-muted"> Este es el nombre que se utilizará para anunciar al curso, puede contener espacios y otros
+                            caracteres.</small>
+                    </div>
+                     <div class="mb-3">
+                        <label for="courseDesc">Descripción</label>
+                        <textarea class="form-control" id="courseDesc" name="course_short_description" placeholder="" rows="3">{{course.short_description}}</textarea>
+                        <small class="form-text text-muted"> Agrega una breve descripción del material. Aparecera cuando se muestre al curso en los listados.</small>
+                     </div>
+                    <div class="mb-3">
+                        <label for="image_url">URL de ímagen</label>
+                        <input type="url" class="form-control" id="image_url" name="image_url" value="{{ course.root.image }}">
+                        <small class="form-text text-muted"> Puedes especificar una imagen externa que describa al recurso.
+                             Debes tener derechos sobre la ímagen. Puedes utilizar servicios como: imageshack.us o Amazon S3.
+
+                         </small>
+                    </div>
+                    <div class="mb-3">
+                        <div class="checkbox">
+                            {% if course.private %}
+                            <label> <input id="containerIsVisible" type="checkbox" checked name="private"> Privado </label>
+                            {% else %}
+                             <label> <input id="containerIsVisible" type="checkbox"  name="private"> Privado </label>
+                            {% endif %}
+                        </div>
+                        <small class="form-text text-muted"> Selecciona la opción <strong>Privado</strong> cuando deses limitar quien puede inscribirse al
+                             curso. No aparecerá en el listado de cursos.</small>
+                    </div>
+
+                    </div>
+                     <div class="tab-pane fade" id="detail">
+                    <textarea class="form-control" name="html_description">{{course.html_description|safe}}</textarea>
+                    <div class="myeditor" id="courseDescHTML" >
+
+                    </div>
+
+
+                        </div>
+                    </div>
+
+                </div><!-- /.modal-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button id="submitCourseBtn" type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal
+{% endblock scripts %}
+
+
+
+
+
+
+
+
+
+
+
+

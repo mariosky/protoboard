@@ -13,5 +13,6 @@ def has_group(user, group_name):
 
 @register.filter
 def duration(td):
-
     return "{}h {}m".format(td[4:6], td[7:9])
+
+

@@ -1,0 +1,215 @@
+{% extends "activitytree/nav_base.html" %}
+
+{% load comments %}
+{% load comments_xtd %}
+
+
+{% block style %}
+
+{% endblock style %}
+    
+{% block activity %}
+        <div class="aspect-w-16 aspect-h-9">
+                <div id="player"  class="top-0 left-0 w-full h-full md:pl-5 md:pt-5" > </div>
+        </div>  
+
+          <h2 class="text-lg sm:text-xl font-bold text-slate-900 mt-2 md:pl-5"> {{content.title}} </h2>
+          {% comment %}
+          <div class="md:pl-5">
+            {{content.content|safe}}
+         </div>
+
+         {% endcomment %} 
+
+         <div class="flex items-center space-x-4 mt-3 md:pl-5">
+          <img class="w-10 h-10 rounded-full" src="{{content.external_url}}" alt="">
+          <div class="font-medium">
+              <div class="font-semibold">{{content.author}}</div>
+              <div class="text-sm text-gray-500 dark:text-gray-400">{{content.rights}}</div>
+          </div>
+        </div>
+{% endblock activity %}
+
+
+ {% comment %}
+       <!-- Nav bar--> 
+        <div class="row">
+            <div class="col-12">
+               <ul class="nav justify-content-end">
+                    <li class="nav-item">
+                        <div>
+                            <!-- Dropdown -->
+                            <span class="dropdown">
+                                <a href="#" class="me-2 text-muted" id="dropdownInfo"  data-bs-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <i class="fe fe-help-circle"></i>
+                                </a>
+                                <span class="dropdown-menu dropdown-menu-lg p-3 dropdown-menu-right" aria-labelledby="dropdownInfo">
+                                <div class="row align-items-center g-0">
+                        <div class="col-auto">
+                            <img src="{{content.external_url}}" class="rounded-circle avatar-xs" alt="">
+                        </div>
+                        <div class="col ms-2">
+                            <span>{{content.publisher}}</span>
+                        </div>
+                        <div class="col-auto">
+                            <a href="#" class="text-muted bookmark">
+                            <i class="fe fe-bookmark  "></i>
+                            </a>
+                        </div>
+                        </div>
+                                {{content.rights}}
+                                </span>
+                            </span>
+                            <!-- Dropdown -->
+                            <span class="dropdown">
+                                <a class="text-muted text-decoration-none" href="#" role="button" id="shareDropdown1"
+                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fe fe-more-vertical"></i>
+                                </a>
+                                <span class="dropdown-menu dropdown-menu-right" aria-labelledby="shareDropdown1">
+                                <span class="dropdown-header">Share</span>
+                                <a class="dropdown-item" href="#"><i class="fab fa-facebook dropdown-item-icon"></i>Facebook</a>
+                                <a class="dropdown-item" href="#"><i class="fab fa-twitter dropdown-item-icon"></i>Twitter</a>
+                                <a class="dropdown-item" href="#"><i class="fab fa-linkedin dropdown-item-icon"></i>Linked In</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-copy dropdown-item-icon"></i>Copy Link</a>
+                                </span>
+                            </span>
+                            </div>
+                    
+                    </li>
+                    </ul>
+            </div>
+        </div>
+        <!-- Title--> 
+        <div>
+            <h3 class=" mb-3  text-truncate-line-2">{{content.title}} </h3>
+        </div>
+          <!-- Video Player
+        <div class="video-player"> -->      
+        <div class="rounded-lg embed-responsive  position-relative w-100 d-block overflow-hidden p-0" style="height: 600px;">
+                    <div id="player"  class="position-absolute top-0 end-0 start-0 end-0 bottom-0 h-100 w-100" > </div>
+        </div>
+ 
+ {% endcomment %} 
+
+{% block footer %}
+
+{% endblock footer %}
+   
+
+{% block scripts %}
+ {{ block.super }} 
+
+<script type="text/javascript" charset="utf-8">
+
+        // 2. This code loads the IFrame Player API code asynchronously.
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+      var player;
+
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          
+          playerVars: {'rel': 0, 'showinfo': 0, 'hidecontrols': 1 },
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+        // 4. The API will call this function when the video player is ready.
+      function onPlayerReady(event) {
+
+          {% if content.startSeconds or content.endSeconds %}
+
+            event.target.cueVideoById({
+            videoId: '{{content.youtube_id}}',
+            startSeconds: {{ content.startSeconds }},
+            endSeconds: {{ content.endSeconds  }}
+
+    });
+
+              {% else %}
+
+              event.target.cueVideoById({
+            videoId: '{{content.youtube_id}}'}
+
+    );
+          {% endif %}
+
+        event.target.playVideo();
+
+
+      }
+
+      // 5. The API calls this function when the player's state changes.
+      //    The function indicates that when playing a video (state=1),
+      //    the player should play for six seconds and then stop.
+      //var done = false;
+
+      function onPlayerStateChange(event) {
+          {% if XML_NAV %}
+        if (event.data == YT.PlayerState.ENDED ) {
+          nextActivity();
+         // done = true;
+            }
+            {% endif %}
+      }
+
+      function nextActivity() {
+        var form =  $("#nav_form");
+        form.append( $('<input>').attr({ type: 'hidden',
+                                                    name: 'nav_event',
+                                                    value:'next'
+                                                  }));
+
+                  form.submit();
+
+      }
+
+
+function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+                crossDomain: false, // obviates need for sameOrigin test
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type)) {
+                        var csrftoken = getCookie('csrftoken');
+
+
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+
+
+   </script>
+
+
+
+{% endblock scripts %}

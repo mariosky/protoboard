@@ -55,6 +55,7 @@ class SimpleSequencing(object):
         self.RECORDS = {}
         self.USER = None
         self.context=context
+    
     def set_current(self, ula):
         atree = ula.get_atree()
 
@@ -80,7 +81,8 @@ class SimpleSequencing(object):
         else:
             return None
 
-    def get_path(self,current):
+    def get_path(self, current):
+        print('path', type(current))
         while current.parent:
             yield current
             current = current.parent
@@ -263,7 +265,7 @@ class SimpleSequencing(object):
             try:
                 cur.execute(query,(root_id,root_id,user_id,user_id))
                 recs = self.dictfetchall(cur)
-                print(recs)
+                # print(recs)
             finally:
                 cur.close()
 
@@ -330,7 +332,6 @@ class SimpleSequencing(object):
         if self.RECORDS[id]["parent_id"] is None:
             xml_tree = ET.Element("item")
             xml_tree.attrib = self.xml_row(self.RECORDS[id])
-
         children = self._get_children(id)
         children.sort(key=lambda x: x['order_in_container'])
         if children:
@@ -367,6 +368,49 @@ class SimpleSequencing(object):
             pass
         return xml_tree
 
+    def _get_nav_dict(self, id, tree=None):
+        # If is the root add the id attribute
+        if self.RECORDS[id]["parent_id"] is None:
+            tree = self.RECORDS[id]
+
+        tree['children'] = []
+        children = self._get_children(id)
+        children.sort(key=lambda x: x['order_in_container'])
+
+        if children:
+            for activity in children:
+
+                exec(activity['pre_condition_rule'])
+                activity['pre_condition_rule'] = ""
+
+                # Add the activities to the tree with the new precondition
+                # If stopForwardTraversal stop recursion and
+                # return the xml_tree up to this point
+                if activity['pre_condition'] == 'stopForwardTraversal':
+                    tree['children'].append(activity)
+                    return tree
+
+                # If skip dont include this activity
+                # and dont recurse to this activity
+                # children activities
+                elif activity['pre_condition'] == 'skip':
+                    continue
+
+                elif activity['num_attempts'] >= int(activity['attempt_limit']) and int(activity['attempt_limit']) < 100:
+                    activity['pre_condition'] = 'disabled'
+
+                elif activity['pre_condition'] == 'disabled':
+                    activity['children'] = []
+                    tree['children'].append(activity)
+                    continue
+
+                tree['children'].append(activity)
+                # Recursevly call get nav attaching the current activity to the
+                # xml_tree we are constructing
+                self._get_nav_dict(activity['id'], activity)
+        else:
+            pass
+        return tree
 
     def get_attr(self, uri, attr):
         for k,v in list(self.RECORDS.items()):
@@ -407,9 +451,10 @@ class SimpleSequencing(object):
         else:
             return None
 
-
-
-    def get_nav(self,root):
+    def get_nav(self, root, as_dict=False):
         self.RECORDS = {}
-        self.sql(root.learning_activity.id,root.user_id)
-        return self._get_nav(root.learning_activity.id)
+        self.sql(root.learning_activity.id, root.user_id)
+        if as_dict:
+            return self._get_nav_dict(root.learning_activity.id)
+        else:
+            return self._get_nav(root.learning_activity.id)
