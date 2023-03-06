@@ -64,4 +64,11 @@ psql -U django postgres < backup.sql
 brew install redis
 ```
 
-
+#### Tailwindcss
+```
+tailwindcss -i input.css -o ./activitytree/static/assets/css/output.css --watch
+```
+Para producción:
+```
+tailwindcss -i input.css -o ./activitytree/static/assets/css/style.css --minify
+```
