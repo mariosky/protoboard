@@ -25,9 +25,12 @@
     {% block head %}
 
     {% endblock head %}
-    <title> tailwind-aulacode.com </title>
+    <title> aulacode.com </title>
 
-
+      <script>
+      /*to prevent Firefox FOUC, this must be here*/
+        let FF_FOUC_FIX;
+      </script>
      <style>
 
          {% block style %}
