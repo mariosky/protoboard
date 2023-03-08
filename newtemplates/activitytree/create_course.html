@@ -1,85 +1,60 @@
 {% extends "activitytree/base.html" %}
 {% load widget_tweaks %}
 {% block content %}
+
+
+<div class="md:mx-auto md:max-w-screen-xl py-12">
+    <h1 class="text-2xl font-bold">Agregar un nuevo curso</h1>
+     <p class="mt-2 text-lg text-gray-600">
+             Empieza por llenar la forma.    
+     </p>
+  <div class="mt-4 flex space-x-4">
+    <a href="/instructor/" class="btn btn-white ">De regreso a mis cursos</a>
+    <input type="submit"  class="btn btn-success mt-0" value="Enviar">
+  </div>
+    <form action="" method="post">
+{% csrf_token %}
+       <form onSubmit="return false">
+            {% for error in form.non_field_errors %}
+                           <p>{{error}}</p>
+                        {% endfor %}
+        <h2 class="text-2xl font-bold">Información Básica</h2>
+        <div class="mt-8 max-w-md">
+            <div class="grid grid-cols-1 gap-6"  >
+              <label class="block" for="{{ form.uri.id_for_label }}">
+                <span class="text-gray-700">{{  form.uri.label }} </span>
+                {{form.uri|add_class:"mt-1 block w-full"|attr:"placeholder:Identificador"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                {% for error in form.uri.errors %}
+                  <div class="text-danger">{{ error }} </div>
+                {% endfor %}
+                  <div class="text-gray-500 text-sm"> {{ form.uri.help_text }}</div>
+              </label>
+              <label class="block" for="{{ form.title.id_for_label }}" >
+                <span class="text-gray-700">{{  form.title.label }} </span>
+                {{form.title|add_class:"mt-1 block w-full"|attr:"placeholder:Titulo"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                <div class="text-gray-500 text-sm"> {{ form.title.help_text }}</div>
+              </label>
+              <label class="block" for="{{ form.description.id_for_label }}" >
+                <span class="text-gray-700">{{form.description.label }} </span>
+                {{form.html_description|add_class:"form-control"|attr:"placeholder:Descripción HTML"|attr:"rows:6"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                <div class="text-gray-500 text-sm"> {{ form.description.help_text }}</div>
+              </label>
+
+        </div>
+ <input type="submit"  class="mt-5" value="Enviar">
+
+       </form>
+    </form>
+
+</div>
+
 <form action="" method="post">
     {% csrf_token %}
-
-
-
-
-<div class="py-4 py-lg-6 bg-primary">
-    <div class="container">
-      <div class="row">
-        <div class="offset-lg-1 col-lg-10 col-md-12 col-12">
-          <div class="d-lg-flex align-items-center justify-content-between">
-            <!-- Content -->
-            <div class="mb-4 mb-lg-0">
-              <h1 class="text-white mb-1">Agregar un nuevo curso</h1>
-              <p class="mb-0 text-white lead">
-                Empieza por llenar la forma básica.
-              </p>
-            </div>
-            <div>
-              <a href="/instructor/" class="btn btn-white ">De regreso a mis cursos</a>
-                <input type="submit"  class="btn btn-success mt-0" value="Enviar">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Page Content -->
-  <div class="pb-12">
-    <div class="container">
-      <div id="courseForm" class="bs-stepper">
-        <div class="row">
-          <div class="offset-lg-1 col-lg-10 col-md-12 col-12">
-            <!-- Stepper Button -->
-            <!-- Stepper content -->
-            <div class="bs-stepper-content mt-5">
+    
               <form onSubmit="return false">
                 <!-- Content one -->
 
-                  <!-- Card -->
-                  <div class="card mb-3 ">
-                    <div class="card-header border-bottom px-4 py-3">
-                      <h4 class="mb-0">Información Básica</h4>
-                    </div>
-                    <!-- Card body -->
-                    <div class="card-body">
 
-                    {% if  form.non_field_errors %}
-                    <div class="alert alert-danger" role="alert">
-                      <h4 class="alert-heading">Hay algún problema </h4>
-                      {% for error in form.non_field_errors %}
-                           <p>{{error}}</p>
-                        {% endfor %}
-
-                    </div>
-
-                    {% endif %}
-
-                       <div class="mb-3">
-
-                        <label for="{{ form.uri.id_for_label }}" class="form-label">{{  form.uri.label }}</label>
-                          {{form.uri|add_class:"form-control"|attr:"placeholder:Identificador"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
-                       <!--    <input id="courseTitle" class="form-control" type="text" placeholder="Course Title" /> -->
-                        {% for error in form.uri.errors %}
-                             <div class="text-danger">{{ error }} </div>
-                        {% endfor %}
-                        <small> {{ form.uri.help_text }}</small>
-
-                       </div>
-
-                      <div class="mb-3">
-                        <label for="{{ form.title.id_for_label }}" class="form-label">{{  form.title.label }}</label>
-                          {{form.title|add_class:"form-control"|attr:"placeholder:Titulo"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
-                       <!--    <input id="courseTitle" class="form-control" type="text" placeholder="Course Title" /> -->
-
-                          <small> {{ form.title.help_text }}</small>
-                      </div>
-
-                      <div   class="mb-3">
                         <label for="{{ form.description.id_for_label }}" class="form-label">{{form.description.label }}</label>
                         {{form.description|add_class:"form-control"|attr:"placeholder:Descripción básica"|attr:"rows:4"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
                         <small>{{ form.description.help_text }}</small>
@@ -167,19 +142,10 @@
 
                     </div>
 
-                  </div>
-                  <!-- Button -->
 </form>
 
 
 
-
-            </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
 
 </form>
 
