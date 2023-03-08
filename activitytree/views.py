@@ -131,7 +131,7 @@ def add_course_view(request):
                 return HttpResponseRedirect('/instructor/')
             else:
                 print("Forma inválida")
-
+                print(form.errors)
         else:
             form = CourseForm()
         return render(request, 'activitytree/create_course.html', {'form': form})

@@ -36,10 +36,85 @@
               </label>
               <label class="block" for="{{ form.description.id_for_label }}" >
                 <span class="text-gray-700">{{form.description.label }} </span>
-                {{form.html_description|add_class:"form-control"|attr:"placeholder:Descripción HTML"|attr:"rows:6"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                {{form.description|add_class:"form-control"|attr:"placeholder:Descripción HTML"|attr:"rows:6"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
                 <div class="text-gray-500 text-sm"> {{ form.description.help_text }}</div>
               </label>
-
+              <label class="block" for="{{ form.html_description.id_for_label }}" >
+                <span class="text-gray-700">{{form.html_description.label }} </span>
+                  <label for="{{ form.html_description.id_for_label }}" class="form-label">{{form.html_description.label }}</label>
+                  {{form.html_description|add_class:"form-control"|attr:"placeholder:Descripción HTML"|attr:"rows:6"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                <div class="text-gray-500 text-sm"> {{ form.html_description.help_text }}</div>
+              </label>
+              <label class="block" for="{{ form.level.id_for_label }}" >
+                <span class="text-gray-700">{{  form.level.label }} </span>
+                  {{form.level|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                <div class="text-gray-500 text-sm"> {{ form.level.help_text }}</div>
+              </label>
+              <label class="block" for="{{ form.is_private.id_for_label }}" >
+                <span class="text-gray-700">{{  form.is_private.label }}</span>
+                  {{form.is_private|add_class:"form-check-input"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                <div class="text-gray-500 text-sm"> {{ form.is_private.help_text }}</div>
+              </label>
+              <label class="block" for="{{ form.author.id_for_label }}" >
+                <span class="text-gray-700">{{  form.author.label }}</span>
+                  {{form.author|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                <div class="text-gray-500 text-sm"> {{ form.author.help_text }}</div>
+              </label>
+              <label class="block" for="{{ form.author_image.id_for_label }}" >
+                <span class="text-gray-700">{{  form.author_image.label }}</span>
+                  {{form.author_image|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                <div class="text-gray-500 text-sm"> {{ form.author_image.help_text }}</div>
+              </label>
+              <label class="block" for="{{ form.external_url.id_for_label }}" >
+                <span class="text-gray-700">{{  form.external_url.label }}</span>
+                  {{form.external_url|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                <div class="text-gray-500 text-sm"> {{ form.external_url.help_text }}</div>
+              </label>
+              <label class="block" for="{{ form.rights.id_for_label }}" >
+                <span class="text-gray-700">{{  form.rights.label }}</span>
+                  {{form.rights|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                <div class="text-gray-500 text-sm"> {{ form.rights.help_text }}</div>
+              </label>
+              <label class="block" for="{{ form.rights_url.id_for_label }}" >
+                <span class="text-gray-700">{{  form.rights_url.label }}</span>
+                  {{form.rights_url|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                  <div class="text-gray-500 text-sm">{{ form.rights_url.help_text }}</div>
+              </label>
+              <label class="block" for="{{ form.duration.id_for_label }}" >
+                <span class="text-gray-700">{{  form.duration.label }}</span>
+                  {{form.duration|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                <div class="text-gray-500 text-sm"> {{ form.duration.help_text }}</div>
+              </label>
+              <label class="block" for="{{ form.image_url.id_for_label }}" >
+                <span class="text-gray-700">{{  form.image_url.label }}</span>
+                  {{form.image_url|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                <div class="text-gray-500 text-sm"> {{ form.image_url.help_text }}</div>
+              </label>
+              <label class="block" for="{{ form.video_url.id_for_label }}" >
+                <span class="text-gray-700">{{  form.video_url.label }}</span>
+                  {{form.video_url|add_class:"form-control"|attr:"size:4"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                <div class="text-gray-500 text-sm"> {{ form.video_url.help_text }}</div>
+              </label>
+              <label class="block" for="{{ form.tags.id_for_label }}" >
+                <span class="text-gray-700">{{  form.tags.label }}</span>
+                  {{form.tags|add_class:"form-control"|add_error_attr:"role:alert"|attr:"rows:6"|add_error_class:"alert alert-danger"}}
+                <div class="text-gray-500 text-sm"> {{ form.tags.help_text }}</div>
+              </label>
+              <label class="block" for="{{ form.status.id_for_label }}" >
+                <span class="text-gray-700">{{  form.status.label }}</span>
+                 {{form.status|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                <div class="text-gray-500 text-sm"> {{ form.status.help_text }}</div>
+              </label>
+              <label class="block" for="{{ form.current_price.id_for_label }}" >
+                <span class="text-gray-700">{{  form.current_price.label }}</span>
+                 {{form.current_price|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                <div class="text-gray-500 text-sm"> {{ form.current_price.help_text }}</div>
+              </label>
+              <label class="block" for="{{ form.start_date.id_for_label }}" >
+                <span class="text-gray-700">{{  form.start_date.label }}</span>
+                 {{form.start_date|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
+                <div class="text-gray-500 text-sm"> {{ form.start_date.help_text }}</div>
+              </label>
         </div>
  <input type="submit"  class="mt-5" value="Enviar">
 
@@ -48,105 +123,5 @@
 
 </div>
 
-<form action="" method="post">
-    {% csrf_token %}
-    
-              <form onSubmit="return false">
-                <!-- Content one -->
-
-
-                        <label for="{{ form.description.id_for_label }}" class="form-label">{{form.description.label }}</label>
-                        {{form.description|add_class:"form-control"|attr:"placeholder:Descripción básica"|attr:"rows:4"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
-                        <small>{{ form.description.help_text }}</small>
-                      </div>
-                      <div   class="mb-3">
-                        <label for="{{ form.html_description.id_for_label }}" class="form-label">{{form.html_description.label }}</label>
-                        {{form.html_description|add_class:"form-control"|attr:"placeholder:Descripción HTML"|attr:"rows:6"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
-                        <small>{{ form.html_description.help_text }}</small>
-                      </div>
-
-                     <div   class="mb-3">
-                        <label for="{{ form.level.id_for_label }}" class="form-label">{{  form.level.label }}</label>
-                          {{form.level|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
-                        <small> {{ form.level.help_text }}</small>
-                      </div>
-                      <div  class="mb-3">
-                        <label for="{{ form.is_private.id_for_label }}" class="form-label">{{  form.is_private.label }}</label>
-                          {{form.is_private|add_class:"form-check-input"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
-                        <small> {{ form.is_private.help_text }}</small>
-                      </div>
-                      <div   class="mb-3">
-                      <label for="{{ form.author.id_for_label }}" class="form-label">{{  form.author.label }}</label>
-                          {{form.author|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
-                        <small> {{ form.author.help_text }}</small>
-                      </div>
-                      <div   class="mb-3">
-                      <label for="{{ form.author_image.id_for_label }}" class="form-label">{{  form.author_image.label }}</label>
-                          {{form.author_image|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
-                        <small> {{ form.author_image.help_text }}</small>
-                      </div>
-                      <div   class="mb-3">
-                        <label for="{{ form.external_url.id_for_label }}" class="form-label">{{  form.external_url.label }}</label>
-                          {{form.external_url|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
-                        <small> {{ form.external_url.help_text }}</small>
-                      </div>
-                      <div   class="mb-3">
-                      <label for="{{ form.rights.id_for_label }}" class="form-label">{{  form.rights.label }}</label>
-                          {{form.rights|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
-                        <small> {{ form.rights.help_text }}</small>
-                      </div>
-                      <div   class="mb-3">
-                      <label for="{{ form.rights_url.id_for_label }}" class="form-label">{{  form.rights_url.label }}</label>
-                          {{form.rights_url|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
-                        <small> {{ form.rights_url.help_text }}</small>
-                      </div>
-                      <div   class="mb-3">
-                      <label for="{{ form.duration.id_for_label }}" class="form-label">{{  form.duration.label }}</label>
-                          {{form.duration|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
-                        <small> {{ form.duration.help_text }}</small>
-                      </div>
-                      <div   class="mb-3">
-                      <label for="{{ form.image_url.id_for_label }}" class="form-label">{{  form.image_url.label }}</label>
-                          {{form.image_url|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
-                        <small> {{ form.image_url.help_text }}</small>
-                      </div>
-                      <div   class="mb-3">
-                      <label for="{{ form.video_url.id_for_label }}" class="form-label">{{  form.video_url.label }}</label>
-                          {{form.video_url|add_class:"form-control"|attr:"size:4"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
-                        <small> {{ form.video_url.help_text }}</small>
-                      </div>
-                      <div   class="mb-3">
-                      <label for="{{ form.tags.id_for_label }}" class="form-label">{{  form.tags.label }}</label>
-                          {{form.tags|add_class:"form-control"|add_error_attr:"role:alert"|attr:"rows:6"|add_error_class:"alert alert-danger"}}
-                       <!--    <input id="courseTitle" class="form-control" type="text" placeholder="Course Title" /> -->
-                        <small> {{ form.tags.help_text }}</small>
-                      </div>
-                      <div   class="mb-3">
-                      <label for="{{ form.status.id_for_label }}" class="form-label">{{  form.status.label }}</label>
-                          {{form.status|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
-                       <!--    <input id="courseTitle" class="form-control" type="text" placeholder="Course Title" /> -->
-                        <small> {{ form.status.help_text }}</small>
-                      </div>
-                      <div   class="mb-3">
-                      <label for="{{ form.current_price.id_for_label }}" class="form-label">{{  form.current_price.label }}</label>
-                          {{form.current_price|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
-                        <small> {{ form.current_price.help_text }}</small>
-                      </div>
-                      <div   class="mb-3">
-                      <label for="{{ form.start_date.id_for_label }}" class="form-label">{{  form.start_date.label }}</label>
-                          {{form.start_date|add_class:"form-control"|add_error_attr:"role:alert"|add_error_class:"alert alert-danger"}}
-                       <!--    <input id="courseTitle" class="form-control" type="text" placeholder="Course Title" /> -->
-                        <small> {{ form.start_date.help_text }}</small>
-                      </div>
-                   <input type="submit"  class="btn btn-success mt-5" value="Enviar">
-
-                    </div>
-
-</form>
-
-
-
-
-</form>
 
 {% endblock content %}
