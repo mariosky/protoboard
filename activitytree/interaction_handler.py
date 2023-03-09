@@ -142,7 +142,8 @@ class SimpleSequencing(object):
         pass
 
     def assignActivityTree(self, user, activity):
-        #Only root activities can be assigned
+        # Only root activities can be assigned
+        print(user, activity)
         if activity.parent is None:
             #If Root bring a List of all child nodes recursive
             nodeList = activity.get_children(recursive=True)

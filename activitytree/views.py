@@ -282,11 +282,13 @@ def instructor(request):
 def my_courses(request):
     if request.user.is_authenticated and request.user != 'AnonymousUser':
         courses = LearningActivity.objects.filter(authorlearningactivity__user=request.user, root=None)
+        auth_courses = None
+        if request.user.groups.filter(name='author').exists():
+            auth_courses = Course.objects.filter(author=request.user)
 
-        return render(request,'activitytree/instructor_home.html',
-                                  {'courses': courses
-                                   # , 'plus_scope':plus_scope,'plus_id':plus_id
-                                   })
+        return render(request, 'activitytree/instructor_home.html',
+                      {'courses': courses, 'auth_courses': auth_courses
+                       })
     else:
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
@@ -658,7 +660,7 @@ def path_activity(request, path_id, uri):
                 requested_activity = UserLearningActivity.objects.get(learning_activity__id=path_id, user=request.user)
             except (ObjectDoesNotExist, IndexError) as e:
                 requested_activity = None
-
+            print("req", requested_activity, learning_activity, path_id, uri)
             # The requested_activity was NOT FOUND
             if not requested_activity:  # The requested_activity was not found
                 # Maybe a
@@ -757,7 +759,7 @@ def path_activity(request, path_id, uri):
             content = ""
 
         if (requested_activity.learning_activity.uri).split('/')[2] == 'video':
-            learning_activity_local, created = LearningActivityLocal.objects.get_or_create(uri=requested_activity.learning_activity.uri, title=activity_content['title'])
+            #learning_activity_local, created = LearningActivityLocal.objects.get_or_create(uri=requested_activity.learning_activity.uri, title=activity_content['title'])
             return render(request, 'activitytree/video.html',
 
                                       {'XML_NAV': XML,
@@ -828,7 +830,7 @@ def activity(request, uuid, type=None):
         else:
             _id =  "/activity/{uuid}".format(uuid=uuid)
 
-        print(_id)
+        print('el id', _id)
         activity_content = Activity.get(_id)
         print(activity_content)
 
