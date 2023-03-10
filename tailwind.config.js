@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./newtemplates/**/*.{html,js}", 
-            "./newtemplates/activitytree/header.html"],
+  content: ["./templates/**/*.{html,js}", 
+            "./templates/activitytree/header.html"],
   theme: {
     extend: {
         typography: (theme) => ({
