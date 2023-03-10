@@ -42,10 +42,17 @@
         </a>
      </div>
   </div>
-<!-- header -->
-  <div class="flex flex-col gap-4 mt-20">
-<a href="/activitybuilder/" class="btn btn-secondary btn-sm"> Ver Actividades</a>
-							<a href="/add-course/"      class="btn btn-primary   btn-sm">Crear un curso</a>
+ 
+{% if user.is_authenticated and user|has_group:"author" %}
+    
+
+
+  <div class="flex flex-row gap-4 items-center mt-20">
+   <a href="/activitybuilder/" class="whitespace-nowrap text-base font-medium text-blue-500 hover:text-blue-700"> Actividades</a>
+   <a href="/add-course/"      class="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border
+          border-transparent bg-blue-500 px-4 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700">Crear un curso</a>
+  </div>
+  <div class="flex flex-col gap-4 mt-16">
    {% for c in courses%}
     <div class="flex flex-row w-1/2 border border-gray-300 rounded-lg"> 
        <div class="flex flex-col w-2/3 mb-3">
@@ -66,11 +73,27 @@
        </div>
     </div>
    {% empty %}
-    <div class="mt-2 ml-3 text-xl font-semibold tracking-tight leading-none text-blue-500 md:text-xl lg:text-xl">
-        No tienes cursos registrados todavía. Busca algún curso.
+    <div class="grid mt-10 gap-6 text-xl justify-items-center font-semibold tracking-tight leading-none mx-auto text-slate-700 md:text-xl lg:text-xl">
+    
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 16.318A4.486 4.486 0 0012.016 15a4.486 4.486 0 00-3.198 1.318M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
+</svg>
+
+      <div>   No haz agreagado un curso todavía. </div>
     </div>
    {% endfor %} 
   </div>
+
+{% else %}
+<div class="grid mt-10 gap-6 text-xl justify-items-center font-semibold tracking-tight leading-none mx-auto text-slate-700 md:text-xl lg:text-xl">
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+</svg>
+      <div> Para poder crear tus propios cursos debes tener una cuenta de instructor. </div>
+      <div class="text-base font-normal">    Nos interesa agregar colaboradores.  ¿Tienes una buena idea para un curso? Envianos un correo.  </div>
+</div>
+
+{% endif %}
 </div>
 {% endblock content %}
 

@@ -6,53 +6,17 @@
 
 {% block content %}
 
-    <div class="container">
-        <div class="row mb-2 justify-content-center">
-        <div class="col-lg-8 col-md-12 col-12 text-center">
-            <!-- caption -->
-            <span class="text-primary mb-3 d-block text-uppercase font-weight-semi-bold ls-xl">Bienvenido</span>
-            <h2 class="mb-2 display-4 font-weight-bold"> ¿Qué quieres aprender?</h2>
-            <p class="lead">Tu cuenta ha sido creada  ya puedes <a href="/accounts/login"> inicar sesión. </a>   </p>
-        <img src="{{STATIC_URL}}assets/images/blog/road.jpg" class="img-fluid d-lg-none" alt="">
-        </div>
+<div class="grid mt-10 gap-6 text-xl justify-items-center font-semibold tracking-tight leading-none mx-auto text-slate-700 md:text-xl lg:text-xl">
 
-        </div>
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
+</svg>
 
-<div class="card mb-4 card-hover  ">
-    <div class="row g-0">
-        <!-- Image -->
-        <a href="blog-single.html" class="col-lg-8 col-md-12 col-12 bg-cover img-left-rounded" style="background-image: url({{STATIC_URL}}assets/images/blog/road.jpg);">
-        <img src="{{STATIC_URL}}assets/images/blog/road.jpg" class="img-fluid d-lg-none invisible" alt=""></a>
-        <div class="col-lg-4 col-md-12 col-12">
-            <!-- Card Body -->
-            <div class="card-body">
-                <a href="#" class="badge bg-warning mb-3">Curso recomendado</a>
-                <h1 class="mb-4"> <a href="blog-single.html" class="text-inherit">
-                ¿Qué hay nuevo en Python para el 2021?
-                </a>
-                </h1>
-                <p> Este es un curso introductorio a las nuevas características del lenguaje Python 3.0.
-                </p>
-                <!-- Media Content -->
-                <div class="row align-items-center g-0 mt-7">
-                <div class="col-auto">
-                    <img src="{{STATIC_URL}}assets/images/avatar/avatar-6.jpg" alt="" class="rounded-circle avatar-sm me-2">
-                </div>
-                <div class="col lh-1 ">
-                    <h5 class="mb-1">Mario García Valdez</h5>
-                    <p class="font-size-xs mb-0">Septiembre 13, 2021</p>
-                </div>
-                <div class="col-auto">
-                    <p class="font-size-xs mb-0">6 Minutos de lectura</p>
-                </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-  </div>
-
-
+      <div> ¿Qué quieres aprender?</div>
+      <div class="text-base font-normal">    Tu cuenta ha sido creada  ya puedes
+          <a class="text-blue-500" href="/accounts/login"> inicar sesión. </a>   </div>
+</div>
 
 {% endblock %}
 
