@@ -504,7 +504,7 @@ def upload_activity(request):  # view that receives activity data and saves it t
                 try:
                     if not actividad['_id']:
                         ## Is a new activity Generate a Global ID
-                        actividad['_id'] = '/test/' + str(uuid.uuid1())
+                        actividad['_id'] = '/quiz/' + str(uuid.uuid1())
 
                     message = activities_collection.update({'_id': actividad['_id']},
                                                            actividad, upsert=True)
@@ -852,7 +852,7 @@ def activity(request, uuid, type=None):
             # Do something for anonymous users.
 
 
-def path_test(request, path_id, uri):
+def path_quiz(request, path_id, uri):
     if request.user.is_authenticated:
         s = SimpleSequencing(context=get_context(request))
         try:
@@ -910,10 +910,10 @@ def path_test(request, path_id, uri):
             learning_activity__uri=requested_activity.learning_activity.uri).aggregate(Count('rating'), Avg('rating'))
 
         breadcrumbs = s.get_current_path(requested_activity)
-        test = Activity.get(requested_activity.learning_activity.uri)
+        quiz = Activity.get(requested_activity.learning_activity.uri)
         if feedback:
 
-            for q in test['questions']:
+            for q in quiz['questions']:
                 q_id = str(q['id'])
                 if q_id in feedback:
                     q['feedback'] = feedback[q_id]
@@ -923,7 +923,7 @@ def path_test(request, path_id, uri):
         return render(request,'activitytree/' + (requested_activity.learning_activity.uri).split('/')[1] + '.html',
                                   {'XML_NAV': XML,
                                    'uri': requested_activity.learning_activity.uri,
-                                   'content': test,
+                                   'content': quiz,
                                    'feedback': feedback,
                                    'breadcrumbs': breadcrumbs,
                                    'uri_id': '/%s' % requested_activity.learning_activity.id,
@@ -1015,7 +1015,7 @@ def program(request, uri):
 
 
 @transaction.atomic
-def test(request, uri):
+def quiz(request, uri):
     quiz = Activity.get(request.path)
     if quiz:
 

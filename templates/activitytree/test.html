@@ -3,7 +3,7 @@
 {% block activity %}
 
 
-   <form id="learning_activity_form"    role="form"  action="{{ uri_id }}{{ uri }}" method="POST" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
+   <form id="learning_activity_form"  class="pb-20"  role="form"  action="{{ uri_id }}{{ uri }}" method="POST" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
 
 
         {% if attempts_left < 100 %}

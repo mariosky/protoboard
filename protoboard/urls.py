@@ -26,10 +26,10 @@ urlpatterns = [
       path('activity/<str:type>/<uuid:uuid>/', views.activity),
       
       re_path('^(?P<path_id>[0-9]+)(?P<uri>/activity/([\w+](\/*)(-*))+)$',views.path_activity),
-      re_path(r'^(?P<path_id>[0-9]+)(?P<uri>/test/([\w+](\/*)(-*))+)$',views.path_test),
+      re_path(r'^(?P<path_id>[0-9]+)(?P<uri>/quiz/([\w+](\/*)(-*))+)$',views.path_quiz),
       re_path(r'^(?P<path_id>[0-9]+)(?P<uri>/program/([\w+](\/*)(-*))+)$',views.path_program),
       re_path(r'^(?P<uri>program/([\w+](\/*)(-*))+)$',views.program),
-      re_path(r'^(?P<uri>test/([\w+](\/*)(-*))+)$',views.test),
+      re_path(r'^(?P<uri>quiz/([\w+](\/*)(-*))+)$',views.quiz),
 
       path('execute_queue/',views.execute_queue),
       path('post_course/',views.course_view),
