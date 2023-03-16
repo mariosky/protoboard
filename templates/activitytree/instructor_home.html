@@ -5,10 +5,12 @@
 {% block content %} 
 <div class="pt-5  mx-auto mt-2  max-w-screen-xl relative border-b-1 border-gray-500 lg:px-12">
 <!-- header -->
-  <div class="flex flex-row border-b">
-      <img class="absolute top-5 left-5 invisible md:visible lg:h-24 lg:w-24 w-18 h-18 object-cover object-center rounded-full" src="{% gravatar_url user.email 100 %}" alt="blog">
+   <div class="flex flex-row items-start">
+      <img class="absolute top-5 left-5 invisible md:visible lg:h-24 lg:w-24 w-18
+      h-18 object-cover object-center rounded-full" src="{% gravatar_url user.email 100 %}" alt="blog">
       <div class="flex flex-col md:ml-32 ml-5 lg:ml-20">
-        <div class="mt-2 text-xl font-bold tracking-tight leading-none text-gray-900 md:text-xl lg:text-2xl">
+        <div class="mt-2 text-xl font-bold tracking-tight leading-none text-gray-900
+          md:text-xl lg:text-2xl">
                           {% if user.first_name %}
                                {{ user.first_name }} {{ user.last_name }}
                           {% else %}
@@ -17,33 +19,10 @@
         </div>
         <div class="">{{user.email}}</div>
       </div>
-      <div class="flex flex-col justify-center items-center mt-2  ml-10 text-gray-500 md:flex-row">
-        <a href="#"
-          class="inline-flex justify-center items-center ml-1 px-5 py-3 text-base
-           text-center text-teal-500  
-          hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 ">
-          <svg class="mr-2 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z">
-            </path>
-          </svg>
-          Mis Cursos
-        </a>
-        <a href="/me"
-          class="inline-flex justify-center items-center ml-1 px-5 py-3 text-base
-           text-center text-teal-500  
-          hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 ">
-          <svg class="mr-2 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <pat
-              d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z">
-            </path>
-          </svg>
-         Perfil
-        </a>
-     </div>
-  </div>
- 
-{% if user.is_authenticated and user|has_group:"author" %}
+    {% include "activitytree/top_menu.html" with current="instructor" instructor=True %}
+      </div> 
+
+      {% if user.is_authenticated and user|has_group:"author" %}
     
 
 
