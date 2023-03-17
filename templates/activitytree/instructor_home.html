@@ -5,22 +5,7 @@
 {% block content %} 
 <div class="pt-5  mx-auto mt-2  max-w-screen-xl relative border-b-1 border-gray-500 lg:px-12">
 <!-- header -->
-   <div class="flex flex-row items-start">
-      <img class="absolute top-5 left-5 invisible md:visible lg:h-24 lg:w-24 w-18
-      h-18 object-cover object-center rounded-full" src="{% gravatar_url user.email 100 %}" alt="blog">
-      <div class="flex flex-col md:ml-32 ml-5 lg:ml-20">
-        <div class="mt-2 text-xl font-bold tracking-tight leading-none text-gray-900
-          md:text-xl lg:text-2xl">
-                          {% if user.first_name %}
-                               {{ user.first_name }} {{ user.last_name }}
-                          {% else %}
-                                  {{ user.username }}
-                          {% endif %}
-        </div>
-        <div class="">{{user.email}}</div>
-      </div>
     {% include "activitytree/top_menu.html" with current="instructor" instructor=True %}
-      </div> 
 
       {% if user.is_authenticated and user|has_group:"author" %}
     
