@@ -9,7 +9,7 @@
 
 #code-editor {
  width: 100%;
- height: 540px; 
+ height: 800; 
  position: absolute;
         top: 0;
         right: 0;
@@ -21,6 +21,7 @@
 
 
 {% block activity %}
+
 
 
 
@@ -49,11 +50,11 @@
   </div>
 
 <div class="flex flex-row flex-wrap-reverse w-full"> 
-  <div class="inline-block relative md:w-2/3  text-base w-screen">
+  <div class="inline-block relative md:w-2/3  text-lg w-screen h-screen">
     <div id="code-editor">{{program_quiz.initial_code}}</div>
   </div>
   
-  <div class="flex flex-col prose prose-sm md:w-1/3"> 
+  <div class="flex flex-col prose md:w-1/3"> 
     
     <div class="p-2 ml-3"> 
         <div class="font-bold text-lg "> {{program_quiz.title}} </div>
@@ -99,6 +100,7 @@
     var editor = ace.edit("code-editor");
     editor.setTheme("ace/theme/github");
     editor.session.setMode("ace/mode/{{ program_quiz.lang }}");
+    editor.setFontSize(14); 
 
 document.body.addEventListener('htmx:configRequest', function(evt) {
   if (evt.detail.verb == 'post') {
