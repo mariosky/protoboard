@@ -1209,10 +1209,16 @@ def get_result(request):
                         else:
                             s.update(ula, attempt=True)
                     except Exception as e:
-                        print ("Could not update ULA", e)
+                        print("Could not update ULA", e)
                 if 'stdout' in result:
-                    if type(result['stdout']) == list: 
+                    if type(result['stdout']) == list:
                         result['stdout'] = "\n".join(result['stdout'])
+
+                if 'failures' in result:
+                    if 'csharp' in task_id:
+                        for line in result['failures'][0].split('\n'):
+                            start = line.find(':')+2
+                            print(line[start:])
 
                 result = {'result': result, 'outcome': t.result[1]}
                 template = 'activitytree/program_success.html'
