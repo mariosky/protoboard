@@ -1209,7 +1209,7 @@ def get_result(request):
                         else:
                             s.update(ula, attempt=True)
                     except Exception as e:
-                        print ("update ULA", e)
+                        print ("Could not update ULA", e)
                 if 'stdout' in result:
                     if type(result['stdout']) == list: 
                         result['stdout'] = "\n".join(result['stdout'])
@@ -1223,12 +1223,15 @@ def get_result(request):
                 return HttpResponse(json.dumps({'outcome': -1}), content_type='application/javascript')
         else:
             count = int(request.GET["count"])+1
-            if count < 11:
+            if count < 51:
+                template_context = {
+                    'percentege': 2*count,
+                    'task_id': task_id,
+                    'count': count}
+                if 'id' in request.GET:
+                    template_context['id'] = request.GET['id']
                 template = 'activitytree/program_polling.html'
-                return render(request, template, {
-                    'percentege': 10*count,
-                    'task_id': task_id, 
-                    'count':count})
+                return render(request, template, template_context)
             else:
                 template = 'activitytree/program_success.html'
                 return render(request, template, {
