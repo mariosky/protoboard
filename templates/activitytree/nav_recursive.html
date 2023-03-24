@@ -57,17 +57,24 @@
     <div class="flex flex-col w-full">
 
 	<div class=" font-semibold text-sm 
-                    text-slate-700
+           {% if activity.pre_condition == "disabled" %}  
+             text-slate-200
+           {% elif activity.progress_status == "completed"%}  
+             text-green-700
+           {% else %}  
+             text-slate-700
+           {% endif %} 
+
          	    ">{{ activity.name }}
 	   
-	   {{activity.pre_condition }}
+                    {% comment %} {{activity.pre_condition }} {{activity.progress_status}} {% endcomment %}
+
 	</div>
 	<div class="font-light text-xs "> 
 	    intentos: {{ activity.num_attempts }} | cal: {{ activity.objective_measure }} 
 
 	</div>
 	</div> 
-            <!--  {{ activity }}  -->
   </a> </li> 
 
 {% endif %}
