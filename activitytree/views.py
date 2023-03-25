@@ -1213,12 +1213,16 @@ def get_result(request):
                 if 'stdout' in result:
                     if type(result['stdout']) == list:
                         result['stdout'] = "\n".join(result['stdout'])
-
+                failures = []
                 if 'failures' in result:
-                    if 'csharp' in task_id:
+                    if 'csharp' in task_id and result['failures']: # If there is at least one element
                         for line in result['failures'][0].split('\n'):
-                            start = line.find(':')+2
-                            print(line[start:])
+                            if ': warning' in line or ': error' in line:
+                                start = line.find(':')+2
+                                failures.append(line[start:])
+                            else:
+                                failures.append(line)
+                    result['failures'] = failures
 
                 result = {'result': result, 'outcome': t.result[1]}
                 template = 'activitytree/program_success.html'

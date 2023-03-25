@@ -17,10 +17,10 @@
 
           <div class="text-red-800 font-semibold ml-3 mb-2 w-full"> Tu código no pasó todas las pruebas </div>
        </div>
-      <div class="flex flex-col text-red-700 p-1 ml-8">
+      <div class="flex flex-col text-red-700 p-1 ml-8 overflow-x-auto">
 
        {% for f in result.failures %}
-        <div> {{f}} </div>
+        <div class="whitespace-nowrap pb-1" > {{f}} </div>
        {% endfor %}
       </div>
     </div>
