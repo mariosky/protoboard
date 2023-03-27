@@ -305,8 +305,6 @@ def my_enrolled_courses(request):
 
 def course_info(request, course_id):
     # Must have credentials
-
-
     if request.method == 'GET':
         print(course_id)
         mycourse = get_object_or_404(Course, pk=course_id)
@@ -323,6 +321,28 @@ def course_info(request, course_id):
                                        })
     else:
         return HttpResponseNotFound('<h1>HTTP METHOD IS NOT VALID</h1>')
+
+
+def course_students(request, course_id):
+    # Must have credentials
+    if request.user.is_authenticated and request.user != 'AnonymousUser':
+        if request.method == 'GET':
+            if course_id:
+                # Is yours or you are staff?
+                mycourse = get_object_or_404(Course, pk=course_id)
+                students = User.objects.filter(userlearningactivity__learning_activity_id=mycourse.root.id)
+                ulas = UserLearningActivity.objects.filter(learning_activity_id=mycourse.root.id)
+                    
+                return render(request, 'activitytree/course_students.html',
+                              {'course_id': course_id,
+                               'course': mycourse,
+                               'students': students,
+                               'ulas':ulas})
+            else:
+                return HttpResponseNotFound('<h1>Course ID not Found</h1>')
+    else:
+        # please log in
+        return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
 
 def course(request, course_id=None):
