@@ -2,8 +2,8 @@
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, Http404
 from django.http import JsonResponse
-
-
+from collections import namedtuple
+from django.db import connection
 from django.db.models import Avg, Count
 from django.db import IntegrityError
 from django.db import transaction
@@ -334,6 +334,25 @@ def student_course_detail(request, course_id, user_id):
     else:
         # please log in
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
+
+
+def course_students_sql(course_id):
+    query = """SELECT au.id, au.username, au.first_name, au.last_name, au.email, 
+                ( 
+                    SELECT COUNT(*) 
+                    FROM  activitytree_userlearningactivity ula JOIN activitytree_course c ON 
+                    ula.learning_activity_id = c.root_id
+                    WHERE au.id = ula.user_id 
+                     AND c.id = %s
+                     AND ula.progress_status = 'completed') AS progress_status
+        FROM auth_user au""" % (course_id)
+    with connection.cursor() as cursor:
+        cursor.execute( query)
+        desc = cursor.description
+        nt_result = namedtuple('students', [col[0] for col in desc])
+        return [nt_result(*row) for row in cursor.fetchall()]
+
+
 def course_students(request, course_id):
     # Must have credentials
     if request.user.is_authenticated and request.user != 'AnonymousUser':
@@ -341,14 +360,14 @@ def course_students(request, course_id):
             if course_id:
                 # Is yours or you are staff?
                 mycourse = get_object_or_404(Course, pk=course_id)
-                students = User.objects.filter(userlearningactivity__learning_activity_id=mycourse.root.id)
-                ulas = UserLearningActivity.objects.filter(learning_activity_id=mycourse.root.id)
-                    
+                # students = User.objects.filter(userlearningactivity__learning_activity_id=mycourse.root.id)
+                # ulas = UserLearningActivity.objects.filter(learning_activity_id=mycourse.root.id)
+                students = course_students_sql(course_id)
+                print(students)
                 return render(request, 'activitytree/course_students.html',
                               {'course_id': course_id,
                                'course': mycourse,
-                               'students': students,
-                               'ulas':ulas})
+                               'students': students})
             else:
                 return HttpResponseNotFound('<h1>Course ID not Found</h1>')
     else:
