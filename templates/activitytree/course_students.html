@@ -1,27 +1,46 @@
 {% extends "activitytree/base.html" %}
+{% load gravatar %}
 {% load protoboard_extras %}
 {% load auth_extras %}
-{% block style %}
+{% block style %} 
 
 {% endblock style %}
 
 {% block content %}
-
-
   
 {% include "activitytree/course_info_hero.html"%}
 <div class="mx-auto mt-2 mb-10 border-black rounded-lg max-w-screen-xl  lg:px-12">
+<table class="table-fixed text-left">
+  <thead>
+    <tr class="border-b-2 border-slate-300">
+      <th class="w-12">      </th>
+      <th class="w-64 pl-2">Usuario</th>
+      <th class="w-64 pl-2">Nombre</th>
+      <th class="w-64 pl-2">Apellido</th>
+      <th class="w-64 pl-2">Status</th>
+      <th class="w-64 pl-2">Acción</th>
+    </tr>
+  </thead>
+  <tbody>
   {% for ula in ulas %}
-  <div > {{ ula.user.username }} {{ ula.user.first_name }}  {{ ula.user.last_name }}  {{ ula.progress_status}}</div>
+    <tr class="border-b border-slate-300">
+      <td class="w-12 py-2"><img src="{% gravatar_url ula.user.email 150 %}"  class="rounded-full object-cover object-center w-8 h-8" alt="Gravatar"/> </td>
+      <td class="w-64 pl-2"> {{ ula.user.username }} </td>
+      <td class="w-64 pl-2">{{ ula.user.first_name }}</td>
+      <td class="w-64 pl-2">{{ ula.user.last_name }}</td>
+      <td class="w-64 pl-2">{{ ula.progress_status}}</td>
+      <th class="w-64 pl-2 text-base text-blue-500"> <a href="/course/{{course.id}}/student/{{ula.user.id}}/"> Detalle </a> </th>
+    </tr>
+  {% endfor %}
+
+  </tbody>
+</table>
   {% comment %}
   {% for ula in student.userlearningactivity_set.filter.learning_activity__root_id=27 %}
       {{ ula }}
   {% endfor %}
   {% endcomment %}
-  {% endfor %}
-</div>  <!-- End col Temario --> 
-
-    
+</div>  <!-- End col Temario -->   s    
    
 
    
