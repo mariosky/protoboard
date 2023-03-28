@@ -306,11 +306,8 @@ def my_enrolled_courses(request):
 def course_info(request, course_id):
     # Must have credentials
     if request.method == 'GET':
-        print(course_id)
         mycourse = get_object_or_404(Course, pk=course_id)
-        print(mycourse)
         activity_list = get_course_list(mycourse.root.id)
-        print(activity_list)
         total_courses = Course.objects.filter(author=mycourse.author).count()
         
         for r in activity_list:
@@ -323,6 +320,18 @@ def course_info(request, course_id):
         return HttpResponseNotFound('<h1>HTTP METHOD IS NOT VALID</h1>')
 
 
+@login_required
+def student_course_detail(request, course_id, user_id):
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+            mycourse = get_object_or_404(Course, pk=course_id)
+            root = UserLearningActivity.objects.get(learning_activity_id=mycourse.root.id, user=request.user)
+            s = SimpleSequencing()
+            XML = s.get_nav(root, as_dict=True)
+            return render(request,'activitytree/student_course.html', {'XML_NAV':XML})
+    else:
+        # please log in
+        return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 def course_students(request, course_id):
     # Must have credentials
     if request.user.is_authenticated and request.user != 'AnonymousUser':
@@ -1635,6 +1644,7 @@ def me(request):
         except:
             return HttpResponse("Error")
         return HttpResponse("Cambio exitoso")
+
 
 
 @csrf_exempt

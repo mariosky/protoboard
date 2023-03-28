@@ -35,7 +35,7 @@ urlpatterns = [
       path('post_course/',views.course_view),
       path('get_course/',views.course_view),
       path('course/<int:course_id>/students/', views.course_students),
-
+      path('course/<int:course_id>/student/<int:user_id>/', views.student_course_detail),
       path('my_courses/', views.my_courses,name='my_courses'),
 
       path('javascript_result/',views.javascript_result),

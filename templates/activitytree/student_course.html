@@ -1,0 +1,68 @@
+{% extends "activitytree/base.html" %}
+{% load tz %}
+{% load gravatar %}
+
+{% block content %}
+<div class="pt-5  mx-auto mt-2  max-w-screen-xl relative lg:px-12">
+  <div class="flex flex-row flex-wrap border-b">
+    <div class="flex flex-col w-44">
+        <img src="{% gravatar_url user.email 150 %}"  class="rounded-full object-cover object-center w-18 h-18" alt="Gravatar"/>
+        <div class="mt-2 text-xl font-bold tracking-tight leading-none text-gray-900 md:text-xl lg:text-2xl">
+                          {% if user.first_name %}
+                               {{ user.first_name }} {{ user.last_name }}
+                          {% else %}
+                                  {{ user.username }}
+                          {% endif %}
+        </div>
+        <div class="text-sm">{{user.email}}</div>
+     </div>
+
+    <div class="flex flex-col w-2/3 ml-16">
+    <div class="font-bold  text-2xl mt-4 mb-3">Perfil básico</div>
+        <div class="overflow-hidden shadow sm:rounded-md p-3">
+
+        <div class="flex flex-wrap md:mx-auto md:max-w-screen-xl mt-2 px-2">
+            <div class="flex flex-none w-64 lg:block hidden  relative left-0">
+              <ul class="flex-col top-30 w-full pr-3">
+
+                {% for activity in XML_NAV.children %}
+                    {% include "activitytree/nav_recursive.html" %} 
+                {% endfor %}
+             </ul>
+            </div>
+     </div>
+         <button id="form-submit" type="submit"
+                    hx-post="/me/" _="on htmx:afterOnLoad wait 2s log 'Guardar' then put 'Guardar' into me"
+                    class="inline-flex w-full mt-4 mb-3 bg-blue-600 border rounded-lg border-gray-300  px-5 py-2.5  
+                  shadow-sm font-medium justify-center text-sm text-white sm:ml-3 sm:w-auto hover:bg-blue-800"> Actualizar Perfil</button>
+        </div>
+    </div>
+   
+    </div>
+  </div>
+</div>
+   
+{% endblock content %}
+
+{% block scripts %}
+
+
+{{block.super}}
+
+
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.6/jstz.min.js"></script>
+
+
+
+
+<script>
+
+document.body.addEventListener('htmx:configRequest', function(evt) {
+  if (evt.detail.verb == 'post') {
+    evt.detail.parameters['tz'] =  jstz.determine().name(); // add a new parameter into the mix
+  } 
+});
+
+  </script>
+
+{% endblock scripts %}
