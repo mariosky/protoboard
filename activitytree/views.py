@@ -324,11 +324,13 @@ def course_info(request, course_id):
 def student_course_detail(request, course_id, user_id):
     if request.user.is_authenticated:
         if request.method == 'GET':
-            mycourse = get_object_or_404(Course, pk=course_id)
-            root = UserLearningActivity.objects.get(learning_activity_id=mycourse.root.id, user=request.user)
+            course = get_object_or_404(Course, pk=course_id)
+            user = get_object_or_404(User, pk=user_id)
+
+            root = UserLearningActivity.objects.get(learning_activity_id=course.root.id, user=user)
             s = SimpleSequencing()
             XML = s.get_nav(root, as_dict=True)
-            return render(request,'activitytree/student_course.html', {'XML_NAV':XML})
+            return render(request,'activitytree/student_course.html', {'XML_NAV':XML, 'course':course, 'student':user})
     else:
         # please log in
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
