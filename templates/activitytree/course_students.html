@@ -22,14 +22,14 @@
     </tr>
   </thead>
   <tbody>
-  {% for ula in ulas %}
+  {% for ula in students %}
     <tr class="border-b border-slate-300">
-      <td class="w-12 py-2"><img src="{% gravatar_url ula.user.email 150 %}"  class="rounded-full object-cover object-center w-8 h-8" alt="Gravatar"/> </td>
-      <td class="w-64 pl-2"> {{ ula.user.username }} </td>
-      <td class="w-64 pl-2">{{ ula.user.first_name }}</td>
-      <td class="w-64 pl-2">{{ ula.user.last_name }}</td>
+      <td class="w-12 py-2"><img src="{% gravatar_url ula.email 150 %}"  class="rounded-full object-cover object-center w-8 h-8" alt="Gravatar"/> </td>
+      <td class="w-64 pl-2">{{ ula.username }} </td>
+      <td class="w-64 pl-2">{{ ula.first_name }}</td>
+      <td class="w-64 pl-2">{{ ula.last_name }}</td>
       <td class="w-64 pl-2">{{ ula.progress_status}}</td>
-      <th class="w-64 pl-2 text-base text-blue-500"> <a href="/course/{{course.id}}/student/{{ula.user.id}}/"> Detalle </a> </th>
+      <th class="w-64 pl-2 text-base text-blue-500"> <a href="/course/{{course.id}}/student/{{ula.id}}"> Detalle </a> </th>
     </tr>
   {% endfor %}
 
