@@ -337,12 +337,14 @@ def student_course_detail(request, course_id, user_id):
 
 
 def course_students_sql(course_id):
-    query = """SELECT au.id, au.username, au.first_name, au.last_name, au.email, COUNT(*) AS progress_status
-               FROM  activitytree_userlearningactivity ula JOIN activitytree_course c ON 
-                    ula.learning_activity_id = c.root_id JOIN  auth_user au ON ula.user_id = au.id
-               WHERE c.id = %s
-               AND ula.progress_status = 'completed' 
-               GROUP BY au.id, au.username, au.first_name, au.last_name, au.email
+    query = """SELECT  au.id, au.username, au.first_name, au.last_name, au.email, COUNT(*) AS completed_count
+      FROM  activitytree_course c 
+      JOIN activitytree_learningactivity la ON la.root_id = c.root_id
+      JOIN activitytree_userlearningactivity ula  ON la.id = ula.learning_activity_id
+      JOIN  auth_user au ON ula.user_id = au.id
+	  WHERE c.id = %s
+      AND ula.progress_status = 'completed' 
+             GROUP BY au.id, au.username, au.first_name, au.last_name, au.email
         """ % (course_id)
     with connection.cursor() as cursor:
         cursor.execute( query)
