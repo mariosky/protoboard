@@ -1172,8 +1172,6 @@ def execute_queue(request):
                 s = SimpleSequencing(context=get_context(request))
                 s.update(ula)
                 # Mouse Dynamics
-                # event = ULA_Event.objects.create(ULA=ula, context=request.POST)
-                # event.save()
             except ObjectDoesNotExist:
                 # Assume is a non assigned program
                 pass
@@ -1276,6 +1274,10 @@ def get_result(request):
 
                 result = {'result': result, 'outcome': t.result[1]}
                 template = 'activitytree/program_success.html'
+
+                event = ULA_Event.objects.create(ULA=ula, context=t.as_dict())
+                event.save()
+
                 print('res:', result)
                 return render(request, template, result)
 
