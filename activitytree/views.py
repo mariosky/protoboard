@@ -50,8 +50,7 @@ logger = logging.getLogger(__name__)
 
 
 def delete_course_view(request, course_id):
-    if request.user.is_authenticated and request.user != 'AnonymousUser':
-
+    if request.method == 'DELETE' and request.user.is_authenticated and request.user != 'AnonymousUser':
         mycourse = None
         if not request.user.is_superuser:
             mycourse = get_object_or_404(Course, pk=course_id, author=request.user)
@@ -72,7 +71,7 @@ def delete_course_view(request, course_id):
                 transaction.rollback()
                 print("Error al borrar {}".format(e))
 
-        return HttpResponseRedirect('/instructor/')
+        return HttpResponse('')
 
 
 def add_course_view(request):

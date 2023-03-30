@@ -18,7 +18,7 @@
   </div>
   <div class="flex flex-col gap-4 mt-16">
    {% for c in courses%}
-    <div class="flex flex-row w-1/2 border border-gray-300 rounded-lg"> 
+   <div id="course-{{c.id}}" class="flex flex-row w-1/2 border border-gray-300 rounded-lg"> 
        <div class="flex flex-col w-2/3 mb-3">
            <div class="mt-2 ml-3 text-xl font-semibold tracking-tight leading-none text-blue-500 md:text-xl lg:text-xl">
                 <a href="/update-course/{{c.id}}" 
@@ -34,6 +34,16 @@
                                     class="text-inherit mr-4 font-normal text-right tracking-tight leading-none text-blue-500">Editar Actividades</a>
                 <a href="/delete-course/{{c.id}}" 
                                     class="text-inherit mr-4 font-normal text-right tracking-tight leading-none text-blue-500">Borrar</a>
+                <button hx-delete="/delete-course/{{c.id}}"
+        _="on htmx:confirm(issueRequest)
+             halt the event
+             call Swal.fire({title: 'Confirma', text:'¿Seguro que quieres borrar el curso?'})
+             if result.isConfirmed issueRequest()"
+             hx-swap="outerHTML swap:1s"
+             hx-target="#course-{{c.id}}"
+             >
+                    Borrar
+</button>
 
                 <a href="/course/{{c.id }}/students" 
                                     class="text-inherit mr-4 font-normal text-right tracking-tight leading-none text-blue-500">Estudiantes</a>
