@@ -5,6 +5,11 @@ module.exports = {
   theme: {
     extend: {
         typography: (theme) => ({
+                 quoteless: {
+          css: {
+            'blockquote p:first-of-type::before': { content: 'none' },
+            'blockquote p:first-of-type::after': { content: 'none' },
+          },
                 DEFAULT: {
                   css: {
                     color: theme('colors.gray.800'),
