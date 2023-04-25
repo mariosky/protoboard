@@ -36,7 +36,7 @@
             <td class="w-8"> 
                 {{sub.uri|icon}}
             </td>
-            <td class="w-96">  <a href="{{ sub.uri }}">{{ sub.title }}</a> </td>
+            <td class="w-96">  {{ sub.title }} </td>
           </tr>
           {% endfor %}
         </tbody>    
@@ -58,7 +58,7 @@
 
            <div class="pl-3 pt-2">
                <div class="flex flex-row justify-end m-3 ">
-                 <a href="/{{course.id }}/activity/{{course.uri }}" class="ml-4 rounded-md border
+                 <a href="/{{course.root_id }}/activity/{{course.uri }}" class="ml-4 rounded-md border
                    border-transparent bg-violet-600 px-4 py-1.5 text-base font-medium text-white shadow-sm hover:bg-violet-700">Inscríbete</a>
                 </div>
                <div class="text-lg font-semibold mt-6 mb-3">Instructor</div>
