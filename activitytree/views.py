@@ -1375,11 +1375,12 @@ def _check_quiz(post_dict, quiz):
                 checked[id]['checked'] = [False for _ in range(len(answer))]
                 checked[id]['user_answer'] = [0 for _ in range(len(answer))]
         elif interaction in ['textEntryInteraction']:
+            answer_text = q['answer_text']
             if id in answerDict:
                 user_answer = answerDict[id][0]
                 checked[id]['user_answer'] = user_answer
 
-                if user_answer in answer:
+                if user_answer in answer_text:
                     checked[id]['correct'] = 1
                 else:
                     checked[id]['correct'] = 0
