@@ -969,7 +969,7 @@ def path_quiz(request, path_id, uri):
                     if q['interaction'] in ['choiceInteraction', 'simpleChoice']:
                         q['feedback_options'] = zip(q['options'], feedback[q_id]['user_answer'],
                                                     feedback[q_id]['checked'])
-        return render(request,'activitytree/' + (requested_activity.learning_activity.uri).split('/')[1] + '.html',
+        return render(request,'activitytree/test.html',
                                   {'XML_NAV': XML,
                                    'uri': requested_activity.learning_activity.uri,
                                    'content': quiz,
