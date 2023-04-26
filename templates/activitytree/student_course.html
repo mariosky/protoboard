@@ -10,7 +10,7 @@
     <div class="flex flex-col pl-5 w-full">
         <div class="text-sm font-bold tracking-tight text-gray-900 md:text-xl lg:text-xl">
                           {% if student.first_name %}
-                               {{ student.first_name }} {{ user.last_name }}
+                               {{ student.first_name }} {{ student.last_name }}
                           {% else %}
                                   {{ student.username }}
                           {% endif %}
