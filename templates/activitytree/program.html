@@ -1,30 +1,13 @@
-{% extends "activitytree/nav_base.html" %}
+{% extends "activitytree/nav_base_full.html" %}
 
 
 {% block style %}
 
-/*
-* Editor
-*/
-
-#code-editor {
- width: 100%;
- height: 800; 
- position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-}
 
 {% endblock style %}
 
 
 {% block activity %}
-
-
-
-
 
 <div class="flex flex-row gap-x-2 mt-4 mb-3 ml-2 md:w-1/2 font-semibold"> 
 
@@ -96,7 +79,7 @@
 
 <script>
   ace.config.set('basePath', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/')
-    var editor = ace.edit("code-editor");
+  var editor = ace.edit("code-editor", {maxLines: 50, minLines:10});
     editor.setTheme("ace/theme/github");
     editor.session.setMode("ace/mode/{{ program_quiz.lang }}");
     editor.setFontSize(14); 
