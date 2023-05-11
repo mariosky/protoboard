@@ -8,29 +8,55 @@
 
 
 {% block activity %}
-
-<div class="flex flex-row gap-x-2 mt-4 mb-3 ml-2 md:w-1/2 font-semibold"> 
-
+<!--- CODE -->
+<div class="block fixed inset-0 top-24 left-7 z-30 md:w-1/2 sm:w-full font-semibold overflow-y-auto"> 
+<div class="flex flex-row gap-x-2 mt-4 mb-3 ml-2 pr-3 md:w-1/2 font-semibold"> 
   {% for activity in breadcrumbs %}
 
     {% if forloop.first %} 
     <a class="text-blue-800" href="{{root_id}}{{ activity.uri }}">
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-</svg>
-</a>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+    </svg>
+    </a>
     <div class="flex flex-wrap  text-blue-700 "> <a href="{{root_id}}{{ activity.uri }}"> {{activity.name}} </a> </div>
     {% elif forloop.last %} 
 
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-</svg>
+    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+    </svg>
 
       <div class="flex flex-wrap  "> {{activity.name}} </div>
     {% endif %}
   {% endfor %}
 
+</div>
+
+  <div class="flex flex-col prose prose-sm"> 
+    <div class="p-2 ml-3"> 
+        {{ program_quiz.instructions|safe }}
+    </div>
   </div>
+  <div id="program-exec" > 
+      <div class="flex flex-row"> 
+        <button type="button" hx-post="/execute_queue/" hx-target="#program-exec" hx-swap="outerHTML" 
+                             class="inline-flex w-full mb-3 bg-blue-600 border rounded-lg border-gray-300  px-5 py-2.5  
+                  shadow-sm font-medium justify-center text-sm text-white sm:ml-3 sm:w-auto hover:bg-blue-800"> Ejecuta el código </button>
+
+      </div>
+    </div>
+  </div>
+
+<div class="hidden md:block fixed inset-y-0 right-0 top-24 pl-8 md:w-1/2 font-semibold overflow-y-auto"> 
+  <div id="code-editor" class="text-base h-3/4 overflow-y-auto">
+    {{program_quiz.initial_code}} 
+  </div>
+  <div class="text-base bg-green-200 h-1/4">
+    {{program_quiz.initial_code}} 
+  </div>
+
+</div>
+{% comment %}
 
 <div class="flex flex-row flex-wrap-reverse w-full"> 
   <div class="inline-block relative md:w-1/2  text-base w-screen h-screen">
@@ -39,7 +65,6 @@
   
   <div class="flex flex-col prose prose-sm md:w-2/5"> 
     <div class="p-2 ml-3"> 
-      {% comment%} <div class="font-bold text-lg "> {{program_quiz.title}} </div> {% endcomment %}
         {{ program_quiz.instructions|safe }}
     </div>
 
@@ -54,6 +79,7 @@
   </div>
 </div>
 
+{% endcomment %}
 
 {% endblock activity %}
 
@@ -79,7 +105,7 @@
 
 <script>
   ace.config.set('basePath', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/')
-  var editor = ace.edit("code-editor", {maxLines: 50, minLines:10});
+  var editor = ace.edit("code-editor");
     editor.setTheme("ace/theme/github");
     editor.session.setMode("ace/mode/{{ program_quiz.lang }}");
     editor.setFontSize(14); 
