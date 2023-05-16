@@ -51,8 +51,25 @@
   <div id="code-editor" class="text-base h-3/4 overflow-y-auto">
     {{program_quiz.initial_code}} 
   </div>
-  <div class="text-base bg-green-200 h-1/4">
-    {{program_quiz.initial_code}} 
+  <div class="text-base fixed bg-slate-900 h-1/4">
+    <div class="text-small fixed bg-black h-8 md:w-1/2 grid grid-cols-6 justify-items-stretch"> 
+      <div class="flex flex-row pl-4 pt-1 bg-lime-300 hover:bg-lime-600">
+        <div class="text-small font-mono mr-3">  
+          Ejecutar   
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+        </svg>
+      </div>
+      <div class="text-small text-white col-span-3 bg-blue">
+      </div>
+
+    </div>
+
+    <div class="mt-10 text-base h-full bg-slate-400 col-span-2 overflow-y-auto">
+
+    </div>
+ 
   </div>
 
 </div>
