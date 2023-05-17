@@ -1,5 +1,51 @@
 
+<div id="program-exec" class="text-base fixed bg-slate-900 w-full h-1/4">
+  <div class="text-small fixed bg-black h-8 md:w-1/2 grid grid-cols-6 justify-items-stretch"> 
+    <button type="button" hx-post="/execute_queue/" hx-target="#program-exec" hx-swap="outerHTML" 
+      class="flex flex-row pl-4 pt-1 bg-lime-300 hover:bg-lime-600">
+        <div class="text-small font-mono mr-3">  
+          Ejecutar   
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+        </svg>
+    </button>
+    <!-- Status bar -->
+    {% if result.result == 'Failure' %} 
+    <div class="text-small text-red-800 pt-1 pl-4 col-span-3 bg-red-100">
+          Tu código no pasó las pruebas
+    </div>
+    {% elif result.result == 'TimeOut' %} 
+    <div class="text-small text-red-800 pt-1 pl-4 col-span-3 bg-red-100">
+          TIME OUT
+    </div>
+    {% elif result.result == 'Success' %} 
 
+    <div class="text-small text-green-800 pt-1 pl-4 col-span-3 bg-green-100">
+          Tu código pasó todas las pruebas
+    </div>
+    {% endif %} 
+
+  </div>
+
+  <div class="text-base text-white pl-4 mb-3 pt-10 h-full bg-slate-700 w-full overflow-y-scroll  overflow-x-auto">
+
+    {% if result.result == 'Failure' %} 
+        {% for f in result.failures %}
+          <div class="whitespace-nowrap pb-1 text-small font-mono" > {{f}} </div>
+        {% endfor %}
+    {% elif result.result == 'TimeOut' %} 
+       <p> Tu código tardó mucho tiempo 
+        en ejecutarse y alcanzó un Time Out, el contenedor en el que se estaba ejecutando se destruyó.
+        </p> 
+       <p>El Time Out podría haber sucedido por un problema ajeno a tu código. </p>
+    {% elif result.result == 'Success' %} 
+          Tu código pasó todas las pruebas
+    {% endif %} 
+  </div>
+</div>
+
+{% comment %}
 <div id="program-exec"> 
   <div class="flex flex-row"> 
         <button type="button" hx-post="/execute_queue/" hx-target="#program-exec" hx-swap="outerHTML"
@@ -65,3 +111,4 @@
           
   </div>
   </div>
+  {% endcomment %}

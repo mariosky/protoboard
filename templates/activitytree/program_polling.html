@@ -1,15 +1,19 @@
-<div id="program-exec" > 
-<div hx-target="#program-exec"
+
+<div id="program-exec"  class="text-base fixed bg-slate-900 w-full h-1/4" hx-target="#program-exec"
     hx-get="/get_result/?task={{task_id}}&count={{count}}{% if id %}&id={{id}}{% endif %}" 
-    hx-trigger="load delay:1000ms" 
+       hx-trigger="load delay:1000ms" 
     hx-swap="innerHTML">
-      <div class="flex flex-col text-white p-1 ml-3 mt-2"> 
-                <h4>Ejecutando</h4>
-                <div class="w-full bg-gray-200 rounded-full h-2.5">
-          <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{percentege}}%"></div>
-                </div>
-        
+    <div class="text-small fixed bg-black h-8 md:w-1/2  grid grid-cols-6 justify-items-stretch"> 
+      <div class="text-small pl-4 text-white col-span-3">
+        <div class="w-full mt-3 bg-gray-200 rounded-full h-2.5">
+          <div class="bg-lime-600 h-2.5 rounded-full" style="width: {{percentege}}%"></div>
+          </div>
       </div>
-</div>
+    </div>
+
+    <div class="pt-10 pl-5 text-mono text-white h-full bg-slate-700 w-full overflow-y-auto">
+        Ejecutando ....
+    </div>
+                        
 </div>
 
