@@ -2,7 +2,7 @@
 <div id="program-exec"  class="text-base fixed bg-slate-900 w-full h-1/4" hx-target="#program-exec"
     hx-get="/get_result/?task={{task_id}}&count={{count}}{% if id %}&id={{id}}{% endif %}" 
        hx-trigger="load delay:1000ms" 
-    hx-swap="innerHTML">
+    hx-swap="outerHTML">
     <div class="text-small fixed bg-black h-8 md:w-1/2  grid grid-cols-6 justify-items-stretch"> 
       <div class="text-small pl-4 text-white col-span-3">
         <div class="w-full mt-3 bg-gray-200 rounded-full h-2.5">
