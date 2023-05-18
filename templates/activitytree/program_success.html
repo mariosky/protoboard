@@ -1,8 +1,8 @@
 
-<div id="program-exec" class="text-base fixed bg-slate-900 w-full h-1/4">
+<div id="program-exec" class="hidden md:block md:w-2/3 fixed bottom-0 right-0 ml-5 bg-black w-full mb-3 h-1/4">
   <div class="text-small fixed bg-black h-8 md:w-1/2 grid grid-cols-6 justify-items-stretch"> 
     <button type="button" hx-post="/execute_queue/" hx-target="#program-exec" hx-swap="innerHTML" 
-      class="flex flex-row pl-4 pt-1 pr-2 bg-lime-300 col-span-2 hover:bg-lime-600 min-w-max">
+      class="flex flex-row pl-4 pt-1 pr-2 bg-lime-300 hover:bg-lime-600 min-w-max">
         <div class="text-small font-mono mr-3">  
           Ejecutar   
         </div>
@@ -13,22 +13,20 @@
     <!-- Status bar -->
     {% if result.result == 'Failure' %} 
     <div class="text-small text-red-800 pt-1 pl-4 col-span-4 bg-red-100 min-w-full">
-          Tu código no pasó las pruebas
+          Tu código no pasó las pruebas 🧐
     </div>
     {% elif result.result == 'TimeOut' %} 
     <div class="text-small text-red-800 pt-1 pl-4 col-span-4 bg-red-100 min-w-full">
-          TIME OUT
+          TIME OUT 😭
     </div>
     {% elif result.result == 'Success' %} 
 
     <div class="text-small text-green-800 pt-1 pl-4 col-span-4 bg-green-100 min-w-full">
-          Tu código pasó todas las pruebas
+          Tu código pasó todas las pruebas 🤓
     </div>
     {% endif %} 
-
   </div>
-
-  <div class="text-base text-white pl-4 mb-3 pt-10 h-full bg-slate-700 w-full overflow-y-scroll  overflow-x-auto">
+  <div class="text-base text-white pl-3  h-4/5 bg-slate-900 mt-9 w-full overflow-y-scroll  overflow-x-auto">
     {% if result.result == 'Failure' %} 
         {% for f in result.failures %}
           <div class="whitespace-nowrap pb-1 text-small"> {{f}} </div>

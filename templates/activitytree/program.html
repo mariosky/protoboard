@@ -9,7 +9,7 @@
 
 {% block activity %}
 <!--- CODE -->
-<div class="block fixed inset-0 top-24 left-7 z-30 md:w-1/3 sm:w-full overflow-y-auto overflow-x-hidden"> 
+<div class="block fixed inset-0 top-24 left-0 mb-3 z-30 md:w-1/3 sm:w-full overflow-y-auto overflow-x-hidden"> 
   <div class="flex flex-row gap-x-2 mt-4 mb-3 ml-2 pr-3 md:w-full font-semibold"> 
     {% for activity in breadcrumbs %}
       {% if forloop.first %} 
@@ -28,40 +28,39 @@
     {% endfor %}
   </div>
 
-  <div class="flex flex-col prose"> 
+  <div class="flex flex-col prose prose-sm"> 
     <div class="p-2 ml-3"> 
         {{ program_quiz.instructions|safe }}
     </div>
   </div>
 </div>
 
-<div class="hidden md:block fixed right-0  top-24 bottom-2 pl-8 md:w-2/3 overflow-y-auto"> 
-  <div id="code-editor" class="text-small h-3/4 overflow-y-auto">
+<div class="hidden md:block fixed right-0 top-0 z-0  h-3/4 md:w-2/3 overflow-y-hidden"> 
+  <div id="code-editor" class="text-small mt-24 h-5/6 overflow-y-auto">
     {{program_quiz.initial_code}} 
   </div>
+</div>
   <!-- Execute window -->
-  <div id="program-exec" class="text-base fixed bg-slate-900 w-full mb-3 h-1/4">
-    <div class="text-small fixed bg-black h-8 md:w-3/3 grid grid-cols-6 justify-items-stretch"> 
-      <button type="button" hx-post="/execute_queue/" hx-target="#program-exec" hx-swap="outerHTML" 
-        class="flex flex-row pl-4 pt-1 bg-lime-300 min-w-max hover:bg-lime-600">
-          <div class="text-small font-mono mr-3">  
-            Ejecutar   
-          </div>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
-          </svg>
-      </button>
-      <div class="text-small text-white col-span-3 bg-blue min-w-max">
-      </div>
-    </div>
-
-    <div class="text-base h-full bg-slate-700 w-full overflow-y-auto">
-
+<div id="program-exec" class="hidden md:block md:w-2/3 fixed bottom-0 right-0 ml-5 bg-black w-full mb-3 h-1/4">
+  <div class="text-small fixed bg-black h-8 md:w-3/3 grid grid-cols-6 justify-items-stretch"> 
+    <button type="button" hx-post="/execute_queue/" hx-target="#program-exec" hx-swap="outerHTML" 
+      class="flex flex-row pl-4 pt-1 bg-lime-300 min-w-max hover:bg-lime-600">
+        <div class="text-small font-medium mr-3">  
+          Ejecutar   
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+        </svg>
+    </button>
+    <div class="text-small text-white col-span-3 mt-8 bg-blue min-w-max">
     </div>
   </div>
+
+  <div class="text-base text-small pl-3 text-white mt-9 h-4/5 bg-slate-900 w-full overflow-y-auto">
+  </div>
+</div>
   <!-- Execute window -->
 
-</div>
 {% comment %}
 
 <div class="flex flex-row flex-wrap-reverse w-full"> 
