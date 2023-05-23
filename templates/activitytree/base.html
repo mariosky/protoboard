@@ -12,9 +12,7 @@
     {% else %}
     <link href="{{ STATIC_URL }}assets/css/style.css" rel="stylesheet" />
     {% endif %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
-    <link rel="stylesheet" title="GitHub" href="{{ STATIC_URL }}assets/css/github.css">
-     <!-- Favicon icon-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/a11y-dark.min.css" integrity="sha512-Vj6gPCk8EZlqnoveEyuGyYaWZ1+jyjMPg8g4shwyyNlRQl6d3L9At02ZHQr5K6s5duZl/+YKMnM3/8pDhoUphg==" crossorigin="anonymous" referrerpolicy="no-referrer" />     <!-- Favicon icon-->
     <link rel="icon" type="image/png" href="{{ STATIC_URL }}assets/images/favicon/favicon.png"> 
     {% if metadescription %}
 	  <meta name="Description" content="{{ metadescription }}">
@@ -57,7 +55,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://unpkg.com/hyperscript.org@0.9.7"></script>
   <script src="https://unpkg.com/htmx.org@1.8.5" integrity="sha384-7aHh9lqPYGYZ7sTHvzP1t3BAfLhYSTy9ArHdP3Xsr9/3TlGurYgcPBoFmXX2TX/w" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   {% block scripts %}
 <script>
 // alternative to DOMContentLoaded
