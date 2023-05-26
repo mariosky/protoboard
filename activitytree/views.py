@@ -24,7 +24,7 @@ import xml.etree.ElementTree as ET
 import uuid
 
 import json
-
+import re
 from activitytree.retest import re_test
 
 import pymongo
@@ -1262,11 +1262,16 @@ def get_result(request):
                         result['stdout'] = "\n".join(result['stdout'])
                 failures = []
                 if 'failures' in result:
-                    if 'csharp' in task_id and result['failures']: # If there is at least one element
+                    if 'csharp' in task_id and result['failures']:  # If there is at least one element
                         for line in result['failures'][0].split('\n'):
                             if ': warning' in line or ': error' in line:
-                                start = line.find(':')+2
-                                failures.append(line[start:])
+                                line_group = re.search(r'\((\d*)\,(\d*)\)(:\s)(.*:\s.*)(\s\[.*)', line)
+                                if line_group:
+                                    g = line_group.groups(0)
+                                    line = f"({int(g[0])-1},{g[1]}): {g[3]}"
+                                # start = line.find(':')+2
+                                # failures.append(line[start:])
+                                failures.append(line)
                             else:
                                 failures.append(line)
                     result['failures'] = failures
