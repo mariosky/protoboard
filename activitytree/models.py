@@ -344,7 +344,7 @@ class ActivityTree(models.Model):
                                       related_name='activity_tree',
                                       on_delete=models.CASCADE)
     current_activity = models.ForeignKey(to='UserLearningActivity',
-                                         on_delete=models.CASCADE,
+                                         on_delete=models.SET_NULL,
                                          related_name='current_in',
                                          null=True,
                                          default=None)

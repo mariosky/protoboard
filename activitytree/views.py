@@ -24,7 +24,7 @@ import xml.etree.ElementTree as ET
 import uuid
 
 import json
-import re
+
 from activitytree.retest import re_test
 
 import pymongo
