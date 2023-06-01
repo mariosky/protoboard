@@ -24,7 +24,7 @@ import xml.etree.ElementTree as ET
 import uuid
 
 import json
-
+import ast
 from activitytree.retest import re_test
 
 import pymongo
@@ -334,13 +334,26 @@ def student_course_detail(request, course_id, user_id):
         # please log in
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
+
+def get_attempt(ula):
+    c = ast.literal_eval(ula.context)
+    result = ast.literal_eval(c['result'][0])
+    context = {'time_stamp': ula.time_stamp,
+               'code': c['params']['code'],
+               'lang': c['id'].split(':')[0],
+               'failures': result['failures']
+               }
+    return context
+
+
 @login_required
 def student_attempts(request, student, la):
     if request.user.is_authenticated:
         if request.method == 'GET':
             ula = UserLearningActivity.objects.get(learning_activity_id=la, user=student)
             attempts = ula.ula_event_set.all()
-            return render(request, 'activitytree/student_attempts.html', {'attempts':attempts, 'student':request.user })
+            contexts = list(map(get_attempt, attempts))
+            return render(request, 'activitytree/student_attempts.html', {'attempts':contexts, 'student':request.user })
     else:
         # please log in
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)

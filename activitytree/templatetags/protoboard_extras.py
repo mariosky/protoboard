@@ -5,6 +5,13 @@ register = template.Library()
 
 
 @register.filter(is_safe=True)
+def get_lang(id):
+    lang = id.split(':')[0]
+    return mark_safe(lang)
+
+
+
+@register.filter(is_safe=True)
 def icon(uri):
     icon = "NA"
     if "/video/" in uri:

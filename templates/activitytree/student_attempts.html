@@ -1,6 +1,7 @@
 {% extends "activitytree/base.html" %}
 {% load tz %}
 {% load gravatar %}
+{% load protoboard_extras %}
 
 {% block content %}
 <div class="pt-5  mx-auto mt-2  max-w-screen-xl relative lg:px-12">
@@ -28,10 +29,21 @@
             <div class="flex flex-wrap md:mx-auto md:max-w-screen-xl mt-1 px-2">
               <div class="flex flex-none w-full lg:block relative left-0">
             {% for a in attempts %} 
-            
             {{a.time_stamp}}
-            {{a.context}}
+            <div class="flex flex-col"> 
+              <div class="p-2 ml-3">
+                <pre>
+<code class"language-{{a.lang}}">
+{{a.code|safe }}
 
+{% for f in a.failures %}
+{{f}}
+{% endfor %}
+</code>
+                </pre>
+
+              </div>
+            </div>
             {% endfor %}
 
 
