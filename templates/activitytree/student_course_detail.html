@@ -22,23 +22,36 @@
   </div>
 
   <div class="flex flex-row flex-wrap">
-    <div class="flex flex-col w-1/3">
+    <div class="flex flex-col w-full">
       <div class="font-bold  text-xl mt-4 mb-3">{{course.metadata.title}}</div>
-        <div class="overflow-hidden shadow sm:rounded-md">
+        <div class="overflow-hidden ">
             <div class="flex flex-wrap md:mx-auto md:max-w-screen-xl mt-1 px-2">
               <div class="flex flex-none w-full lg:block relative left-0">
-                <ul class="flex-col top-30 w-full pr-3 mb-5">
+                  <table class="table-fixed text-left">
+                    <thead>
+                      <tr class="border-b-2 border-slate-300">
+                        <th class="w-12">      </th>
+                        <th class="w-64 pl-2">Actividad</th>
+                        <th class="w-64 pl-2">Última visita</th>
+                        <th class="w-64 pl-2">Intentos</th>
+                        <th class="w-64 pl-2">Calificación</th>
+                      </tr>
+                    </thead>
+                    <tbody>
                   {% for activity in XML_NAV.children %}
-                      {% include "activitytree/report_recursive.html" %} 
+                      {% include "activitytree/student_report_recursive.html" %} 
                   {% endfor %}
-                </ul>
+
+  </tbody>
+</table>
+
               </div>
             </div>
         </div>
     </div>
 
     <div id="code" class="flex flex-col w-1/2 prose">
-      {{XML_NAV}}   
+
     </div>
   </div>
 </div>
