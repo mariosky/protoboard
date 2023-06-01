@@ -19,6 +19,7 @@ urlpatterns = [
       path('instructor_info/<int:user_id>/', views.instructor_profile, name='instructor_profile'),
       
       path('student/', views.my_enrolled_courses),
+      path('student_attempts/<int:student>/<int:la>/', views.student_attempts),
       path('courses/', views.course_list),
       re_path('^course_info/(?P<course_id>[0-9]*)$',views.course_info),
       re_path('dashboard/(?P<path_id>[0-9]+)$', views.dashboard),
@@ -37,7 +38,7 @@ urlpatterns = [
       path('course/<int:course_id>/students/', views.course_students),
       path('course/<int:course_id>/student/<int:user_id>/', views.student_course_detail),
       path('my_courses/', views.my_courses,name='my_courses'),
-
+      
       path('javascript_result/',views.javascript_result),
       path('get_new_activities/',views.get_new_activities),
       path('get_frontpage/',views.get_front_page_activities),

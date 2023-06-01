@@ -329,12 +329,21 @@ def student_course_detail(request, course_id, user_id):
             root = UserLearningActivity.objects.get(learning_activity_id=course.root.id, user=user)
             s = SimpleSequencing()
             XML = s.get_nav(root, as_dict=True)
-            return render(request,'activitytree/student_course.html', {'XML_NAV':XML, 'course':course, 'student':user})
+            return render(request,'activitytree/student_course_detail.html', {'XML_NAV':XML, 'course':course, 'student':user})
     else:
         # please log in
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 
-
+@login_required
+def student_attempts(request, student, la):
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+            ula = UserLearningActivity.objects.get(learning_activity_id=la, user=student)
+            attempts = ula.ula_event_set.all()
+            return render(request, 'activitytree/student_attempts.html', {'attempts':attempts, 'student':request.user })
+    else:
+        # please log in
+        return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
 def course_students_sql(course_id):
     query = """SELECT  au.id, au.username, au.first_name, au.last_name, au.email, COUNT(*) AS completed_count
       FROM  activitytree_course c 

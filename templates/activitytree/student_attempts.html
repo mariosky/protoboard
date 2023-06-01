@@ -26,30 +26,26 @@
       <div class="font-bold  text-xl mt-4 mb-3">{{course.metadata.title}}</div>
         <div class="overflow-hidden ">
             <div class="flex flex-wrap md:mx-auto md:max-w-screen-xl mt-1 px-2">
-              <div class="flex flex-none w-full lg:block relative left-0 pl-2 pr-2">
-                  <table class="table-fixed lg:w-2/3 w-full text-left">
-                    <thead>
-                      <tr class="border-b-2 border-slate-300">
-                        <th class="w-12">      </th>
-                        <td class="w-2/3 pl-2">Actividad</td>
-                        <td class="w-8 pl-2 overflow-hidden"> Intentos </td>
-                        <td class="w-8 pl-2 pr-2 text-end overflow-hidden"> Cal</td>
-                      </tr>
-                    </thead>
-                    <tbody>
-                  {% for activity in XML_NAV.children %}
-                      {% include "activitytree/student_report_recursive.html" %} 
-                  {% endfor %}
+              <div class="flex flex-none w-full lg:block relative left-0">
+            {% for a in attempts %} 
+            
+            {{a.time_stamp}}
+            {{a.context}}
 
-                    </tbody>
-                  </table>
+            {% endfor %}
+
+
               </div>
             </div>
         </div>
     </div>
+
+    <div id="code" class="flex flex-col w-1/2 prose">
+
+    </div>
   </div>
 </div>
-{{XML_NAV}} 
+   
 {% endblock content %}
 
 {% block scripts %}
