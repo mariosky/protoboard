@@ -358,7 +358,7 @@ def student_attempts(request, student, la):
             attempts = ula.ula_event_set.all().order_by('time_stamp')
             contexts = list(map(get_attempt, attempts))
             return render(request, 'activitytree/student_attempts.html',
-                        {'attempts': contexts, 'student': request.user, 'ula': ula})
+                        {'attempts': contexts, 'student': ula.user, 'ula': ula})
     else:
         # please log in
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
