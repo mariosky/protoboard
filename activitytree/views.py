@@ -341,7 +341,11 @@ def get_attempt(ula):
     context = {'time_stamp': ula.time_stamp,
                'code': c['params']['code'],
                'lang': c['id'].split(':')[0],
-               'failures': result['failures']
+               'failures': result['failures'],
+               'errors': result['errors'],
+               'stdout': result['stdout'],
+               'result': result['result'],
+               'successes': result['successes']
                }
     return context
 
@@ -351,9 +355,10 @@ def student_attempts(request, student, la):
     if request.user.is_authenticated:
         if request.method == 'GET':
             ula = UserLearningActivity.objects.get(learning_activity_id=la, user=student)
-            attempts = ula.ula_event_set.all()
+            attempts = ula.ula_event_set.all().order_by('time_stamp')
             contexts = list(map(get_attempt, attempts))
-            return render(request, 'activitytree/student_attempts.html', {'attempts':contexts, 'student':request.user })
+            return render(request, 'activitytree/student_attempts.html',
+                        {'attempts': contexts, 'student': request.user, 'ula': ula})
     else:
         # please log in
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)

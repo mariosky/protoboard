@@ -1,0 +1,23 @@
+{ 'id': 'csharp:task:7', 
+  'method': 'exec', 
+  'params': {'code': '\n    using
+                    System;\nusing System.IO;\nusing System.Collections.Generic;\nnamespace
+                    test;\n\n    public class Pelicula\n    {\n        //Campos\n        \n
+                    //Constructores\n        public Pelicula()\n        {\n\n        } \n
+                    \n        //Métodos\n\n    }\n\n \n  ', 
+             'test': 'public class UnitTest1\n
+                    {\n        [Fact]\n        public void ConstructorPelicula()\n        {\n
+                      var p1 = new Pelicula();\n\n            Assert.NotNull(p1);\n
+                    }\n\n        [Fact]\n        public void CamposPelicula()\n        {\n
+                    var p1 = new Pelicula{ titulo = "La La Land", año = 2016, país="USA",
+                      director="Damien Chazelle"};\n            Assert.NotNull(p1);\n
+                    }\n\n    }\n\n'}, 
+  'state': 'completed', 
+  'expire': None, 
+  'result':
+      ['{"successes": [], 
+         "failures": [],
+         "errors": [], 
+         "stdout": "",
+         "result": "Failure"}', 
+      1]}
