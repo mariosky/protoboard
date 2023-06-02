@@ -4,28 +4,29 @@
   <div class="flex justify-center items-center mt-2 text-gray-500  w-full flex-row flex-nowrap">
     <a href="/"
       class="inline-flex flex-nowrap gap-2 justify-center items-center ml-3 px-5 py-3 text-base
-       text-center text-blue-500  
-       {% if current == "cursos" %} border-b-2 border-blue-500 {% endif %} hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 ">
+       text-center text-blue-500  dark:text-white
+       {% if current == "cursos" %} border-b-2 border-blue-500 {% endif %} 
+       dark:hover:bg-gray-400 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 ">
       {{'cursos'|get_menu_icon}} 
       <div class="whitespace-nowrap hidden md:block">Cursos</div>
     </a>
     <a href="/student/"
       class="inline-flex flex-nowrap gap-2 justify-center items-center ml-3 px-5 py-3 text-base
-       text-center text-blue-500  
+      dark:hover:bg-gray-400 text-center text-blue-500  dark:text-white
        {% if current == "mis_cursos" %} border-b-2 border-blue-500 {% endif %} hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 ">
       {{'mis_cursos'|get_menu_icon}}  
       <div class="whitespace-nowrap hidden md:block">Mis Cursos</div>
     </a>
     <a href="/instructor/"
       class="inline-flex flex-nowrap gap-2 justify-center items-center ml-3 px-5 py-3 text-base
-       text-center text-blue-500  
+       dark:hover:bg-gray-400 text-center text-blue-500  dark:text-white
        {% if current == "instructor" %} border-b-2 border-blue-500 {% endif %} hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 ">
       {{'instructor'|get_menu_icon}}  
       <div class="whitespace-nowrap hidden md:block">Instructor</div>
     </a>
     <a href="/me/"
       class="inline-flex flex-nowrap gap-2 justify-center items-center ml-3 px-5 py-3 text-base
-       text-center text-blue-500  
+       dark:hover:bg-gray-400 text-center text-blue-500  dark:text-white
        {% if current == "perfil" %} border-b-2 border-blue-500 {% endif %} hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 ">
       {{'perfil'|get_menu_icon}}  
       <div class="whitespace-nowrap hidden md:block">Perfil</div>
