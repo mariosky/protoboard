@@ -15,6 +15,7 @@
     <!-- Temario --> 
     <div class="flex flex-col">
        <div class="mt-2 w-2/3 text-xl tracking-tight font-semibold leading-none text-gray-900
+       dark:text-slate-200
       md:text-xl lg:text-xl"> Temario
         </div>
       <table class="table-fixed">
@@ -23,10 +24,10 @@
         <thead>
           <tr>
        <th class="font-medium 
-              pl-8 pt-4 pb-2 text-teal-500  text-left">  </th>
+              pl-8 pt-4 pb-2 text-teal-500  dark:text-slate-400text-left">  </th>
 
             <th class="font-medium 
-              pl-8 pt-4 pb-2 text-teal-500  text-left">  {{ sec.grouper }}    </th>
+              pl-8 pt-4 pb-2 text-teal-500 dark:text-white  text-left">  {{ sec.grouper }}    </th>
           </tr>
         </thead>
         <tbody  class="">
@@ -36,14 +37,14 @@
             <td class="w-8"> 
                 {{sub.uri|icon}}
             </td>
-            <td class="w-96">  {{ sub.title }} </td>
+            <td class="w-96 dark:text-slate-400">  {{ sub.title }} </td>
           </tr>
           {% endfor %}
         </tbody>    
 
       {% endfor %}
       </table>
-      <div class="mt-2 p-2 prose prose-slate lg:prose-lg mx-auto">
+      <div class="mt-2 p-2 prose prose-slate  dark:prose-invert lg:prose-lg mx-auto">
          {{course.metadata.html_description|safe}} 
       </div>
 
@@ -59,7 +60,7 @@
            <div class="pl-3 pt-2">
                <div class="flex flex-row justify-end m-3 ">
                  <a href="/{{course.root_id }}/activity/{{course.uri }}" class="ml-4 rounded-md border
-                   border-transparent bg-violet-600 px-4 py-1.5 text-base font-medium text-white shadow-sm hover:bg-violet-700">Inscríbete</a>
+                   border-transparent bg-blue-700 px-4 py-1.5 text-base font-medium text-white shadow-sm hover:bg-violet-700">Inscríbete</a>
                 </div>
                <div class="text-lg font-semibold mt-6 mb-3">Instructor</div>
                

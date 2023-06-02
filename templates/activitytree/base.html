@@ -12,7 +12,10 @@
     {% else %}
     <link href="{{ STATIC_URL }}assets/css/style.css" rel="stylesheet" />
     {% endif %}
+    {% comment%}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/a11y-dark.min.css" integrity="sha512-Vj6gPCk8EZlqnoveEyuGyYaWZ1+jyjMPg8g4shwyyNlRQl6d3L9At02ZHQr5K6s5duZl/+YKMnM3/8pDhoUphg==" crossorigin="anonymous" referrerpolicy="no-referrer" />     <!-- Favicon icon-->
+    {% endcomment%}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css" integrity="sha512-Jk4AqjWsdSzSWCSuQTfYRIF84Rq/eV0G2+tu07byYwHcbTGfdmLrHjUSwvzp5HvbiqK4ibmNwdcG49Y5RGYPTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon" type="image/png" href="{{ STATIC_URL }}assets/images/favicon/favicon.png"> 
     {% if metadescription %}
 	  <meta name="Description" content="{{ metadescription }}">
@@ -37,7 +40,7 @@
       </style>
   </head>
 
-  <body class="bg-white dark:bg-slate-900 dark:text-slate-400 hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <body class="bg-white dark:bg-slate-900 hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% block header %}
       {% include "activitytree/header.html" %} 
     {% endblock header %}

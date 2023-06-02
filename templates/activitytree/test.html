@@ -22,18 +22,16 @@
             {% endif %}
 
         {% endif %}
- <div class="mt-3 prose prose-slate lg:prose-lg mx-auto prose-pre:bg-gray-50">
-
-
+ <div class="mt-3 prose prose-slate dark:prose-invert lg:prose-lg mx-auto pre:px-0">
         {{ content.content|safe }}
  </div>
 
-<div class="flex flex-col gap-y-4 pt-6 mb-8 mx-auto max-w-prose">
+<div class="flex flex-col gap-y-4 pt-6 mb-8 mx-auto dark:text-slate-400 max-w-prose">
 
 {% if not feedback %}
     {% for q in content.questions %}
         <div class=" ">
-                <h4 class="text-lg font-semibold">
+                <h4 class="text-lg dark:text-slate-400 font-semibold">
                     {{q.question}}
                 </h4>
                     {% if q.options %}
@@ -46,9 +44,12 @@
                                  </label>
                             </div>
                             {% elif q.interaction == 'simpleChoice' %}
-                                <div class="radio{{ q.inline|yesno:"-inline,," }} pl-3">
+                                <div class="radio{{ q.inline|yesno:"-inline,," }}  pl-3">
                                  <label>
-                                    <input type="radio" value="option_{{ forloop.counter0 }}" name="{{q.id}}">
+                                    <input type="radio" value="option_{{ forloop.counter0 }}" name="{{q.id}}" 
+                                                       class="dark:checked:bg-red-600 dark:active:bg-teal-200
+                                                       dark:hover:bg-slate-500 text-red-100 bg-purple-300 
+                                                       dark:focus-visible:bg-yellow-400 focus:ring-green-500" >
                                     {{ o }}
                                  </label>
                             </div>

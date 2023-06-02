@@ -1,11 +1,11 @@
  <div class="pt-5  mx-auto mt-2 rounded-lg max-w-screen-xl  lg:px-12">
     <div
-      class="mt-2 text-xl font-bold tracking-tight leading-none text-gray-900
+      class="mt-2 text-xl font-bold tracking-tight leading-none text-gray-900 dark:text-white
       md:text-xl lg:text-2xl">
      
  {{ course.metadata.title }}
    </div>
-   <div class="mt-2 w-2/3 text-xl tracking-tight leading-none text-gray-900
+   <div class="mt-2 w-2/3 text-xl tracking-tight leading-none text-gray-900 dark:text-slate-400
       md:text-xl lg:text-2xl">
  {{ course.metadata.description }}
    </div>
@@ -15,7 +15,7 @@
        
         <a href="#"
           class="inline-flex justify-center items-center ml-1 px-5 py-3 text-base
-           text-center text-teal-500  
+           text-center text-slate-500  
           hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 ">
           <svg class="mr-2 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -26,7 +26,7 @@
         </a>
 
         <a href="#"
-          class="inline-flex justify-center items-center ml-1 px-5 py-3 text-base
+          class="inline-flex justify-center items-center ml-1 px-5 py-3 text-base dark:text-slate-400
            text-center text-teal-500  hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 ">
                         {% if course.metadata.level == 'principiante' %}
                 <svg width="16" height="16" viewBox="0 0 16

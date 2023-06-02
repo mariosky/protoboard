@@ -13,22 +13,24 @@
   <div class="flex flex-row gap-x-2 mt-4 mb-3 ml-2 pr-3 md:w-full font-semibold"> 
     {% for activity in breadcrumbs %}
       {% if forloop.first %} 
-      <a class="text-blue-800" href="{{root_id}}{{ activity.uri }}">
+      <a class="text-blue-800 dark:text-white" href="{{root_id}}{{ activity.uri }}">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
       <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
       </svg>
       </a>
-      <div class="flex flex-wrap  text-blue-700 "> <a href="{{root_id}}{{ activity.uri }}"> {{activity.name}} </a> </div>
+      <div class="flex flex-wrap  text-blue-700 dark:text-white">
+        <a href="{{root_id}}{{ activity.uri }}"> {{activity.name}} </a> </div>
       {% elif forloop.last %} 
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                                                                 class="w-6 h-6 dark:text-slate-400">
       <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
       </svg>
-        <div class="flex flex-wrap  "> {{activity.name}} </div>
+        <div class="flex flex-wrap  dark:text-slate-400"> {{activity.name}} </div>
       {% endif %}
     {% endfor %}
   </div>
 
-  <div class="flex flex-col prose prose-sm"> 
+  <div class="flex flex-col prose dark:prose-invert prose-sm"> 
     <div class="p-2 ml-3"> 
         {{ program_quiz.instructions|safe }}
     </div>
@@ -54,7 +56,7 @@
     </div>
   </div>
 
-  <div class="text-base text-small pl-3 text-white mt-9 h-4/5 bg-slate-900 w-full overflow-y-auto">
+  <div class="text-base text-small pl-3 text-white mt-9 h-4/5 bg-black w-full overflow-y-auto">
   </div>
 </div>
   <!-- Execute window -->
@@ -109,7 +111,7 @@
 <script>
   ace.config.set('basePath', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/')
   var editor = ace.edit("code-editor");
-    editor.setTheme("ace/theme/github");
+    editor.setTheme("ace/theme/dracula");
     editor.session.setMode("ace/mode/{{ program_quiz.lang }}");
     editor.setFontSize(12); 
 
