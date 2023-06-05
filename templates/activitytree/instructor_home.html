@@ -16,35 +16,35 @@
    <a href="/add-course/"      class="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border
           border-transparent bg-blue-500 px-4 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700">Crear un curso</a>
   </div>
-  <div class="flex flex-col gap-4 mt-16">
+  <div class="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-3 items-stretch mt-20 px-3">
    {% for c in courses%}
-   <div id="course-{{c.id}}" class="flex flex-row w-1/2 border border-gray-300 rounded-lg"> 
-       <div class="flex flex-col w-2/3 mb-3">
+   <div id="course-{{c.id}}" class="flex flex-row w-full border border-gray-300 rounded-lg"> 
+       <div class="flex flex-col w-full mb-3">
            <div class="mt-2 ml-3 text-xl font-semibold tracking-tight leading-none text-blue-500 md:text-xl lg:text-xl">
                 <a href="/update-course/{{c.id}}" 
                                     class="text-inherit">{{c.metadata.title}}</a>
           </div>
-           <div class="mt-2 ml-3 text-gray-900 text-sm">
+           <div class="mt-2 ml-3 text-gray-900 text-sm dark:text-slate-300">
                       {{ c.metadata.description }}
           </div>
       </div>
     
-       <div class="flex flex-col w-1/3 mb-3 gap-4 mt-4">
+       <div class="flex flex-col w-1/3 mb-3 gap-4 mt-4 dark:text-slate-300">
                 <a href="/course-builder/{{c.root.id }}" 
                                     class="text-inherit mr-4 font-normal text-right tracking-tight leading-none text-blue-500">Editar Actividades</a>
-                <button hx-delete="/delete-course/{{c.id}}"
+
+
+                <a href="/course/{{c.id }}/students" 
+                                    class="text-inherit mr-4 font-normal text-right tracking-tight leading-none text-blue-500">Estudiantes</a>
+
+                <button class="text-red-600"  hx-delete="/delete-course/{{c.id}}"
         _="on htmx:confirm(issueRequest)
              halt the event
              call Swal.fire({title: 'Confirma', text:'¿Seguro que quieres borrar el curso?'})
              if result.isConfirmed issueRequest()"
              hx-swap="outerHTML swap:1s"
              hx-target="#course-{{c.id}}"
-             >
-                    Borrar
-</button>
-
-                <a href="/course/{{c.id }}/students" 
-                                    class="text-inherit mr-4 font-normal text-right tracking-tight leading-none text-blue-500">Estudiantes</a>
+             > Borrar </button>
        </div>
     </div>
    {% empty %}

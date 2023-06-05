@@ -39,7 +39,7 @@
                             {% if q.interaction == 'choiceInteraction' %}
                              <div class="checkbox{{ q.inline|yesno:"-inline,," }} pl-3">
                                  <label>
-                                    <input type="checkbox" value="option_{{ forloop.counter0 }}" name="{{q.id}}">
+                                    <input type="checkbox" class="dark:text-sky-500" value="option_{{ forloop.counter0 }}" name="{{q.id}}">
                                     {{ o }}
                                  </label>
                             </div>
@@ -47,16 +47,15 @@
                                 <div class="radio{{ q.inline|yesno:"-inline,," }}  pl-3">
                                  <label>
                                     <input type="radio" value="option_{{ forloop.counter0 }}" name="{{q.id}}" 
-                                                       class="dark:checked:bg-red-600 dark:active:bg-tealdark:-200
-                                                       dark:hover:bg-slate-500 text-red-100 bg-purple-300 
-                                                       dark:focus-visible:bg-yellow-400 focus:ring-green-500" >
+                                            class="dark:checked:bg-sky-500 dark:active:bg-sky-500 text-sky-500" >
                                     {{ o }}
                                  </label>
                             </div>
                             {% endif %}
                         {% endfor %}
                     {% elif q.interaction == 'textEntryInteraction' %}
-                            <input type="textarea" class="block mt-3 p-2 w-full text-sm text-gray-900 bg-gray-50 border" placeholder="Escribe tu respuesta" name="{{q.id}}">
+                            <input type="textarea" class="block mt-3 p-2 w-full
+                            text-sm text-gray-900 bg-gray-50 border" placeholder="Escribe tu respuesta" name="{{q.id}}">
                             </input>
                     {% endif %}
          </div>
@@ -68,12 +67,14 @@
             <div class="flex text-lg font-semibold">
                 <div class="flex-none w-5 mr-2 pt-1"> 
                 {% if q.feedback.correct %}
-                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 stroke-green-700">
+                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                       class="w-6 h-6 dark:stroke-green-300 stroke-green-700">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                    </svg>
                 {% else %}
                     
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 stroke-red-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                        class="w-6 h-6 stroke-red-500">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 {% endif %}
@@ -89,7 +90,8 @@
                  {% if q.interaction == 'choiceInteraction' %}
                     <div class="checkbox{{ q.inline|yesno:"-inline,," }} pl-3">
                         <label>
-                            <input type="checkbox" value="option_{{ forloop.counter0 }}" name="{{q.id}}" {{ o.1|yesno:"checked,," }}  />
+                            <input type="checkbox" value="option_{{ forloop.counter0 }}" name="{{q.id}}" {{ o.1|yesno:"checked,," }}
+                            class="dark:text-sky-500"/>
                             {{ o.0 }}
                         </label>
                     </div>
@@ -97,7 +99,8 @@
                  {% elif q.interaction == 'simpleChoice' %}
                     <div class="radio{{ q.inline|yesno:"-inline,," }} pl-3">
                      <label>
-                        <input type="radio" value="option_{{ forloop.counter0 }}" name="{{q.id}}" {{ o.1|yesno:"checked,," }}  />
+                        <input class="dark:checked:bg-sky-500 dark:active:bg-sky-500 text-sky-500"
+                               type="radio" value="option_{{ forloop.counter0 }}" name="{{q.id}}" {{ o.1|yesno:"checked,," }} />
                             {{ o.0 }}
                      </label>
                      </div>

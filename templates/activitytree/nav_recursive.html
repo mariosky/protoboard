@@ -3,9 +3,9 @@
   
     {% if activity.is_visible %}
       <li> 
-	  <h5 class="mt-5 mb-2 font-semibold text-slate-900">{{ activity.name|title }}</h5>
+	  <h5 class="mt-5 mb-2 font-semibold text-slate-900 dark:text-white">{{ activity.name|title }}</h5>
 	  <!-- <p> {{activity }} </p> -->
-	  <ul class="space-y-6 lg:space-y-2 dark:border-slate-800">
+	  <ul class="space-y-6 lg:space-y-2 dark:border-slate-300">
 	      {% for child in activity.children %}
 		    {% include "activitytree/nav_recursive.html" with activity=child %}		
 	      {% endfor %}
@@ -20,7 +20,7 @@
 {% else %} 
 <li> <a class="flex gap-2 items-center mb-3
            {% if activity.is_current %}
-               border-b-2  border-indigo-800 text-indigo-700 font-semibold
+              border-r-2 border-b-white pl-2 bg-gray-600 text-indigo-700 dark:text-slate-400 font-semibold
                
            {% if activity.pre_condition == "disabled" %}  
              text-slate-200
@@ -38,11 +38,11 @@
            {% endif %} 
     >
 
-    <div class="flex-none w-5 
+    <div class="flex-none w-5 text-slate-700 dark:text-slate-300
 	{% if activity.is_current %}
-              text-indigo-700
-           {% else %}  
-             text-slate-700
+                     
+            {% else %}  
+  
            {% endif %}">
 
            {% if activity.pre_condition == "disabled" %}  
@@ -58,11 +58,11 @@
 
 	<div class=" font-semibold text-sm 
            {% if activity.pre_condition == "disabled" %}  
-             text-slate-200
+             text-slate-200 dark:text-slate-700
            {% elif activity.progress_status == "completed"%}  
-             text-green-700
+             text-green-700 dark:text-green-300
            {% else %}  
-             text-slate-700
+             text-slate-700 dark:text-slate-300
            {% endif %} 
 
          	    ">{{ activity.name }}
@@ -70,7 +70,7 @@
                     {% comment %} {{activity.pre_condition }} {{activity.progress_status}} {% endcomment %}
 
 	</div>
-	<div class="font-light text-xs "> 
+	<div class="font-light text-xs dark:text-slate-400"> 
 	    intentos: {{ activity.num_attempts }} | cal: {{ activity.objective_measure }} 
 
 	</div>
