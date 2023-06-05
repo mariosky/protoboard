@@ -3,9 +3,9 @@
   
   
     {% if activity.is_visible %}
-     <tr class="border-b border-slate-300">
+     <tr class="border-b border-slate-300 dark:white">
         <td class="w-12">      </td>
-        <th class="pt-4">{{ activity.name|title }}</th>
+        <th class="pt-4 dark:text-white">{{ activity.name|title }}</th>
      </tr>
 	      {% for child in activity.children %}
 		    {% include "activitytree/student_report_recursive.html" with activity=child %}		
@@ -18,7 +18,7 @@
 
 {% else %} 
 
-    <tr class="border-b border-slate-300">
+    <tr class="border-b border-slate-300 dark:text-slate-400">
       <td class="w-6 justify-start"> 
         {% if activity.pre_condition == "disabled" %}  
 	    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">

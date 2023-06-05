@@ -9,7 +9,7 @@
         <img src="{% gravatar_url student.email 150 %}"  class="rounded-full object-cover object-center w-14 h-14" alt="Gravatar"/>
 
     <div class="flex flex-col pl-5 w-full">
-        <div class="text-sm font-bold tracking-tight text-gray-900 md:text-xl lg:text-xl">
+        <div class="text-sm font-bold tracking-tight text-gray-900 dark:text-slate-300 md:text-xl lg:text-xl">
                           {% if student.first_name %}
                                {{ student.first_name }} {{ student.last_name }}
                           {% else %}
@@ -24,11 +24,11 @@
 
   <div class="flex flex-row flex-wrap">
     <div class="flex flex-col w-full">
-      <div class="font-bold  text-xl mt-4 mb-3">{{ula.learning_activity.name}}
+      <div class="font-bold dark:text-slate-400 text-xl mt-4 mb-3">{{ula.learning_activity.name}}
         {% if ula.progress_status == "completed" %} 
-          <div class="text-green-600"> Aprobado </div>
+          <div class="text-green-600 dark:text-green-300"> Aprobado </div>
         {% else %}
-          <div class="text-red-400"> Falló </div>
+          <div class="text-red-500"> Falló </div>
         {% endif %}
       </div>
         <div class="overflow-hidden ">
@@ -36,9 +36,9 @@
               <div class="flex flex-none w-full lg:block relative left-0">
             {% for a in attempts %} 
                        <div class="flex flex-col"> 
-              <div class="p-2 ml-3">
+              <div class="p-2 ml-3 ">
                 <pre>
-{{a.time_stamp}}  {{a.result}}
+                <div class="dark:text-white">{{a.time_stamp}}  {{a.result}}</div>
 <code class="language-{{a.lang}}">
 {{a.code|safe }}
 {% for f in a.failures %}
@@ -50,9 +50,7 @@
 {{s}}
 {% for su in a.successes %}
 {{su}}
-{% endfor %}
-</code>
-                </pre>
+{% endfor %}</code></pre>
               </div>
             </div>
             {% endfor %}
