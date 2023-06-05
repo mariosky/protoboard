@@ -11,12 +11,12 @@
   
 {% include "activitytree/course_info_hero.html"%}
 <div class="mx-auto mt-2 mb-10 border-black rounded-lg max-w-screen-xl  lg:px-12">
-  <div class="flex flex-row"> 
+  <div class="flex flex-wrap-reverse"> 
     <!-- Temario --> 
-    <div class="flex flex-col">
-       <div class="mt-2 w-2/3 text-xl tracking-tight font-semibold leading-none text-gray-900
+    <div class="flex flex-col ml-4 mt-5 lg:ml-0 lg:w-2/3">
+       <div class="mt-2 text-xl tracking-tight font-semibold leading-none text-gray-900
        dark:text-slate-200
-      md:text-xl lg:text-xl"> Temario
+      md:text-xl lg:text-xl  "> Temario
         </div>
       <table class="table-fixed">
       {% regroup activity_list by sec as sec_list %}
@@ -34,7 +34,7 @@
           {% for sub in  sec.list %}
 
           <tr>
-            <td class="w-8"> 
+            <td class="w-8 dark:text-slate-400"> 
                 {{sub.uri|icon}}
             </td>
             <td class="w-96 dark:text-slate-400">  {{ sub.title }} </td>
@@ -53,25 +53,25 @@
 
     
     <!-- Course Info --> 
-    <div class="flex flex-col ml-10  w-1/3"> 
+    <div class="flex flex-col w-full lg:mx-0 mx-3 lg:w-1/3"> 
         <div class="h-auto border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
-           <img class="lg:h-52 md:h-48 w-full object-cover object-center" src="{{ course.metadata.image_url}}" alt="blog">
+           <img class="lg:h-52 md:h-48 w-full object-cover text-gray-400 object-center" src="{{ course.metadata.image_url}}" alt="blog">
 
            <div class="pl-3 pt-2">
                <div class="flex flex-row justify-end m-3 ">
                  <a href="/{{course.root_id }}/activity/{{course.uri }}" class="ml-4 rounded-md border
                    border-transparent bg-blue-700 px-4 py-1.5 text-base font-medium text-white shadow-sm hover:bg-violet-700">Inscríbete</a>
                 </div>
-               <div class="text-lg font-semibold mt-6 mb-3">Instructor</div>
+               <div class="text-lg dark:text-white font-semibold mt-6 mb-3">Instructor</div>
                
-               <div class="flex items-center mt-3 mb-2 space-x-4">
+               <div class="flex items-center mt-3 mb-2 space-x-4 dark:text-slate-300">
                   <img class="w-10 h-10 rounded-full" src="{{course.author.authorprofile.image}}" alt="">
                   <div class="flex flex-col"> 
                     <a href="/instructor_info/{{course.author.id}}"> {{course.author.first_name }} {{ course.author.last_name }}</a> 
-                    <div class="text-sm text-gray-500 dark:text-gray-400">{{course.author.authorprofile.short_about}}</div>
+                    <div class="text-sm text-gray-400">{{course.author.authorprofile.short_about}}</div>
                   </div>
               </div>
-              <div class="text-base p-3">{{course.author.authorprofile.about}}</div>
+              <div class="text-base dark:text-slate-400 p-3">{{course.author.authorprofile.about}}</div>
           </div>
       </div>
     </div>

@@ -1,59 +1,38 @@
- <div class="pt-5  mx-auto mt-2 rounded-lg max-w-screen-xl  lg:px-12">
+ <div class="pt-5  mx-auto mt-2 rounded-lg ml-5 lg:max-w-screen-xl  lg:px-12">
     <div
       class="mt-2 text-xl font-bold tracking-tight leading-none text-gray-900 dark:text-white
       md:text-xl lg:text-2xl">
      
  {{ course.metadata.title }}
    </div>
-   <div class="mt-2 w-2/3 text-xl tracking-tight leading-none text-gray-900 dark:text-slate-400
+   <div class="mt-2 w-full lg:w-2/3 text-xl tracking-tight leading-none text-gray-900 dark:text-slate-400
       md:text-xl lg:text-2xl">
  {{ course.metadata.description }}
    </div>
 
   <div class="px-4 text-left md:max-w-screen-md lg:max-w-screen-lg ">
-      <div class="flex flex-col  items-center mt-2 text-gray-500 md:flex-row">
+      <div class="flex flex-row  dark:text-slate-400 items-center mt-2 text-gray-500 md:flex-row">
        
-        <a href="#"
-          class="inline-flex justify-center items-center ml-1 px-5 py-3 text-base
-           text-center text-slate-500  
-          hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 ">
+        <div       class="inline-flex justify-center items-center ml-1 px-5 py-3 text-base
+           text-center dark:text-slate-400 text-slate-500 ">
           <svg class="mr-2 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z">
             </path>
           </svg>
           {{ course.root.activity_tree.count }} Inscritos
-        </a>
+        </div>
 
-        <a href="#"
-          class="inline-flex justify-center items-center ml-1 px-5 py-3 text-base dark:text-slate-400
-           text-center text-teal-500  hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 ">
-                        {% if course.metadata.level == 'principiante' %}
-                <svg width="16" height="16" viewBox="0 0 16
-                              16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE"></rect>
-                  <rect x="7" y="5" width="2" height="9" rx="1" fill="#DBD8E9"></rect>
-                  <rect x="11" y="2" width="2" height="12" rx="1" fill="#DBD8E9"></rect>
-                </svg>
-                <span class="align-middle"> Principiante </span>
-                 {% elif course.metadata.level == 'intermedio' %}
-                <svg width="16" height="16" viewBox="0 0 16
-                              16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE"></rect>
-                  <rect x="7" y="5" width="2" height="9" rx="1" fill="#754FFE"></rect>
-                  <rect x="11" y="2" width="2" height="12" rx="1" fill="#DBD8E9"></rect>
-                </svg>
-                <span class="align-middle"> Intermedio </span>
-                 {% elif course.metadata.level == 'avanzado' %}
-                <svg width="16" height="16" viewBox="0 0 16
-                              16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE"></rect>
-                  <rect x="7" y="5" width="2" height="9" rx="1" fill="#754FFE"></rect>
-                  <rect x="11" y="2" width="2" height="12" rx="1" fill="#754FFE"></rect>
-                </svg>
-                <span class="align-middle"> Avanzado </span>
-                {% endif %}        </a>
-
+                <div class="inline-flex justify-center items-center ml-1 px-5 py-3 text-base dark:text-slate-400
+           text-center text-slate-600">
+                {% if course.metadata.level == 'principiante' %}
+                                <span class="align-middle"> Nivel Principiante </span>
+                {% elif course.metadata.level == 'intermedio' %}
+                               <span class="align-middle"> Nivel Intermedio </span>
+                {% elif course.metadata.level == 'avanzado' %}
+                               <span class="align-middle"> Nivel Avanzado </span>
+                {% endif %}       
+        </div>
       </div>
 
     </div>
