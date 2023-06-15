@@ -27,7 +27,6 @@
 
     {% endblock head %}
     <title> aulacode.com </title>
-
       <script>
       /*to prevent Firefox FOUC, this must be here*/
         let FF_FOUC_FIX;
@@ -40,7 +39,7 @@
       </style>
   </head>
 
-  <body class="bg-white dark:bg-slate-900 hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <body class="bg-white dark:bg-slate-900" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% block header %}
       {% include "activitytree/header.html" %} 
     {% endblock header %}
