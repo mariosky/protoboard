@@ -27,6 +27,7 @@ env = environ.Env(
 )
 INTERNAL_IPS = (
     '127.0.0.1',
+    '146.190.34.37'
 )
 
 environ.Env.read_env()

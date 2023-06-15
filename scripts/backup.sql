@@ -23,15 +23,15 @@ SET row_security = off;
 -- Name: protoboard; Type: DATABASE; Schema: -; Owner: doadmin
 --
 
-CREATE DATABASE protoboard
-    WITH
-    OWNER = django
-    ENCODING = 'UTF8'
-    LC_COLLATE = 'C'
-    LC_CTYPE = 'C'
-    TABLESPACE = pg_default
-    CONNECTION LIMIT = -1
-    IS_TEMPLATE = False;
+-- CREATE DATABASE protoboard
+--    WITH
+--    OWNER = django
+--    ENCODING = 'UTF8'
+--    LC_COLLATE = 'C'
+--    LC_CTYPE = 'C'
+--    TABLESPACE = pg_default
+--    CONNECTION LIMIT = -1
+--    IS_TEMPLATE = False;
 
 \connect protoboard
 

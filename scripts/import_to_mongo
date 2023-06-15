@@ -1,5 +1,4 @@
 
 #Add some activities for testing with this command:
-mongoexport --db protoboard_database --collection activities_collection --out activities.json
-
-mongoimport --db protoboard_database --collection activities_collection --file activities.json --upsert
+mongoexport --db protoboard_database --collection activities_collection --out activities_collection.json
+mongoimport --db protoboard_database --collection activities_collection --file activities_collection.json --upsert --jsonArray
