@@ -23,7 +23,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 env = environ.Env(
     # set casting, default value
-    DEBUG=(bool, False), TEMPLATE_DEBUG=(bool, False)
+    DEBUG=(bool, False), 
+    TEMPLATE_DEBUG=(bool, False),
+    SESSION_COOKIE_SECURE=(bool, True),
+    SESSION_COOKIE_HTTPONLY=(bool, True)
 )
 INTERNAL_IPS = (
     '127.0.0.1',
@@ -37,6 +40,8 @@ TEMPLATE_DEBUG = env('TEMPLATE_DEBUG')
 SECRET_KEY = get_random_secret_key()
 MONGO_DB = env('MONGO_DB')
 
+SESSION_COOKIE_SECURE=env('SESSION_COOKIE_SECURE')
+SESSION_COOKIE_HTTPONLY=env('SESSION_COOKIE_HTTPONLY')
 
 REDIS_URL = env('REDIS_URL')
 DATABASES = {
@@ -54,8 +59,6 @@ AUTHENTICATION_BACKENDS = (
 
 )
 
-SESSION_COOKIE_SECURE=True
-SESSION_COOKIE_HTTPONLY=True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
