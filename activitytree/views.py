@@ -22,7 +22,7 @@ from django.utils import timezone
 import logging
 import xml.etree.ElementTree as ET
 import uuid
-
+import re
 import json
 import ast
 from activitytree.retest import re_test
