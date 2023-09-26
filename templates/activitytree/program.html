@@ -13,14 +13,7 @@
 <div  class="block md:fixed md:inset-0 md:top-24 md:left-0 md:mb-3 md:z-30 md:w-1/3 w-full overflow-y-auto overflow-x-auto"> 
   <div class="z-10 items-center flex flex-row gap-x-2 mt-4 mb-3 ml-2 pr-3 md:1/3 font-semibold border-b-2 
       border-gray-700 py-3"> 
-    <button _="on click toggle the *display of #instructions" type="button"  
-      class="md:hidden  items-center text-slate-500 hover:text-slate-50">
-            
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none"  stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-        </svg>
-
-    </button>
+    
     {% for activity in breadcrumbs %}
       {% if forloop.first %} 
       <a class="text-blue-800 dark:text-white" href="{{root_id}}{{ activity.uri }}">
@@ -35,13 +28,20 @@
                                                                                                  class="w-6 h-6 dark:text-slate-400">
       <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
       </svg>
-        <div class="flex flex-wrap  dark:text-slate-400"> {{activity.name}} </div>
+        <div class="flex flex-wrap dark:text-slate-400"> {{activity.name}} </div>
       {% endif %}
     {% endfor %}
+    <button _="on click toggle the *display of #instructions" type="button"  
+      class="absolute inset-y-0 right-4 md:hidden items-center text-slate-500 hover:text-slate-900 dark:hover:text-slate-50">
+            
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none"  stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+        </svg>
 
+    </button>
   </div>
 
-    <div id="instructions" class="absolute rounded bg-slate-800/90 shadow-xl md:bg-transparent md:shadow-transparent md:flex md:flex-col z-50 prose dark:prose-invert xl:prose-lg "><!--make it a box on small screens --> 
+    <div id="instructions" class="absolute right-2 ml-2 rounded bg-slate-100/95 dark:bg-slate-800/95 shadow-xl md:bg-transparent md:shadow-transparent md:flex md:flex-col z-50 prose dark:prose-invert xl:prose-lg "> 
     <div class="p-2 md:ml-3"> 
         {{ program_quiz.instructions|safe }}
     </div>
@@ -54,7 +54,7 @@
 <!--- Program window -->
 
 <div class="fixed z-0 right-0 mt-2 md:block md:fixed md:right-0 md:top-0 w-full md:h-3/4 h-2/3 sm:3/4 md:w-2/3 overflow-y-hidden "> 
-  <div id="code-editor" class="text-small xl:text-base md:mt-24 h-5/6  overflow-y-auto">{{program_quiz.initial_code}}</div><!--- xl not working??? -->
+  <div id="code-editor" class="text-small xl:text-base md:mt-24 h-5/6  overflow-y-auto">{{program_quiz.initial_code}}</div>
 </div>
 
 <!--- Program window -->
@@ -71,10 +71,10 @@
         </svg>
     </button>
     </div>
-    <div id="toggle_test" class="absolute left-2 text-base text-black dark:text-white border-b-2 border-b-black dark:border-b-white">
+    <div id="toggle_test" class="absolute left-2 text-small font-normal text-white bg-zinc-700 rounded-t-lg border-slate-200  h-9 w-fit px-2 dark:border-b-white ">
         Output :       
     </div>
-    <div class="border border-slate-200 rounded text-base text-white pl-3 h-5/6 bg-zinc-800 mt-9 w-full overflow-y-auto">
+    <div class="border z-50 border-slate-200 rounded text-base text-white pl-3 h-5/6 bg-zinc-800 mt-9 w-full overflow-y-auto">
   </div>
 </div>
   <!-- Execute window -->

@@ -1,5 +1,5 @@
 
-<div id="program-exec" class=" md:block md:w-2/3 fixed bottom-0 right-0 ml-5 bg-transparent w-full mb-3 h-1/4">
+<div id="program-exec" class=" md:block md:w-2/3 fixed bottom-0 right-0 ml-5 bg-transparent w-full mb-3 h-1/4 overflow-y-auto">
   <div class="w-full md:w-2/3 text-small right-2 pb-2 fixed bg-transparent h-9 flex-row-reverse flex rounded"> 
     <button type="button" hx-post="/execute_queue/" hx-target="#program-exec" hx-swap="innerHTML" 
       class="flex flex-row rounded pl-4 pr-2 bg-lime-300 hover:bg-lime-600 items-center ">
@@ -38,11 +38,11 @@
     </div>
     
     {% endif %} 
-    <div class="absolute md:left-2 left-4 text-base text-black dark:text-white border-b-2 border-b-black dark:border-b-white">
+    <div class="absolute left-2 text-small font-normal text-white bg-zinc-700 rounded-t-lg border-slate-200 h-9 w-fit px-2 dark:border-b-white ">
         Output :       
     </div>
   </div>
-  <div class="dark:border dark:border-slate-400 rounded text-base text-white pl-3 h-5/6 bg-zinc-800 mt-9 w-full overflow-y-auto">
+  <div class="border z-50 border-slate-200 rounded text-base text-white pl-3 h-5/6 bg-zinc-800 mt-9 w-full overflow-y-auto">
     {% if result.result == 'Failure' %} 
         {% for f in result.failures %}
           <div class="whitespace-normal pb-1 text-small"> {{f}} </div>
