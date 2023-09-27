@@ -41,12 +41,16 @@
     </button>
   </div>
 
-    <div id="instructions" class="absolute right-2 ml-2 rounded bg-slate-100/95 dark:bg-slate-800/95 shadow-xl md:bg-transparent md:shadow-transparent md:flex md:flex-col z-50 prose dark:prose-invert xl:prose-lg "> 
+  <div id="instructions" class="overflow-y-auto md:hidden fixed right-2 ml-2 rounded bg-slate-100/95 dark:bg-slate-800/95 shadow-xl md:bg-transparent md:shadow-transparent h-2/3 md:flex-col z-50 prose dark:prose-invert xl:prose-lg "> 
     <div class="p-2 md:ml-3"> 
         {{ program_quiz.instructions|safe }}
     </div>
   </div>
-
+  <div class="hidden dark:bg-slate-800/95 md:bg-transparent md:shadow-transparent md:flex md:flex-col z-50 prose dark:prose-invert xl:prose-lg "> 
+    <div class="p-2 md:ml-3"> 
+        {{ program_quiz.instructions|safe }}
+    </div>
+  </div>
 
 
 </div>
