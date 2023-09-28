@@ -56,7 +56,7 @@
 </div>
 <!--- Instruction window -->
 <!--- Program window -->
-
+{% comment %}
 <div class="fixed z-0 right-0 mt-2 md:block md:fixed md:right-0 md:top-0 w-full md:h-3/4 h-2/3 sm:3/4 md:w-2/3 overflow-y-hidden "> 
   <div id="code-editor" class="text-small xl:text-base md:mt-24 h-5/6  overflow-y-auto">{{program_quiz.initial_code}}</div>
 </div>
@@ -82,6 +82,32 @@
   </div>
 </div>
   <!-- Execute window -->
+{% endcomment %}
+
+<div class="flex flex-col h-screen w-full absolute">
+    <div class="flex-auto w-full h-2/3 "> 
+        <div id="code-editor" class="text-small xl:text-base h-full overflow-y-auto">{{program_quiz.initial_code}}</div>
+    </div>
+    <div class="w-full md:w-2/3 text-small my-2 bg-transparent h-9 flex-row-reverse flex">
+        <button type="button" hx-post="/execute_queue/" hx-target="#program-exec" hx-swap="outerHTML" 
+      class=" flex flex-row rounded pl-4 pr-2 bg-lime-300 hover:bg-lime-600 items-center shadow">
+            <div class="text-small font-medium mr-3">  
+            Ejecutar   
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+            </svg>
+        </button>
+        <div id="toggle_test" class="absolute left-0 text-small font-normal text-white bg-zinc-700 rounded-t-lg border-slate-200 h-9 w-fit px-2 dark:border-b-white ">
+        Output :       
+        </div>
+    </div>
+    <div class="border border-slate-200 rounded text-base text-white bg-zinc-800 w-full overflow-y-auto h-1/4 flex-auto ">
+    </div>
+</div>
+
+
+
 
 {% comment %}
 
