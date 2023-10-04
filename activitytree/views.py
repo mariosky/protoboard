@@ -1036,7 +1036,7 @@ def path_program(request, path_id, uri):
             _set_current(request, requested_activity, root, s)
 
         # There is no space for Nav in Program, only breadcrumbs 
-        # XML = s.get_nav(root, as_dict=True)
+        XML = s.get_nav(root, as_dict=True)
 
         breadcrumbs = s.get_current_path(requested_activity)
         program_quiz = Activity.get(requested_activity.learning_activity.uri)
@@ -1052,7 +1052,8 @@ def path_program(request, path_id, uri):
         else:
             template = 'activitytree/program.html'
 
-        return render(request,template, {'program_quiz': program_quiz,
+        return render(request, template, {'XML_NAV': XML,
+                                             'program_quiz': program_quiz,
                                              'activity_uri': requested_activity.learning_activity.uri,
                                              'uri_id': '%s' % requested_activity.learning_activity.id,
                                              'uri': requested_activity.learning_activity.uri,
