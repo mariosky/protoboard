@@ -84,9 +84,34 @@
   <!-- Execute window -->
 {% endcomment %}
 
+  
+
 <div class="flex flex-col h-screen w-full absolute">
+
+<div class="border-b border-gray-200 dark:border-gray-700 ">
+    <ul class="flex flex-row text-sm font-medium text-center justify-center text-gray-500 dark:text-gray-400">
+        <li class="mr-2">
+            <a href="#" class="inline-flex items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
+                <svg class="w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+</svg>
+Programa
+            </a>
+        </li>
+        <li class="mr-2">
+            <a href="#" class="inline-flex items-center justify-center p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500 group" aria-current="page">
+                <svg class="w-5 h-5 mr-2 text-blue-600 dark:text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+</svg>
+
+Instrucciones
+            </a>
+        </li>
+    </ul>
+</div>
+    <div class="h-2 block w-1"></div>
     <div class="flex-auto w-full h-2/3"> 
-        <div id="code-editor" class="text-small xl:text-base h-full overflow-y-auto">{{program_quiz.initial_code}}</div>
+        <div id="code-editor" class="text-small xl:text-base h-full overflow-x-auto overflow-y-auto">{{program_quiz.initial_code}}</div>
     </div>
     <div id="program-exec" class="flex flex-col h-1/3 w-full">
         <div class="w-full text-small my-2 bg-transparent h-9 flex-row-reverse flex">
