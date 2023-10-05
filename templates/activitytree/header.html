@@ -9,13 +9,13 @@
          </a>
       </div>
         {% if not user.is_authenticated %}
-           <div class="flex flex-row z-40 justify-center pt-0 md:flex-1 items-center md:justify-end  lg:w-0">
+           <div class="flex flex-row z-20 justify-center pt-0 md:flex-1 items-center md:justify-end  lg:w-0">
              <a href="/accounts/login" class="whitespace-nowrap text-base font-medium text-blue-500 hover:text-blue-700">Inicia sesión</a>
              <a href="/accounts/register" class="ml-3 inline-flex items-center justify-center whitespace-nowrap rounded-md border
           border-transparent bg-blue-500 px-2 py-1.5 text-base font-medium text-white shadow-sm hover:bg-blue-700">Crea tu cuenta</a>
            </div>
          {% else %}
-           <div class="flex flex-row justify-center pt-0 md:flex-1 items-center md:justify-end  z-40 lg:w-0">
+           <div class="flex flex-row justify-center pt-0 md:flex-1 items-center md:justify-end  z-20 lg:w-0">
               <div class="relative" >
                 <div id="profile-btn" class="drop-btn flex flex-row w-32 rounded-md border border-gray-300 bg-white h-12">
                   <div  class="flex flex-col w-28">
