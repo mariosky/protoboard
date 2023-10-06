@@ -41,7 +41,7 @@
     </button>
   </div>
 
-  <div id="instructions" class="overflow-y-auto md:hidden fixed right-2 ml-2 rounded bg-slate-100/95 dark:bg-slate-800/95 shadow-xl md:bg-transparent md:shadow-transparent h-2/3 md:flex-col z-50 prose dark:prose-invert xl:prose-lg "> 
+  <div  class="overflow-y-auto md:hidden fixed right-2 ml-2 rounded bg-slate-100/95 dark:bg-slate-800/95 shadow-xl md:bg-transparent md:shadow-transparent h-2/3 md:flex-col z-50 prose dark:prose-invert xl:prose-lg "> 
     <div class="p-2 md:ml-3"> 
         {{ program_quiz.instructions|safe }}
     </div>
@@ -88,27 +88,32 @@
 
 <div class="flex flex-col h-screen w-full absolute">
 
-<div class="border-b border-gray-200 dark:border-gray-700 ">
-    <ul class="flex flex-row text-sm font-medium text-center justify-center text-gray-500 dark:text-gray-400">
-        <li class="mr-2">
-            <a href="#" class="inline-flex items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
+    <div class="border-b border-gray-200 dark:border-gray-700">
+        <ul class="flex flex-row text-sm font-medium text-center justify-center text-gray-500 dark:text-gray-400">
+            <li class="mr-2">
+                <a id="act" _="on click hide #instructions then show #program-window then add .border-blue-600 to me then remove .border-blue-600 from #ins then add .border-gray-700 to #ins"
+                    class="inline-flex items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 group dark:hover:text-gray-300">
                 <svg class="w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
-</svg>
-Programa
-            </a>
-        </li>
-        <li class="mr-2">
-            <a href="#" class="inline-flex items-center justify-center p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500 group" aria-current="page">
-                <svg class="w-5 h-5 mr-2 text-blue-600 dark:text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-</svg>
-
-Instrucciones
-            </a>
-        </li>
-    </ul>
-</div>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                </svg>Programa
+                </a>
+            </li>
+            <li class="mr-2">
+                <a id="ins" _="on click hide #program-window then show #instructions then add .border-blue-600 to me then remove .border-blue-600 from #act then add .border-gray-700 to #act"
+                    class="inline-flex items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 group dark:hover:text-gray-300 border-blue-600" aria-current="page">
+                <svg class="w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                </svg>Instrucciones
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div id="instructions" class="block right-2 mx-3 bg-transparent h-fit w-full flex-col prose dark:prose-invert xl:prose-lg " > 
+        <div class="p-2 md:ml-3"> 
+            {{ program_quiz.instructions|safe }}
+        </div>
+    </div>
+    <div id="program-window" class="flex flex-col grow w-full h-full" style="display: none;">
     <div class="h-2 block w-1"></div>
     <div class="flex-auto w-full h-2/3"> 
         <div id="code-editor" class="text-small xl:text-base h-full overflow-x-auto overflow-y-auto">{{program_quiz.initial_code}}</div>
@@ -132,6 +137,7 @@ Instrucciones
         <div class="border border-slate-200 rounded text-base text-white bg-zinc-800 w-full overflow-y-auto h-1/4 flex-auto mb-2">
         </div>
     </div> 
+    </div>
 </div>
 
 
@@ -175,7 +181,12 @@ Instrucciones
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/snippets/{{ program_quiz.lang }}.js"
   type="text/javascript" charset="utf-8"></script>
+<script>
+    $("#btn").click(function(){
+        $('#logoup').toggleClass('greened');
+    });
 
+</script>
 
 {% comment %}
 <script src="{{ MEDIA_URL }}js/ace.js" type="text/javascript" charset="utf-8"></script>
