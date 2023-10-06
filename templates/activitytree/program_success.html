@@ -1,48 +1,49 @@
 
-<div id="program-exec" class=" md:block md:w-2/3 fixed bottom-0 right-0 ml-5 bg-transparent w-full mb-3 h-1/4 overflow-y-auto">
-  <div class="w-full md:w-2/3 text-small right-2 pb-2 fixed bg-transparent h-9 flex-row-reverse flex rounded"> 
-    <button type="button" hx-post="/execute_queue/" hx-target="#program-exec" hx-swap="innerHTML" 
-      class="flex flex-row rounded pl-4 pr-2 bg-lime-300 hover:bg-lime-600 items-center ">
-        <div class="text-small font-medium mr-3">  
-          Ejecutar   
-        </div>  
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
-        </svg>
-    </button>
-    <div class="w-2 min-[805px]:w-5 h-1"></div>
-    <!-- Status alert -->
-    {% if result.result == 'Failure' %} 
-    <div class="flex flex-row bg-red-100 border-2 border-red-400 text-red-700 items-center px-3 rounded">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-        </svg>
+<div id="program-exec" class="flex flex-col h-1/3 w-full">
+    <div class="w-full text-small my-2 bg-transparent h-9 flex-row-reverse flex">
+        <button type="button" hx-post="/execute_queue/" hx-target="#program-exec" hx-swap="outerHTML" class=" flex flex-row rounded pl-4 pr-2 bg-lime-300 hover:bg-lime-600 items-center shadow">
+            <div class="text-small font-medium mr-3">  
+            Ejecutar   
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+            </svg>
+        </button>
+        <div class="w-2 min-[805px]:w-5 h-1"></div>
+        <!-- Status alert -->
+        {% if result.result == 'Failure' %} 
+        <div class="flex flex-row bg-red-100 border-2 border-red-400 text-red-700 items-center px-3 rounded">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+            </svg>
             <div class="flex flex-row text-small sm:text-base"><span class="font-bold text-small sm:text-base">Oops!</span><div class="hidden min-[525px]:flex "> Tu código falló las pruebas 🧐</div></div>
-    </div>
+        </div>
     
-    {% elif result.result == 'TimeOut' %} 
-    <div class="flex flex-row bg-red-100 border-2 border-red-400 text-red-700 items-center px-3 rounded">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-        </svg>
-        <div class="flex flex-row"><span class="font-bold">TIME OUT 😭</span></div> 
-    </div>
+        {% elif result.result == 'TimeOut' %} 
+        <div class="flex flex-row bg-red-100 border-2 border-red-400 text-red-700 items-center px-3 rounded">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+            </svg>
+            <div class="flex flex-row"><span class="font-bold">TIME OUT 😭</span></div> 
+        </div>
 
-    {% elif result.result == 'Success' %} 
-    <div class="flex flex-row bg-red-100 border-2 border-red-400 text-red-700 items-center px-3 rounded">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
+        {% elif result.result == 'Success' %} 
+        <div class="flex flex-row bg-green-100 border-2 border-green-400 text-green-700 items-center px-3 rounded">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
 
-        <div class="flex flex-row text-small sm:text-base"><span class="font-bold">Bien hecho!</span><div class="hidden min-[525px]:flex ">Pasaste las pruebas 🤓</div> </div>
-    </div>
+            <div class="flex flex-row text-small sm:text-base"><span class="font-bold">Bien hecho!</span><div class="hidden min-[525px]:flex ">Pasaste las pruebas 🤓</div> </div>
+        </div>
     
-    {% endif %} 
-    <div class="absolute left-2 text-small font-normal text-white bg-zinc-700 rounded-t-lg border-slate-200 h-9 w-fit px-2 dark:border-b-white ">
-        Output :       
+        {% endif %}
+        <div class="absolute left-0 flex flex-row items-center h-9 w-fit bg-zinc-800 border-slate-200  border  px-3 rounded">
+            <div id="toggle_test" class="text-small font-medium text-white ">
+            Output :       
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="border z-50 border-slate-200 rounded text-base text-white pl-3 h-5/6 bg-zinc-800 mt-9 w-full overflow-y-auto">
+    <div class="border border-slate-200 rounded text-base text-white bg-zinc-800 w-full overflow-y-auto h-1/4 flex-auto mb-2 pl-3">
     {% if result.result == 'Failure' %} 
         {% for f in result.failures %}
           <div class="whitespace-normal pb-1 text-small"> {{f}} </div>
@@ -54,74 +55,7 @@
        <p>El Time Out podría haber sucedido por un problema ajeno a tu código. </p>
     {% elif result.result == 'Success' %} 
           Tu código pasó todas las pruebas
-    {% endif %} 
-  </div>
-</div>
-
-{% comment %}
-<div id="program-exec"> 
-  <div class="flex flex-row"> 
-        <button type="button" hx-post="/execute_queue/" hx-target="#program-exec" hx-swap="outerHTML"
-      class="inline-flex w-full mb-3 bg-blue-600 border rounded-lg border-gray-300  px-5 py-2.5  
-                  shadow-sm font-mono justify-center text-sm text-white sm:ml-3 sm:w-auto hover:bg-blue-800"> Ejecuta el código </button>
-  </div>
-
-  <div class="flex flex-col text-white p-1 ml-3">
-    {% if result.result == 'Failure' %} 
-    <div class="rounded-lg bg-red-100 pb-4">
-       <div class="flex flex-row ml-5 mt-2">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-red-400">
-            <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd" />
-          </svg>
-
-          <div class="text-red-800 font-semibold ml-3 mb-2 w-full"> Tu código no pasó todas las pruebas </div>
-       </div>
-      <div class="flex flex-col text-red-700 p-1 ml-8 overflow-x-auto">
-
-       {% for f in result.failures %}
-        <div class="whitespace-nowrap pb-1" > {{f}} </div>
-       {% endfor %}
-      </div>
+    {% endif %}
     </div>
-    {% elif result.result == 'TimeOut' %} 
-    <div class="rounded-lg bg-red-100 pb-4">
-     <div class="flex flex-row ml-5 mt-2">
+</div> 
 
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mt-5 text-red-400">
-        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd" />
-      </svg>
-
-       <div class="text-red-800 font-semibold ml-3 mb-2  w-full"> <p> Tu código tardó mucho tiempo 
-        en ejecutarse y alcanzó un Time Out, el contenedor en el que se estaba ejecutando se destruyó.
-        </p> <p>El Time Out podría haber sucedido por un problema ajeno a tu código.
-          </p> 
- </div>
-     </div>
-      <div class="flex flex-col text-red-700 p-1 ml-8">
-        
-      </div>
-    </div>
-
-    {% elif result.result == 'Success' %} 
-
-    <div class="rounded-lg bg-green-100 pb-4">
-     <div class="flex flex-row ml-5 mt-2">
-
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mt-3 text-green-400">
-        <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
-      </svg>
-
-        <div class="text-green-800 font-semibold ml-3 mt-3 mb-3"> Tu código pasó todas las pruebas.
-                </div>
-     </div>
-  
-    </div>
-    {% endif %} 
- 
-      <h4> Salida de la terminal 'stdout'</h4>
-      <pre class="w-full whitespace-pre-wrap max-h-80"> {{result.stdout}}
-      </pre> 
-          
-  </div>
-  </div>
-  {% endcomment %}
