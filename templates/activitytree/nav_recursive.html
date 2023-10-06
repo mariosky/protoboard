@@ -20,16 +20,22 @@
 {% else %} 
 <li> <a class="flex gap-2 items-center mb-3
            {% if activity.is_current %}
-              border-r-2 border-b-white pl-2 bg-gray-600 text-indigo-700 dark:text-slate-400 font-semibold
+              border-r-2 border-gray-600 bg-gray-300 dark:border-b-white pl-2 dark:bg-gray-600 text-indigo-700 dark:text-slate-400 font-semibold
                
            {% if activity.pre_condition == "disabled" %}  
-             text-slate-200
+             dark:text-slate-200 text-slate-500
            {% else %}  
              text-slate-700
            {% endif %} 
              hover:border-slate-400
-             hover:text-slate-200  
+             hover:text-slate-900 dark:hover:text-slate-200  
            {% endif %} 
+             hover:border-r-2 
+             hover:border-gray-600 
+             hover:bg-gray-200
+             dark:hover:border-r-2 
+             dark:hover:border-gray-800 
+             dark:hover:bg-gray-500
 	  " 
            {% if activity.pre_condition == "disabled" %}  
 		href="#"
